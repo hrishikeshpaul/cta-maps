@@ -11,7 +11,6 @@ export enum StoreActionType {
     SetRoute,
     SetPatternLoading,
     SetPattern,
-    SetError,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -42,10 +41,6 @@ interface PayloadPatternLoading {
 
 interface PayloadSetPattern {
     pattern: Pattern[];
-}
-
-interface PayloadSetError {
-    error: any;
 }
 
 interface StoreAction {
@@ -90,9 +85,11 @@ const storeReducer = (store: StoreState, action: StoreAction): StoreState => {
         case StoreActionType.RemoveRoute:
             const { id } = action.payload as PayloadRemoveRoute;
             const updatedRoutes = store.routes.filter((route) => route.route !== id);
-            return { ...store, routes: [...updatedRoutes] };
+            const updatedPatterns = store.patterns.filter((pattern) => pattern.route !== id);
+            
+            return { ...store, routes: [...updatedRoutes], patterns: [...updatedPatterns] };
         case StoreActionType.RemoveAllRoutes:
-            return { ...store, routes: [] };
+            return { ...store, routes: [], patterns: [] };
         case StoreActionType.SetPatternLoading:
             return {
                 ...store,
