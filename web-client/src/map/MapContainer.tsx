@@ -2,8 +2,9 @@ import React, { FunctionComponent } from 'react';
 
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
-import './MapContainer.scss';
 import { useStore } from '../store/Store';
+
+import './MapContainer.scss';
 
 const containerStyle = {
     width: '100%',
