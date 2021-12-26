@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import React, { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { getPattern, getRoutes } from './Service';
@@ -10,6 +11,7 @@ export enum StoreActionType {
     SetRoute,
     SetPatternLoading,
     SetPattern,
+    SetError,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -42,6 +44,10 @@ interface PayloadSetPattern {
     pattern: PatternExtended[];
 }
 
+interface PayloadSetError {
+    error: any;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -65,6 +71,7 @@ export const initialStoreState: StoreState = {
     patternLoading: false,
     routes: [],
     patterns: [],
+    error: undefined,
 };
 
 const StoreStateContext = createContext<StoreState | undefined>(undefined);
@@ -145,6 +152,7 @@ interface StoreActionApis {
 export const useStore = (): [StoreState, StoreActionApis] => {
     const dispatch = useStoreDispatch();
     const state = useStoreState();
+    const toast = useToast();
 
     const actionApis: StoreActionApis = {
         openRouteSelect: () => {
@@ -164,9 +172,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
                 dispatch({ type: StoreActionType.SetRoutesLoading, payload: { loading: false } });
 
                 return response;
-            } catch (err) {
-                console.log(err);
+            } catch (err: any) {
                 dispatch({ type: StoreActionType.SetRoutesLoading, payload: { loading: false } });
+                toast({ description: err.response.data, status: 'error' });
 
                 return null;
             }
@@ -187,10 +195,10 @@ export const useStore = (): [StoreState, StoreActionApis] => {
                 });
 
                 dispatch({ type: StoreActionType.SetPattern, payload: { pattern: data } });
-            } catch (err) {
+            } catch (err: any) {
                 dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
-
-                console.log(err);
+                toast({ description: err.response.data, status: 'error' });
+                console.log(err.response.data);
             }
         },
         removeRoute: (id: string) => {

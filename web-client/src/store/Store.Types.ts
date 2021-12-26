@@ -44,4 +44,5 @@ export interface StoreState {
     patternLoading: boolean;
     routes: Route[];
     patterns: PatternExtended[];
+    error?: any;
 }
