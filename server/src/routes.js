@@ -7,7 +7,13 @@ const router = express.Router();
 
 router.get("/routes", async (req, res) => {
   try {
-    const data = await getRoutes();
+    let data = await getRoutes();
+    
+    data = data.map((item) => ({
+      route: item.rt,
+      name: item.rtnm,
+      color: item.rtclr,
+    }));
 
     res.send(data);
   } catch (err) {

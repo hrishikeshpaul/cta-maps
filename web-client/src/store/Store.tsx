@@ -143,11 +143,11 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         setRoute: async (route: Route) => {
             dispatch({ type: StoreActionType.SetRoute, payload: { route } });
-            // set the route in store
-            // get pattern
+            // get pattern and put it in store
         },
         removeRoute: (id: string) => {
             dispatch({ type: StoreActionType.RemoveRoute, payload: { id } });
+            // remove pattern from store
         },
     };
 
