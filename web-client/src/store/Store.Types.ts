@@ -33,9 +33,15 @@ export interface Pattern {
     pt: Point[];
 }
 
+export interface PatternExtended extends Pattern {
+    route: Route;
+}
+
 export interface StoreState {
     routeSelectOpen: boolean;
     dragging: boolean;
     routesLoading: boolean;
+    patternLoading: boolean;
     routes: Route[];
+    patterns: PatternExtended[];
 }

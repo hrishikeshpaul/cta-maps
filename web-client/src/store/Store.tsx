@@ -1,13 +1,15 @@
 import React, { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
-import { getRoutes } from './Service';
-import { Route, StoreState } from './Store.Types';
+import { getPattern, getRoutes } from './Service';
+import { PatternExtended, Route, StoreState } from './Store.Types';
 
 export enum StoreActionType {
     SetRouteSelect,
     SetDragging,
     SetRoutesLoading,
     SetRoute,
+    SetPatternLoading,
+    SetPattern,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -32,9 +34,24 @@ interface PayloadRemoveRoute {
     id: string;
 }
 
+interface PayloadPatternLoading {
+    loading: boolean;
+}
+
+interface PayloadSetPattern {
+    pattern: PatternExtended[];
+}
+
 interface StoreAction {
     type: StoreActionType;
-    payload?: PayloadSetRouteSelect | PayloadSetDragging | PayloadRoutesLoading | PayloadSetRoute | PayloadRemoveRoute;
+    payload?:
+        | PayloadSetRouteSelect
+        | PayloadSetDragging
+        | PayloadRoutesLoading
+        | PayloadSetRoute
+        | PayloadRemoveRoute
+        | PayloadPatternLoading
+        | PayloadSetPattern;
 }
 
 interface StoreProviderProps {
@@ -45,7 +62,9 @@ export const initialStoreState: StoreState = {
     routeSelectOpen: false,
     dragging: false,
     routesLoading: false,
+    patternLoading: false,
     routes: [],
+    patterns: [],
 };
 
 const StoreStateContext = createContext<StoreState | undefined>(undefined);
@@ -54,23 +73,29 @@ const StoreDispatchContext = createContext<Dispatch<StoreAction> | undefined>(un
 const storeReducer = (store: StoreState, action: StoreAction): StoreState => {
     switch (action.type) {
         case StoreActionType.SetRouteSelect:
-            const { open } = action.payload as PayloadSetRouteSelect;
-            return { ...store, routeSelectOpen: open };
+            return { ...store, routeSelectOpen: (action.payload as PayloadSetRouteSelect).open };
         case StoreActionType.SetDragging:
-            const { dragging } = action.payload as PayloadSetDragging;
-            return { ...store, dragging };
+            return { ...store, dragging: (action.payload as PayloadSetDragging).dragging };
         case StoreActionType.SetRoutesLoading:
-            const { loading } = action.payload as PayloadRoutesLoading;
-            return { ...store, routesLoading: loading };
+            return { ...store, routesLoading: (action.payload as PayloadRoutesLoading).loading };
         case StoreActionType.SetRoute:
-            const { route } = action.payload as PayloadSetRoute;
-            return { ...store, routes: [...store.routes, { ...route }] };
+            return { ...store, routes: [...store.routes, { ...(action.payload as PayloadSetRoute).route }] };
         case StoreActionType.RemoveRoute:
             const { id } = action.payload as PayloadRemoveRoute;
             const updatedRoutes = store.routes.filter((route) => route.route !== id);
             return { ...store, routes: [...updatedRoutes] };
         case StoreActionType.RemoveAllRoutes:
             return { ...store, routes: [] };
+        case StoreActionType.SetPatternLoading:
+            return {
+                ...store,
+                patternLoading: (action.payload as PayloadPatternLoading).loading,
+            };
+        case StoreActionType.SetPattern:
+            return {
+                ...store,
+                patterns: [...store.patterns, ...(action.payload as PayloadSetPattern).pattern],
+            };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -119,12 +144,13 @@ interface StoreActionApis {
 
 export const useStore = (): [StoreState, StoreActionApis] => {
     const dispatch = useStoreDispatch();
+    const state = useStoreState();
 
     const actionApis: StoreActionApis = {
         openRouteSelect: () => {
             dispatch({ type: StoreActionType.SetRouteSelect, payload: { open: true } });
         },
-        closeRouteSelect: () => {
+        closeRouteSelect: async () => {
             dispatch({ type: StoreActionType.SetRouteSelect, payload: { open: false } });
         },
         setDragging: (dragging: boolean) => {
@@ -147,7 +173,25 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         setRoute: async (route: Route) => {
             dispatch({ type: StoreActionType.SetRoute, payload: { route } });
-            // get pattern and put it in store
+            dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: true } });
+
+            try {
+                const response = await getPattern(route.route);
+
+                dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
+                const data: PatternExtended[] = [];
+
+                response.forEach((res) => {
+                    const newResponse: PatternExtended = { ...res, route };
+                    data.push(newResponse);
+                });
+
+                dispatch({ type: StoreActionType.SetPattern, payload: { pattern: data } });
+            } catch (err) {
+                dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
+
+                console.log(err);
+            }
         },
         removeRoute: (id: string) => {
             dispatch({ type: StoreActionType.RemoveRoute, payload: { id } });

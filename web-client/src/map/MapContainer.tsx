@@ -21,8 +21,8 @@ const mapOptions = {
 };
 
 export const MapContainer: FunctionComponent = () => {
-    const [, { setDragging }] = useStore();
-
+    const [{ patterns }, { setDragging }] = useStore();
+    console.log(patterns);
     return (
         <div className="map-container">
             <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}>
