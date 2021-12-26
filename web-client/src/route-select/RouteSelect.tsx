@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState, ChangeEvent } from 'react';
 
 import {
     Drawer,
@@ -17,6 +17,7 @@ import {
     Switch,
 } from '@chakra-ui/react';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
+import Fuse from 'fuse.js';
 
 import { useStore } from '../store/Store';
 import { Route } from '../store/Store.Types';
@@ -25,12 +26,19 @@ interface RouteExtended extends Route {
     selected: boolean;
 }
 
+const fuseOptions = {
+    keys: ['route', 'name'],
+};
+
 export const RouteSelect: FunctionComponent = () => {
     const [
         { routeSelectOpen, routesLoading, routes: currentRoutes },
         { closeRouteSelect, getRoutes, setRoute, removeRoute },
     ] = useStore();
-    const [routes, setRoutes] = useState<RouteExtended[] | null>([]);
+    const [routes, setRoutes] = useState<RouteExtended[]>([]);
+    const [computedRoutes, setComputedRoutes] = useState<RouteExtended[]>([]);
+    const [query, setQuery] = useState<string>('');
+    const fuse = new Fuse(routes!, fuseOptions);
 
     useEffect(() => {
         if (routeSelectOpen) {
@@ -76,7 +84,7 @@ export const RouteSelect: FunctionComponent = () => {
 
         return (
             <Flex justifyContent="space-between" alignItems="center" py="3">
-                <Flex alignItems="center">
+                <Flex alignItems="center" overflow="hidden">
                     <Center h="40px" w="40px" bg={color} borderRadius="md">
                         <Text color="white" fontWeight="bold">
                             {route}
@@ -115,7 +123,23 @@ export const RouteSelect: FunctionComponent = () => {
                     </Flex>
                     <InputGroup mt="2">
                         <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
-                        <Input placeholder="Bus Number..." />
+                        <Input
+                            name="query"
+                            placeholder="Bus Number..."
+                            value={query}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                setQuery(e.target.value);
+                                const results = fuse.search(e.target.value);
+
+                                const computed: RouteExtended[] = [];
+
+                                results.forEach((result) => {
+                                    computed.push(result.item);
+                                });
+
+                                setComputedRoutes(computed);
+                            }}
+                        />
                     </InputGroup>
                 </DrawerHeader>
 
@@ -126,14 +150,18 @@ export const RouteSelect: FunctionComponent = () => {
                         </Center>
                     ) : (
                         <>
-                            {routes !== null ? (
+                            {computedRoutes.length ? (
+                                <>
+                                    {computedRoutes.map((route) => (
+                                        <RouteCard {...route} key={route.route} />
+                                    ))}
+                                </>
+                            ) : (
                                 <>
                                     {routes.map((route) => (
                                         <RouteCard {...route} key={route.route} />
                                     ))}
                                 </>
-                            ) : (
-                                'Error'
                             )}
                         </>
                     )}

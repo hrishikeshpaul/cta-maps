@@ -9,6 +9,8 @@ const Http = axios.create({
 export const getRoutes = async (): Promise<Route[]> => {
     // const { data } = await Http.get<Route[]>('/routes');
 
+    // return data;
+
     const res = [
         {
             route: '1',
