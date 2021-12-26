@@ -1,13 +1,15 @@
 import React from "react";
 
-import { Button } from "react-bootstrap";
+import { MapContainer } from "./map/MapContainer";
+import { Nav } from "./nav/Nav";
 
 import "./App.scss";
 
 export const App = () => {
   return (
     <div className="App">
-      <Button>Click Me</Button>
+      <Nav />
+      <MapContainer />
     </div>
   );
 };

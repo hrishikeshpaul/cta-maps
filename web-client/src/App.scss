@@ -1,1 +1,12 @@
-@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~bootstrap/scss/bootstrap";
+
+.App {
+  height: 100% !important;
+  width: 100%;
+
+  .nav {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+  }
+}
