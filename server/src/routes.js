@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/routes", async (req, res) => {
   try {
     let data = await getRoutes();
-    
+
     data = data.map((item) => ({
       route: item.rt,
       name: item.rtnm,
@@ -32,10 +32,41 @@ router.get("/vehicles", async (req, res) => {
 });
 
 router.get("/patterns", async (req, res) => {
+  const { route, color } = req.query;
   try {
-    const data = await getPatterns(req.query.rt);
+    const patterns = [];
 
-    res.send(data);
+    const data = await getPatterns(route);
+
+    data.forEach((item) => {
+      const paths = [];
+      const stops = [];
+
+      item.pt.forEach((p) => {
+        if (p.typ === "W") {
+          paths.push({ lat: p.lat, lng: p.lon });
+        } else if (p.typ === "S") {
+          stops.push({
+            lat: p.lat,
+            lng: p.lon,
+            name: p.stpnm,
+            id: p.stpid,
+          });
+        }
+      });
+
+      patterns.push({
+        fillColor: color,
+        strokeColor: color,
+        dir: item.dir,
+        pid: item.pid,
+        route,
+        paths,
+        stops,
+      });
+    });
+
+    res.send(patterns);
   } catch (err) {
     res.status(400).send(err);
   }

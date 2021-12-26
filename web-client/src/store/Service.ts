@@ -21,20 +21,21 @@ export const getRoutes = async (): Promise<Route[]> => {
     });
 };
 
-export const getPattern = async (rt: string): Promise<Pattern[]> => {
-    // const { data } = await Http.get<Pattern[]>('/patterns', {
-    //     params: {
-    //         rt,
-    //     },
-    // });
-
-    // return data;
-
-    const res = MockPatternData as Pattern[];
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(res);
-        }, 100);
+export const getPattern = async (route: string, color: string): Promise<Pattern[]> => {
+    const { data } = await Http.get<Pattern[]>('/patterns', {
+        params: {
+            route,
+            color
+        },
     });
+
+    return data;
+
+    // const res = MockPatternData as Pattern[];
+
+    // return new Promise((resolve) => {
+    //     setTimeout(() => {
+    //         resolve(res);
+    //     }, 100);
+    // });
 };

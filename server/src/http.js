@@ -29,6 +29,8 @@ Http.interceptors.response.use((response) => {
   const error = busResponse["error"];
 
   if (error) {
+    console.log(chalk.red(error[0].msg));
+
     return { error: error[0].msg };
   }
 

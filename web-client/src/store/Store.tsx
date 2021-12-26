@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import React, { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { getPattern, getRoutes } from './Service';
-import { PatternExtended, Route, StoreState } from './Store.Types';
+import { Route, StoreState, Pattern } from './Store.Types';
 
 export enum StoreActionType {
     SetRouteSelect,
@@ -41,7 +41,7 @@ interface PayloadPatternLoading {
 }
 
 interface PayloadSetPattern {
-    pattern: PatternExtended[];
+    pattern: Pattern[];
 }
 
 interface PayloadSetError {
@@ -184,17 +184,10 @@ export const useStore = (): [StoreState, StoreActionApis] => {
             dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: true } });
 
             try {
-                const response = await getPattern(route.route);
+                const response = await getPattern(route.route, route.color);
 
                 dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
-                const data: PatternExtended[] = [];
-
-                response.forEach((res) => {
-                    const newResponse: PatternExtended = { ...res, route };
-                    data.push(newResponse);
-                });
-
-                dispatch({ type: StoreActionType.SetPattern, payload: { pattern: data } });
+                dispatch({ type: StoreActionType.SetPattern, payload: { pattern: response } });
             } catch (err: any) {
                 dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
                 toast({ description: err.response.data, status: 'error' });

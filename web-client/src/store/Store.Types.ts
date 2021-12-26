@@ -17,24 +17,22 @@ export interface Route {
 }
 
 export interface Point {
-    seq: number;
     lat: number;
-    lon: number;
-    typ: PointType;
-    stpid: string;
-    stpnm: string;
-    pdist: number;
+    lng: number;
+}
+
+export interface Stop extends Point {
+    name: string;
+    id: string;
 }
 
 export interface Pattern {
+    fillColor: string;
+    strokeColor: string;
     pid: number;
-    ln: number;
-    rtdir: Direction;
-    pt: Point[];
-}
-
-export interface PatternExtended extends Pattern {
-    route: Route;
+    route: string;
+    paths: Point[];
+    stops: Stop[];
 }
 
 export interface StoreState {
@@ -43,6 +41,6 @@ export interface StoreState {
     routesLoading: boolean;
     patternLoading: boolean;
     routes: Route[];
-    patterns: PatternExtended[];
+    patterns: Pattern[];
     error?: any;
 }
