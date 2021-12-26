@@ -4,15 +4,20 @@ import { StoreState } from './Store.Types';
 
 export enum StoreActionType {
     SetRouteSelect,
+    SetDragging,
 }
 
 interface PayloadSetRouteSelect {
     open: boolean;
 }
 
+interface PayloadSetDragging {
+    dragging: boolean;
+}
+
 interface StoreAction {
     type: StoreActionType;
-    payload: PayloadSetRouteSelect;
+    payload: PayloadSetRouteSelect | PayloadSetDragging;
 }
 
 interface StoreProviderProps {
@@ -21,6 +26,7 @@ interface StoreProviderProps {
 
 export const initialStoreState: StoreState = {
     routeSelectOpen: false,
+    dragging: false,
 };
 
 const StoreStateContext = createContext<StoreState | undefined>(undefined);
@@ -31,6 +37,9 @@ const storeReducer = (store: StoreState, action: StoreAction): StoreState => {
         case StoreActionType.SetRouteSelect:
             const { open } = action.payload as PayloadSetRouteSelect;
             return { ...store, routeSelectOpen: open };
+        case StoreActionType.SetDragging:
+            const { dragging } = action.payload as PayloadSetDragging;
+            return { ...store, dragging };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -70,6 +79,7 @@ const useStoreDispatch = (): Dispatch<StoreAction> => {
 interface StoreActionApis {
     openRouteSelect: () => void;
     closeRouteSelect: () => void;
+    setDragging: (value: boolean) => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -81,6 +91,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         closeRouteSelect: () => {
             dispatch({ type: StoreActionType.SetRouteSelect, payload: { open: false } });
+        },
+        setDragging: (dragging: boolean) => {
+            dispatch({ type: StoreActionType.SetDragging, payload: { dragging } });
         },
     };
 

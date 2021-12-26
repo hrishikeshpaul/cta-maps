@@ -21,7 +21,13 @@ import { useStore } from '../store/Store';
 export const RouteSelect: FunctionComponent = () => {
     const [{ routeSelectOpen }, { closeRouteSelect }] = useStore();
     return (
-        <Drawer isOpen={routeSelectOpen} placement="bottom" isFullHeight onClose={() => closeRouteSelect()}>
+        <Drawer
+            isOpen={routeSelectOpen}
+            placement="bottom"
+            isFullHeight
+            onClose={() => closeRouteSelect()}
+            autoFocus={false}
+        >
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerHeader px="4">

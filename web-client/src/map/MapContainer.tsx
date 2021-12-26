@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 import './MapContainer.scss';
+import { useStore } from '../store/Store';
 
 const containerStyle = {
     width: '100%',
@@ -19,6 +20,8 @@ const mapOptions = {
 };
 
 export const MapContainer: FunctionComponent = () => {
+    const [, { setDragging }] = useStore();
+
     return (
         <div className="map-container">
             <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}>
@@ -28,6 +31,8 @@ export const MapContainer: FunctionComponent = () => {
                     zoom={13}
                     options={mapOptions}
                     clickableIcons={false}
+                    onDragStart={() => setDragging(true)}
+                    onDragEnd={() => setDragging(false)}
                 ></GoogleMap>
             </LoadScript>
         </div>
