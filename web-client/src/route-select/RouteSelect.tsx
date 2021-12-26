@@ -12,6 +12,7 @@ import {
     InputGroup,
     Input,
     InputLeftElement,
+    InputRightElement,
     Spinner,
     Center,
     Switch,
@@ -19,6 +20,7 @@ import {
     Button,
 } from '@chakra-ui/react';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
+import { IoIosClose } from 'react-icons/io';
 import Fuse from 'fuse.js';
 
 import { useStore } from '../store/Store';
@@ -39,6 +41,7 @@ export const RouteSelect: FunctionComponent = () => {
     ] = useStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [computedRoutes, setComputedRoutes] = useState<RouteExtended[]>([]);
+    const [query, setQuery] = useState<string>('');
     const fuse = new Fuse(routes!, fuseOptions);
 
     useEffect(() => {
@@ -56,6 +59,7 @@ export const RouteSelect: FunctionComponent = () => {
                     }
                 });
                 setRoutes(mutatedRoutes);
+                setComputedRoutes(mutatedRoutes);
             })();
         }
     }, [routeSelectOpen]);
@@ -74,12 +78,39 @@ export const RouteSelect: FunctionComponent = () => {
         setRoutes(mutatedRoutes);
     }, [currentRoutes]);
 
+    useEffect(() => {
+        if (query) {
+            const results = fuse.search(query);
+            const computed: RouteExtended[] = [];
+
+            results.forEach((result) => {
+                computed.push(result.item);
+            });
+
+            setComputedRoutes(computed);
+        } else {
+            if (routes) setComputedRoutes(routes);
+        }
+    }, [query]);
+
     const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
         const onToggle = () => {
+            const computedRouteIdx = computedRoutes.findIndex((r) => r.route === route);
+
             if (!selected) {
                 setRoute({ route, name, color });
+                if (computedRouteIdx !== -1) {
+                    const old = [...computedRoutes];
+                    old[computedRouteIdx].selected = true;
+                    setComputedRoutes([...old]);
+                }
             } else {
                 removeRoute(route);
+                if (computedRouteIdx !== -1) {
+                    const old = [...computedRoutes];
+                    old[computedRouteIdx].selected = false;
+                    setComputedRoutes([...old]);
+                }
             }
         };
 
@@ -124,19 +155,25 @@ export const RouteSelect: FunctionComponent = () => {
                     </Flex>
                     <InputGroup mt="2">
                         <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
+                        {query && (
+                            <InputRightElement>
+                                <IconButton
+                                    variant="ghost"
+                                    aria-label="clear"
+                                    icon={<IoIosClose />}
+                                    size="sm"
+                                    fontSize="3xl"
+                                    color="gray.500"
+                                    onClick={() => setQuery('')}
+                                />
+                            </InputRightElement>
+                        )}
                         <Input
                             name="query"
+                            value={query}
                             placeholder="Bus Number..."
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                const results = fuse.search(e.target.value);
-
-                                const computed: RouteExtended[] = [];
-
-                                results.forEach((result) => {
-                                    computed.push(result.item);
-                                });
-
-                                setComputedRoutes(computed);
+                                setQuery(e.target.value);
                             }}
                         />
                     </InputGroup>
@@ -149,19 +186,9 @@ export const RouteSelect: FunctionComponent = () => {
                         </Center>
                     ) : (
                         <>
-                            {computedRoutes.length ? (
-                                <>
-                                    {computedRoutes.map((route) => (
-                                        <RouteCard {...route} key={route.route} />
-                                    ))}
-                                </>
-                            ) : (
-                                <>
-                                    {routes.map((route) => (
-                                        <RouteCard {...route} key={route.route} />
-                                    ))}
-                                </>
-                            )}
+                            {computedRoutes.map((route) => (
+                                <RouteCard {...route} key={route.route} />
+                            ))}
                         </>
                     )}
                 </DrawerBody>
