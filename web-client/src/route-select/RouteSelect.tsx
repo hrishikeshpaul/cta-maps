@@ -15,6 +15,8 @@ import {
     Spinner,
     Center,
     Switch,
+    DrawerFooter,
+    Button,
 } from '@chakra-ui/react';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import Fuse from 'fuse.js';
@@ -33,7 +35,7 @@ const fuseOptions = {
 export const RouteSelect: FunctionComponent = () => {
     const [
         { routeSelectOpen, routesLoading, routes: currentRoutes },
-        { closeRouteSelect, getRoutes, setRoute, removeRoute },
+        { closeRouteSelect, getRoutes, setRoute, removeRoute, removeAllRoutes },
     ] = useStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [computedRoutes, setComputedRoutes] = useState<RouteExtended[]>([]);
@@ -163,6 +165,11 @@ export const RouteSelect: FunctionComponent = () => {
                         </>
                     )}
                 </DrawerBody>
+                {currentRoutes.length ? (
+                    <DrawerFooter d="flex" justifyContent="flex-start">
+                        <Button onClick={removeAllRoutes}>Deselect All ({currentRoutes.length})</Button>
+                    </DrawerFooter>
+                ) : null}
             </DrawerContent>
         </Drawer>
     );

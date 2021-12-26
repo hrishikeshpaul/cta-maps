@@ -9,6 +9,7 @@ export enum StoreActionType {
     SetRoutesLoading,
     SetRoute,
     RemoveRoute,
+    RemoveAllRoutes,
 }
 
 interface PayloadSetRouteSelect {
@@ -33,7 +34,7 @@ interface PayloadRemoveRoute {
 
 interface StoreAction {
     type: StoreActionType;
-    payload: PayloadSetRouteSelect | PayloadSetDragging | PayloadRoutesLoading | PayloadSetRoute | PayloadRemoveRoute;
+    payload?: PayloadSetRouteSelect | PayloadSetDragging | PayloadRoutesLoading | PayloadSetRoute | PayloadRemoveRoute;
 }
 
 interface StoreProviderProps {
@@ -68,6 +69,8 @@ const storeReducer = (store: StoreState, action: StoreAction): StoreState => {
             const { id } = action.payload as PayloadRemoveRoute;
             const updatedRoutes = store.routes.filter((route) => route.route !== id);
             return { ...store, routes: [...updatedRoutes] };
+        case StoreActionType.RemoveAllRoutes:
+            return { ...store, routes: [] };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -111,6 +114,7 @@ interface StoreActionApis {
     getRoutes: () => Promise<Route[] | null>;
     setRoute: (route: Route) => void;
     removeRoute: (id: string) => void;
+    removeAllRoutes: () => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -148,6 +152,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         removeRoute: (id: string) => {
             dispatch({ type: StoreActionType.RemoveRoute, payload: { id } });
             // remove pattern from store
+        },
+        removeAllRoutes: () => {
+            dispatch({ type: StoreActionType.RemoveAllRoutes });
         },
     };
 
