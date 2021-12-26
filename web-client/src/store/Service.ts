@@ -25,7 +25,7 @@ export const getPattern = async (route: string, color: string): Promise<Pattern[
     // const { data } = await Http.get<Pattern[]>('/patterns', {
     //     params: {
     //         route,
-    //         color
+    //         color,
     //     },
     // });
 

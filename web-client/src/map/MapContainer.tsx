@@ -39,8 +39,9 @@ interface Line extends PolylineProps {
 
 export const MapContainer: FunctionComponent = () => {
     const [{ patterns }, { setDragging }] = useStore();
-    const [map, setMap] = useState<GoogleMap>();
+    const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
+    const [showStops, setShowStops] = useState<boolean>(false);
 
     useEffect(() => {
         const lines: any[] = [];
@@ -57,8 +58,6 @@ export const MapContainer: FunctionComponent = () => {
             lines.push(newLine);
         });
 
-        console.log(lines);
-
         setLines(lines);
     }, [patterns]);
 
@@ -66,6 +65,9 @@ export const MapContainer: FunctionComponent = () => {
         <div className="map-container">
             <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}>
                 <GoogleMap
+                    onLoad={(map) => {
+                        if (map) setMap(map);
+                    }}
                     mapContainerStyle={containerStyle}
                     center={center}
                     zoom={13}
@@ -73,17 +75,25 @@ export const MapContainer: FunctionComponent = () => {
                     clickableIcons={false}
                     onDragStart={() => setDragging(true)}
                     onDragEnd={() => setDragging(false)}
+                    onZoomChanged={() => {
+                        if (map) {
+                            const zoom = map.getZoom();
+                            if (zoom! >= 15) setShowStops(true);
+                            else setShowStops(false);
+                        }
+                    }}
                 >
                     {lines.map((line: Line) => (
                         <div key={line.id}>
                             <Polyline path={line.paths} options={{ ...line }} />
-                            {line.stops.map((stop) => (
-                                <Marker
-                                    icon="/stop.svg"
-                                    position={{ lat: stop.lat, lng: stop.lng }}
-                                    key={`stop-${stop.id}`}
-                                />
-                            ))}
+                            {showStops &&
+                                line.stops.map((stop) => (
+                                    <Marker
+                                        icon="/stop.svg"
+                                        position={{ lat: stop.lat, lng: stop.lng }}
+                                        key={`stop-${stop.id}`}
+                                    />
+                                ))}
                         </div>
                     ))}
                 </GoogleMap>
