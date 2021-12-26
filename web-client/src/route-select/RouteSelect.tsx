@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import {
     Drawer,
@@ -9,17 +9,50 @@ import {
     Text,
     IconButton,
     Flex,
-    Box,
     InputGroup,
     Input,
     InputLeftElement,
+    Spinner,
+    Center,
+    Switch,
 } from '@chakra-ui/react';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 
 import { useStore } from '../store/Store';
+import { Route } from '../store/Store.Types';
 
 export const RouteSelect: FunctionComponent = () => {
-    const [{ routeSelectOpen }, { closeRouteSelect }] = useStore();
+    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect, getRoutes }] = useStore();
+    const [routes, setRoutes] = useState<Route[] | null>([]);
+
+    useEffect(() => {
+        if (routeSelectOpen) {
+            (async () => {
+                const routes = await getRoutes();
+
+                setRoutes(routes);
+            })();
+        }
+    }, [routeSelectOpen]);
+
+    const RouteCard: FunctionComponent<Route> = ({ route, name, color }) => {
+        return (
+            <Flex justifyContent="space-between" alignItems="center" py="3">
+                <Flex alignItems="center">
+                    <Center h="40px" w="40px" bg={color} borderRadius="md">
+                        <Text color="white" fontWeight="bold">
+                            {route}
+                        </Text>
+                    </Center>
+                    <Text px="4" isTruncated fontWeight="semibold">
+                        {name}
+                    </Text>
+                </Flex>
+                <Switch size="lg" />
+            </Flex>
+        );
+    };
+
     return (
         <Drawer
             isOpen={routeSelectOpen}
@@ -49,7 +82,23 @@ export const RouteSelect: FunctionComponent = () => {
                 </DrawerHeader>
 
                 <DrawerBody px="4">
-                    <Box>Results here</Box>
+                    {routesLoading ? (
+                        <Center>
+                            <Spinner />
+                        </Center>
+                    ) : (
+                        <>
+                            {routes !== null ? (
+                                <>
+                                    {routes.map((route) => (
+                                        <RouteCard {...route} key={route.route} />
+                                    ))}
+                                </>
+                            ) : (
+                                'Error'
+                            )}
+                        </>
+                    )}
                 </DrawerBody>
             </DrawerContent>
         </Drawer>
