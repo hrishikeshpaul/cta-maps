@@ -37,7 +37,6 @@ export const RouteSelect: FunctionComponent = () => {
     ] = useStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [computedRoutes, setComputedRoutes] = useState<RouteExtended[]>([]);
-    const [query, setQuery] = useState<string>('');
     const fuse = new Fuse(routes!, fuseOptions);
 
     useEffect(() => {
@@ -126,9 +125,7 @@ export const RouteSelect: FunctionComponent = () => {
                         <Input
                             name="query"
                             placeholder="Bus Number..."
-                            value={query}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                setQuery(e.target.value);
                                 const results = fuse.search(e.target.value);
 
                                 const computed: RouteExtended[] = [];
