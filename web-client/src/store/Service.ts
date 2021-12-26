@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { MockPatternData, MockRoutesData } from './Mock';
+import { MockRoutesData } from './Mock';
 import { Pattern, Route } from './Store.Types';
 
 const Http = axios.create({
@@ -30,12 +30,4 @@ export const getPattern = async (route: string, color: string): Promise<Pattern[
     });
 
     return data;
-
-    // const res = MockPatternData as Pattern[];
-
-    // return new Promise((resolve) => {
-    //     setTimeout(() => {
-    //         resolve(res);
-    //     }, 100);
-    // });
 };

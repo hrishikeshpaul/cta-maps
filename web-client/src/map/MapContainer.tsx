@@ -46,8 +46,6 @@ export const MapContainer: FunctionComponent = () => {
     useEffect(() => {
         const lines: any[] = [];
 
-        console.log(patterns);
-
         patterns.forEach((pattern) => {
             const newLine = {
                 ...basePolylineOptions,
