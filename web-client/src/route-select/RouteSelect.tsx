@@ -21,21 +21,59 @@ import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { useStore } from '../store/Store';
 import { Route } from '../store/Store.Types';
 
+interface RouteExtended extends Route {
+    selected: boolean;
+}
+
 export const RouteSelect: FunctionComponent = () => {
-    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect, getRoutes }] = useStore();
-    const [routes, setRoutes] = useState<Route[] | null>([]);
+    const [
+        { routeSelectOpen, routesLoading, routes: currentRoutes },
+        { closeRouteSelect, getRoutes, setRoute, removeRoute },
+    ] = useStore();
+    const [routes, setRoutes] = useState<RouteExtended[] | null>([]);
 
     useEffect(() => {
         if (routeSelectOpen) {
             (async () => {
                 const routes = await getRoutes();
+                const mutatedRoutes: RouteExtended[] = [];
 
-                setRoutes(routes);
+                routes?.forEach((route) => {
+                    const foundRouteIdx = currentRoutes.findIndex((r) => r.route === route.route);
+                    if (foundRouteIdx !== -1) {
+                        mutatedRoutes.push({ ...route, selected: true });
+                    } else {
+                        mutatedRoutes.push({ ...route, selected: false });
+                    }
+                });
+                setRoutes(mutatedRoutes);
             })();
         }
     }, [routeSelectOpen]);
 
-    const RouteCard: FunctionComponent<Route> = ({ route, name, color }) => {
+    useEffect(() => {
+        const mutatedRoutes: RouteExtended[] = [];
+
+        routes?.forEach((route) => {
+            const foundRouteIdx = currentRoutes.findIndex((r) => r.route === route.route);
+            if (foundRouteIdx !== -1) {
+                mutatedRoutes.push({ ...route, selected: true });
+            } else {
+                mutatedRoutes.push({ ...route, selected: false });
+            }
+        });
+        setRoutes(mutatedRoutes);
+    }, [currentRoutes]);
+
+    const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
+        const onToggle = () => {
+            if (!selected) {
+                setRoute({ route, name, color });
+            } else {
+                removeRoute(route);
+            }
+        };
+
         return (
             <Flex justifyContent="space-between" alignItems="center" py="3">
                 <Flex alignItems="center">
@@ -48,7 +86,7 @@ export const RouteSelect: FunctionComponent = () => {
                         {name}
                     </Text>
                 </Flex>
-                <Switch size="lg" />
+                <Switch size="lg" onChange={onToggle} isChecked={selected} />
             </Flex>
         );
     };
