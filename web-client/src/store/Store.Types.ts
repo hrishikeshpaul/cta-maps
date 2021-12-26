@@ -35,6 +35,16 @@ export interface Pattern {
     stops: Stop[];
 }
 
+export interface Vehicle {
+    id: string;
+    timestamp: string;
+    position: Point;
+    heading: 'N' | 'S' | 'E' | 'W';
+    route: number;
+    destination: string;
+    delayed: boolean;
+}
+
 export interface StoreState {
     routeSelectOpen: boolean;
     dragging: boolean;

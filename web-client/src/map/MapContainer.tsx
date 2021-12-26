@@ -3,9 +3,10 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 
 import { useStore } from '../store/Store';
-import { Point, Stop } from '../store/Store.Types';
+import { Point, Stop, Vehicle } from '../store/Store.Types';
 
 import './MapContainer.scss';
+import { getVehicles } from '../store/Service';
 
 const containerStyle = {
     width: '100%',
@@ -31,6 +32,13 @@ const basePolylineOptions = {
     zIndex: 1,
 };
 
+const VehicleIconMapper = {
+    N: '/bus-north.svg',
+    S: '/bus-south.svg',
+    W: '/bus-west.svg',
+    E: '/bus-east.svg',
+};
+
 interface Line extends PolylineProps {
     paths: Point[];
     stops: Stop[];
@@ -42,11 +50,17 @@ export const MapContainer: FunctionComponent = () => {
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
+    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+    const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
 
     useEffect(() => {
         const lines: any[] = [];
+        const routes: Set<string> = new Set();
+
+        if (intervalTimer) clearInterval(intervalTimer);
 
         patterns.forEach((pattern) => {
+            routes.add(pattern.route);
             const newLine = {
                 ...basePolylineOptions,
                 paths: pattern.paths,
@@ -57,6 +71,22 @@ export const MapContainer: FunctionComponent = () => {
 
             lines.push(newLine);
         });
+
+        if (Array.from(routes).length) {
+            (async () => {
+                const vehicles = await getVehicles(Array.from(routes));
+                setVehicles(vehicles);
+            })();
+
+            setIntervalTimer(
+                setInterval(async () => {
+                    const vehicles = await getVehicles(Array.from(routes));
+                    setVehicles(vehicles);
+                }, 5000),
+            );
+        } else {
+            setVehicles([]);
+        }
 
         setLines(lines);
     }, [patterns]);
@@ -96,6 +126,17 @@ export const MapContainer: FunctionComponent = () => {
                                 ))}
                         </div>
                     ))}
+                    {vehicles && (
+                        <>
+                            {vehicles.map((vehicle) => (
+                                <Marker
+                                    icon={VehicleIconMapper[vehicle.heading]}
+                                    position={vehicle.position}
+                                    key={vehicle.id}
+                                />
+                            ))}
+                        </>
+                    )}
                 </GoogleMap>
             </LoadScript>
         </div>

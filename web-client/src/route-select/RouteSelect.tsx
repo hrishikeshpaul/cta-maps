@@ -76,6 +76,7 @@ export const RouteSelect: FunctionComponent = () => {
             }
         });
         setRoutes(mutatedRoutes);
+        setComputedRoutes(mutatedRoutes);
     }, [currentRoutes]);
 
     useEffect(() => {
