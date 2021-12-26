@@ -38,8 +38,8 @@ export const MockRoutesData = [
 
 export const MockPatternData = [
     {
-        fillColor: 'aba371',
-        strokeColor: 'aba371',
+        fillColor: '#aba371',
+        strokeColor: '#aba371',
         pid: 5342,
         route: '3',
         paths: [
@@ -352,8 +352,8 @@ export const MockPatternData = [
         ],
     },
     {
-        fillColor: 'aba371',
-        strokeColor: 'aba371',
+        fillColor: '#aba371',
+        strokeColor: '#aba371',
         pid: 5343,
         route: '3',
         paths: [

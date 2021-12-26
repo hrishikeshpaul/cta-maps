@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { GoogleMap, LoadScript, Polyline } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 
 import { useStore } from '../store/Store';
+import { Point, Stop } from '../store/Store.Types';
 
 import './MapContainer.scss';
 
@@ -20,37 +21,47 @@ const mapOptions = {
     disableDefaultUI: true,
 };
 
-const path = [
-    { lat: 37.772, lng: -122.214 },
-    { lat: 21.291, lng: -157.821 },
-    { lat: -18.142, lng: 178.431 },
-    { lat: -27.467, lng: 153.027 },
-];
-
-const options = {
-    strokeColor: '#FF0000',
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35,
+const basePolylineOptions = {
+    strokeOpacity: 0.9,
+    strokeWeight: 4,
     clickable: false,
     draggable: false,
     editable: false,
     visible: true,
-    radius: 30000,
-    paths: [
-        { lat: 37.772, lng: -122.214 },
-        { lat: 21.291, lng: -157.821 },
-        { lat: -18.142, lng: 178.431 },
-        { lat: -27.467, lng: 153.027 },
-    ],
     zIndex: 1,
-    id: '3',
 };
+
+interface Line extends PolylineProps {
+    paths: Point[];
+    stops: Stop[];
+    id: string;
+}
 
 export const MapContainer: FunctionComponent = () => {
     const [{ patterns }, { setDragging }] = useStore();
-    console.log(patterns);
+    const [map, setMap] = useState<GoogleMap>();
+    const [lines, setLines] = useState<Line[]>([]);
+
+    useEffect(() => {
+        const lines: any[] = [];
+
+        patterns.forEach((pattern) => {
+            const newLine = {
+                ...basePolylineOptions,
+                paths: pattern.paths,
+                strokeColor: pattern.strokeColor,
+                id: pattern.pid,
+                stops: pattern.stops,
+            };
+
+            lines.push(newLine);
+        });
+
+        console.log(lines);
+
+        setLines(lines);
+    }, [patterns]);
+
     return (
         <div className="map-container">
             <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}>
@@ -63,7 +74,18 @@ export const MapContainer: FunctionComponent = () => {
                     onDragStart={() => setDragging(true)}
                     onDragEnd={() => setDragging(false)}
                 >
-                    <Polyline path={path} options={options} />
+                    {lines.map((line: Line) => (
+                        <div key={line.id}>
+                            <Polyline path={line.paths} options={{ ...line }} />
+                            {line.stops.map((stop) => (
+                                <Marker
+                                    icon="/stop.svg"
+                                    position={{ lat: stop.lat, lng: stop.lng }}
+                                    key={`stop-${stop.id}`}
+                                />
+                            ))}
+                        </div>
+                    ))}
                 </GoogleMap>
             </LoadScript>
         </div>
