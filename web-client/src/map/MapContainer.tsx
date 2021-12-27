@@ -75,7 +75,6 @@ export const MapContainer: FunctionComponent = () => {
     }, [vehicleRoutes]);
 
     useEffect(() => {
-        console.log(patterns);
         const lines: any[] = [];
         const routes: Set<string> = new Set();
         const okRoutes: Set<string> = new Set();
@@ -120,7 +119,7 @@ export const MapContainer: FunctionComponent = () => {
 
     const onGetCurrentLocation = () => {
         toast({
-            description: 'Getting your current location...',
+            description: 'Retrieving current location...',
             status: 'warning',
         });
 
@@ -135,12 +134,12 @@ export const MapContainer: FunctionComponent = () => {
                 }
 
                 toast.closeAll();
-                toast({ description: 'Retrieving location updated', status: 'success' });
+                toast({ description: 'Current location updated', status: 'success' });
             },
             () => {
                 toast.closeAll();
                 toast({
-                    description: 'Could not retrieve your location',
+                    description: 'Could not retrieve location',
                     status: 'error',
                 });
             },
