@@ -28,14 +28,7 @@ export const Nav: FunctionComponent = () => {
             transition="0.25s opacity ease-in-out"
         >
             <Avatar src="/logo.svg" size="sm" boxShadow="lg" onClick={openInfo} h="40px" w="40px" />
-            <Button
-                // bg={useColorModeValue('white', 'gray.600')}
-                boxShadow="lg"
-                onClick={onRouteSelect}
-                flexDir="column"
-                px="12"
-                colorScheme="purple"
-            >
+            <Button bg="white" boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
                 <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : 'inherit'}>
                     Routes
                 </Text>
