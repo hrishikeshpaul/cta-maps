@@ -104,6 +104,7 @@ export const MapContainer: FunctionComponent = () => {
                     updatedVehicles.push(...currentVehicles);
                     setVehicleRoutes(new Set([...Array.from(vehicleRoutes), route]));
                 } catch (err: any) {
+                    toast.closeAll();
                     toast({ description: err.response.data, status: 'error' });
                 }
             });

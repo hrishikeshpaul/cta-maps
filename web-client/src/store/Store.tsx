@@ -253,7 +253,6 @@ export const useStore = (): [StoreState, StoreActionApis] => {
             } catch (err: any) {
                 dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
                 toast({ description: err.response.data, status: 'error' });
-                console.log(err.response.data);
             }
         },
         removeRoute: (id: string) => {
