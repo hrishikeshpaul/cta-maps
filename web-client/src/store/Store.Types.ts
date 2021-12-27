@@ -1,6 +1,6 @@
 export enum PointType {
-    S = 'S',
-    W = 'W',
+    S = 'S', // stop
+    W = 'W', // waypoint
 }
 
 export enum Direction {
@@ -8,6 +8,18 @@ export enum Direction {
     Southbound = 'Southbound',
     Eastbound = 'Eastbound',
     Westbound = 'Westbound',
+}
+
+export enum Heading {
+    N = 'N',
+    S = 'S',
+    E = 'E',
+    W = 'W',
+}
+
+export enum Juncture {
+    A = 'A', // arrival
+    D = 'D', // departure
 }
 
 export interface Route {
@@ -40,9 +52,21 @@ export interface Vehicle {
     id: string;
     timestamp: string;
     position: Point;
-    heading: 'N' | 'S' | 'E' | 'W';
+    heading: Heading;
     route: number;
     destination: string;
+    delayed: boolean;
+}
+
+export interface Prediction {
+    type: Juncture;
+    name: string;
+    id: string;
+    stopId: string;
+    route: string;
+    direction: Direction;
+    time: number;
+    timestamp: string;
     delayed: boolean;
 }
 

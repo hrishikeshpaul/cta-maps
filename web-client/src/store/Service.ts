@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { MockRoutesData } from './Mock';
-import { Pattern, Route, Vehicle } from './Store.Types';
+import { MockPredictions, MockRoutesData } from './Mock';
+import { Pattern, Prediction, Route, Vehicle } from './Store.Types';
 
 const Http = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
@@ -37,4 +37,16 @@ export const getVehicles = async (rt: string[]): Promise<Vehicle[]> => {
     });
 
     return data;
+};
+
+export const getPredictions = async (stop: string): Promise<Prediction[]> => {
+    const { data } = await Http.get<Prediction[]>('/predictions', {
+        params: {
+            stop,
+        },
+    });
+
+    return data;
+
+    // return MockPredictions as Prediction[];
 };

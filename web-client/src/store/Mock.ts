@@ -36,6 +36,64 @@ export const MockRoutesData = [
     },
 ];
 
+export const MockPredictions = [
+    {
+        type: 'A',
+        name: 'Michigan & Roosevelt',
+        stopId: '1580',
+        id: '1674',
+        route: '18',
+        direction: 'Eastbound',
+        time: 7,
+        timestamp: '1:26 PM',
+        delayed: false,
+    },
+    {
+        type: 'A',
+        name: 'Michigan & Roosevelt',
+        stopId: '1580',
+        id: '1329',
+        route: '4',
+        direction: 'Northbound',
+        time: 9,
+        timestamp: '1:28 PM',
+        delayed: false,
+    },
+    {
+        type: 'A',
+        name: 'Michigan & Roosevelt',
+        stopId: '1580',
+        id: '7940',
+        route: '3',
+        direction: 'Northbound',
+        time: 14,
+        timestamp: '1:33 PM',
+        delayed: false,
+    },
+    {
+        type: 'A',
+        name: 'Michigan & Roosevelt',
+        stopId: '1580',
+        id: '7970',
+        route: '3',
+        direction: 'Northbound',
+        time: 19,
+        timestamp: '1:38 PM',
+        delayed: false,
+    },
+    {
+        type: 'A',
+        name: 'Michigan & Roosevelt',
+        stopId: '1580',
+        id: '4042',
+        route: '4',
+        direction: 'Northbound',
+        time: 25,
+        timestamp: '1:44 PM',
+        delayed: false,
+    },
+];
+
 export const MockPatternData = [
     {
         fillColor: '#aba371',

@@ -17,6 +17,11 @@ const checkHeading = (heading) => {
     }
 };
 
+const convertTimestamp = (timestamp) => {
+    const [date, time] = timestamp.split(' ');
+    return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)} ${time}`;
+};
+
 const router = express.Router();
 
 router.get('/routes', async (req, res) => {
@@ -100,16 +105,26 @@ router.get('/predictions', async (req, res) => {
     try {
         let data = await getPredictions(req.query.stop);
 
-        data = data.map((item) => ({
-            reqTime: item.tmstmp,
-            type: item.typ,
-            name: item.stpnm,
-            id: item.stpid,
-            route: item.rt,
-            direction: item.rtdir,
-            predTime: item.prdtm,
-            delayed: item.dly,
-        }));
+        data = data.map((item) => {
+            const predTime = convertTimestamp(item.prdtm);
+            const diff = Math.round((new Date(predTime) - new Date()) / 60000);
+
+            return {
+                type: item.typ,
+                name: item.stpnm,
+                stopId: item.stpid,
+                id: item.vid,
+                route: item.rt,
+                direction: item.rtdir,
+                time: diff,
+                timestamp: new Date(predTime).toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                }),
+                delayed: item.dly,
+            };
+        });
 
         res.send(data);
     } catch (err) {

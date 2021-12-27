@@ -7,6 +7,7 @@ import { Point, Stop, Vehicle } from '../store/Store.Types';
 
 import './MapContainer.scss';
 import { getVehicles } from '../store/Service';
+import { useToast } from '@chakra-ui/react';
 
 const containerStyle = {
     width: '100%',
@@ -47,12 +48,12 @@ interface Line extends PolylineProps {
 
 export const MapContainer: FunctionComponent = () => {
     const [{ patterns }, { setDragging, openStop }] = useStore();
+    const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
-    const [infoWindow, setInfoWindow] = useState<Stop | null>(null);
 
     useEffect(() => {
         const lines: any[] = [];
