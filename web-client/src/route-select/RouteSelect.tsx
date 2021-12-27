@@ -172,7 +172,7 @@ export const RouteSelect: FunctionComponent = () => {
                         <Input
                             name="query"
                             value={query}
-                            placeholder="Bus Number..."
+                            placeholder="Bus Number/Name..."
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                 setQuery(e.target.value);
                             }}

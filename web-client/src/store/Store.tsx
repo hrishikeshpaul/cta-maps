@@ -114,8 +114,14 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
             const { id } = action.payload as PayloadRemoveRoute;
             const updatedRoutes = state.routes.filter((route) => route.route !== id);
             const updatedPatterns = state.patterns.filter((pattern) => pattern.route !== id);
+            const updatedVehicleRoutes = new Set(Array.from(state.vehicleRoutes).filter((route) => route !== id));
 
-            return { ...state, routes: [...updatedRoutes], patterns: [...updatedPatterns] };
+            return {
+                ...state,
+                routes: [...updatedRoutes],
+                patterns: [...updatedPatterns],
+                vehicleRoutes: updatedVehicleRoutes,
+            };
         case StoreActionType.RemoveAllRoutes:
             return { ...state, routes: [], patterns: [] };
         case StoreActionType.SetPatternLoading:

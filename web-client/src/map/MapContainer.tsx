@@ -56,6 +56,7 @@ export const MapContainer: FunctionComponent = () => {
     const [showStops, setShowStops] = useState<boolean>(false);
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
+    const [paths, setPaths] = useState<Point[]>([]);
 
     useEffect(() => {
         onGetCurrentLocation();
@@ -77,7 +78,6 @@ export const MapContainer: FunctionComponent = () => {
     useEffect(() => {
         const lines: any[] = [];
         const routes: Set<string> = new Set();
-        const okRoutes: Set<string> = new Set();
         const updatedVehicles: Vehicle[] = [];
 
         setVehicles([]);
@@ -91,6 +91,8 @@ export const MapContainer: FunctionComponent = () => {
                 id: pattern.pid,
                 stops: pattern.stops,
             };
+
+            setPaths([...paths, ...pattern.paths]);
             lines.push(newLine);
         });
 
@@ -107,7 +109,6 @@ export const MapContainer: FunctionComponent = () => {
             });
 
             setVehicles(updatedVehicles);
-            setVehicleRoutes(okRoutes);
         } else {
             setVehicles([]);
             setVehicleRoutes(new Set());
@@ -116,6 +117,16 @@ export const MapContainer: FunctionComponent = () => {
 
         setLines(lines);
     }, [patterns]);
+
+    useEffect(() => {
+        if (map) {
+            const bounds = new google.maps.LatLngBounds();
+            paths.forEach((path) => {
+                bounds.extend({ lat: path.lat, lng: path.lng });
+            });
+            map.fitBounds(bounds);
+        }
+    }, [paths]);
 
     const onGetCurrentLocation = () => {
         toast({
