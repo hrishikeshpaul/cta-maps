@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { MapContainer } from './map/MapContainer';
+import { Info } from './info/Info';
+
 import { Nav } from './nav/Nav';
 import { RouteSelect } from './route-select/RouteSelect';
 import { StoreProvider } from './store/Store';
@@ -13,6 +15,7 @@ export const App = () => {
             <StoreProvider>
                 <Nav />
                 <RouteSelect />
+                <Info />
                 <MapContainer />
             </StoreProvider>
         </div>

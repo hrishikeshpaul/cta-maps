@@ -6,7 +6,7 @@ import { FiInfo } from 'react-icons/fi';
 import { useStore } from '../store/Store';
 
 export const Nav: FunctionComponent = () => {
-    const [{ dragging, routes }, { openRouteSelect }] = useStore();
+    const [{ dragging, routes }, { openRouteSelect, openInfo }] = useStore();
     const [selected, setSelected] = useState<boolean>(false);
 
     const onRouteSelect = () => {
@@ -27,7 +27,6 @@ export const Nav: FunctionComponent = () => {
             opacity={dragging ? '0.25' : '1'}
             transition="0.25s opacity ease-in-out"
         >
-            <IconButton bg="white" aria-label="help-icon" icon={<FiInfo />} boxShadow="md" display="none" />
             <Avatar src="/logo.svg" size="sm" />
             <Button size="lg" bg="white" boxShadow="lg" onClick={onRouteSelect} flexDir="column">
                 <Text fontSize={selected ? 'xs' : 'md'}>{selected ? 'Selected Routes' : 'Select Routes'}</Text>
@@ -39,7 +38,7 @@ export const Nav: FunctionComponent = () => {
                     </Flex>
                 )}
             </Button>
-            <IconButton bg="white" aria-label="help-icon" icon={<FiInfo />} boxShadow="md" />
+            <IconButton bg="white" aria-label="help-icon" icon={<FiInfo />} boxShadow="md" onClick={openInfo} />
         </Flex>
     );
 };

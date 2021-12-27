@@ -11,6 +11,7 @@ export enum StoreActionType {
     SetRoute,
     SetPatternLoading,
     SetPattern,
+    SetInfo,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -43,6 +44,10 @@ interface PayloadSetPattern {
     pattern: Pattern[];
 }
 
+interface PayloadSetInfo {
+    open: boolean;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -52,7 +57,8 @@ interface StoreAction {
         | PayloadSetRoute
         | PayloadRemoveRoute
         | PayloadPatternLoading
-        | PayloadSetPattern;
+        | PayloadSetPattern
+        | PayloadSetInfo;
 }
 
 interface StoreProviderProps {
@@ -64,6 +70,7 @@ export const initialStoreState: StoreState = {
     dragging: false,
     routesLoading: false,
     patternLoading: false,
+    infoOpen: false,
     routes: [],
     patterns: [],
     error: undefined,
@@ -72,33 +79,38 @@ export const initialStoreState: StoreState = {
 const StoreStateContext = createContext<StoreState | undefined>(undefined);
 const StoreDispatchContext = createContext<Dispatch<StoreAction> | undefined>(undefined);
 
-const storeReducer = (store: StoreState, action: StoreAction): StoreState => {
+const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
     switch (action.type) {
         case StoreActionType.SetRouteSelect:
-            return { ...store, routeSelectOpen: (action.payload as PayloadSetRouteSelect).open };
+            return { ...state, routeSelectOpen: (action.payload as PayloadSetRouteSelect).open };
         case StoreActionType.SetDragging:
-            return { ...store, dragging: (action.payload as PayloadSetDragging).dragging };
+            return { ...state, dragging: (action.payload as PayloadSetDragging).dragging };
         case StoreActionType.SetRoutesLoading:
-            return { ...store, routesLoading: (action.payload as PayloadRoutesLoading).loading };
+            return { ...state, routesLoading: (action.payload as PayloadRoutesLoading).loading };
         case StoreActionType.SetRoute:
-            return { ...store, routes: [...store.routes, { ...(action.payload as PayloadSetRoute).route }] };
+            return { ...state, routes: [...state.routes, { ...(action.payload as PayloadSetRoute).route }] };
         case StoreActionType.RemoveRoute:
             const { id } = action.payload as PayloadRemoveRoute;
-            const updatedRoutes = store.routes.filter((route) => route.route !== id);
-            const updatedPatterns = store.patterns.filter((pattern) => pattern.route !== id);
-            
-            return { ...store, routes: [...updatedRoutes], patterns: [...updatedPatterns] };
+            const updatedRoutes = state.routes.filter((route) => route.route !== id);
+            const updatedPatterns = state.patterns.filter((pattern) => pattern.route !== id);
+
+            return { ...state, routes: [...updatedRoutes], patterns: [...updatedPatterns] };
         case StoreActionType.RemoveAllRoutes:
-            return { ...store, routes: [], patterns: [] };
+            return { ...state, routes: [], patterns: [] };
         case StoreActionType.SetPatternLoading:
             return {
-                ...store,
+                ...state,
                 patternLoading: (action.payload as PayloadPatternLoading).loading,
             };
         case StoreActionType.SetPattern:
             return {
-                ...store,
-                patterns: [...store.patterns, ...(action.payload as PayloadSetPattern).pattern],
+                ...state,
+                patterns: [...state.patterns, ...(action.payload as PayloadSetPattern).pattern],
+            };
+        case StoreActionType.SetInfo:
+            return {
+                ...state,
+                infoOpen: (action.payload as PayloadSetInfo).open,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -144,11 +156,12 @@ interface StoreActionApis {
     setRoute: (route: Route) => void;
     removeRoute: (id: string) => void;
     removeAllRoutes: () => void;
+    openInfo: () => void;
+    closeInfo: () => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
     const dispatch = useStoreDispatch();
-    const state = useStoreState();
     const toast = useToast();
 
     const actionApis: StoreActionApis = {
@@ -157,6 +170,12 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         closeRouteSelect: async () => {
             dispatch({ type: StoreActionType.SetRouteSelect, payload: { open: false } });
+        },
+        openInfo: () => {
+            dispatch({ type: StoreActionType.SetInfo, payload: { open: true } });
+        },
+        closeInfo: async () => {
+            dispatch({ type: StoreActionType.SetInfo, payload: { open: false } });
         },
         setDragging: (dragging: boolean) => {
             dispatch({ type: StoreActionType.SetDragging, payload: { dragging } });

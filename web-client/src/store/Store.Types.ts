@@ -47,6 +47,7 @@ export interface Vehicle {
 
 export interface StoreState {
     routeSelectOpen: boolean;
+    infoOpen: boolean;
     dragging: boolean;
     routesLoading: boolean;
     patternLoading: boolean;
