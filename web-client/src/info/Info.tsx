@@ -79,9 +79,9 @@ export const Info: FunctionComponent = () => {
                 </DrawerBody>
                 <DrawerFooter justifyContent="flex-start">
                     <Text fontSize="sm">
-                        Want to contribute? Click{' '}
+                        Want to contribute? {' '}
                         <Link fontWeight="bold" color="blue.500" onClick={onContribute}>
-                            here
+                           Start here
                         </Link>
                         .
                     </Text>
