@@ -10,6 +10,7 @@ import reportWebVitals from './reportWebVitals';
 const theme = extendTheme({
     config: {
         cssVarPrefix: 'cta-maps',
+        initialColorMode: 'light',
     },
     shadows: {
         ...ChakraTheme.shadows,

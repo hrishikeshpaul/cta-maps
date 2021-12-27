@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
 
 import { IconButton, useToast } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { MdMyLocation } from 'react-icons/md';
 
+import { lightStyle } from './Map.Styles';
 import { getSingleVehicle, getVehicles } from '../store/Service';
 import { useStore } from '../store/Store';
 import { Point, Stop, Vehicle } from '../store/Store.Types';
@@ -13,10 +14,6 @@ import './MapContainer.scss';
 const containerStyle = {
     width: '100%',
     height: '100%',
-};
-
-const mapOptions = {
-    disableDefaultUI: true,
 };
 
 const basePolylineOptions = {
@@ -57,6 +54,14 @@ export const MapContainer: FunctionComponent = () => {
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
     const [paths, setPaths] = useState<Point[]>([]);
+
+    const mapOptions = useMemo(
+        () => ({
+            disableDefaultUI: true,
+            styles: lightStyle,
+        }),
+        [],
+    );
 
     useEffect(() => {
         onGetCurrentLocation();

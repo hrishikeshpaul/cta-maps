@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { Avatar, Box, Button, IconButton, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Box, Button, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { FiSettings } from 'react-icons/fi';
 
 import { useStore } from '../store/Store';
@@ -28,7 +28,14 @@ export const Nav: FunctionComponent = () => {
             transition="0.25s opacity ease-in-out"
         >
             <Avatar src="/logo.svg" size="sm" boxShadow="lg" onClick={openInfo} h="40px" w="40px" />
-            <Button bg="white" boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
+            <Button
+                // bg={useColorModeValue('white', 'gray.600')}
+                boxShadow="lg"
+                onClick={onRouteSelect}
+                flexDir="column"
+                px="12"
+                colorScheme="purple"
+            >
                 <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : 'inherit'}>
                     Routes
                 </Text>
