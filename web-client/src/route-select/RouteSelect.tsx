@@ -183,7 +183,7 @@ export const RouteSelect: FunctionComponent = () => {
                 <DrawerBody px="4">
                     {routesLoading ? (
                         <Center>
-                            <Spinner />
+                            <Spinner color="blue.500" />
                         </Center>
                     ) : (
                         <>

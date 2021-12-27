@@ -1,13 +1,13 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
+import { useToast } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker, InfoWindow } from '@react-google-maps/api';
 
+import { getSingleVehicle, getVehicles } from '../store/Service';
 import { useStore } from '../store/Store';
 import { Point, Stop, Vehicle } from '../store/Store.Types';
 
 import './MapContainer.scss';
-import { getSingleVehicle, getVehicles } from '../store/Service';
-import { useToast } from '@chakra-ui/react';
 
 const containerStyle = {
     width: '100%',
@@ -59,9 +59,14 @@ export const MapContainer: FunctionComponent = () => {
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            setCurrentLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
-        });
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                setCurrentLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+            },
+            (error) => {
+                toast({ description: 'Cannot retrieve your location', status: 'error' });
+            },
+        );
     }, []);
 
     useEffect(() => {

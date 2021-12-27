@@ -43,7 +43,7 @@ export const Stop: FunctionComponent = () => {
             try {
                 if (stop) {
                     setLoading(true);
-                    const response = await getPredictions(stop!.id);
+                    const response = await getPredictions(stop.id);
                     const responseRoutes: Set<string> = new Set();
 
                     response.forEach((res) => {
