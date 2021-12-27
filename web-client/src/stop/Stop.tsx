@@ -8,6 +8,7 @@ import {
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
+    DrawerFooter,
     Text,
     IconButton,
     Flex,
@@ -122,13 +123,6 @@ export const Stop: FunctionComponent = () => {
                         <Flex>
                             <IconButton
                                 variant="ghost"
-                                fontSize="lg"
-                                aria-label="close"
-                                icon={<GrDirections />}
-                                onClick={getGoogleMapsDir}
-                            />
-                            <IconButton
-                                variant="ghost"
                                 fontSize="3xl"
                                 aria-label="close"
                                 onClick={closeStop}
@@ -168,6 +162,11 @@ export const Stop: FunctionComponent = () => {
                         </Box>
                     )}
                 </DrawerBody>
+                <DrawerFooter justifyContent="center">
+                    <Button rightIcon={<GrDirections />} onClick={getGoogleMapsDir}>
+                        <Text pr="2">Get Directions</Text>
+                    </Button>
+                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     );
