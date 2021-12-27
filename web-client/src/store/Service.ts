@@ -8,16 +8,13 @@ const Http = axios.create({
 });
 
 export const getRoutes = async (): Promise<Route[]> => {
-    // const { data } = await Http.get<Route[]>('/routes');
-
-    // return data;
-
-    const res = MockRoutesData as Route[];
-
     return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(res);
-        }, 100);
+        setTimeout(async () => {
+            // const { data } = await Http.get<Route[]>('/routes');
+            const data = MockRoutesData as Route[];
+
+            resolve(data);
+        }, 1000);
     });
 };
 
