@@ -47,7 +47,10 @@ export const MapContainer: FunctionComponent = () => {
         { currentLocation, patterns, vehicleRoutes, dragging },
         { setDragging, openStop, setCurrentLocation, setVehicleRoutes },
     ] = useStore();
-    const toast = useToast();
+    const toast = useToast({
+        variant: 'solid',
+        position: 'bottom',
+    });
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
@@ -72,6 +75,7 @@ export const MapContainer: FunctionComponent = () => {
     }, [vehicleRoutes]);
 
     useEffect(() => {
+        console.log(patterns);
         const lines: any[] = [];
         const routes: Set<string> = new Set();
         const okRoutes: Set<string> = new Set();
@@ -108,22 +112,38 @@ export const MapContainer: FunctionComponent = () => {
         } else {
             setVehicles([]);
             setVehicleRoutes(new Set());
+            if (intervalTimer) clearInterval(intervalTimer);
         }
 
         setLines(lines);
+        console.log(vehicles, routes);
     }, [patterns]);
 
     const onGetCurrentLocation = () => {
+        toast({
+            description: 'Getting your current location...',
+            status: 'warning',
+        });
+
         navigator.geolocation.getCurrentPosition(
             function (position) {
                 const latLng = { lat: position.coords.latitude, lng: position.coords.longitude };
+
                 setCurrentLocation(latLng);
+
                 if (map) {
                     map.panTo(latLng);
                 }
+
+                toast.closeAll();
+                toast({ description: 'Retrieving location updated', status: 'success' });
             },
             () => {
-                toast({ description: 'Cannot retrieve your location', status: 'error' });
+                toast.closeAll();
+                toast({
+                    description: 'Could not retrieve your location',
+                    status: 'error',
+                });
             },
         );
     };
@@ -182,7 +202,7 @@ export const MapContainer: FunctionComponent = () => {
                 aria-label="my-location"
                 icon={<MdMyLocation />}
                 position="fixed"
-                bottom="16px"
+                top="72px"
                 right="16px"
                 bg="white"
                 boxShadow="lg"

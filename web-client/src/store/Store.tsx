@@ -252,7 +252,6 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         removeRoute: (id: string) => {
             dispatch({ type: StoreActionType.RemoveRoute, payload: { id } });
-            // remove pattern from store
         },
         removeAllRoutes: () => {
             dispatch({ type: StoreActionType.RemoveAllRoutes });
