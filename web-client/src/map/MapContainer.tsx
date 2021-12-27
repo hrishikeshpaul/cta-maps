@@ -116,7 +116,6 @@ export const MapContainer: FunctionComponent = () => {
         }
 
         setLines(lines);
-        console.log(vehicles, routes);
     }, [patterns]);
 
     const onGetCurrentLocation = () => {
