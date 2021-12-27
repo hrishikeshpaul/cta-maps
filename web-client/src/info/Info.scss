@@ -1,0 +1,14 @@
+.info {
+    &-box {
+        .item {
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 6px;
+
+            &:active {
+                background-color: #ececec;
+            }
+        }
+    }
+}
