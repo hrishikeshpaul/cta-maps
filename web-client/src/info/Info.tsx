@@ -32,12 +32,12 @@ export const Info: FunctionComponent = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
     };
     return (
-        <Drawer isOpen={infoOpen} placement="right" size="md" onClose={closeInfo} autoFocus={false}>
+        <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfo} autoFocus={false}>
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text>Info</Text>
+                        <Text>CTA Maps</Text>
                         <IconButton
                             variant="ghost"
                             fontSize="3xl"
@@ -52,10 +52,7 @@ export const Info: FunctionComponent = () => {
                 <DrawerBody px="4" pt="0" className="info">
                     <Flex flexDir="column" alignItems="center">
                         <Avatar src="/logo.svg" size="xl" />
-                        <Text fontSize="lg" fontWeight="bold" pt="2">
-                            CTA Maps
-                        </Text>
-                        <Text color="gray.400" textAlign="center" fontSize="xs">
+                        <Text color="gray.400" pt="2" textAlign="center" fontSize="xs">
                             v1.0.0
                         </Text>
                         <Text color="gray.600" textAlign="center">
@@ -79,9 +76,9 @@ export const Info: FunctionComponent = () => {
                 </DrawerBody>
                 <DrawerFooter justifyContent="flex-start">
                     <Text fontSize="sm">
-                        Want to contribute? {' '}
+                        Want to contribute?{' '}
                         <Link fontWeight="bold" color="blue.500" onClick={onContribute}>
-                           Start here
+                            Start here
                         </Link>
                         .
                     </Text>

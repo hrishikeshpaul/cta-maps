@@ -80,7 +80,7 @@ export const Stop: FunctionComponent = () => {
         }
     };
 
-    const RenderPred: FunctionComponent<Prediction> = ({ route, id, type, time, delayed, timestamp }) => {
+    const RenderPred: FunctionComponent<Prediction> = ({ route, type, time, delayed, timestamp }) => {
         const PredictionCard: FunctionComponent = () => (
             <>
                 <Flex justifyContent="space-between" alignItems="center" py="4">

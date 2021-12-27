@@ -27,9 +27,11 @@ export const Nav: FunctionComponent = () => {
             opacity={dragging ? '0.25' : '1'}
             transition="0.25s opacity ease-in-out"
         >
-            <Avatar src="/logo.svg" size="sm" />
-            <Button size="lg" bg="white" boxShadow="lg" onClick={onRouteSelect} flexDir="column">
-                <Text fontSize={selected ? 'xs' : 'md'}>{selected ? 'Selected Routes' : 'Select Routes'}</Text>
+            <Avatar src="/logo.svg" size="sm" boxShadow="lg" onClick={openInfo} h="40px" w="40px" />
+            <Button bg="white" boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
+                <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : 'inherit'}>
+                    Routes
+                </Text>
                 {selected && (
                     <Flex flexWrap="wrap" mt="1">
                         {routes.map((route) => (
@@ -38,7 +40,7 @@ export const Nav: FunctionComponent = () => {
                     </Flex>
                 )}
             </Button>
-            <IconButton bg="white" aria-label="help-icon" icon={<FiInfo />} boxShadow="md" onClick={openInfo} />
+            <IconButton bg="white" aria-label="help-icon" icon={<FiInfo />} boxShadow="lg" />
         </Flex>
     );
 };

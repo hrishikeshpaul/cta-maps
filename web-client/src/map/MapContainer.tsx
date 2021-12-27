@@ -63,7 +63,7 @@ export const MapContainer: FunctionComponent = () => {
             function (position) {
                 setCurrentLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
             },
-            (error) => {
+            () => {
                 toast({ description: 'Cannot retrieve your location', status: 'error' });
             },
         );
@@ -71,6 +71,8 @@ export const MapContainer: FunctionComponent = () => {
 
     useEffect(() => {
         if (vehicleRoutes.size) {
+            if (intervalTimer) clearInterval(intervalTimer);
+
             setIntervalTimer(
                 setInterval(async () => {
                     const vehicles = await getVehicles(Array.from(vehicleRoutes));
@@ -84,8 +86,9 @@ export const MapContainer: FunctionComponent = () => {
         const lines: any[] = [];
         const routes: Set<string> = new Set();
         const okRoutes: Set<string> = new Set();
+        const updatedVehicles: Vehicle[] = [];
 
-        if (intervalTimer) clearInterval(intervalTimer);
+        setVehicles([]);
 
         patterns.forEach(async (pattern) => {
             routes.add(pattern.route);
@@ -104,19 +107,20 @@ export const MapContainer: FunctionComponent = () => {
                 try {
                     const currentVehicles = await getSingleVehicle(route);
 
-                    setVehicles([...currentVehicles]);
-                    okRoutes.add(route);
+                    updatedVehicles.push(...currentVehicles);
+                    setVehicleRoutes(new Set([...Array.from(vehicleRoutes), route]));
                 } catch (err: any) {
                     toast({ description: err.response.data, status: 'error' });
                 }
             });
 
+            setVehicles(updatedVehicles);
             setVehicleRoutes(okRoutes);
         } else {
             setVehicles([]);
+            setVehicleRoutes(new Set());
         }
 
-        setVehicleRoutes(routes);
         setLines(lines);
     }, [patterns]);
 

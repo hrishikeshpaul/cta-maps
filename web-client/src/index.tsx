@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReactDOM from 'react-dom';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme, theme as ChakraTheme } from '@chakra-ui/react';
 
 import './index.scss';
 import { App } from './App';
@@ -10,6 +10,10 @@ import reportWebVitals from './reportWebVitals';
 const theme = extendTheme({
     config: {
         cssVarPrefix: 'cta-maps',
+    },
+    shadows: {
+        ...ChakraTheme.shadows,
+        outline: 'none',
     },
 });
 
