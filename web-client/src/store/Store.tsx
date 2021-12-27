@@ -56,7 +56,7 @@ interface PayloadSetStop {
 }
 
 interface PayloadSetCurrentLocation {
-    location: Point | null;
+    location: Point;
 }
 
 interface PayloadSetVehicleRoutes {
@@ -93,7 +93,7 @@ export const initialStoreState: StoreState = {
     routes: [],
     patterns: [],
     error: undefined,
-    currentLocation: null,
+    currentLocation: { lat: 41.88, lng: -87.65 },
     vehicleRoutes: new Set(),
 };
 

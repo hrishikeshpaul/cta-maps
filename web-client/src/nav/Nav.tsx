@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { Avatar, Box, Button, IconButton, Flex, Text } from '@chakra-ui/react';
-import { FiInfo } from 'react-icons/fi';
+import { FiSettings } from 'react-icons/fi';
 
 import { useStore } from '../store/Store';
 
@@ -40,7 +40,7 @@ export const Nav: FunctionComponent = () => {
                     </Flex>
                 )}
             </Button>
-            <IconButton bg="white" aria-label="help-icon" icon={<FiInfo />} boxShadow="lg" />
+            <IconButton bg="white" aria-label="help-icon" icon={<FiSettings />} boxShadow="lg" />
         </Flex>
     );
 };

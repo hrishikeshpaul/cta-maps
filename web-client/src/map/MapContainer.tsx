@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { useToast } from '@chakra-ui/react';
-import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker, InfoWindow } from '@react-google-maps/api';
+import { IconButton, useToast } from '@chakra-ui/react';
+import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
+import { MdMyLocation } from 'react-icons/md';
 
 import { getSingleVehicle, getVehicles } from '../store/Service';
 import { useStore } from '../store/Store';
@@ -12,11 +13,6 @@ import './MapContainer.scss';
 const containerStyle = {
     width: '100%',
     height: '100%',
-};
-
-const center = {
-    lat: 41.88,
-    lng: -87.65,
 };
 
 const mapOptions = {
@@ -48,7 +44,7 @@ interface Line extends PolylineProps {
 
 export const MapContainer: FunctionComponent = () => {
     const [
-        { currentLocation, patterns, vehicleRoutes },
+        { currentLocation, patterns, vehicleRoutes, dragging },
         { setDragging, openStop, setCurrentLocation, setVehicleRoutes },
     ] = useStore();
     const toast = useToast();
@@ -59,14 +55,7 @@ export const MapContainer: FunctionComponent = () => {
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                setCurrentLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
-            },
-            () => {
-                toast({ description: 'Cannot retrieve your location', status: 'error' });
-            },
-        );
+        onGetCurrentLocation();
     }, []);
 
     useEffect(() => {
@@ -124,6 +113,21 @@ export const MapContainer: FunctionComponent = () => {
         setLines(lines);
     }, [patterns]);
 
+    const onGetCurrentLocation = () => {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const latLng = { lat: position.coords.latitude, lng: position.coords.longitude };
+                setCurrentLocation(latLng);
+                if (map) {
+                    map.panTo(latLng);
+                }
+            },
+            () => {
+                toast({ description: 'Cannot retrieve your location', status: 'error' });
+            },
+        );
+    };
+
     return (
         <div className="map-container">
             <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}>
@@ -132,7 +136,7 @@ export const MapContainer: FunctionComponent = () => {
                         if (map) setMap(map);
                     }}
                     mapContainerStyle={containerStyle}
-                    center={center}
+                    center={currentLocation}
                     zoom={13}
                     options={mapOptions}
                     clickableIcons={false}
@@ -174,6 +178,18 @@ export const MapContainer: FunctionComponent = () => {
                     ))}
                 </GoogleMap>
             </LoadScript>
+            <IconButton
+                aria-label="my-location"
+                icon={<MdMyLocation />}
+                position="fixed"
+                bottom="16px"
+                right="16px"
+                bg="white"
+                boxShadow="lg"
+                _hover={{ bg: 'white' }}
+                onClick={onGetCurrentLocation}
+                opacity={dragging ? '0.25' : '1'}
+            />
         </div>
     );
 };
