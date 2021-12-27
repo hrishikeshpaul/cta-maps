@@ -18,8 +18,8 @@ import {
     Button,
     Divider,
 } from '@chakra-ui/react';
-import { IoIosClose } from 'react-icons/io';
-import { GrDirections } from 'react-icons/gr';
+import { FaLocationArrow } from 'react-icons/fa';
+import { FiChevronDown } from 'react-icons/fi';
 
 import { useStore } from '../store/Store';
 import { getPredictions } from '../store/Service';
@@ -117,16 +117,16 @@ export const Stop: FunctionComponent = () => {
         <Drawer isOpen={!!stop} placement="bottom" isFullHeight onClose={closeStop} autoFocus={false}>
             <DrawerOverlay />
             <DrawerContent borderTopRadius="xl">
-                <DrawerHeader pl="4" pr="0">
+                <DrawerHeader pl="4" pr="1">
                     <Flex justifyContent="space-between" alignItems="center" overflow="hidden">
                         <Text isTruncated>{stop?.name}</Text>
                         <Flex>
                             <IconButton
                                 variant="ghost"
-                                fontSize="3xl"
+                                fontSize="2xl"
                                 aria-label="close"
                                 onClick={closeStop}
-                                icon={<IoIosClose />}
+                                icon={<FiChevronDown />}
                             />
                         </Flex>
                     </Flex>
@@ -134,7 +134,9 @@ export const Stop: FunctionComponent = () => {
 
                 <DrawerBody px="4" pt="0" className="info">
                     {loading ? (
-                        <Spinner />
+                        <Center>
+                            <Spinner />
+                        </Center>
                     ) : (
                         <Box>
                             {predictions.length ? (
@@ -163,7 +165,7 @@ export const Stop: FunctionComponent = () => {
                     )}
                 </DrawerBody>
                 <DrawerFooter justifyContent="center">
-                    <Button rightIcon={<GrDirections />} onClick={getGoogleMapsDir}>
+                    <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
                         <Text pr="2">Get Directions</Text>
                     </Button>
                 </DrawerFooter>

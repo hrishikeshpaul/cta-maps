@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-import { MockPredictions, MockRoutesData } from './Mock';
 import { Pattern, Prediction, Route, Vehicle } from './Store.Types';
 
 const Http = axios.create({
@@ -10,11 +9,10 @@ const Http = axios.create({
 export const getRoutes = async (): Promise<Route[]> => {
     return new Promise((resolve) => {
         setTimeout(async () => {
-            // const { data } = await Http.get<Route[]>('/routes');
-            const data = MockRoutesData as Route[];
+            const { data } = await Http.get<Route[]>('/routes');
 
             resolve(data);
-        }, 1000);
+        }, 800);
     });
 };
 
