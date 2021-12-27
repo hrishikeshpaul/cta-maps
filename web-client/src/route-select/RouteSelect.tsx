@@ -194,7 +194,7 @@ export const RouteSelect: FunctionComponent = () => {
                     )}
                 </DrawerBody>
                 {currentRoutes.length ? (
-                    <DrawerFooter d="flex" justifyContent="flex-start">
+                    <DrawerFooter justifyContent="center">
                         <Button onClick={removeAllRoutes}>Deselect All ({currentRoutes.length})</Button>
                     </DrawerFooter>
                 ) : null}

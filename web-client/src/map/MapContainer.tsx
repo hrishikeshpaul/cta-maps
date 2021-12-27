@@ -6,7 +6,7 @@ import { useStore } from '../store/Store';
 import { Point, Stop, Vehicle } from '../store/Store.Types';
 
 import './MapContainer.scss';
-import { getVehicles } from '../store/Service';
+import { getSingleVehicle, getVehicles } from '../store/Service';
 import { useToast } from '@chakra-ui/react';
 
 const containerStyle = {
@@ -47,7 +47,10 @@ interface Line extends PolylineProps {
 }
 
 export const MapContainer: FunctionComponent = () => {
-    const [{ currentLocation, patterns }, { setDragging, openStop, setCurrentLocation }] = useStore();
+    const [
+        { currentLocation, patterns, vehicleRoutes },
+        { setDragging, openStop, setCurrentLocation, setVehicleRoutes },
+    ] = useStore();
     const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
@@ -62,12 +65,24 @@ export const MapContainer: FunctionComponent = () => {
     }, []);
 
     useEffect(() => {
+        if (vehicleRoutes.size) {
+            setIntervalTimer(
+                setInterval(async () => {
+                    const vehicles = await getVehicles(Array.from(vehicleRoutes));
+                    setVehicles(vehicles);
+                }, 5000),
+            );
+        }
+    }, [vehicleRoutes]);
+
+    useEffect(() => {
         const lines: any[] = [];
         const routes: Set<string> = new Set();
+        const okRoutes: Set<string> = new Set();
 
         if (intervalTimer) clearInterval(intervalTimer);
 
-        patterns.forEach((pattern) => {
+        patterns.forEach(async (pattern) => {
             routes.add(pattern.route);
             const newLine = {
                 ...basePolylineOptions,
@@ -76,26 +91,27 @@ export const MapContainer: FunctionComponent = () => {
                 id: pattern.pid,
                 stops: pattern.stops,
             };
-
             lines.push(newLine);
         });
 
-        // if (Array.from(routes).length) {
-        //     (async () => {
-        //         const vehicles = await getVehicles(Array.from(routes));
-        //         setVehicles(vehicles);
-        //     })();
+        if (routes.size) {
+            routes.forEach(async (route) => {
+                try {
+                    const currentVehicles = await getSingleVehicle(route);
 
-        //     setIntervalTimer(
-        //         setInterval(async () => {
-        //             const vehicles = await getVehicles(Array.from(routes));
-        //             setVehicles(vehicles);
-        //         }, 5000),
-        //     );
-        // } else {
-        //     setVehicles([]);
-        // }
+                    setVehicles([...currentVehicles]);
+                    okRoutes.add(route);
+                } catch (err: any) {
+                    toast({ description: err.response.data, status: 'error' });
+                }
+            });
 
+            setVehicleRoutes(okRoutes);
+        } else {
+            setVehicles([]);
+        }
+
+        setVehicleRoutes(routes);
         setLines(lines);
     }, [patterns]);
 

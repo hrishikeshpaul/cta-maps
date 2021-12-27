@@ -39,6 +39,16 @@ export const getVehicles = async (rt: string[]): Promise<Vehicle[]> => {
     return data;
 };
 
+export const getSingleVehicle = async (rt: string): Promise<Vehicle[]> => {
+    const { data } = await Http.get<Vehicle[]>('/vehicles', {
+        params: {
+            rt,
+        },
+    });
+
+    return data;
+};
+
 export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     const { data } = await Http.get<Prediction[]>('/predictions', {
         params: {

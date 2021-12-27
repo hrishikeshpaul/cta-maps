@@ -77,6 +77,7 @@ export interface StoreState {
     routesLoading: boolean;
     patternLoading: boolean;
     currentLocation: Point | null;
+    vehicleRoutes: Set<string>;
     routes: Route[];
     patterns: Pattern[];
     stop: Stop | null;

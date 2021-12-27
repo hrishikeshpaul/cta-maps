@@ -14,6 +14,7 @@ export enum StoreActionType {
     SetInfo,
     SetStop,
     SetCurrentLocation,
+    SetVehicleRoutes,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -58,6 +59,10 @@ interface PayloadSetCurrentLocation {
     location: Point | null;
 }
 
+interface PayloadSetVehicleRoutes {
+    route: Set<string>;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -70,7 +75,8 @@ interface StoreAction {
         | PayloadSetPattern
         | PayloadSetInfo
         | PayloadSetStop
-        | PayloadSetCurrentLocation;
+        | PayloadSetCurrentLocation
+        | PayloadSetVehicleRoutes;
 }
 
 interface StoreProviderProps {
@@ -88,6 +94,7 @@ export const initialStoreState: StoreState = {
     patterns: [],
     error: undefined,
     currentLocation: null,
+    vehicleRoutes: new Set(),
 };
 
 const StoreStateContext = createContext<StoreState | undefined>(undefined);
@@ -135,6 +142,11 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
             return {
                 ...state,
                 currentLocation: (action.payload as PayloadSetCurrentLocation).location,
+            };
+        case StoreActionType.SetVehicleRoutes:
+            return {
+                ...state,
+                vehicleRoutes: (action.payload as PayloadSetVehicleRoutes).route,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -185,6 +197,7 @@ interface StoreActionApis {
     openStop: (stop: Stop) => void;
     closeStop: () => void;
     setCurrentLocation: (location: Point) => void;
+    setVehicleRoutes: (route: Set<string>) => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -252,6 +265,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         setCurrentLocation: (location: Point) => {
             dispatch({ type: StoreActionType.SetCurrentLocation, payload: { location } });
+        },
+        setVehicleRoutes: (route: Set<string>) => {
+            dispatch({ type: StoreActionType.SetVehicleRoutes, payload: { route } });
         },
     };
 
