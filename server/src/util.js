@@ -1,49 +1,49 @@
-"use strict";
+'use strict';
 
-import { Http } from "./http.js";
+import { Http } from './http.js';
 
 export const getRoutes = async () => {
-  const { data, error } = await Http.get(`/getroutes`);
+    const { data, error } = await Http.get(`/getroutes`);
 
-  if (error) {
-    throw error;
-  }
+    if (error) {
+        throw error;
+    }
 
-  return data["routes"];
+    return data['routes'];
 };
 
 export const getVehicles = async (routes) => {
-  const { data, error } = await Http.get("/getvehicles", {
-    params: { rt: routes },
-  });
+    const { data, error } = await Http.get('/getvehicles', {
+        params: { rt: routes },
+    });
 
-  if (error) {
-    throw error;
-  }
+    if (error) {
+        throw error;
+    }
 
-  return data["vehicle"];
+    return data['vehicle'];
 };
 
 export const getPatterns = async (route) => {
-  const { data, error } = await Http.get("/getpatterns", {
-    params: { rt: route },
-  });
+    const { data, error } = await Http.get('/getpatterns', {
+        params: { rt: route },
+    });
 
-  if (error) {
-    throw error;
-  }
+    if (error) {
+        throw error;
+    }
 
-  return data["ptr"];
+    return data['ptr'];
 };
 
-export const getPredictions = async ( stop) => {
-  const { data, error } = await Http.get("/getpredictions", {
-    params: { stpid: stop },
-  });
+export const getPredictions = async (stop) => {
+    const { data, error } = await Http.get('/getpredictions', {
+        params: { stpid: stop },
+    });
 
-  if (error) {
-    throw error;
-  }
+    if (error) {
+        throw error;
+    }
 
-  return data["prd"];
+    return data['prd'];
 };
