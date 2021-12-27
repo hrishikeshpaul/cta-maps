@@ -74,6 +74,7 @@ router.get("/patterns", async (req, res) => {
             lng: p.lon,
             name: p.stpnm,
             id: p.stpid,
+            route,
           });
         }
       });
@@ -97,7 +98,18 @@ router.get("/patterns", async (req, res) => {
 
 router.get("/predictions", async (req, res) => {
   try {
-    const data = await getPredictions(req.query.rt, req.query.stpid);
+    let data = await getPredictions(req.query.stop);
+
+    data = data.map((item) => ({
+      reqTime: item.tmstmp,
+      type: item.typ,
+      name: item.stpnm,
+      id: item.stpid,
+      route: item.rt,
+      direction: item.rtdir,
+      predTime: item.prdtm,
+      delayed: item.dly,
+    }));
 
     res.send(data);
   } catch (err) {

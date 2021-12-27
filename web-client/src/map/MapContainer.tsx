@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker, InfoWindow } from '@react-google-maps/api';
 
 import { useStore } from '../store/Store';
 import { Point, Stop, Vehicle } from '../store/Store.Types';
@@ -46,12 +46,13 @@ interface Line extends PolylineProps {
 }
 
 export const MapContainer: FunctionComponent = () => {
-    const [{ patterns }, { setDragging }] = useStore();
+    const [{ patterns }, { setDragging, openStop }] = useStore();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
+    const [infoWindow, setInfoWindow] = useState<Stop | null>(null);
 
     useEffect(() => {
         const lines: any[] = [];
@@ -72,21 +73,21 @@ export const MapContainer: FunctionComponent = () => {
             lines.push(newLine);
         });
 
-        if (Array.from(routes).length) {
-            (async () => {
-                const vehicles = await getVehicles(Array.from(routes));
-                setVehicles(vehicles);
-            })();
+        // if (Array.from(routes).length) {
+        //     (async () => {
+        //         const vehicles = await getVehicles(Array.from(routes));
+        //         setVehicles(vehicles);
+        //     })();
 
-            setIntervalTimer(
-                setInterval(async () => {
-                    const vehicles = await getVehicles(Array.from(routes));
-                    setVehicles(vehicles);
-                }, 5000),
-            );
-        } else {
-            setVehicles([]);
-        }
+        //     setIntervalTimer(
+        //         setInterval(async () => {
+        //             const vehicles = await getVehicles(Array.from(routes));
+        //             setVehicles(vehicles);
+        //         }, 5000),
+        //     );
+        // } else {
+        //     setVehicles([]);
+        // }
 
         setLines(lines);
     }, [patterns]);
@@ -133,7 +134,8 @@ export const MapContainer: FunctionComponent = () => {
                                         icon="/stop.svg"
                                         position={{ lat: stop.lat, lng: stop.lng }}
                                         key={`stop-${stop.id}`}
-                                    />
+                                        onClick={() => openStop(stop)}
+                                    ></Marker>
                                 ))}
                         </div>
                     ))}

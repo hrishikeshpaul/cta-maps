@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import React, { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { getPattern, getRoutes } from './Service';
-import { Route, StoreState, Pattern } from './Store.Types';
+import { Route, StoreState, Pattern, Stop } from './Store.Types';
 
 export enum StoreActionType {
     SetRouteSelect,
@@ -12,6 +12,7 @@ export enum StoreActionType {
     SetPatternLoading,
     SetPattern,
     SetInfo,
+    SetStop,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -48,6 +49,10 @@ interface PayloadSetInfo {
     open: boolean;
 }
 
+interface PayloadSetStop {
+    stop: Stop | null;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -58,7 +63,8 @@ interface StoreAction {
         | PayloadRemoveRoute
         | PayloadPatternLoading
         | PayloadSetPattern
-        | PayloadSetInfo;
+        | PayloadSetInfo
+        | PayloadSetStop;
 }
 
 interface StoreProviderProps {
@@ -71,6 +77,7 @@ export const initialStoreState: StoreState = {
     routesLoading: false,
     patternLoading: false,
     infoOpen: false,
+    stop: null,
     routes: [],
     patterns: [],
     error: undefined,
@@ -111,6 +118,11 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
             return {
                 ...state,
                 infoOpen: (action.payload as PayloadSetInfo).open,
+            };
+        case StoreActionType.SetStop:
+            return {
+                ...state,
+                stop: (action.payload as PayloadSetStop).stop,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -158,6 +170,8 @@ interface StoreActionApis {
     removeAllRoutes: () => void;
     openInfo: () => void;
     closeInfo: () => void;
+    openStop: (stop: Stop) => void;
+    closeStop: () => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -216,6 +230,12 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         removeAllRoutes: () => {
             dispatch({ type: StoreActionType.RemoveAllRoutes });
+        },
+        openStop: (stop: Stop) => {
+            dispatch({ type: StoreActionType.SetStop, payload: { stop } });
+        },
+        closeStop: () => {
+            dispatch({ type: StoreActionType.SetStop, payload: { stop: null } });
         },
     };
 

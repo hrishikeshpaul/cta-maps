@@ -24,6 +24,7 @@ export interface Point {
 export interface Stop extends Point {
     name: string;
     id: string;
+    route: string;
 }
 
 export interface Pattern {
@@ -53,5 +54,6 @@ export interface StoreState {
     patternLoading: boolean;
     routes: Route[];
     patterns: Pattern[];
+    stop: Stop | null;
     error?: any;
 }

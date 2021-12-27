@@ -36,9 +36,9 @@ export const getPatterns = async (route) => {
   return data["ptr"];
 };
 
-export const getPredictions = async (route, stop) => {
+export const getPredictions = async ( stop) => {
   const { data, error } = await Http.get("/getpredictions", {
-    params: { rt: route, stpid: stop },
+    params: { stpid: stop },
   });
 
   if (error) {
