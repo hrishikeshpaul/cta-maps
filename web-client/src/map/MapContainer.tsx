@@ -47,13 +47,19 @@ interface Line extends PolylineProps {
 }
 
 export const MapContainer: FunctionComponent = () => {
-    const [{ patterns }, { setDragging, openStop }] = useStore();
+    const [{ currentLocation, patterns }, { setDragging, openStop, setCurrentLocation }] = useStore();
     const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            setCurrentLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+        });
+    }, []);
 
     useEffect(() => {
         const lines: any[] = [];
@@ -115,6 +121,7 @@ export const MapContainer: FunctionComponent = () => {
                         }
                     }}
                 >
+                    {currentLocation && <Marker icon="/location.svg" position={currentLocation} />}
                     {vehicles && (
                         <>
                             {vehicles.map((vehicle) => (

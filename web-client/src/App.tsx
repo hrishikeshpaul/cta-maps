@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { MapContainer } from './map/MapContainer';
 import { Info } from './info/Info';
 
 import { Nav } from './nav/Nav';
 import { RouteSelect } from './route-select/RouteSelect';
-import { StoreProvider } from './store/Store';
+import { StoreProvider, useStore } from './store/Store';
 import { Stop } from './stop/Stop';
 
 import './App.scss';

@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import React, { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { getPattern, getRoutes } from './Service';
-import { Route, StoreState, Pattern, Stop } from './Store.Types';
+import { Route, StoreState, Pattern, Stop, Point } from './Store.Types';
 
 export enum StoreActionType {
     SetRouteSelect,
@@ -13,6 +13,7 @@ export enum StoreActionType {
     SetPattern,
     SetInfo,
     SetStop,
+    SetCurrentLocation,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -53,6 +54,10 @@ interface PayloadSetStop {
     stop: Stop | null;
 }
 
+interface PayloadSetCurrentLocation {
+    location: Point | null;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -64,7 +69,8 @@ interface StoreAction {
         | PayloadPatternLoading
         | PayloadSetPattern
         | PayloadSetInfo
-        | PayloadSetStop;
+        | PayloadSetStop
+        | PayloadSetCurrentLocation;
 }
 
 interface StoreProviderProps {
@@ -81,6 +87,7 @@ export const initialStoreState: StoreState = {
     routes: [],
     patterns: [],
     error: undefined,
+    currentLocation: null,
 };
 
 const StoreStateContext = createContext<StoreState | undefined>(undefined);
@@ -123,6 +130,11 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
             return {
                 ...state,
                 stop: (action.payload as PayloadSetStop).stop,
+            };
+        case StoreActionType.SetCurrentLocation:
+            return {
+                ...state,
+                currentLocation: (action.payload as PayloadSetCurrentLocation).location,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -172,6 +184,7 @@ interface StoreActionApis {
     closeInfo: () => void;
     openStop: (stop: Stop) => void;
     closeStop: () => void;
+    setCurrentLocation: (location: Point) => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -236,6 +249,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         closeStop: () => {
             dispatch({ type: StoreActionType.SetStop, payload: { stop: null } });
+        },
+        setCurrentLocation: (location: Point) => {
+            dispatch({ type: StoreActionType.SetCurrentLocation, payload: { location } });
         },
     };
 
