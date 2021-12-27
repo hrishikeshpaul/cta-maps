@@ -113,6 +113,17 @@ export const MapContainer: FunctionComponent = () => {
                         }
                     }}
                 >
+                    {vehicles && (
+                        <>
+                            {vehicles.map((vehicle) => (
+                                <Marker
+                                    icon={VehicleIconMapper[vehicle.heading]}
+                                    position={vehicle.position}
+                                    key={vehicle.id}
+                                />
+                            ))}
+                        </>
+                    )}
                     {lines.map((line: Line) => (
                         <div key={line.id}>
                             <Polyline path={line.paths} options={{ ...line }} />
@@ -126,17 +137,6 @@ export const MapContainer: FunctionComponent = () => {
                                 ))}
                         </div>
                     ))}
-                    {vehicles && (
-                        <>
-                            {vehicles.map((vehicle) => (
-                                <Marker
-                                    icon={VehicleIconMapper[vehicle.heading]}
-                                    position={vehicle.position}
-                                    key={vehicle.id}
-                                />
-                            ))}
-                        </>
-                    )}
                 </GoogleMap>
             </LoadScript>
         </div>
