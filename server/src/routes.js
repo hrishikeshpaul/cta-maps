@@ -3,6 +3,20 @@
 import express from "express";
 import { getPatterns, getRoutes, getVehicles, getPredictions } from "./util.js";
 
+const checkHeading = (heading) => {
+  if (heading >= 0 && heading <= 90) {
+    return "N";
+  } else if (heading > 90 && heading <= 180) {
+    return "E";
+  } else if (heading > 180 && heading <= 270) {
+    return "S";
+  } else if (heading > 270 && heading <= 360) {
+    return "W";
+  } else {
+    return "F";
+  }
+};
+
 const router = express.Router();
 
 router.get("/routes", async (req, res) => {
@@ -23,7 +37,16 @@ router.get("/routes", async (req, res) => {
 
 router.get("/vehicles", async (req, res) => {
   try {
-    const data = await getVehicles(req.query.rt);
+    let data = await getVehicles(req.query.rt);
+    data = data.map((item) => ({
+      id: item.vid,
+      timestamp: item.tmstmp,
+      position: { lat: parseFloat(item.lat), lng: parseFloat(item.lon) },
+      route: item.rt,
+      destination: item.des,
+      delayed: item.dly,
+      heading: checkHeading(parseInt(item.hdg, 10)),
+    }));
 
     res.send(data);
   } catch (err) {
