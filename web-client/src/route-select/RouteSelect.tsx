@@ -19,9 +19,9 @@ import {
     DrawerFooter,
     Button,
 } from '@chakra-ui/react';
+import Fuse from 'fuse.js';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
-import Fuse from 'fuse.js';
 
 import { useStore } from '../store/Store';
 import { Route } from '../store/Store.Types';
@@ -47,10 +47,10 @@ export const RouteSelect: FunctionComponent = () => {
     useEffect(() => {
         if (routeSelectOpen) {
             (async () => {
-                const routes = await getRoutes();
+                const responseRoutes = await getRoutes();
                 const mutatedRoutes: RouteExtended[] = [];
 
-                routes?.forEach((route) => {
+                responseRoutes?.forEach((route) => {
                     const foundRouteIdx = currentRoutes.findIndex((r) => r.route === route.route);
                     if (foundRouteIdx !== -1) {
                         mutatedRoutes.push({ ...route, selected: true });
@@ -58,6 +58,7 @@ export const RouteSelect: FunctionComponent = () => {
                         mutatedRoutes.push({ ...route, selected: false });
                     }
                 });
+
                 setRoutes(mutatedRoutes);
                 setComputedRoutes(mutatedRoutes);
             })();
@@ -75,6 +76,7 @@ export const RouteSelect: FunctionComponent = () => {
                 mutatedRoutes.push({ ...route, selected: false });
             }
         });
+
         setRoutes(mutatedRoutes);
         setComputedRoutes(mutatedRoutes);
     }, [currentRoutes]); // eslint-disable-line
