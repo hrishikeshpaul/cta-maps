@@ -20,6 +20,7 @@ import {
     Button,
 } from '@chakra-ui/react';
 import Fuse from 'fuse.js';
+import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
@@ -35,6 +36,7 @@ const fuseOptions = {
 };
 
 export const RouteSelect: FunctionComponent = () => {
+    const { t } = useTranslation();
     const [
         { routeSelectOpen, routesLoading, routes: currentRoutes },
         { closeRouteSelect, getRoutes, setRoute, removeRoute, removeAllRoutes },
@@ -146,7 +148,7 @@ export const RouteSelect: FunctionComponent = () => {
             <DrawerContent>
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text>Select Routes</Text>
+                        <Text>{t('SELECT_ROUTES')}</Text>
                         <IconButton
                             variant="ghost"
                             fontSize="2xl"
@@ -174,7 +176,7 @@ export const RouteSelect: FunctionComponent = () => {
                         <Input
                             name="query"
                             value={query}
-                            placeholder="Bus Number/Name..."
+                            placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                 setQuery(e.target.value);
                             }}
@@ -197,7 +199,9 @@ export const RouteSelect: FunctionComponent = () => {
                 </DrawerBody>
                 {currentRoutes.length ? (
                     <DrawerFooter justifyContent="center">
-                        <Button onClick={removeAllRoutes}>Deselect All ({currentRoutes.length})</Button>
+                        <Button onClick={removeAllRoutes}>
+                            {t('DESELECT_ALL')} ({currentRoutes.length})
+                        </Button>
                     </DrawerFooter>
                 ) : null}
             </DrawerContent>

@@ -1,3 +1,6 @@
 {
-    "ROUTES": "Routes"
+    "ROUTES": "Routes",
+    "SELECT_ROUTES": "Select Routes",
+    "ROUTE_SEARCH_PLACEHOLDER": "Bus Number/Name...",
+    "DESELECT_ALL": "Deselect All"
 }
