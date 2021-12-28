@@ -226,7 +226,6 @@ export const MapContainer: FunctionComponent = () => {
                 right="16px"
                 bg={buttonBg}
                 boxShadow="lg"
-                _hover={{ bg: 'white' }}
                 onClick={onGetCurrentLocation}
                 opacity={dragging ? '0.25' : '1'}
             />
