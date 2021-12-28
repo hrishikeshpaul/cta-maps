@@ -3,9 +3,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ChakraProvider, extendTheme, theme as ChakraTheme, ThemeConfig, ColorModeScript } from '@chakra-ui/react';
 
-import './index.scss';
 import { App } from './App';
+import './i18n/Config';
+
 import reportWebVitals from './reportWebVitals';
+import './index.scss';
 
 const theme = extendTheme({
     config: {
