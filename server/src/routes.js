@@ -107,7 +107,8 @@ router.get('/predictions', async (req, res) => {
 
         data = data.map((item) => {
             const predTime = convertTimestamp(item.prdtm);
-            const diff = Math.round((new Date(predTime) - new Date()) / 60000);
+            const reqTime = convertTimestamp(item.tmstmp);
+            const diff = Math.round((new Date(predTime) - new Date(reqTime)) / 60000);
 
             return {
                 type: item.typ,
