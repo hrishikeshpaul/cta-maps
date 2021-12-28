@@ -62,7 +62,7 @@ export const Stop: FunctionComponent = () => {
                 });
             }
         })();
-    }, [stop]);
+    }, [stop, toast]);
 
     const getGoogleMapsDir = () => {
         if (stop) {

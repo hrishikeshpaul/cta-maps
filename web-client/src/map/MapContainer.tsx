@@ -50,7 +50,7 @@ export const MapContainer: FunctionComponent = () => {
     ] = useStore();
     const { colorMode } = useColorMode();
     const toast = useToast({
-        variant: 'subtle',
+        variant: 'solid',
         position: 'bottom',
     });
     const [map, setMap] = useState<google.maps.Map | null>(null);

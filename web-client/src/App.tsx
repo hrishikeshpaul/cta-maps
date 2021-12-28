@@ -19,7 +19,7 @@ export const App = () => {
 
     useEffect(() => {
         i18n.changeLanguage(localStorage.getItem(LocaleKey) || Locale.EN);
-    }, []);
+    }, [i18n]);
 
     return (
         <div className="App">
