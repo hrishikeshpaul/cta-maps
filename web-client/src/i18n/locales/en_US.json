@@ -2,5 +2,9 @@
     "ROUTES": "Routes",
     "SELECT_ROUTES": "Select Routes",
     "ROUTE_SEARCH_PLACEHOLDER": "Bus Number/Name...",
-    "DESELECT_ALL": "Deselect All"
+    "DESELECT_ALL": "Deselect All",
+    "ARRIVE": "Arrives in",
+    "DEPART": "Departs in",
+    "GET_DIR": "Get Directions",
+    "NO_SCHEDULE_AVAILABLE": "No Schedule Available"
 }

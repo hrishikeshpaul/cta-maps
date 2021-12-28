@@ -18,6 +18,7 @@ import {
     Button,
     Divider,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { FaLocationArrow } from 'react-icons/fa';
 import { FiChevronDown } from 'react-icons/fi';
 
@@ -25,18 +26,18 @@ import { useStore } from '../store/Store';
 import { getPredictions } from '../store/Service';
 import { Juncture, Prediction } from '../store/Store.Types';
 
-const JunctureMapper = {
-    [Juncture.A]: (time: number) => `Arrives in ${time} mins`,
-    [Juncture.D]: (time: number) => `Departs in ${time} mins`,
-};
-
 export const Stop: FunctionComponent = () => {
+    const { t } = useTranslation();
     const [{ stop }, { closeStop }] = useStore();
     const toast = useToast();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);
     const [filter, setFilter] = useState<Record<string, boolean>>({});
+    const JunctureMapper = {
+        [Juncture.A]: (time: number) => `${t('ARRIVE')} ${time} mins`,
+        [Juncture.D]: (time: number) => `${t('DEPART')} ${time} mins`,
+    };
 
     useEffect(() => {
         (async () => {
@@ -159,14 +160,14 @@ export const Stop: FunctionComponent = () => {
                                     ))}
                                 </>
                             ) : (
-                                <Text>No schedule available</Text>
+                                <Text>{t('NO_SCHEDULE_AVAILABLE')}</Text>
                             )}
                         </Box>
                     )}
                 </DrawerBody>
                 <DrawerFooter justifyContent="center">
                     <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
-                        <Text pr="2">Get Directions</Text>
+                        <Text pr="2">{t('GET_DIR')}</Text>
                     </Button>
                 </DrawerFooter>
             </DrawerContent>

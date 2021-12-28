@@ -1,3 +1,8 @@
 {
-    "ROUTES": "Rutas"
-}
+    "ROUTES": "Rutas",
+    "SELECT_ROUTES": "Seleccionar rutas",
+    "ROUTE_SEARCH_PLACEHOLDER": "Número / nombre de bus ...",
+    "DESELECT_ALL": "Deseleccionar Todo",
+    "ARRIVE": "Llega en",
+    "DEPART": "Sale en"
+  }
