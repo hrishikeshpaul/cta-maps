@@ -1,4 +1,7 @@
+import { Locale } from '../i18n/Config';
+
 export const ColorModeKey = 'chakra-ui-color-mode';
+export const LocaleKey = 'cta-maps-locale';
 
 export enum PointType {
     S = 'S', // stop
@@ -79,6 +82,7 @@ export interface Prediction {
 
 export interface Setting {
     colorMode: ColorMode;
+    locale: Locale;
 }
 
 export interface StoreState {

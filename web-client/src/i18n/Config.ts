@@ -1,14 +1,24 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+export enum Locale {
+    EN = 'en',
+    ES = 'es',
+}
+
+export const LocaleLabels = {
+    [Locale.EN]: 'English',
+    [Locale.ES]: 'Espanol',
+};
+
 i18n.use(initReactI18next).init({
-    fallbackLng: 'en',
-    lng: 'en',
+    fallbackLng: Locale.EN,
+    lng: Locale.EN,
     resources: {
-        en: {
+        [Locale.EN]: {
             translations: require('./locales/en_US.json'),
         },
-        es: {
+        [Locale.ES]: {
             translations: require('./locales/es_ES.json'),
         },
     },
@@ -16,6 +26,6 @@ i18n.use(initReactI18next).init({
     defaultNS: 'translations',
 });
 
-i18n.languages = ['en', 'es'];
+i18n.languages = [Locale.EN, Locale.EN];
 
 export default i18n;

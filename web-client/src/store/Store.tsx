@@ -3,7 +3,8 @@ import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Di
 import { useToast } from '@chakra-ui/react';
 
 import { getPattern, getRoutes } from './Service';
-import { Route, StoreState, Pattern, Stop, Point, ColorMode, ColorModeKey } from './Store.Types';
+import { Route, StoreState, Pattern, Stop, Point, ColorMode, ColorModeKey, LocaleKey } from './Store.Types';
+import { Locale } from '../i18n/Config';
 
 export enum StoreActionType {
     SetRouteSelect,
@@ -16,8 +17,9 @@ export enum StoreActionType {
     SetStop,
     SetCurrentLocation,
     SetVehicleRoutes,
-    SetSettings,
+    SetSettingsDrawer,
     SetColorMode,
+    SetLocale,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -66,12 +68,16 @@ interface PayloadSetVehicleRoutes {
     route: Set<string>;
 }
 
-interface PayloadSetSettings {
+interface PayloadSetSettingsDrawer {
     open: boolean;
 }
 
 interface PayloadSetColorMode {
     mode: ColorMode;
+}
+
+interface PayloadSetLocale {
+    locale: Locale;
 }
 
 interface StoreAction {
@@ -88,8 +94,9 @@ interface StoreAction {
         | PayloadSetStop
         | PayloadSetCurrentLocation
         | PayloadSetVehicleRoutes
-        | PayloadSetSettings
-        | PayloadSetColorMode;
+        | PayloadSetSettingsDrawer
+        | PayloadSetColorMode
+        | PayloadSetLocale;
 }
 
 interface StoreProviderProps {
@@ -111,6 +118,7 @@ export const initialStoreState: StoreState = {
     vehicleRoutes: new Set(),
     settings: {
         colorMode: (localStorage.getItem(ColorModeKey) as ColorMode) || ColorMode.Light,
+        locale: (localStorage.getItem(LocaleKey) as Locale) || Locale.EN,
     },
 };
 
@@ -171,10 +179,10 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                 ...state,
                 vehicleRoutes: (action.payload as PayloadSetVehicleRoutes).route,
             };
-        case StoreActionType.SetSettings:
+        case StoreActionType.SetSettingsDrawer:
             return {
                 ...state,
-                settingsOpen: (action.payload as PayloadSetSettings).open,
+                settingsOpen: (action.payload as PayloadSetSettingsDrawer).open,
             };
         case StoreActionType.SetColorMode:
             return {
@@ -182,6 +190,14 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                 settings: {
                     ...state.settings,
                     colorMode: (action.payload as PayloadSetColorMode).mode,
+                },
+            };
+        case StoreActionType.SetLocale:
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    locale: (action.payload as PayloadSetLocale).locale,
                 },
             };
         default: {
@@ -237,6 +253,7 @@ interface StoreActionApis {
     openSettings: () => void;
     closeSettings: () => void;
     setColorMode: (mode: ColorMode) => void;
+    setLocale: (locale: Locale) => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -307,13 +324,18 @@ export const useStore = (): [StoreState, StoreActionApis] => {
             dispatch({ type: StoreActionType.SetVehicleRoutes, payload: { route } });
         },
         openSettings: () => {
-            dispatch({ type: StoreActionType.SetSettings, payload: { open: true } });
+            dispatch({ type: StoreActionType.SetSettingsDrawer, payload: { open: true } });
         },
         closeSettings: () => {
-            dispatch({ type: StoreActionType.SetSettings, payload: { open: false } });
+            dispatch({ type: StoreActionType.SetSettingsDrawer, payload: { open: false } });
         },
         setColorMode: (mode: ColorMode) => {
             dispatch({ type: StoreActionType.SetColorMode, payload: { mode } });
+        },
+        setLocale: (locale: Locale) => {
+            localStorage.setItem(LocaleKey, locale);
+
+            dispatch({ type: StoreActionType.SetLocale, payload: { locale } });
         },
     };
 

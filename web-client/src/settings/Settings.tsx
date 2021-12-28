@@ -12,14 +12,20 @@ import {
     IconButton,
     Flex,
     useColorMode,
+    Radio,
+    RadioGroup,
+    Stack,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { IoIosClose } from 'react-icons/io';
 
 import { useStore } from '../store/Store';
 import { ColorMode } from '../store/Store.Types';
+import { Locale, LocaleLabels } from '../i18n/Config';
 
 export const Settings: FunctionComponent = () => {
-    const [{ settingsOpen, settings }, { closeSettings, setColorMode }] = useStore();
+    const { i18n } = useTranslation();
+    const [{ settingsOpen, settings }, { closeSettings, setColorMode, setLocale }] = useStore();
     const { toggleColorMode } = useColorMode();
 
     const onDarkModeToggle = () => {
@@ -29,6 +35,11 @@ export const Settings: FunctionComponent = () => {
         } else {
             setColorMode(ColorMode.Light);
         }
+    };
+
+    const onLocaleChange = (locale: string) => {
+        i18n.changeLanguage(locale);
+        setLocale(locale as Locale);
     };
 
     return (
@@ -68,7 +79,15 @@ export const Settings: FunctionComponent = () => {
                             Language
                         </Text>
                         <Flex justifyContent="space-between" alignItems="center" mt="2">
-                            Select Language
+                            <RadioGroup onChange={onLocaleChange} value={settings.locale}>
+                                <Stack>
+                                    {Object.keys(LocaleLabels).map((key: string) => (
+                                        <Radio key={key} value={key}>
+                                            <Text fontSize="md">{LocaleLabels[key as Locale]}</Text>
+                                        </Radio>
+                                    ))}
+                                </Stack>
+                            </RadioGroup>
                         </Flex>
                     </Box>
                 </DrawerBody>
