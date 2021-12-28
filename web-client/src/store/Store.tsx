@@ -15,6 +15,7 @@ export enum StoreActionType {
     SetStop,
     SetCurrentLocation,
     SetVehicleRoutes,
+    SetSettings,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -63,6 +64,10 @@ interface PayloadSetVehicleRoutes {
     route: Set<string>;
 }
 
+interface PayloadSetSettings {
+    open: boolean;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -76,7 +81,8 @@ interface StoreAction {
         | PayloadSetInfo
         | PayloadSetStop
         | PayloadSetCurrentLocation
-        | PayloadSetVehicleRoutes;
+        | PayloadSetVehicleRoutes
+        | PayloadSetSettings;
 }
 
 interface StoreProviderProps {
@@ -89,6 +95,7 @@ export const initialStoreState: StoreState = {
     routesLoading: false,
     patternLoading: false,
     infoOpen: false,
+    settingsOpen: false,
     stop: null,
     routes: [],
     patterns: [],
@@ -154,6 +161,11 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                 ...state,
                 vehicleRoutes: (action.payload as PayloadSetVehicleRoutes).route,
             };
+        case StoreActionType.SetSettings:
+            return {
+                ...state,
+                settingsOpen: (action.payload as PayloadSetSettings).open,
+            };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -204,6 +216,8 @@ interface StoreActionApis {
     closeStop: () => void;
     setCurrentLocation: (location: Point) => void;
     setVehicleRoutes: (route: Set<string>) => void;
+    openSettings: () => void;
+    closeSettings: () => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -272,6 +286,12 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         setVehicleRoutes: (route: Set<string>) => {
             dispatch({ type: StoreActionType.SetVehicleRoutes, payload: { route } });
+        },
+        openSettings: () => {
+            dispatch({ type: StoreActionType.SetSettings, payload: { open: true } });
+        },
+        closeSettings: () => {
+            dispatch({ type: StoreActionType.SetSettings, payload: { open: false } });
         },
     };
 

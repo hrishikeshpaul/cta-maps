@@ -5,7 +5,8 @@ import { Info } from './info/Info';
 
 import { Nav } from './nav/Nav';
 import { RouteSelect } from './route-select/RouteSelect';
-import { StoreProvider, useStore } from './store/Store';
+import { Settings } from './settings/Settings';
+import { StoreProvider } from './store/Store';
 import { Stop } from './stop/Stop';
 
 import './App.scss';
@@ -18,6 +19,7 @@ export const App = () => {
                 <RouteSelect />
                 <Info />
                 <Stop />
+                <Settings />
                 <MapContainer />
             </StoreProvider>
         </div>

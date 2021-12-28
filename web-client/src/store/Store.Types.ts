@@ -73,6 +73,7 @@ export interface Prediction {
 export interface StoreState {
     routeSelectOpen: boolean;
     infoOpen: boolean;
+    settingsOpen: boolean;
     dragging: boolean;
     routesLoading: boolean;
     patternLoading: boolean;

@@ -6,7 +6,7 @@ import { FiSettings } from 'react-icons/fi';
 import { useStore } from '../store/Store';
 
 export const Nav: FunctionComponent = () => {
-    const [{ dragging, routes }, { openRouteSelect, openInfo }] = useStore();
+    const [{ dragging, routes }, { openRouteSelect, openInfo, openSettings }] = useStore();
     const [selected, setSelected] = useState<boolean>(false);
 
     const onRouteSelect = () => {
@@ -40,7 +40,7 @@ export const Nav: FunctionComponent = () => {
                     </Flex>
                 )}
             </Button>
-            <IconButton bg="white" aria-label="help-icon" icon={<FiSettings />} boxShadow="lg" />
+            <IconButton bg="white" aria-label="help-icon" icon={<FiSettings />} boxShadow="lg" onClick={openSettings} />
         </Flex>
     );
 };
