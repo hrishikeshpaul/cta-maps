@@ -169,7 +169,7 @@ export const MapContainer: FunctionComponent = () => {
     }, [paths]); // eslint-disable-line
 
     return (
-        <div className="map-container f">
+        <div className="map-container">
             <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}>
                 <GoogleMap
                     onLoad={(map) => {
