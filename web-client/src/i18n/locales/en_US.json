@@ -6,5 +6,8 @@
     "ARRIVE": "Arrives in",
     "DEPART": "Departs in",
     "GET_DIR": "Get Directions",
-    "NO_SCHEDULE_AVAILABLE": "No Schedule Available"
+    "NO_SCHEDULE_AVAILABLE": "No Schedule Available",
+    "RETRIEVING_LOCATION": "Retrieving current location...",
+    "LOCATION_UPDATED": "Current location updated",
+    "RETRIEVE_LOCATION_FAIL": "Could not retrieve location"
 }

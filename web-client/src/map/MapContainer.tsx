@@ -1,7 +1,8 @@
-import{ FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { IconButton, useColorMode, useToast, useColorModeValue } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
+import { useTranslation } from 'react-i18next';
 import { MdMyLocation } from 'react-icons/md';
 
 import { darkStyle, lightStyle } from './Map.Styles';
@@ -40,6 +41,7 @@ interface Line extends PolylineProps {
 }
 
 export const MapContainer: FunctionComponent = () => {
+    const { t } = useTranslation();
     const [
         { currentLocation, patterns, vehicleRoutes, dragging },
         { setDragging, openStop, setCurrentLocation, setVehicleRoutes },
@@ -64,7 +66,7 @@ export const MapContainer: FunctionComponent = () => {
 
     const onGetCurrentLocation = () => {
         toast({
-            description: 'Retrieving current location...',
+            description: t('RETRIEVING_LOCATION'),
             status: 'warning',
         });
 
@@ -79,12 +81,12 @@ export const MapContainer: FunctionComponent = () => {
                 }
 
                 toast.closeAll();
-                toast({ description: 'Current location updated', status: 'success' });
+                toast({ description: t('LOCATION_UPDATED'), status: 'success' });
             },
             () => {
                 toast.closeAll();
                 toast({
-                    description: 'Could not retrieve location',
+                    description: t('RETRIEVE_LOCATION_FAIL'),
                     status: 'error',
                 });
             },
