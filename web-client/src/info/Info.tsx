@@ -13,6 +13,7 @@ import {
     IconButton,
     Flex,
     Link,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { FiChevronRight } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
@@ -55,20 +56,25 @@ export const Info: FunctionComponent = () => {
                         <Text color="gray.400" pt="2" textAlign="center" fontSize="xs">
                             v1.0.0
                         </Text>
-                        <Text color="gray.600" textAlign="center">
+                        <Text color={useColorModeValue('gray.600', 'gray.100')} textAlign="center">
                             An application to track CTA busses, so that you are not waiting at the bus stop forever.
                         </Text>
                     </Flex>
                     <Box mt="8" className="info-box">
-                        <Flex p="4" className="item">
+                        <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
                             <Text fontWeight="medium">Usage Manual</Text>
                             <FiChevronRight />
                         </Flex>
-                        <Flex p="4" className="item">
+                        <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
                             <Text fontWeight="medium">Frequently Asked Questions</Text>
                             <FiChevronRight />
                         </Flex>
-                        <Flex p="4" className="item" onClick={onBugReport}>
+                        <Flex
+                            p="4"
+                            className="item"
+                            onClick={onBugReport}
+                            _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
+                        >
                             <Text fontWeight="medium">Report Bug</Text>
                             <FiChevronRight />
                         </Flex>

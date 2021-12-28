@@ -8,6 +8,8 @@ import { useStore } from '../store/Store';
 export const Nav: FunctionComponent = () => {
     const [{ dragging, routes }, { openRouteSelect, openInfo, openSettings }] = useStore();
     const [selected, setSelected] = useState<boolean>(false);
+    const buttonBg = useColorModeValue('white', 'gray.600');
+    const buttonColor = useColorModeValue('black', 'white');
 
     const onRouteSelect = () => {
         openRouteSelect();
@@ -28,8 +30,8 @@ export const Nav: FunctionComponent = () => {
             transition="0.25s opacity ease-in-out"
         >
             <Avatar src="/logo.svg" size="sm" boxShadow="lg" onClick={openInfo} h="40px" w="40px" />
-            <Button bg="white" boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
-                <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : 'inherit'}>
+            <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
+                <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : buttonColor}>
                     Routes
                 </Text>
                 {selected && (
@@ -40,7 +42,13 @@ export const Nav: FunctionComponent = () => {
                     </Flex>
                 )}
             </Button>
-            <IconButton bg="white" aria-label="help-icon" icon={<FiSettings />} boxShadow="lg" onClick={openSettings} />
+            <IconButton
+                bg={buttonBg}
+                aria-label="help-icon"
+                icon={<FiSettings />}
+                boxShadow="lg"
+                onClick={openSettings}
+            />
         </Flex>
     );
 };

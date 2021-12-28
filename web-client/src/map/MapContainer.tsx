@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { IconButton, useColorMode, useToast } from '@chakra-ui/react';
+import { IconButton, useColorMode, useToast, useColorModeValue } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { MdMyLocation } from 'react-icons/md';
 
@@ -55,6 +55,7 @@ export const MapContainer: FunctionComponent = () => {
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
     const [paths, setPaths] = useState<Point[]>([]);
+    const buttonBg = useColorModeValue('white', 'gray.600');
 
     const mapOptions = {
         disableDefaultUI: true,
@@ -217,7 +218,7 @@ export const MapContainer: FunctionComponent = () => {
                 position="fixed"
                 top="72px"
                 right="16px"
-                bg="white"
+                bg={buttonBg}
                 boxShadow="lg"
                 _hover={{ bg: 'white' }}
                 onClick={onGetCurrentLocation}
