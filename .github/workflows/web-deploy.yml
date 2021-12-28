@@ -48,8 +48,10 @@ jobs:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
 
       - name: Deploy to Firebase Hosting
+        working-directory: ./web-client
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CTA_BUS_MAPS }}'
+          channelId: live
           projectId: cta-bus-maps
