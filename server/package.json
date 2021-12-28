@@ -9,7 +9,7 @@
     "start:dev": "nodemon app.js",
     "start": "node app.js"
   },
-  "author": "",
+  "author": "hrishikeshpaul",
   "license": "ISC",
   "engines": {
     "node": "16.x"
