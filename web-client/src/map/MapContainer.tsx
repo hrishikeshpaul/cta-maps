@@ -12,6 +12,8 @@ import { Point, Stop, Vehicle, ColorMode } from '../store/Store.Types';
 
 import './MapContainer.scss';
 
+const defaultZoom = 13;
+
 const containerStyle = {
     width: '100%',
     height: '100%',
@@ -48,7 +50,7 @@ export const MapContainer: FunctionComponent = () => {
     ] = useStore();
     const { colorMode } = useColorMode();
     const toast = useToast({
-        variant: 'solid',
+        variant: 'subtle',
         position: 'bottom',
     });
     const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -65,6 +67,7 @@ export const MapContainer: FunctionComponent = () => {
     };
 
     const onGetCurrentLocation = () => {
+        toast.closeAll();
         toast({
             description: t('RETRIEVING_LOCATION'),
             status: 'warning',
@@ -78,6 +81,7 @@ export const MapContainer: FunctionComponent = () => {
 
                 if (map) {
                     map.panTo(latLng);
+                    map.setZoom(defaultZoom);
                 }
 
                 toast.closeAll();
@@ -173,7 +177,7 @@ export const MapContainer: FunctionComponent = () => {
                     }}
                     mapContainerStyle={containerStyle}
                     center={currentLocation}
-                    zoom={13}
+                    zoom={defaultZoom}
                     options={mapOptions}
                     clickableIcons={false}
                     onDragStart={() => setDragging(true)}

@@ -52,13 +52,18 @@ export const Info: FunctionComponent = () => {
                     </Flex>
                 </DrawerHeader>
 
-                <DrawerBody px="4" pt="0" className="info">
-                    <Flex flexDir="column" alignItems="center">
+                <DrawerBody px="0" pt="0" className="info">
+                    <Flex flexDir="column" alignItems="center" px="4">
                         <Avatar src="/logo.svg" size="xl" />
                         <Text color="gray.400" pt="2" textAlign="center" fontSize="xs">
                             v1.0.0
                         </Text>
-                        <Text color={useColorModeValue('gray.600', 'gray.100')} textAlign="center">
+                        <Text
+                            color={useColorModeValue('gray.600', 'gray.200')}
+                            textAlign="center"
+                            fontSize="sm"
+                            fontWeight="medium"
+                        >
                             {t('DESCRIPTION')}
                         </Text>
                     </Flex>
@@ -82,10 +87,14 @@ export const Info: FunctionComponent = () => {
                         </Flex>
                     </Box>
                 </DrawerBody>
-                <DrawerFooter justifyContent="flex-start">
+                <DrawerFooter justifyContent="flex-start" px="4">
                     <Text fontSize="sm">
                         {t('CONTRIBUTE')}{' '}
-                        <Link fontWeight="bold" color="blue.500" onClick={onContribute}>
+                        <Link
+                            fontWeight="bold"
+                            color={useColorModeValue('blue.500', 'blue.200')}
+                            onClick={onContribute}
+                        >
                             {t('START_HERE')}
                         </Link>
                         .
