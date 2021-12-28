@@ -1,3 +1,5 @@
+export const ColorModeKey = 'chakra-ui-color-mode';
+
 export enum PointType {
     S = 'S', // stop
     W = 'W', // waypoint
@@ -20,6 +22,11 @@ export enum Heading {
 export enum Juncture {
     A = 'A', // arrival
     D = 'D', // departure
+}
+
+export enum ColorMode {
+    Light = 'light',
+    Dark = 'dark',
 }
 
 export interface Route {
@@ -70,6 +77,10 @@ export interface Prediction {
     delayed: boolean;
 }
 
+export interface Setting {
+    colorMode: ColorMode;
+}
+
 export interface StoreState {
     routeSelectOpen: boolean;
     infoOpen: boolean;
@@ -82,5 +93,6 @@ export interface StoreState {
     routes: Route[];
     patterns: Pattern[];
     stop: Stop | null;
+    settings: Setting;
     error?: any;
 }

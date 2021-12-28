@@ -1,13 +1,13 @@
-import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { IconButton, useToast } from '@chakra-ui/react';
+import { IconButton, useColorMode, useToast } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { MdMyLocation } from 'react-icons/md';
 
-import { lightStyle } from './Map.Styles';
+import { darkStyle, lightStyle } from './Map.Styles';
 import { getSingleVehicle, getVehicles } from '../store/Service';
 import { useStore } from '../store/Store';
-import { Point, Stop, Vehicle } from '../store/Store.Types';
+import { Point, Stop, Vehicle, ColorMode } from '../store/Store.Types';
 
 import './MapContainer.scss';
 
@@ -44,6 +44,7 @@ export const MapContainer: FunctionComponent = () => {
         { currentLocation, patterns, vehicleRoutes, dragging },
         { setDragging, openStop, setCurrentLocation, setVehicleRoutes },
     ] = useStore();
+    const { colorMode } = useColorMode();
     const toast = useToast({
         variant: 'solid',
         position: 'bottom',
@@ -55,13 +56,10 @@ export const MapContainer: FunctionComponent = () => {
     const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
     const [paths, setPaths] = useState<Point[]>([]);
 
-    const mapOptions = useMemo(
-        () => ({
-            disableDefaultUI: true,
-            styles: lightStyle,
-        }),
-        [],
-    );
+    const mapOptions = {
+        disableDefaultUI: true,
+        styles: colorMode === ColorMode.Light ? lightStyle : darkStyle,
+    };
 
     useEffect(() => {
         onGetCurrentLocation();

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReactDOM from 'react-dom';
-import { ChakraProvider, extendTheme, theme as ChakraTheme } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme, theme as ChakraTheme, ThemeConfig, ColorModeScript } from '@chakra-ui/react';
 
 import './index.scss';
 import { App } from './App';
@@ -10,8 +10,8 @@ import reportWebVitals from './reportWebVitals';
 const theme = extendTheme({
     config: {
         cssVarPrefix: 'cta-maps',
-        initialColorMode: 'light',
-    },
+        // initialColorMode: localStorage.getItem('colorMode') || 'light',
+    } as ThemeConfig,
     shadows: {
         ...ChakraTheme.shadows,
         outline: 'none',
@@ -30,6 +30,7 @@ const theme = extendTheme({
 ReactDOM.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
             <App />
         </ChakraProvider>
     </React.StrictMode>,

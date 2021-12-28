@@ -1,8 +1,8 @@
-import { useToast } from '@chakra-ui/react';
+import { useColorMode, useToast } from '@chakra-ui/react';
 import React, { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { getPattern, getRoutes } from './Service';
-import { Route, StoreState, Pattern, Stop, Point } from './Store.Types';
+import { Route, StoreState, Pattern, Stop, Point, ColorMode, ColorModeKey } from './Store.Types';
 
 export enum StoreActionType {
     SetRouteSelect,
@@ -16,6 +16,7 @@ export enum StoreActionType {
     SetCurrentLocation,
     SetVehicleRoutes,
     SetSettings,
+    SetColorMode,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -68,6 +69,10 @@ interface PayloadSetSettings {
     open: boolean;
 }
 
+interface PayloadSetColorMode {
+    mode: ColorMode;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -82,7 +87,8 @@ interface StoreAction {
         | PayloadSetStop
         | PayloadSetCurrentLocation
         | PayloadSetVehicleRoutes
-        | PayloadSetSettings;
+        | PayloadSetSettings
+        | PayloadSetColorMode;
 }
 
 interface StoreProviderProps {
@@ -102,6 +108,9 @@ export const initialStoreState: StoreState = {
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
     vehicleRoutes: new Set(),
+    settings: {
+        colorMode: (localStorage.getItem(ColorModeKey) as ColorMode) || ColorMode.Light,
+    },
 };
 
 const StoreStateContext = createContext<StoreState | undefined>(undefined);
@@ -166,6 +175,14 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                 ...state,
                 settingsOpen: (action.payload as PayloadSetSettings).open,
             };
+        case StoreActionType.SetColorMode:
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    colorMode: (action.payload as PayloadSetColorMode).mode,
+                },
+            };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -218,6 +235,7 @@ interface StoreActionApis {
     setVehicleRoutes: (route: Set<string>) => void;
     openSettings: () => void;
     closeSettings: () => void;
+    setColorMode: (mode: ColorMode) => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -292,6 +310,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         closeSettings: () => {
             dispatch({ type: StoreActionType.SetSettings, payload: { open: false } });
+        },
+        setColorMode: (mode: ColorMode) => {
+            dispatch({ type: StoreActionType.SetColorMode, payload: { mode } });
         },
     };
 

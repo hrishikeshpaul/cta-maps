@@ -12,13 +12,25 @@ import {
     IconButton,
     Flex,
     Select,
+    useColorMode,
 } from '@chakra-ui/react';
 import { IoIosClose } from 'react-icons/io';
 
 import { useStore } from '../store/Store';
+import { ColorMode } from '../store/Store.Types';
 
 export const Settings: FunctionComponent = () => {
-    const [{ settingsOpen }, { closeSettings }] = useStore();
+    const [{ settingsOpen, settings }, { closeSettings, setColorMode }] = useStore();
+    const { colorMode, toggleColorMode } = useColorMode();
+
+    const onDarkModeToggle = () => {
+        toggleColorMode();
+        if (settings.colorMode === ColorMode.Light) {
+            setColorMode(ColorMode.Dark);
+        } else {
+            setColorMode(ColorMode.Light);
+        }
+    };
 
     return (
         <Drawer isOpen={settingsOpen} placement="right" size="md" onClose={closeSettings} autoFocus={false}>
@@ -45,7 +57,11 @@ export const Settings: FunctionComponent = () => {
                         </Text>
                         <Flex justifyContent="space-between" alignItems="center" mt="2">
                             <Text>Dark Mode</Text>
-                            <Switch size="lg" />
+                            <Switch
+                                size="lg"
+                                isChecked={settings.colorMode !== ColorMode.Light}
+                                onChange={onDarkModeToggle}
+                            />
                         </Flex>
                     </Box>
                     <Box mt="8">
@@ -53,12 +69,7 @@ export const Settings: FunctionComponent = () => {
                             Language
                         </Text>
                         <Flex justifyContent="space-between" alignItems="center" mt="2">
-                            <Select>
-                                <option value="option1" selected>
-                                    English
-                                </option>
-                                <option value="option2">Spanish</option>
-                            </Select>
+                            Select Language
                         </Flex>
                     </Box>
                 </DrawerBody>
