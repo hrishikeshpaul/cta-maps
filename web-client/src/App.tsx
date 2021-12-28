@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import { MapContainer } from './map/MapContainer';
 import { Info } from './info/Info';
 

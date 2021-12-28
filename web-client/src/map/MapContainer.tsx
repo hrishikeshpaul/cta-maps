@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import{ FunctionComponent, useEffect, useState } from 'react';
 
 import { IconButton, useColorMode, useToast, useColorModeValue } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
@@ -62,9 +62,38 @@ export const MapContainer: FunctionComponent = () => {
         styles: colorMode === ColorMode.Light ? lightStyle : darkStyle,
     };
 
+    const onGetCurrentLocation = () => {
+        toast({
+            description: 'Retrieving current location...',
+            status: 'warning',
+        });
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const latLng = { lat: position.coords.latitude, lng: position.coords.longitude };
+
+                setCurrentLocation(latLng);
+
+                if (map) {
+                    map.panTo(latLng);
+                }
+
+                toast.closeAll();
+                toast({ description: 'Current location updated', status: 'success' });
+            },
+            () => {
+                toast.closeAll();
+                toast({
+                    description: 'Could not retrieve location',
+                    status: 'error',
+                });
+            },
+        );
+    };
+
     useEffect(() => {
         onGetCurrentLocation();
-    }, []);
+    }, []); // eslint-disable-line
 
     useEffect(() => {
         if (vehicleRoutes.size) {
@@ -77,7 +106,7 @@ export const MapContainer: FunctionComponent = () => {
                 }, 5000),
             );
         }
-    }, [vehicleRoutes]);
+    }, [vehicleRoutes]); // eslint-disable-line
 
     useEffect(() => {
         const lines: any[] = [];
@@ -121,7 +150,7 @@ export const MapContainer: FunctionComponent = () => {
         }
 
         setLines(lines);
-    }, [patterns]);
+    }, [patterns]); // eslint-disable-line
 
     useEffect(() => {
         if (map) {
@@ -131,36 +160,7 @@ export const MapContainer: FunctionComponent = () => {
             });
             map.fitBounds(bounds);
         }
-    }, [paths]);
-
-    const onGetCurrentLocation = () => {
-        toast({
-            description: 'Retrieving current location...',
-            status: 'warning',
-        });
-
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                const latLng = { lat: position.coords.latitude, lng: position.coords.longitude };
-
-                setCurrentLocation(latLng);
-
-                if (map) {
-                    map.panTo(latLng);
-                }
-
-                toast.closeAll();
-                toast({ description: 'Current location updated', status: 'success' });
-            },
-            () => {
-                toast.closeAll();
-                toast({
-                    description: 'Could not retrieve location',
-                    status: 'error',
-                });
-            },
-        );
-    };
+    }, [paths]); // eslint-disable-line
 
     return (
         <div className="map-container">

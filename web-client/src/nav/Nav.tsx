@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Avatar, Box, Button, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';

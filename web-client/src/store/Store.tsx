@@ -1,5 +1,6 @@
-import { useColorMode, useToast } from '@chakra-ui/react';
-import React, { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
+import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
+
+import { useToast } from '@chakra-ui/react';
 
 import { getPattern, getRoutes } from './Service';
 import { Route, StoreState, Pattern, Stop, Point, ColorMode, ColorModeKey } from './Store.Types';

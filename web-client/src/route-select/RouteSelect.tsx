@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState, ChangeEvent } from 'react';
+import { FunctionComponent, useEffect, useState, ChangeEvent } from 'react';
 
 import {
     Drawer,
@@ -62,7 +62,7 @@ export const RouteSelect: FunctionComponent = () => {
                 setComputedRoutes(mutatedRoutes);
             })();
         }
-    }, [routeSelectOpen]);
+    }, [routeSelectOpen]); // eslint-disable-line
 
     useEffect(() => {
         const mutatedRoutes: RouteExtended[] = [];
@@ -77,7 +77,7 @@ export const RouteSelect: FunctionComponent = () => {
         });
         setRoutes(mutatedRoutes);
         setComputedRoutes(mutatedRoutes);
-    }, [currentRoutes]);
+    }, [currentRoutes]); // eslint-disable-line
 
     useEffect(() => {
         if (query) {
@@ -92,7 +92,7 @@ export const RouteSelect: FunctionComponent = () => {
         } else {
             if (routes) setComputedRoutes(routes);
         }
-    }, [query]);
+    }, [query]); // eslint-disable-line
 
     const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
         const onToggle = () => {

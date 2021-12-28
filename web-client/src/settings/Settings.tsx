@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
 import {
     Box,
@@ -11,7 +11,6 @@ import {
     Text,
     IconButton,
     Flex,
-    Select,
     useColorMode,
 } from '@chakra-ui/react';
 import { IoIosClose } from 'react-icons/io';
@@ -21,7 +20,7 @@ import { ColorMode } from '../store/Store.Types';
 
 export const Settings: FunctionComponent = () => {
     const [{ settingsOpen, settings }, { closeSettings, setColorMode }] = useStore();
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { toggleColorMode } = useColorMode();
 
     const onDarkModeToggle = () => {
         toggleColorMode();
