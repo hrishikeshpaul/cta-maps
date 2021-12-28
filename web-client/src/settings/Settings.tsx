@@ -24,7 +24,7 @@ import { ColorMode } from '../store/Store.Types';
 import { Locale, LocaleLabels } from '../i18n/Config';
 
 export const Settings: FunctionComponent = () => {
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
     const [{ settingsOpen, settings }, { closeSettings, setColorMode, setLocale }] = useStore();
     const { toggleColorMode } = useColorMode();
 
@@ -48,7 +48,7 @@ export const Settings: FunctionComponent = () => {
             <DrawerContent>
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text>Settings</Text>
+                        <Text>{t('SETTINGS')}</Text>
                         <IconButton
                             variant="ghost"
                             fontSize="3xl"
@@ -63,10 +63,10 @@ export const Settings: FunctionComponent = () => {
                 <DrawerBody px="4" pt="0">
                     <Box>
                         <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                            Appearance
+                            {t('APPEARANCE')}
                         </Text>
                         <Flex justifyContent="space-between" alignItems="center" mt="2">
-                            <Text>Dark Mode</Text>
+                            <Text>{t('DARK_MODE')}</Text>
                             <Switch
                                 size="lg"
                                 isChecked={settings.colorMode !== ColorMode.Light}
@@ -76,14 +76,14 @@ export const Settings: FunctionComponent = () => {
                     </Box>
                     <Box mt="8">
                         <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                            Language
+                            {t('LANGUAGE')}
                         </Text>
                         <Flex justifyContent="space-between" alignItems="center" mt="2">
                             <RadioGroup onChange={onLocaleChange} value={settings.locale}>
                                 <Stack>
                                     {Object.keys(LocaleLabels).map((key: string) => (
                                         <Radio key={key} value={key}>
-                                            <Text fontSize="md">{LocaleLabels[key as Locale]}</Text>
+                                            <Text fontSize="md">{t(LocaleLabels[key as Locale])}</Text>
                                         </Radio>
                                     ))}
                                 </Stack>

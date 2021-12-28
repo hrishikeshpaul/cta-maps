@@ -15,6 +15,7 @@ import {
     Link,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { FiChevronRight } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
@@ -23,6 +24,7 @@ import { useStore } from '../store/Store';
 import './Info.scss';
 
 export const Info: FunctionComponent = () => {
+    const { t } = useTranslation();
     const [{ infoOpen }, { closeInfo }] = useStore();
 
     const onBugReport = () => {
@@ -57,16 +59,16 @@ export const Info: FunctionComponent = () => {
                             v1.0.0
                         </Text>
                         <Text color={useColorModeValue('gray.600', 'gray.100')} textAlign="center">
-                            An application to track CTA busses, so that you are not waiting at the bus stop forever.
+                            {t('DESCRIPTION')}
                         </Text>
                     </Flex>
                     <Box mt="8" className="info-box">
                         <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
-                            <Text fontWeight="medium">Usage Manual</Text>
+                            <Text fontWeight="medium">{t('USAGE_MANUAL')}</Text>
                             <FiChevronRight />
                         </Flex>
                         <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
-                            <Text fontWeight="medium">Frequently Asked Questions</Text>
+                            <Text fontWeight="medium">{t('FAQ')}</Text>
                             <FiChevronRight />
                         </Flex>
                         <Flex
@@ -75,16 +77,16 @@ export const Info: FunctionComponent = () => {
                             onClick={onBugReport}
                             _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
                         >
-                            <Text fontWeight="medium">Report Bug</Text>
+                            <Text fontWeight="medium">{t('REPORT_BUG')}</Text>
                             <FiChevronRight />
                         </Flex>
                     </Box>
                 </DrawerBody>
                 <DrawerFooter justifyContent="flex-start">
                     <Text fontSize="sm">
-                        Want to contribute?{' '}
+                        {t('CONTRIBUTE')}{' '}
                         <Link fontWeight="bold" color="blue.500" onClick={onContribute}>
-                            Start here
+                            {t('START_HERE')}
                         </Link>
                         .
                     </Text>
