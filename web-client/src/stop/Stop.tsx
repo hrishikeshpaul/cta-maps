@@ -35,8 +35,8 @@ export const Stop: FunctionComponent = () => {
     const [filter, setFilter] = useState<Record<string, boolean>>({});
     const toast = useToast();
     const JunctureMapper = {
-        [Juncture.A]: (time: number) => `${t('ARRIVE')} ${time} mins`,
-        [Juncture.D]: (time: number) => `${t('DEPART')} ${time} mins`,
+        [Juncture.A]: (time: number) => (time < 2 ? t('ARRIVE_SHORTLY') : `${t('ARRIVE')} ${time} mins`),
+        [Juncture.D]: (time: number) => (time < 2 ? t('DEPART_SHORTLY') : `${t('DEPART')} ${time} mins`),
     };
 
     useEffect(() => {
