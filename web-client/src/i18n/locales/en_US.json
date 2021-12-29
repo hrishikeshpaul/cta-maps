@@ -5,6 +5,8 @@
     "DESELECT_ALL": "Deselect All",
     "ARRIVE": "Arrives in",
     "DEPART": "Departs in",
+    "ARRIVE_SHORTLY": "Arrives shortly",
+    "DEPART_SHORTLY": "Departs shortly",
     "GET_DIR": "Get Directions",
     "NO_SCHEDULE_AVAILABLE": "No Schedule Available",
     "RETRIEVING_LOCATION": "Retrieving current location...",
@@ -22,5 +24,11 @@
     "LANGUAGE": "Language",
     "ENGLISH": "English",
     "ESPANOL": "Espanol",
-    "CHINESE": "Chinese"
+    "CHINESE": "Chinese",
+    "SECONDS": "seconds",
+    "INACTIVITY": "Inactivity Alert",
+    "INACTIVE_TIMER_MESSAGE": "Due to inactivity, your selected routes will be reset in",
+    "INACTIVE_MESSAGE": "Due to inactivity, your selected routes have been reset.",
+    "STILL_HERE": "Still here",
+    "I_BACK": "I'm back"
 }

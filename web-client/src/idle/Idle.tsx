@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useIdleTimer } from 'react-idle-timer';
 
 import {
@@ -21,6 +22,7 @@ const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const IdleAlert: FunctionComponent = () => {
+    const { t } = useTranslation();
     const [{ vehicleRoutes, idleAlertOpen }, { closeIdleAlert, openIdleAlert, removeAllRoutes }] = useStore();
     const [start, setStart] = useState<boolean>(false);
     const [time, setTime] = useState<number>(ROUTES_RESET_TIME);
@@ -64,23 +66,23 @@ export const IdleAlert: FunctionComponent = () => {
             <Modal size="sm" isCentered isOpen={idleAlertOpen} onClose={closeIdleAlert}>
                 <ModalOverlay />
                 <ModalContent mx="4">
-                    <ModalHeader>You've been idle for too long</ModalHeader>
+                    <ModalHeader>{t('INACTIVITY')}</ModalHeader>
                     <ModalBody>
                         {time ? (
                             <>
-                                Due to inactivity, your selected routes will be reset in{' '}
+                                {t('INACTIVE_TIMER_MESSAGE')}{' '}
                                 <Text as="span" fontWeight="bold">
-                                    {time} seconds.
+                                    {time} {t('SECONDS')}.
                                 </Text>
                             </>
                         ) : (
-                            <>Due to inactivity, your selected routes have been reset.</>
+                            <>{t('INACTIVE_MESSAGE')}</>
                         )}
                     </ModalBody>
 
                     <ModalFooter>
                         <Button w="100%" colorScheme="green" mr={3} onClick={closeIdleAlert}>
-                            {time ? 'Still here' : "I'm back"}
+                            {time ? t('STILL_HERE') : t('I_BACK')}
                         </Button>
                     </ModalFooter>
                 </ModalContent>
