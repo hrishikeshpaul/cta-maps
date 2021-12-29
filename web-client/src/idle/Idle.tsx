@@ -49,16 +49,15 @@ export const IdleAlert: FunctionComponent = () => {
         if (time === 0) {
             removeAllRoutes();
         }
-    }, [time]);
+    }, [time]); // eslint-disable-line
 
     useEffect(() => {
         if (vehicleRoutes.size === 0) {
             pause();
         } else {
-            console.log('resume');
             resume();
         }
-    }, [vehicleRoutes]);
+    }, [vehicleRoutes]); // eslint-disable-line
 
     return (
         <>
