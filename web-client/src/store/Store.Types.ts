@@ -89,6 +89,7 @@ export interface StoreState {
     routeSelectOpen: boolean;
     infoOpen: boolean;
     settingsOpen: boolean;
+    idleAlertOpen: boolean;
     dragging: boolean;
     routesLoading: boolean;
     patternLoading: boolean;

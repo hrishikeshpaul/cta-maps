@@ -20,6 +20,7 @@ export enum StoreActionType {
     SetSettingsDrawer,
     SetColorMode,
     SetLocale,
+    SetIdleAlert,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -80,6 +81,10 @@ interface PayloadSetLocale {
     locale: Locale;
 }
 
+interface PayloadSetIdleAlert {
+    open: boolean;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -96,7 +101,8 @@ interface StoreAction {
         | PayloadSetVehicleRoutes
         | PayloadSetSettingsDrawer
         | PayloadSetColorMode
-        | PayloadSetLocale;
+        | PayloadSetLocale
+        | PayloadSetIdleAlert;
 }
 
 interface StoreProviderProps {
@@ -105,6 +111,7 @@ interface StoreProviderProps {
 
 export const initialStoreState: StoreState = {
     routeSelectOpen: false,
+    idleAlertOpen: false,
     dragging: false,
     routesLoading: false,
     patternLoading: false,
@@ -148,7 +155,7 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                 vehicleRoutes: updatedVehicleRoutes,
             };
         case StoreActionType.RemoveAllRoutes:
-            return { ...state, routes: [], patterns: [] };
+            return { ...state, routes: [], patterns: [], vehicleRoutes: new Set() };
         case StoreActionType.SetPatternLoading:
             return {
                 ...state,
@@ -199,6 +206,11 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                     ...state.settings,
                     locale: (action.payload as PayloadSetLocale).locale,
                 },
+            };
+        case StoreActionType.SetIdleAlert:
+            return {
+                ...state,
+                idleAlertOpen: (action.payload as PayloadSetIdleAlert).open,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -254,6 +266,8 @@ interface StoreActionApis {
     closeSettings: () => void;
     setColorMode: (mode: ColorMode) => void;
     setLocale: (locale: Locale) => void;
+    openIdleAlert: () => void;
+    closeIdleAlert: () => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -336,6 +350,12 @@ export const useStore = (): [StoreState, StoreActionApis] => {
             localStorage.setItem(LocaleKey, locale);
 
             dispatch({ type: StoreActionType.SetLocale, payload: { locale } });
+        },
+        openIdleAlert: () => {
+            dispatch({ type: StoreActionType.SetIdleAlert, payload: { open: true } });
+        },
+        closeIdleAlert: () => {
+            dispatch({ type: StoreActionType.SetIdleAlert, payload: { open: false } });
         },
     };
 

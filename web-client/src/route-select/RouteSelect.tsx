@@ -115,8 +115,6 @@ export const RouteSelect: FunctionComponent = () => {
                     setComputedRoutes([...old]);
                 }
             }
-
-            console.log(computedRoutes);
         };
 
         return (
