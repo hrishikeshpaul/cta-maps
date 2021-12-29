@@ -102,7 +102,7 @@ export const Stop: FunctionComponent = () => {
                             </Text>
                         </Box>
                     </Flex>
-                    <Text fontWeight="semibold">{timestamp}</Text>
+                    <Text fontWeight={500}>{timestamp}</Text>
                 </Flex>
                 <Divider />
             </>
