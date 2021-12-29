@@ -117,7 +117,7 @@ export const Stop: FunctionComponent = () => {
     return (
         <Drawer isOpen={!!stop} placement="bottom" onClose={closeStop} autoFocus={false}>
             <DrawerOverlay />
-            <DrawerContent borderTopRadius="xl">
+            <DrawerContent borderTopRadius="xl" height="80%">
                 <DrawerHeader pl="4" pr="1">
                     <Flex justifyContent="space-between" alignItems="center" overflow="hidden">
                         <Text isTruncated>{stop?.name}</Text>

@@ -137,14 +137,9 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     return (
-        <Drawer
-            isOpen={routeSelectOpen}
-            placement="bottom"
-            onClose={() => closeRouteSelect()}
-            autoFocus={false}
-        >
+        <Drawer isOpen={routeSelectOpen} placement="bottom" onClose={() => closeRouteSelect()} autoFocus={false}>
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent height="85%" borderRadius="xl">
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
                         <Text>{t('SELECT_ROUTES')}</Text>
