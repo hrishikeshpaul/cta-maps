@@ -17,8 +17,8 @@ import {
 
 import { useStore } from '../store/Store';
 
-const ROUTES_RESET_TIME = 120; // in seconds
-const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
+const ROUTES_RESET_TIME = 60; // in seconds
+const IDLE_TIME = 10000; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const IdleAlert: FunctionComponent = () => {
