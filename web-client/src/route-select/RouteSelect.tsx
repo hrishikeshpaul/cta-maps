@@ -140,7 +140,6 @@ export const RouteSelect: FunctionComponent = () => {
         <Drawer
             isOpen={routeSelectOpen}
             placement="bottom"
-            isFullHeight
             onClose={() => closeRouteSelect()}
             autoFocus={false}
         >

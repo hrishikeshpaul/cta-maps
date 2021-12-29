@@ -29,11 +29,11 @@ import { Juncture, Prediction } from '../store/Store.Types';
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ stop }, { closeStop }] = useStore();
-    const toast = useToast();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);
     const [filter, setFilter] = useState<Record<string, boolean>>({});
+    const toast = useToast();
     const JunctureMapper = {
         [Juncture.A]: (time: number) => `${t('ARRIVE')} ${time} mins`,
         [Juncture.D]: (time: number) => `${t('DEPART')} ${time} mins`,
@@ -115,7 +115,7 @@ export const Stop: FunctionComponent = () => {
     };
 
     return (
-        <Drawer isOpen={!!stop} placement="bottom" isFullHeight onClose={closeStop} autoFocus={false}>
+        <Drawer isOpen={!!stop} placement="bottom" onClose={closeStop} autoFocus={false}>
             <DrawerOverlay />
             <DrawerContent borderTopRadius="xl">
                 <DrawerHeader pl="4" pr="1">
