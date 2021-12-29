@@ -50,19 +50,20 @@ export const RouteSelect: FunctionComponent = () => {
         if (routeSelectOpen) {
             (async () => {
                 const responseRoutes = await getRoutes();
-                const mutatedRoutes: RouteExtended[] = [];
+                const selectedRoutes: RouteExtended[] = [];
+                const unselectedRoutes: RouteExtended[] = [];
 
                 responseRoutes?.forEach((route) => {
                     const foundRouteIdx = currentRoutes.findIndex((r) => r.route === route.route);
                     if (foundRouteIdx !== -1) {
-                        mutatedRoutes.push({ ...route, selected: true });
+                        selectedRoutes.push({ ...route, selected: true });
                     } else {
-                        mutatedRoutes.push({ ...route, selected: false });
+                        unselectedRoutes.push({ ...route, selected: false });
                     }
                 });
 
-                setRoutes(mutatedRoutes);
-                setComputedRoutes(mutatedRoutes);
+                setRoutes([...selectedRoutes, ...unselectedRoutes]);
+                setComputedRoutes([...selectedRoutes, ...unselectedRoutes]);
             })();
         }
     }, [routeSelectOpen]); // eslint-disable-line
@@ -78,9 +79,6 @@ export const RouteSelect: FunctionComponent = () => {
                 mutatedRoutes.push({ ...route, selected: false });
             }
         });
-
-        setRoutes(mutatedRoutes);
-        setComputedRoutes(mutatedRoutes);
     }, [currentRoutes]); // eslint-disable-line
 
     useEffect(() => {
@@ -117,6 +115,8 @@ export const RouteSelect: FunctionComponent = () => {
                     setComputedRoutes([...old]);
                 }
             }
+
+            console.log(computedRoutes);
         };
 
         return (
@@ -131,7 +131,7 @@ export const RouteSelect: FunctionComponent = () => {
                         {name}
                     </Text>
                 </Flex>
-                <Switch size="lg" onChange={onToggle} isChecked={selected} />
+                <Switch size="lg" isChecked={selected} onChange={onToggle} />
             </Flex>
         );
     };
