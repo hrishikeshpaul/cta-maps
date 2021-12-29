@@ -40,7 +40,7 @@ export const Info: FunctionComponent = () => {
             <DrawerContent>
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text>CTA Maps</Text>
+                        <Text fontWeight="bold">CTA Maps</Text>
                         <IconButton
                             variant="ghost"
                             fontSize="3xl"
@@ -69,11 +69,11 @@ export const Info: FunctionComponent = () => {
                     </Flex>
                     <Box mt="8" className="info-box">
                         <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
-                            <Text fontWeight="medium">{t('USAGE_MANUAL')}</Text>
+                            <Text className="item-text">{t('USAGE_MANUAL')}</Text>
                             <FiChevronRight />
                         </Flex>
                         <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
-                            <Text fontWeight="medium">{t('FAQ')}</Text>
+                            <Text className="item-text">{t('FAQ')}</Text>
                             <FiChevronRight />
                         </Flex>
                         <Flex
@@ -82,7 +82,7 @@ export const Info: FunctionComponent = () => {
                             onClick={onBugReport}
                             _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
                         >
-                            <Text fontWeight="medium">{t('REPORT_BUG')}</Text>
+                            <Text className="item-text">{t('REPORT_BUG')}</Text>
                             <FiChevronRight />
                         </Flex>
                     </Box>

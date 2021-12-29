@@ -30,5 +30,6 @@
     "INACTIVE_TIMER_MESSAGE": "Due to inactivity, your selected routes will be reset in",
     "INACTIVE_MESSAGE": "Due to inactivity, your selected routes have been reset.",
     "STILL_HERE": "Still here",
-    "I_BACK": "I'm back"
+    "I_BACK": "I'm back",
+    "DELAYED": "Delayed"
 }

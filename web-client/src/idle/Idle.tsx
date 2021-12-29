@@ -66,7 +66,7 @@ export const IdleAlert: FunctionComponent = () => {
             <Modal size="sm" isCentered isOpen={idleAlertOpen} onClose={closeIdleAlert}>
                 <ModalOverlay />
                 <ModalContent mx="4">
-                    <ModalHeader>{t('INACTIVITY')}</ModalHeader>
+                    <ModalHeader fontWeight="bold">{t('INACTIVITY')}</ModalHeader>
                     <ModalBody>
                         {time ? (
                             <>

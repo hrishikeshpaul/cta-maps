@@ -48,7 +48,7 @@ export const Settings: FunctionComponent = () => {
             <DrawerContent>
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text>{t('SETTINGS')}</Text>
+                        <Text fontWeight="bold">{t('SETTINGS')}</Text>
                         <IconButton
                             variant="ghost"
                             fontSize="3xl"

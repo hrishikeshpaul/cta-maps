@@ -125,7 +125,7 @@ export const RouteSelect: FunctionComponent = () => {
                             {route}
                         </Text>
                     </Center>
-                    <Text px="4" isTruncated fontWeight="semibold">
+                    <Text px="4" isTruncated fontWeight={500}>
                         {name}
                     </Text>
                 </Flex>
@@ -140,7 +140,7 @@ export const RouteSelect: FunctionComponent = () => {
             <DrawerContent height="85%" borderRadius="xl">
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text>{t('SELECT_ROUTES')}</Text>
+                        <Text fontWeight="bold">{t('SELECT_ROUTES')}</Text>
                         <IconButton
                             variant="ghost"
                             fontSize="2xl"

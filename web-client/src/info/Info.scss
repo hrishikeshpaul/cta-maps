@@ -5,6 +5,10 @@
             align-items: center;
             cursor: pointer;
             border-radius: 6px;
+
+            &-text {
+                font-weight: 500;
+            }
         }
     }
 }

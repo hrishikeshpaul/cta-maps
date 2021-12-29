@@ -30,5 +30,6 @@
   "INACTIVE_TIMER_MESSAGE": "Debido a la inactividad, sus rutas seleccionadas se restablecerán en",
   "INACTIVE_MESSAGE": "Debido a la inactividad, sus rutas seleccionadas se han restablecido.",
   "STILL_HERE": "Sigo aquí",
-  "I_BACK": "He vuelto"
+  "I_BACK": "He vuelto",
+  "DELAYED": "Retraso"
 }

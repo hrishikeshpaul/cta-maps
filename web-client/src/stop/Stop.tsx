@@ -91,10 +91,12 @@ export const Stop: FunctionComponent = () => {
                         </Center>
                         <Box pl="2">
                             <Text>
-                                {JunctureMapper[type](time)}
+                                <Text as="span" fontWeight={500}>
+                                    {JunctureMapper[type](time)}
+                                </Text>
                                 {delayed && (
                                     <Badge size="xs" colorScheme="orange" ml="2">
-                                        Delayed
+                                        {t('DELAYED')}
                                     </Badge>
                                 )}
                             </Text>
@@ -120,7 +122,9 @@ export const Stop: FunctionComponent = () => {
             <DrawerContent borderTopRadius="xl" height="80%">
                 <DrawerHeader pl="4" pr="1">
                     <Flex justifyContent="space-between" alignItems="center" overflow="hidden">
-                        <Text isTruncated>{stop?.name}</Text>
+                        <Text isTruncated fontWeight="bold">
+                            {stop?.name}
+                        </Text>
                         <Flex>
                             <IconButton
                                 variant="ghost"
