@@ -24,17 +24,14 @@ const DEBOUNCE_TIME = 500; // ms
 export const IdleAlert: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ vehicleRoutes, idleAlertOpen }, { closeIdleAlert, openIdleAlert, removeAllRoutes }] = useStore();
-    const [start, setStart] = useState<boolean>(false);
     const [time, setTime] = useState<number>(ROUTES_RESET_TIME);
     const { reset, pause, resume } = useIdleTimer({
         timeout: IDLE_TIME,
         onIdle: () => {
             openIdleAlert();
-            setStart(true);
+            setTime(ROUTES_RESET_TIME);
         },
         onAction: () => {
-            setStart(false);
-            setTime(ROUTES_RESET_TIME);
             reset();
         },
         debounce: DEBOUNCE_TIME,
@@ -44,7 +41,7 @@ export const IdleAlert: FunctionComponent = () => {
         () => {
             setTime(time - 1);
         },
-        time > 0 ? (start ? 1000 : null) : null,
+        time > 0 ? 1000 : null,
     );
 
     useEffect(() => {
