@@ -28,14 +28,8 @@ const initOptions: InitOptions = {
         allowMultiLoading: true,
         loadPath: '/locale/{{lng}}',
         request: async (_, url, __, callback) => {
-            console.log(url);
-            try {
-                const { data, status } = await getLocaleJson(url);
-                callback(null, { data, status });
-            } catch (err: any) {
-                console.log(err.response);
-                callback(err, { data: err.response.status, status: err.response.status });
-            }
+            const { data, status } = await getLocaleJson(url);
+            callback(null, { data, status });
         },
         requestOptions: {
             cache: 'default',

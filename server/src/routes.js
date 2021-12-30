@@ -145,7 +145,7 @@ router.get('/predictions', async (req, res) => {
     }
 });
 
-router.get('/app-status', async (req, res) => {
+router.get('/app-status', async (_, res) => {
     try {
         const data = await getGitHubWorkflow();
 
@@ -163,11 +163,11 @@ router.get('/locale/:lng', async (req, res) => {
     const lng = req.params.lng;
 
     try {
-        const { data, status } = await getLocaleJson(lng);
+        const { data } = await getLocaleJson(lng);
 
-        res.send({ data, status });
+        res.send(data).status(200);
     } catch (err) {
-        res.send(JSON.parse(fs.readFileSync('src/res/en.json')));
+        res.send(fs.readFileSync('src/res/en.json')).status(200);
     }
 });
 
