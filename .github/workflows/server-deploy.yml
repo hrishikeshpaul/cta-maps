@@ -4,7 +4,7 @@ name: Deploy Server to Heroku
   push:
     paths:
       - "server/**"
-      - "!server/res/**"
+      - "!server/src/res/**"
     branches:
       - main
 
