@@ -22,9 +22,11 @@ jobs:
         working-directory: ./locale-builder
         run: npm install
 
-      - name: Run node script
-        working-directory: ./locale-builder
-        run: node app.js
+      - name: Translate using Node script
+        working-directory:
+        run: |
+          cp server/src/res/en.json locale-builder/resources/en.json
+          node locale-builder/app.json
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
