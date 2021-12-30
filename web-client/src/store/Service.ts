@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Pattern, Prediction, Route, Vehicle } from './Store.Types';
+import { AppStatus, Pattern, Prediction, Route, Vehicle } from './Store.Types';
 
 const Http = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
@@ -53,6 +53,12 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
             stop,
         },
     });
+
+    return data;
+};
+
+export const getAppStatus = async (): Promise<AppStatus> => {
+    const { data } = await Http.get<AppStatus>('/app-status');
 
     return data;
 };

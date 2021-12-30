@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import {
     Box,
@@ -15,18 +15,42 @@ import {
     Radio,
     RadioGroup,
     Stack,
+    Spinner,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { IoIosClose } from 'react-icons/io';
 
 import { useStore } from '../store/Store';
-import { ColorMode } from '../store/Store.Types';
+import { ColorMode, Status } from '../store/Store.Types';
 import { Locale, LocaleLabels } from '../i18n/Config';
+import { getAppStatus } from '../store/Service';
+
+const StatusMapper = {
+    [Status.Success]: 'green.300',
+    [Status.InProgress]: 'orange.300',
+    [Status.Failure]: 'red.300',
+};
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
     const [{ settingsOpen, settings }, { closeSettings, setColorMode, setLocale }] = useStore();
     const { toggleColorMode } = useColorMode();
+    const [status, setStatus] = useState<{ web: string; server: string } | null>(null);
+
+    useEffect(() => {
+        if (settingsOpen) {
+            (async () => {
+                try {
+                    const response = await getAppStatus();
+                    setStatus({
+                        web: response.web,
+                        server: response.server,
+                    });
+                } catch (err) {}
+            })();
+        }
+    }, [settingsOpen]);
 
     const onDarkModeToggle = () => {
         toggleColorMode();
@@ -94,20 +118,40 @@ export const Settings: FunctionComponent = () => {
                         <Text fontWeight="bold" color="gray.400" fontSize="sm">
                             {t('STATUS')}
                         </Text>
-                        <Flex justifyContent="space-between" alignItems="center" mt="2">
-                            <Text>{t('WEBSITE')}</Text>
-                            <Flex alignItems="center">
-                                <Box h="10px" w="10px" bg="green.300" borderRadius="50%" />
-                                <Text pl="2">Live</Text>
-                            </Flex>
-                        </Flex>
-                        <Flex justifyContent="space-between" alignItems="center" mt="2">
-                            <Text>{t('SERVER')}</Text>
-                            <Flex alignItems="center" borderRadius="50%">
-                                <Box h="10px" w="10px" bg="green.300" borderRadius="50%" />
-                                <Text pl="2">Live</Text>
-                            </Flex>
-                        </Flex>
+                        {status ? (
+                            <>
+                                <Flex justifyContent="space-between" alignItems="center" mt="2">
+                                    <Text>{t('WEBSITE')}</Text>
+                                    <Flex alignItems="center">
+                                        <Box
+                                            h="10px"
+                                            w="10px"
+                                            bg={StatusMapper[status.web as Status]}
+                                            borderRadius="50%"
+                                        />
+                                        <Text pl="2" color="gray.400">
+                                            Live
+                                        </Text>
+                                    </Flex>
+                                </Flex>
+                                <Flex justifyContent="space-between" alignItems="center" mt="2">
+                                    <Text>{t('SERVER')}</Text>
+                                    <Flex alignItems="center" borderRadius="50%">
+                                        <Box
+                                            h="10px"
+                                            w="10px"
+                                            bg={StatusMapper[status.server as Status]}
+                                            borderRadius="50%"
+                                        />
+                                        <Text pl="2" color="gray.400">
+                                            Live
+                                        </Text>
+                                    </Flex>
+                                </Flex>{' '}
+                            </>
+                        ) : (
+                            <Spinner size="sm" color="blue.400" />
+                        )}
                     </Box>
                 </DrawerBody>
             </DrawerContent>

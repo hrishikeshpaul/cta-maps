@@ -7,6 +7,8 @@ import { Http } from './http.js';
 
 dotenv.config();
 
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
 export const getRoutes = async () => {
     const { data, error } = await Http.get(`/getroutes`);
 
@@ -55,8 +57,8 @@ export const getPredictions = async (stop) => {
 
 export const getGitHubWorkflow = async () => {
     const [{ data: web }, { data: server }] = await Promise.all([
-        axios.get(process.env.GITHUB_WORKFLOW_WEB_URL),
-        axios.get(process.env.GITHUB_WORKFLOW_SERVER_URL),
+        axios.get(process.env.GITHUB_WORKFLOW_WEB_URL, { headers: { Authorization: `token ${GITHUB_TOKEN}` } }),
+        axios.get(process.env.GITHUB_WORKFLOW_SERVER_URL, { headers: { Authorization: `token ${GITHUB_TOKEN}` } }),
     ]);
 
     return { web, server };

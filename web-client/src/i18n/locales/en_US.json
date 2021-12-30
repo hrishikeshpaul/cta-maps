@@ -31,5 +31,8 @@
     "INACTIVE_MESSAGE": "Due to inactivity, your selected routes have been reset.",
     "STILL_HERE": "Still here",
     "I_BACK": "I'm back",
-    "DELAYED": "Delayed"
+    "DELAYED": "Delayed",
+    "STATUS": "Status",
+    "SERVER": "Server",
+    "WEBSITE": "Website"
 }

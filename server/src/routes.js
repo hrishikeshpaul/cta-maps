@@ -22,6 +22,17 @@ const convertTimestamp = (timestamp) => {
     return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)} ${time}`;
 };
 
+const checkStatus = (status) => {
+    if (status.conclusion && status.status === 'completed') {
+        if (status.conclusion === 'failure') {
+            return 'failure';
+        } else if (status.conclusion === 'success') {
+            return 'success';
+        }
+    }
+    return 'in_progress';
+};
+
 const router = express.Router();
 
 router.get('/routes', async (req, res) => {
@@ -138,17 +149,12 @@ router.get('/app-status', async (req, res) => {
         const data = await getGitHubWorkflow();
 
         const response = {
-            web: {
-                conclusion: data.web.workflow_runs[0].conclusion,
-                status: data.web.workflow_runs[0].status,
-            },
-            server: {
-                conclusion: data.server.workflow_runs[0].conclusion,
-                status: data.server.workflow_runs[0].status,
-            },
+            web: checkStatus(data.web.workflow_runs[0]),
+            server: checkStatus(data.server.workflow_runs[0]),
         };
         res.send(response);
     } catch (err) {
+        console.log(err);
         res.status(400).send('Failed to update app status');
     }
 });

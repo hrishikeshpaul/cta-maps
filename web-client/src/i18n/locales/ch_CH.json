@@ -31,5 +31,6 @@
   "INACTIVE_MESSAGE": "由于不活动，您选择的路线已被重置。",
   "STILL_HERE": "仍在这里",
   "I_BACK": "我回来了",
-  "DELAYED": "延迟"
+  "DELAYED": "延迟",
+  "STATUS": "地位"
 }
