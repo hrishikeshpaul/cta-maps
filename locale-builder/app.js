@@ -1,13 +1,12 @@
-'use strict';
+"use strict";
 
-require('dotenv').config()
+require("dotenv").config();
+
 const { Translate } = require("@google-cloud/translate").v2;
 
-const projectId = "loco-330103";
-
 const translate = new Translate({
-  projectId,
-  key: "AIzaSyCVcZkyBlNCIdwz7Kzc3EIJSDzGv9uwwZ8",
+  projectId: process.env.GOOGLE_PROJECT_ID,
+  key: process.env.GOOGLE_API_KEY,
 });
 
 async function quickStart() {
