@@ -2,10 +2,12 @@ name: Deploy Server to Heroku
 
 'on':
   push:
-   paths:
-    - server/**
-   branches:
-    - main
+    paths:
+      - server/**
+    paths-ignore:
+      - '**/src/res/en.json'
+    branches:
+      - main
     
 jobs:
   custom-deploy:
