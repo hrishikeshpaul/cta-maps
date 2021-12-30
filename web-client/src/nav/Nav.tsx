@@ -31,7 +31,7 @@ export const Nav: FunctionComponent = () => {
             opacity={dragging ? '0.25' : '1'}
             transition="0.25s opacity ease-in-out"
         >
-            <Avatar src="/logo.svg" size="sm" boxShadow="lg" onClick={openInfo} h="40px" w="40px" />
+            <Avatar src="/logo.svg" size="sm" boxShadow="lg" onClick={openInfo} h="40px" w="40px" cursor="pointer" />
             <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
                 <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : buttonColor}>
                     {t('ROUTES')}
