@@ -23,7 +23,6 @@ jobs:
         run: npm install
 
       - name: Translate using Node script
-        working-directory:
         run: |
           cp server/src/res/en.json locale-builder/resources/en.json
           cd locale-builder

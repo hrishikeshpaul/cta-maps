@@ -129,7 +129,7 @@ export const Settings: FunctionComponent = () => {
                                             borderRadius="50%"
                                         />
                                         <Text pl="2" color="gray.400">
-                                            Live
+                                            {t('LIVE')}
                                         </Text>
                                     </Flex>
                                 </Flex>
@@ -143,7 +143,7 @@ export const Settings: FunctionComponent = () => {
                                             borderRadius="50%"
                                         />
                                         <Text pl="2" color="gray.400">
-                                            Live
+                                            {t('LIVE')}
                                         </Text>
                                     </Flex>
                                 </Flex>{' '}
