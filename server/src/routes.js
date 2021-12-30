@@ -1,7 +1,7 @@
 'use strict';
 
 import express from 'express';
-import { getPatterns, getRoutes, getVehicles, getPredictions, getGitHubWorkflow } from './util.js';
+import { getPatterns, getRoutes, getVehicles, getPredictions, getGitHubWorkflow, getLocaleJson } from './util.js';
 
 const checkHeading = (heading) => {
     if (heading >= 0 && heading <= 90) {
@@ -154,8 +154,19 @@ router.get('/app-status', async (req, res) => {
         };
         res.send(response);
     } catch (err) {
-        console.log(err);
         res.status(400).send('Failed to update app status');
+    }
+});
+
+router.get('/locale/:lng', async (req, res) => {
+    const lng = req.params.lng;
+
+    try {
+        const { data, status } = await getLocaleJson(lng);
+
+        res.send({ data, status });
+    } catch (err) {
+        res.status(400).send('Failed to get locale');
     }
 });
 

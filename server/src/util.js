@@ -65,5 +65,7 @@ export const getGitHubWorkflow = async () => {
 };
 
 export const getLocaleJson = async (lng) => {
-    
-}
+    const { data, status } = await axios.get(`${process.env.LOCALE_URL}/${lng}.json`);
+
+    return { data, status };
+};
