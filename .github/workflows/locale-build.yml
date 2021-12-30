@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Run node script
-        working-directory: ./locales
+        working-directory: ./locale-builder
         run: node app.js
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
