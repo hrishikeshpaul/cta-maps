@@ -1,4 +1,6 @@
-import i18n from 'i18next';
+import axios from 'axios';
+import i18n, { InitOptions } from 'i18next';
+import HttpApi from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
 export enum Locale {
@@ -13,23 +15,29 @@ export const LocaleLabels = {
     [Locale.CH]: 'CHINESE',
 };
 
-i18n.use(initReactI18next).init({
+const initOptions: InitOptions = {
     fallbackLng: Locale.EN,
     lng: Locale.EN,
-    resources: {
-        [Locale.EN]: {
-            translations: require('./locales/en_US.json'),
-        },
-        [Locale.ES]: {
-            translations: require('./locales/es_ES.json'),
-        },
-        [Locale.CH]: {
-            translations: require('./locales/ch_CH.json'),
-        },
-    },
     ns: ['translations'],
     defaultNS: 'translations',
-});
+    react: {
+        useSuspense: false,
+    },
+    backend: {
+        allowMultiLoading: true,
+        loadPath:
+            'https://raw.githubusercontent.com/hrishikeshpaul/cta-maps/main/web-client/src/i18n/locales/{{lng}}_US.json',
+        request: async (options, url, payload, callback) => {
+            const { data, status } = await axios.get(url);
+            callback(null, { data, status });
+        },
+        requestOptions: {
+            cache: 'default',
+        },
+    },
+};
+
+i18n.use(initReactI18next).use(HttpApi).init(initOptions);
 
 i18n.languages = [Locale.EN, Locale.EN, Locale.CH];
 
