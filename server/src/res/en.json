@@ -1,4 +1,5 @@
 {
     "ROUTES": "Routes",
-    "SELECT_ROUTES": "Select Routes"
+    "SELECT_ROUTES": "Select Routes",
+    "ROUTE_SEARCH_PLACEHOLDER": "Bus Number/Name..."
 }
