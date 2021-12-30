@@ -37,4 +37,5 @@ jobs:
           git config --global user.name "${{ secrets.LOCALE_PUSH_NAME }}"
           git add .
           git commit -m 'chore: update locale resources'
+          git pull origin main
           git subtree push --prefix locale-builder origin main
