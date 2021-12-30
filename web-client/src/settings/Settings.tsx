@@ -8,6 +8,7 @@ import {
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
+    DrawerFooter,
     Text,
     IconButton,
     Flex,
@@ -38,18 +39,16 @@ export const Settings: FunctionComponent = () => {
     const [status, setStatus] = useState<{ web: string; server: string } | null>(null);
 
     useEffect(() => {
-        if (settingsOpen) {
-            (async () => {
-                try {
-                    const response = await getAppStatus();
-                    setStatus({
-                        web: response.web,
-                        server: response.server,
-                    });
-                } catch (err) {}
-            })();
-        }
-    }, [settingsOpen]);
+        (async () => {
+            try {
+                const response = await getAppStatus();
+                setStatus({
+                    web: response.web,
+                    server: response.server,
+                });
+            } catch (err) {}
+        })();
+    }, []);
 
     const onDarkModeToggle = () => {
         toggleColorMode();
@@ -153,6 +152,9 @@ export const Settings: FunctionComponent = () => {
                         )}
                     </Box>
                 </DrawerBody>
+                <DrawerFooter justifyContent="center">
+                    
+                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     );

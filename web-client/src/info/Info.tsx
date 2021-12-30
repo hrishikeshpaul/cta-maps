@@ -87,7 +87,7 @@ export const Info: FunctionComponent = () => {
                         </Flex>
                     </Box>
                 </DrawerBody>
-                <DrawerFooter justifyContent="flex-start" px="4">
+                <DrawerFooter justifyContent="flex-start" flexDir="column" px="4">
                     <Text fontSize="sm">
                         {t('CONTRIBUTE')}{' '}
                         <Link
@@ -98,6 +98,9 @@ export const Info: FunctionComponent = () => {
                             {t('START_HERE')}
                         </Link>
                         .
+                    </Text>
+                    <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.200')}>
+                        © 2021 CTA Maps. All rights reserved.
                     </Text>
                 </DrawerFooter>
             </DrawerContent>
