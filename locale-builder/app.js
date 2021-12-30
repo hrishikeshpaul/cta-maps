@@ -5,7 +5,7 @@ require("dotenv").config();
 const { Translate } = require("@google-cloud/translate").v2;
 const fs = require("fs");
 
-const locales = ["es", "ch"];
+const locales = ["es", "zh"];
 
 const translate = new Translate({
   projectId: process.env.GOOGLE_PROJECT_ID,
@@ -13,13 +13,27 @@ const translate = new Translate({
 });
 
 async function convert() {
-  const text = "Hello, world!";
+  const englishLocaleJson = JSON.parse(fs.readFileSync("resources/en.json"));
 
-  const target = "zh";
+  locales.forEach(async (locale) => {
+    const output = {};
+    const promises = [];
 
-  const [translation] = await translate.translate(text, target);
-  console.log(`Text: ${text}`);
-  console.log(`Translation: ${translation}`);
+    Object.keys(englishLocaleJson).forEach((key) => {
+      promises.push(translate.translate(englishLocaleJson[key], locale));
+    });
+
+    const response = await Promise.all(promises);
+
+    Object.keys(englishLocaleJson).forEach((key, i) => {
+      output[key] = response[i][0];
+    });
+
+    fs.writeFileSync(
+      `resources/${locale}.json`,
+      JSON.stringify(output, null, 2)
+    );
+  });
 }
 
 convert();

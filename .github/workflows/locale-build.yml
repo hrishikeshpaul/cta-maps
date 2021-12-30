@@ -1,23 +1,31 @@
 name: Build Locales
 
-'on':
+"on":
   push:
-   paths:
-    - server/src/res/en.json
-   branches:
-    - main
+    paths:
+      - server/src/res/en.json
+    branches:
+      - main
 jobs:
   build-locales:
     runs-on: ubuntu-latest
     steps:
-        - name: Check out repository
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v1
-          with:
-            node-version: ${{ matrix.node-version }}
-        - name: Run node script
-          working-directory: ./locales
-          run: node app.js
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run node script
+        working-directory: ./locales
+        run: node app.js
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+      - name: Update Resources
+        run: |
+          git add .
+          git commit -m 'chore: update locale resources'
+          git subtree push --prefix locale-builder origin main
