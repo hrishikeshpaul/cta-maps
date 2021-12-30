@@ -8,7 +8,6 @@ import {
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
-    DrawerFooter,
     Text,
     IconButton,
     Flex,
@@ -152,9 +151,6 @@ export const Settings: FunctionComponent = () => {
                         )}
                     </Box>
                 </DrawerBody>
-                <DrawerFooter justifyContent="center">
-                    
-                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     );
