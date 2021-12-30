@@ -16,7 +16,6 @@ import {
     RadioGroup,
     Stack,
     Spinner,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { IoIosClose } from 'react-icons/io';
