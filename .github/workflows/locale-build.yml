@@ -3,7 +3,7 @@ name: Build Locales
 'on':
   push:
    paths:
-    - server/res/en.json
+    - server/src/res/en.json
    branches:
     - main
 jobs:
