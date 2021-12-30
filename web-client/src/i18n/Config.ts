@@ -7,13 +7,13 @@ import { getLocaleJson } from '../store/Service';
 export enum Locale {
     EN = 'en',
     ES = 'es',
-    CH = 'ch',
+    ZH = 'zh',
 }
 
 export const LocaleLabels = {
     [Locale.EN]: 'ENGLISH',
     [Locale.ES]: 'ESPANOL',
-    [Locale.CH]: 'CHINESE',
+    [Locale.ZH]: 'CHINESE',
 };
 
 const initOptions: InitOptions = {
@@ -43,6 +43,6 @@ const initOptions: InitOptions = {
 
 i18n.use(initReactI18next).use(HttpApi).init(initOptions);
 
-i18n.languages = [Locale.EN, Locale.EN, Locale.CH];
+i18n.languages = [Locale.EN, Locale.EN, Locale.ZH];
 
 export default i18n;
