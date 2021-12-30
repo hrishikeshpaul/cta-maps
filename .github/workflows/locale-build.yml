@@ -9,15 +9,15 @@ name: Build Locales
 jobs:
   build-locales:
     runs-on: ubuntu-latest
-  steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Run node script
-        working-directory: ./locales
-        run: node app.js
+    steps:
+        - name: Check out repository
+          uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v1
+          with:
+            node-version: ${{ matrix.node-version }}
+        - name: Run node script
+          working-directory: ./locales
+          run: node app.js
