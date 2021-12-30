@@ -63,3 +63,7 @@ export const getGitHubWorkflow = async () => {
 
     return { web, server };
 };
+
+export const getLocaleJson = async (lng) => {
+    
+}
