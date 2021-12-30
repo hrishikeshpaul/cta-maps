@@ -34,5 +34,6 @@
     "DELAYED": "Delayed",
     "STATUS": "Status",
     "SERVER": "Server",
-    "WEBSITE": "Website"
+    "WEBSITE": "Website",
+    "HELLO": "Hello"
 }
