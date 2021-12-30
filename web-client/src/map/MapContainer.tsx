@@ -30,10 +30,14 @@ const basePolylineOptions = {
 };
 
 const VehicleIconMapper = {
-    N: '/bus-north.svg',
-    S: '/bus-south.svg',
-    W: '/bus-west.svg',
-    E: '/bus-east.svg',
+    N: `bus/n.svg`,
+    NE: `bus/ne.svg`,
+    NW: `bus/nw.svg`,
+    S: `bus/s.svg`,
+    SE: `bus/se.svg`,
+    SW: `bus/sw.svg`,
+    W: `bus/w.svg`,
+    E: `bus/e.svg`,
 };
 
 interface Line extends PolylineProps {
@@ -189,6 +193,7 @@ export const MapContainer: FunctionComponent = () => {
                         <>
                             {vehicles.map((vehicle) => (
                                 <Marker
+                                    zIndex={5}
                                     icon={VehicleIconMapper[vehicle.heading]}
                                     position={vehicle.position}
                                     key={vehicle.id}
@@ -202,6 +207,7 @@ export const MapContainer: FunctionComponent = () => {
                             {showStops &&
                                 line.stops.map((stop) => (
                                     <Marker
+                                        zIndex={4}
                                         icon="/stop.svg"
                                         position={{ lat: stop.lat, lng: stop.lng }}
                                         key={`stop-${stop.id}`}

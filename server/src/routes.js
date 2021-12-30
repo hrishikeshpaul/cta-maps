@@ -5,14 +5,22 @@ import express from 'express';
 import { getPatterns, getRoutes, getVehicles, getPredictions, getGitHubWorkflow, getLocaleJson } from './util.js';
 
 const checkHeading = (heading) => {
-    if (heading >= 0 && heading <= 90) {
+    if (heading >= 0 && heading <= 45) {
         return 'N';
-    } else if (heading > 90 && heading <= 180) {
+    } else if (heading > 45 && heading <= 90) {
+        return 'NE';
+    } else if (heading > 90 && heading <= 135) {
         return 'E';
-    } else if (heading > 180 && heading <= 270) {
+    } else if (heading > 135 && heading <= 180) {
+        return 'SE';
+    } else if (heading > 180 && heading <= 225) {
         return 'S';
-    } else if (heading > 270 && heading <= 360) {
+    } else if (heading > 225 && heading <= 270) {
+        return 'SW';
+    } else if (heading > 270 && heading <= 315) {
         return 'W';
+    } else if (heading > 315 && heading <= 360) {
+        return 'NW';
     } else {
         return 'F';
     }
