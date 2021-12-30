@@ -2,6 +2,7 @@ import axios from 'axios';
 import i18n, { InitOptions } from 'i18next';
 import HttpApi from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
+import { getLocaleJson } from '../store/Service';
 
 export enum Locale {
     EN = 'en',
@@ -25,11 +26,16 @@ const initOptions: InitOptions = {
     },
     backend: {
         allowMultiLoading: true,
-        loadPath:
-            'https://raw.githubusercontent.com/hrishikeshpaul/cta-maps/main/web-client/src/i18n/locales/{{lng}}.json',
-        request: async (options, url, payload, callback) => {
-            const { data, status } = await axios.get(url);
-            callback(null, { data, status });
+        loadPath: '/locale/{{lng}}',
+        request: async (_, url, __, callback) => {
+            console.log(url);
+            try {
+                const { data, status } = await getLocaleJson(url);
+                callback(null, { data, status });
+            } catch (err: any) {
+                console.log(err.response);
+                callback(err, { data: err.response.status, status: err.response.status });
+            }
         },
         requestOptions: {
             cache: 'default',

@@ -2,6 +2,11 @@ import axios from 'axios';
 
 import { AppStatus, Pattern, Prediction, Route, Vehicle } from './Store.Types';
 
+interface LocaleResponse {
+    data: string;
+    status: number;
+}
+
 const Http = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
 });
@@ -61,4 +66,10 @@ export const getAppStatus = async (): Promise<AppStatus> => {
     const { data } = await Http.get<AppStatus>('/app-status');
 
     return data;
+};
+
+export const getLocaleJson = async (url: string): Promise<LocaleResponse> => {
+    const { data, status } = await Http.get(url);
+
+    return { data, status };
 };

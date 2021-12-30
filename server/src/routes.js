@@ -1,5 +1,6 @@
 'use strict';
 
+import fs from 'fs';
 import express from 'express';
 import { getPatterns, getRoutes, getVehicles, getPredictions, getGitHubWorkflow, getLocaleJson } from './util.js';
 
@@ -166,7 +167,7 @@ router.get('/locale/:lng', async (req, res) => {
 
         res.send({ data, status });
     } catch (err) {
-        res.status(400).send('Failed to get locale');
+        res.send(JSON.parse(fs.readFileSync('src/res/en.json')));
     }
 });
 
