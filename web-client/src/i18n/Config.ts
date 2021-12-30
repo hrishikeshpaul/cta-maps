@@ -26,7 +26,7 @@ const initOptions: InitOptions = {
     backend: {
         allowMultiLoading: true,
         loadPath:
-            'https://raw.githubusercontent.com/hrishikeshpaul/cta-maps/main/web-client/src/i18n/locales/{{lng}}_US.json',
+            'https://raw.githubusercontent.com/hrishikeshpaul/cta-maps/main/web-client/src/i18n/locales/{{lng}}.json',
         request: async (options, url, payload, callback) => {
             const { data, status } = await axios.get(url);
             callback(null, { data, status });
