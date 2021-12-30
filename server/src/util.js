@@ -1,6 +1,11 @@
 'use strict';
 
+import axios from 'axios';
+import dotenv from 'dotenv';
+
 import { Http } from './http.js';
+
+dotenv.config();
 
 export const getRoutes = async () => {
     const { data, error } = await Http.get(`/getroutes`);
@@ -46,4 +51,13 @@ export const getPredictions = async (stop) => {
     }
 
     return data['prd'];
+};
+
+export const getGitHubWorkflow = async () => {
+    const [{ data: web }, { data: server }] = await Promise.all([
+        axios.get(process.env.GITHUB_WORKFLOW_WEB_URL),
+        axios.get(process.env.GITHUB_WORKFLOW_SERVER_URL),
+    ]);
+
+    return { web, server };
 };

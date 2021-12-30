@@ -55,6 +55,4 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     });
 
     return data;
-
-    // return MockPredictions as Prediction[];
 };

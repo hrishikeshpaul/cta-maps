@@ -1,7 +1,7 @@
 'use strict';
 
 import express from 'express';
-import { getPatterns, getRoutes, getVehicles, getPredictions } from './util.js';
+import { getPatterns, getRoutes, getVehicles, getPredictions, getGitHubWorkflow } from './util.js';
 
 const checkHeading = (heading) => {
     if (heading >= 0 && heading <= 90) {
@@ -130,6 +130,26 @@ router.get('/predictions', async (req, res) => {
         res.send(data);
     } catch (err) {
         res.status(400).send(err);
+    }
+});
+
+router.get('/app-status', async (req, res) => {
+    try {
+        const data = await getGitHubWorkflow();
+
+        const response = {
+            web: {
+                conclusion: data.web.workflow_runs[0].conclusion,
+                status: data.web.workflow_runs[0].status,
+            },
+            server: {
+                conclusion: data.server.workflow_runs[0].conclusion,
+                status: data.server.workflow_runs[0].status,
+            },
+        };
+        res.send(response);
+    } catch (err) {
+        res.status(400).send('Failed to update app status');
     }
 });
 

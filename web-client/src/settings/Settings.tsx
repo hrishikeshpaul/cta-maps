@@ -90,6 +90,25 @@ export const Settings: FunctionComponent = () => {
                             </RadioGroup>
                         </Flex>
                     </Box>
+                    <Box mt="8">
+                        <Text fontWeight="bold" color="gray.400" fontSize="sm">
+                            {t('STATUS')}
+                        </Text>
+                        <Flex justifyContent="space-between" alignItems="center" mt="2">
+                            <Text>{t('WEBSITE')}</Text>
+                            <Flex alignItems="center">
+                                <Box h="10px" w="10px" bg="green.300" borderRadius="50%" />
+                                <Text pl="2">Live</Text>
+                            </Flex>
+                        </Flex>
+                        <Flex justifyContent="space-between" alignItems="center" mt="2">
+                            <Text>{t('SERVER')}</Text>
+                            <Flex alignItems="center" borderRadius="50%">
+                                <Box h="10px" w="10px" bg="green.300" borderRadius="50%" />
+                                <Text pl="2">Live</Text>
+                            </Flex>
+                        </Flex>
+                    </Box>
                 </DrawerBody>
             </DrawerContent>
         </Drawer>
