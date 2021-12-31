@@ -14,6 +14,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const cacheKeys = {
     locale: 'locale-cache',
     routes: 'routes-cache',
+    pattern: (route) => `pattern-${route}-cache`,
 };
 
 export const getRoutes = async () => {
@@ -50,6 +51,14 @@ export const getVehicles = async (routes) => {
 };
 
 export const getPatterns = async (route) => {
+    const key = cacheKeys.pattern(route);
+    const pattern = cache.get(key);
+
+    if (pattern) {
+        cache.log_hit(key);
+        return pattern;
+    }
+
     const { data, error } = await Http.get('/getpatterns', {
         params: { rt: route },
     });
@@ -57,6 +66,9 @@ export const getPatterns = async (route) => {
     if (error) {
         throw error;
     }
+
+    cache.log_miss(key);
+    cache.set(key, data['ptr']);
 
     return data['ptr'];
 };

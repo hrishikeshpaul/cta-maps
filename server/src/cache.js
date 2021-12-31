@@ -12,10 +12,16 @@ export class Cache {
     }
 
     set(key, value) {
-        return this.cache.set(key, value);
+        this.cache.set(key, value);
+        this.log_stats();
+    }
+
+    log_stats() {
+        console.info(this.cache.getStats());
     }
 
     log_hit(key) {
+        this.log_stats();
         console.info(`Cache Hit - [${key}]`);
     }
 
