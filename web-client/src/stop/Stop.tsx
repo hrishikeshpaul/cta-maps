@@ -56,6 +56,7 @@ export const Stop: FunctionComponent = () => {
                     setLoading(false);
                 }
             } catch (err: any) {
+                setLoading(false);
                 toast({
                     description: err.response.data,
                     status: 'error',

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Locale } from './i18n/Config';
 import { IdleAlert } from './idle/Idle';
 import { Info } from './info/Info';
 import { MapContainer } from './map/MapContainer';
@@ -14,6 +13,7 @@ import { StoreProvider } from './store/Store';
 import { LocaleKey } from './store/Store.Types';
 
 import './App.scss';
+import { LocaleProvider, Locale } from './i18n/LocaleProvider';
 
 export const App = () => {
     const { i18n } = useTranslation();
@@ -25,6 +25,7 @@ export const App = () => {
     return (
         <div className="App">
             <StoreProvider>
+                <LocaleProvider />
                 <IdleAlert />
                 <Nav />
                 <RouteSelect />

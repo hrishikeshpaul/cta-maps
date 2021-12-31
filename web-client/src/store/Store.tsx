@@ -4,7 +4,7 @@ import { useToast } from '@chakra-ui/react';
 
 import { getPattern, getRoutes } from './Service';
 import { Route, StoreState, Pattern, Stop, Point, ColorMode, ColorModeKey, LocaleKey } from './Store.Types';
-import { Locale } from '../i18n/Config';
+import { Locale } from '../i18n/LocaleProvider';
 
 export enum StoreActionType {
     SetRouteSelect,
@@ -21,6 +21,7 @@ export enum StoreActionType {
     SetColorMode,
     SetLocale,
     SetIdleAlert,
+    SetSystemLoading,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -85,6 +86,10 @@ interface PayloadSetIdleAlert {
     open: boolean;
 }
 
+interface PayloadSetSystemLoading {
+    loading: boolean;
+}
+
 interface StoreAction {
     type: StoreActionType;
     payload?:
@@ -102,7 +107,8 @@ interface StoreAction {
         | PayloadSetSettingsDrawer
         | PayloadSetColorMode
         | PayloadSetLocale
-        | PayloadSetIdleAlert;
+        | PayloadSetIdleAlert
+        | PayloadSetSystemLoading;
 }
 
 interface StoreProviderProps {
@@ -110,6 +116,7 @@ interface StoreProviderProps {
 }
 
 export const initialStoreState: StoreState = {
+    systemLoading: true,
     routeSelectOpen: false,
     idleAlertOpen: false,
     dragging: false,
@@ -212,6 +219,11 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                 ...state,
                 idleAlertOpen: (action.payload as PayloadSetIdleAlert).open,
             };
+        case StoreActionType.SetSystemLoading:
+            return {
+                ...state,
+                systemLoading: (action.payload as PayloadSetSystemLoading).loading,
+            };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -268,6 +280,7 @@ interface StoreActionApis {
     setLocale: (locale: Locale) => void;
     openIdleAlert: () => void;
     closeIdleAlert: () => void;
+    setSystemLoading: (loading: boolean) => void;
 }
 
 export const useStore = (): [StoreState, StoreActionApis] => {
@@ -356,6 +369,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
         },
         closeIdleAlert: () => {
             dispatch({ type: StoreActionType.SetIdleAlert, payload: { open: false } });
+        },
+        setSystemLoading: (loading: boolean) => {
+            dispatch({ type: StoreActionType.SetSystemLoading, payload: { loading } });
         },
     };
 

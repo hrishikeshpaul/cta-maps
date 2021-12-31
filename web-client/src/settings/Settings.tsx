@@ -22,7 +22,7 @@ import { IoIosClose } from 'react-icons/io';
 
 import { useStore } from '../store/Store';
 import { ColorMode, Status } from '../store/Store.Types';
-import { Locale, LocaleLabels } from '../i18n/Config';
+import { Locale, LocaleLabels } from '../i18n/LocaleProvider';
 import { getAppStatus } from '../store/Service';
 
 const StatusMapper = {

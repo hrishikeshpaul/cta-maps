@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { ChakraProvider, extendTheme, theme as ChakraTheme, ThemeConfig, ColorModeScript } from '@chakra-ui/react';
 
 import { App } from './App';
-import './i18n/Config';
+// import './i18n/Config';
 
 import reportWebVitals from './reportWebVitals';
 import './index.scss';
