@@ -2,7 +2,7 @@ import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Di
 
 import { useToast } from '@chakra-ui/react';
 
-import { getPattern, getRoutes } from './Service';
+import { cancelGetPattern, cancelGetSingleVehicle, cancelGetVehicles, getPattern, getRoutes } from './Service';
 import { Route, StoreState, Pattern, Stop, Point, ColorMode, ColorModeKey, LocaleKey } from './Store.Types';
 import { Locale } from '../i18n/LocaleProvider';
 
@@ -333,6 +333,9 @@ export const useStore = (): [StoreState, StoreActionApis] => {
             }
         },
         removeRoute: (id: string) => {
+            cancelGetSingleVehicle();
+            cancelGetPattern();
+            cancelGetVehicles();
             dispatch({ type: StoreActionType.RemoveRoute, payload: { id } });
         },
         removeAllRoutes: () => {

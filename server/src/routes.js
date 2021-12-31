@@ -73,7 +73,9 @@ router.get('/vehicles', async (req, res) => {
             heading: checkHeading(parseInt(item.hdg, 10)),
         }));
 
-        res.send(data);
+        setTimeout(() => {
+            res.send(data);
+        }, 2000);
     } catch (err) {
         res.status(400).send(err);
     }

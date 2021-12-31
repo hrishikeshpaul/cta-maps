@@ -10,6 +10,10 @@ interface LocaleResponse {
 const Http = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
 });
+const { CancelToken } = axios;
+let cancelVehiclesSource = CancelToken.source();
+let cancelSingleVehicleSource = CancelToken.source();
+let cancelGetPatternSource = CancelToken.source();
 
 export const getRoutes = async (): Promise<Route[]> => {
     const { data } = await Http.get<Route[]>('/routes');
@@ -27,9 +31,15 @@ export const getPattern = async (route: string, color: string): Promise<Pattern[
             route,
             color,
         },
+        cancelToken: cancelGetPatternSource.token,
     });
 
     return data;
+};
+
+export const cancelGetPattern = (): void => {
+    cancelGetPatternSource.cancel();
+    cancelGetPatternSource = CancelToken.source();
 };
 
 export const getVehicles = async (rt: string[]): Promise<Vehicle[]> => {
@@ -37,9 +47,15 @@ export const getVehicles = async (rt: string[]): Promise<Vehicle[]> => {
         params: {
             rt: rt.join(','),
         },
+        cancelToken: cancelVehiclesSource.token,
     });
 
     return data;
+};
+
+export const cancelGetVehicles = (): void => {
+    cancelVehiclesSource.cancel();
+    cancelVehiclesSource = CancelToken.source();
 };
 
 export const getSingleVehicle = async (rt: string): Promise<Vehicle[]> => {
@@ -47,9 +63,15 @@ export const getSingleVehicle = async (rt: string): Promise<Vehicle[]> => {
         params: {
             rt,
         },
+        cancelToken: cancelSingleVehicleSource.token,
     });
 
     return data;
+};
+
+export const cancelGetSingleVehicle = (): void => {
+    cancelSingleVehicleSource.cancel();
+    cancelSingleVehicleSource = CancelToken.source();
 };
 
 export const getPredictions = async (stop: string): Promise<Prediction[]> => {

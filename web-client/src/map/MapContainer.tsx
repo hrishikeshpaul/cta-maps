@@ -132,9 +132,11 @@ export const MapContainer: FunctionComponent = () => {
                 stops: pattern.stops,
             };
 
-            setPaths([...paths, ...pattern.paths]);
+            setPaths((p) => [...p, ...pattern.paths]);
             lines.push(newLine);
         });
+
+        console.log({ routes });
 
         if (routes.size) {
             routes.forEach(async (route) => {
@@ -157,7 +159,7 @@ export const MapContainer: FunctionComponent = () => {
         }
 
         setLines(lines);
-    }, [patterns]); // eslint-disable-line
+    }, [patterns]);
 
     useEffect(() => {
         if (map) {
