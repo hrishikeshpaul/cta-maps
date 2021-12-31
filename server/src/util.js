@@ -2,12 +2,18 @@
 
 import axios from 'axios';
 import dotenv from 'dotenv';
+import NodeCache from 'node-cache';
 
 import { Http } from './http.js';
 
 dotenv.config();
 
+const ttl = 60 * 60 * 24;
+const cache = new NodeCache({ stdTTL: ttl, checkperiod: ttl * 0.2, useClones: false });
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const cacheKeys = {
+    locale: 'locale-cache',
+};
 
 export const getRoutes = async () => {
     const { data, error } = await Http.get(`/getroutes`);
@@ -65,7 +71,17 @@ export const getGitHubWorkflow = async () => {
 };
 
 export const getLocaleJson = async (lng) => {
+    const value = cache.get(cacheKeys.locale);
+    
+    if (value) {
+        console.info(`[${cacheKeys.locale}] cache hit`);
+        return Promise.resolve(value);
+    }
+
     const { data, status } = await axios.get(`${process.env.LOCALE_URL}/${lng}.json`);
+
+    cache.set(cacheKeys.locale, { data, status });
+    console.info(`[${cacheKeys.locale}] cache miss`);
 
     return { data, status };
 };
