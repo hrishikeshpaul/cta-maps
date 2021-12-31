@@ -71,6 +71,9 @@ export const MapContainer: FunctionComponent = () => {
     };
 
     const onGetCurrentLocation = () => {
+        toast.closeAll();
+        toast({ description: t('RETRIEVING_LOCATION'), status: 'info' });
+
         navigator.geolocation.getCurrentPosition(
             function (position) {
                 const latLng = { lat: position.coords.latitude, lng: position.coords.longitude };

@@ -6,6 +6,7 @@ import { initReactI18next } from 'react-i18next';
 
 import { getLocaleJson } from '../store/Service';
 import { useStore } from '../store/Store';
+import { LocaleKey } from '../store/Store.Types';
 
 export enum Locale {
     EN = 'en',
@@ -20,37 +21,46 @@ export const LocaleLabels = {
 };
 
 export const LocaleProvider: FunctionComponent = () => {
-    const [] = useStore();
-    
+    const [, { setSystemLoading }] = useStore();
+
     useEffect(() => {
         i18n.languages = [Locale.EN, Locale.EN, Locale.ZH];
 
         i18n.use(initReactI18next)
             .use(HttpApi)
-            .init({
-                fallbackLng: Locale.EN,
-                lng: Locale.EN,
-                ns: ['translations'],
-                defaultNS: 'translations',
-                react: {
-                    useSuspense: false,
-                },
-                backend: {
-                    allowMultiLoading: true,
-                    loadPath: '/locale/{{lng}}',
-                    request: async (_, url, __, callback) => {
-                        try {
-                            const { data, status } = await getLocaleJson(url);
-                            callback(null, { data, status });
-                        } catch (err: any) {
-                            console.log(err.response);
-                        }
+            .init(
+                {
+                    fallbackLng: Locale.EN,
+                    lng: Locale.EN,
+                    ns: ['translations'],
+                    defaultNS: 'translations',
+                    react: {
+                        useSuspense: false,
                     },
-                    requestOptions: {
-                        cache: 'default',
+                    backend: {
+                        allowMultiLoading: true,
+                        loadPath: '/locale/{{lng}}',
+                        request: async (_, url, __, callback) => {
+                            try {
+                                setTimeout(async () => {
+                                    const { data, status } = await getLocaleJson(url);
+                                    callback(null, { data, status });
+                                    setSystemLoading(false);
+                                }, 2000);
+                            } catch (err: any) {
+                                console.log(err);
+                            }
+                        },
+                        requestOptions: {
+                            cache: 'default',
+                        },
                     },
                 },
-            });
+                () => {
+                    i18n.changeLanguage(localStorage.getItem(LocaleKey) || Locale.EN);
+                },
+            );
     }, []);
+
     return <></>;
 };

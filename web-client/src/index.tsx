@@ -4,15 +4,15 @@ import ReactDOM from 'react-dom';
 import { ChakraProvider, extendTheme, theme as ChakraTheme, ThemeConfig, ColorModeScript } from '@chakra-ui/react';
 
 import { App } from './App';
-// import './i18n/Config';
 
 import reportWebVitals from './reportWebVitals';
 import './index.scss';
+import { StoreProvider } from './store/Store';
+import { LocaleProvider } from './i18n/LocaleProvider';
 
 const theme = extendTheme({
     config: {
         cssVarPrefix: 'cta-maps',
-        // initialColorMode: localStorage.getItem('colorMode') || 'light',
     } as ThemeConfig,
     shadows: {
         ...ChakraTheme.shadows,
@@ -33,7 +33,12 @@ ReactDOM.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <App />
+            <StoreProvider>
+                <>
+                    <LocaleProvider />
+                    <App />
+                </>
+            </StoreProvider>
         </ChakraProvider>
     </React.StrictMode>,
     document.getElementById('root'),
