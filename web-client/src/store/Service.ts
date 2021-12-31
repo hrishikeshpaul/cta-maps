@@ -12,12 +12,12 @@ const Http = axios.create({
 });
 
 export const getRoutes = async (): Promise<Route[]> => {
+    const { data } = await Http.get<Route[]>('/routes');
+
     return new Promise((resolve) => {
         setTimeout(async () => {
-            const { data } = await Http.get<Route[]>('/routes');
-
             resolve(data);
-        }, 800);
+        }, 250);
     });
 };
 
