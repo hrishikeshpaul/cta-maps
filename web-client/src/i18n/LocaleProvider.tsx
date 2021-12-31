@@ -58,7 +58,7 @@ export const LocaleProvider: FunctionComponent = () => {
                     i18n.changeLanguage(localStorage.getItem(LocaleKey) || Locale.EN);
                 },
             );
-    }, []);
+    }, []); // eslint-disable-line
 
     return <></>;
 };
