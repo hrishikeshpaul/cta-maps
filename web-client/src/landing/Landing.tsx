@@ -12,7 +12,7 @@ export const Landing: FunctionComponent = () => {
                         CTA Maps
                     </Text>
                     <Text fontSize="sm">v1.0.0</Text>
-                    <Spinner mt="4" size="sm" color="blue.300" />
+                    <Spinner mt="4" size="md" color="blue.300" />
                 </Fade>
             </Center>
         </>

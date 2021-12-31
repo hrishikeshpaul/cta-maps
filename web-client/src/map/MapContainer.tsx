@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { IconButton, useColorMode, useToast, useColorModeValue } from '@chakra-ui/react';
+import { IconButton, useColorMode, useToast, useColorModeValue, Center, Spinner } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
 import { MdMyLocation } from 'react-icons/md';
@@ -171,7 +171,14 @@ export const MapContainer: FunctionComponent = () => {
 
     return (
         <div className="map-container">
-            <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}>
+            <LoadScript
+                googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}
+                loadingElement={
+                    <Center h="100%">
+                        <Spinner color="blue.300" />
+                    </Center>
+                }
+            >
                 <GoogleMap
                     onLoad={(map) => {
                         if (map) setMap(map);
