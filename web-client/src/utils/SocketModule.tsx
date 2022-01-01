@@ -1,20 +1,22 @@
 import { FunctionComponent, useEffect } from 'react';
 
 import { useToast } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { useDataStore } from 'store/data/DataStore';
 import { socket } from 'utils/Socket';
 
 export const SocketModule: FunctionComponent = () => {
+    const { t } = useTranslation();
     const [, { setVehicles, removeAllRoutes }] = useDataStore();
     const toast = useToast();
 
     useEffect(() => {
         if (socket) {
-            socket.on('error', (error) => {
+            socket.on('error', () => {
                 toast.closeAll();
                 toast({
-                    description: error,
+                    description: t('GENERIC_ERROR'),
                     status: 'error',
                 });
             });
@@ -22,7 +24,7 @@ export const SocketModule: FunctionComponent = () => {
             socket.on('disconnect', () => {
                 toast.closeAll();
                 toast({
-                    description: 'Server disconnected. Reconnecting...',
+                    description: t('SERVER_DISCONNECT'),
                     status: 'error',
                 });
                 removeAllRoutes();
@@ -31,7 +33,7 @@ export const SocketModule: FunctionComponent = () => {
             socket.on('connect', () => {
                 toast.closeAll();
                 toast({
-                    description: 'Server connected!',
+                    description: t('SERVER_CONNECT'),
                     status: 'success',
                 });
             });
@@ -41,7 +43,7 @@ export const SocketModule: FunctionComponent = () => {
             socket.on('server-error', () => {
                 toast.closeAll();
                 toast({
-                    description: 'Server error. Please reselect routes.',
+                    description: t('SERVER_ERROR'),
                     status: 'error',
                 });
                 removeAllRoutes();

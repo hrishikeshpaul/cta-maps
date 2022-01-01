@@ -82,7 +82,7 @@ export const Stop: FunctionComponent = () => {
         }
     };
 
-    const RenderPred: FunctionComponent<Prediction> = ({ route, type, time, delayed, timestamp }) => {
+    const RenderPred: FunctionComponent<Prediction> = ({ route, type, time, delayed, timestamp, direction }) => {
         const PredictionCard: FunctionComponent = () => (
             <>
                 <Flex justifyContent="space-between" alignItems="center" py="4">
@@ -101,6 +101,7 @@ export const Stop: FunctionComponent = () => {
                                     </Badge>
                                 )}
                             </Text>
+                            <Text fontSize="xs">{t('direction')}</Text>
                         </Box>
                     </Flex>
                     <Text fontWeight={500}>{timestamp}</Text>

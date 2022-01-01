@@ -65,6 +65,8 @@ export const MapContainer: FunctionComponent = () => {
     const mapOptions = {
         disableDefaultUI: true,
         styles: colorMode === ColorMode.Light ? lightStyle : darkStyle,
+        maxZoom: 19,
+        minZoom: 7,
     };
 
     const onGetCurrentLocation = () => {
