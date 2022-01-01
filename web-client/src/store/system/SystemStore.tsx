@@ -206,6 +206,7 @@ interface SystemStoreActionApis {
     openIdleAlert: () => void;
     closeIdleAlert: () => void;
     setSystemLoading: (loading: boolean) => void;
+    setAllowLocation: (allow: boolean) => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -248,6 +249,10 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         },
         setSystemLoading: (loading: boolean) => {
             dispatch({ type: SystemStoreActionType.SetSystemLoading, payload: { loading } });
+        },
+        setAllowLocation: (allow: boolean) => {
+            localStorage.setItem(AllowLocationKey, JSON.stringify(allow));
+            dispatch({ type: SystemStoreActionType.SetAllowLocation, payload: { allow } });
         },
     };
 

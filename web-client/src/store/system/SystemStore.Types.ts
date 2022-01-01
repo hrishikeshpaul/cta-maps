@@ -12,7 +12,7 @@ export enum ColorMode {
 export interface Setting {
     colorMode: ColorMode;
     locale: Locale;
-    allowLocation?: boolean;
+    allowLocation: boolean;
 }
 
 export enum Status {

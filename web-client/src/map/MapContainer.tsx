@@ -49,7 +49,7 @@ interface Line extends PolylineProps {
 
 export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ dragging, settings }, { setDragging }] = useSystemStore();
+    const [{ dragging, settings }, { setDragging, setAllowLocation }] = useSystemStore();
     const [{ currentLocation, patterns, vehicles }, { openStop, setCurrentLocation }] = useDataStore();
     const { colorMode } = useColorMode();
     const toast = useToast({
@@ -76,6 +76,7 @@ export const MapContainer: FunctionComponent = () => {
                 const latLng = { lat: position.coords.latitude, lng: position.coords.longitude };
 
                 setCurrentLocation(latLng);
+                setAllowLocation(true);
 
                 if (map) {
                     map.panTo(latLng);
@@ -86,10 +87,11 @@ export const MapContainer: FunctionComponent = () => {
                 toast({ description: t('LOCATION_UPDATED'), status: 'success' });
             },
             () => {
+                setAllowLocation(false);
                 toast.closeAll();
                 toast({
                     description: t('RETRIEVE_LOCATION_FAIL'),
-                    status: 'error',
+                    status: 'warning',
                 });
             },
         );
