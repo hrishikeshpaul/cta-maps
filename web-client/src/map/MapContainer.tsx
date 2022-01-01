@@ -49,7 +49,7 @@ interface Line extends PolylineProps {
 
 export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ dragging }, { setDragging }] = useSystemStore();
+    const [{ dragging, settings }, { setDragging }] = useSystemStore();
     const [{ currentLocation, patterns, vehicles }, { openStop, setCurrentLocation }] = useDataStore();
     const { colorMode } = useColorMode();
     const toast = useToast({
@@ -157,7 +157,7 @@ export const MapContainer: FunctionComponent = () => {
                         }
                     }}
                 >
-                    {currentLocation && <Marker icon="/location.svg" position={currentLocation} />}
+                    {settings.allowLocation && <Marker icon="/location.svg" position={currentLocation} />}
                     {vehicles && (
                         <>
                             {vehicles.map((vehicle) => (

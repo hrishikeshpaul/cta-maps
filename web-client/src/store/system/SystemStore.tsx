@@ -1,7 +1,7 @@
 import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { Locale } from 'i18n/LocaleProvider';
-import { SystemStoreState, ColorMode, ColorModeKey, LocaleKey } from 'store/system/SystemStore.Types';
+import { SystemStoreState, ColorMode, ColorModeKey, LocaleKey, AllowLocationKey } from 'store/system/SystemStore.Types';
 
 export enum SystemStoreActionType {
     SetRouteSelectDrawer,
@@ -15,6 +15,7 @@ export enum SystemStoreActionType {
     SetSystemLoading,
     SetSettings,
     SetRoutesLoading,
+    SetAllowLocation,
 }
 
 interface PayloadSetRoutesLoading {
@@ -57,6 +58,10 @@ interface PayloadSetSystemLoading {
     loading: boolean;
 }
 
+interface PayloadSetAllowLocation {
+    allow: boolean;
+}
+
 interface SystemStoreAction {
     type: SystemStoreActionType;
     payload?:
@@ -68,7 +73,8 @@ interface SystemStoreAction {
         | PayloadSetColorMode
         | PayloadSetLocale
         | PayloadSetIdleAlert
-        | PayloadSetSystemLoading;
+        | PayloadSetSystemLoading
+        | PayloadSetAllowLocation;
 }
 
 interface SystemStoreProviderProps {
@@ -87,6 +93,7 @@ export const initialStoreState: SystemStoreState = {
     settings: {
         colorMode: (localStorage.getItem(ColorModeKey) as ColorMode) || ColorMode.Light,
         locale: (localStorage.getItem(LocaleKey) as Locale) || Locale.EN,
+        allowLocation: JSON.parse(localStorage.getItem(AllowLocationKey) || '{}') === true,
     },
 };
 
@@ -144,6 +151,11 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
             return {
                 ...state,
                 systemLoading: (action.payload as PayloadSetSystemLoading).loading,
+            };
+        case SystemStoreActionType.SetAllowLocation:
+            return {
+                ...state,
+                settings: { ...state.settings, allowLocation: (action.payload as PayloadSetAllowLocation).allow },
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);

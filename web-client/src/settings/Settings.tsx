@@ -97,6 +97,19 @@ export const Settings: FunctionComponent = () => {
                     </Box>
                     <Box mt="8">
                         <Text fontWeight="bold" color="gray.400" fontSize="sm">
+                            {t('LOCATION')}
+                        </Text>
+                        <Flex justifyContent="space-between" alignItems="center" mt="2">
+                            <Text>{t('ALLOW_LOCATION')}</Text>
+                            <Switch
+                                size="lg"
+                                isChecked={settings.colorMode !== ColorMode.Light}
+                                onChange={onDarkModeToggle}
+                            />
+                        </Flex>
+                    </Box>
+                    <Box mt="8">
+                        <Text fontWeight="bold" color="gray.400" fontSize="sm">
                             {t('LANGUAGE')}
                         </Text>
                         <Flex justifyContent="space-between" alignItems="center" mt="2">

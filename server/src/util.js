@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import dotenv from 'dotenv';
+import fs from 'fs';
 
 import { Cache, cacheKeys } from './cache.js';
 import { Http } from './http.js';
@@ -91,6 +92,10 @@ export const getGitHubWorkflow = async () => {
 export const getLocaleJson = async (lng) => {
     const key = cacheKeys.locale(lng);
     const value = cache.get(key);
+
+    if (lng === 'en' && process.env.NODE_ENV === 'development') {
+        return fs.readFileSync('./res/en.json');
+    }
 
     if (value) {
         cache.log_hit(key);

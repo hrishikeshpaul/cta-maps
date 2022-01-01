@@ -1,7 +1,8 @@
-import { useToast } from '@chakra-ui/react';
 import { FunctionComponent, useEffect } from 'react';
-import { useDataStore } from 'store/data/DataStore';
 
+import { useToast } from '@chakra-ui/react';
+
+import { useDataStore } from 'store/data/DataStore';
 import { socket } from 'utils/Socket';
 
 export const SocketModule: FunctionComponent = () => {
@@ -51,5 +52,6 @@ export const SocketModule: FunctionComponent = () => {
             };
         }
     }, [socket]); // eslint-disable-line
+
     return <></>;
 };

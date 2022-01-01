@@ -35,5 +35,7 @@
     "STATUS": "Status",
     "SERVER": "Server",
     "WEBSITE": "Website",
-    "LIVE": "Live"
+    "LIVE": "Live",
+    "LOCATION": "Location",
+    "ALLOW_LOCATION": "Allow Location"
 }
