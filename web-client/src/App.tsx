@@ -9,9 +9,10 @@ import { Stop } from './stop/Stop';
 import { useDataStore } from './store/data/DataStore';
 
 import './App.scss';
+import { useSystemStore } from 'store/system/SystemStore';
 
 export const App = () => {
-    const [{ systemLoading }] = useDataStore();
+    const [{ systemLoading }] = useSystemStore();
 
     return (
         <>

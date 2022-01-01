@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.scss';
 import { DataStoreProvider } from './store/data/DataStore';
 import { LocaleProvider } from './i18n/LocaleProvider';
+import { SystemStoreProvider } from 'store/system/SystemStore';
 
 const theme = extendTheme({
     config: {
@@ -33,12 +34,14 @@ ReactDOM.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <DataStoreProvider>
-                <>
-                    <LocaleProvider />
-                    <App />
-                </>
-            </DataStoreProvider>
+            <SystemStoreProvider>
+                <DataStoreProvider>
+                    <>
+                        <LocaleProvider />
+                        <App />
+                    </>
+                </DataStoreProvider>
+            </SystemStoreProvider>
         </ChakraProvider>
     </React.StrictMode>,
     document.getElementById('root'),

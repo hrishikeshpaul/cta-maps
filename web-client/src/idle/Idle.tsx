@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useDataStore } from '../store/data/DataStore';
+import { useSystemStore } from 'store/system/SystemStore';
 
 const ROUTES_RESET_TIME = 120; // in seconds
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
@@ -23,7 +24,8 @@ const DEBOUNCE_TIME = 500; // ms
 
 export const IdleAlert: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ vehicleRoutes, idleAlertOpen }, { closeIdleAlert, openIdleAlert, removeAllRoutes }] = useDataStore();
+    const [{ vehicleRoutes }, { removeAllRoutes }] = useDataStore();
+    const [{ idleAlertOpen }, { closeIdleAlert, openIdleAlert }] = useSystemStore();
     const [time, setTime] = useState<number>(ROUTES_RESET_TIME);
     const { reset, pause, resume } = useIdleTimer({
         timeout: IDLE_TIME,

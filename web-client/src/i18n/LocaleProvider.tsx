@@ -5,8 +5,8 @@ import HttpApi from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
 import { getLocaleJson } from '../store/data/DataService';
-import { useDataStore } from '../store/data/DataStore';
 import { LocaleKey } from '../store/data/DataStore.Types';
+import { useSystemStore } from 'store/system/SystemStore';
 
 export enum Locale {
     EN = 'en',
@@ -21,7 +21,7 @@ export const LocaleLabels = {
 };
 
 export const LocaleProvider: FunctionComponent = () => {
-    const [, { setSystemLoading }] = useDataStore();
+    const [, { setSystemLoading }] = useSystemStore();
 
     useEffect(() => {
         i18n.languages = [Locale.EN, Locale.EN, Locale.ZH];

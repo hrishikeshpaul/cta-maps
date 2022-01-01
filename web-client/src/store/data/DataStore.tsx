@@ -244,7 +244,7 @@ const useDataStoreState = (): DataStoreState => {
     const context = useContext(DataStoreStateContext);
 
     if (context === undefined) {
-        throw new Error('useDataStoreState must be used within StoreProvider');
+        throw new Error('useDataStoreState must be used within DataStoreProvider');
     }
 
     return context;
@@ -254,7 +254,7 @@ const useDataStoreDispatch = (): Dispatch<DataStoreAction> => {
     const context = useContext(DataStoreDispatchContext);
 
     if (context === undefined) {
-        throw new Error('UseStoreState must be used within StoreProvider');
+        throw new Error('useDataStoreState must be used within DataStoreProvider');
     }
 
     return context;
