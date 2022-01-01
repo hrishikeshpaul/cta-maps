@@ -4,7 +4,7 @@ import { Avatar, Box, Button, IconButton, Flex, Text, useColorModeValue } from '
 import { useTranslation } from 'react-i18next';
 import { FiSettings } from 'react-icons/fi';
 
-import { useDataStore } from '../store/data/DataStore';
+import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 
 export const Nav: FunctionComponent = () => {

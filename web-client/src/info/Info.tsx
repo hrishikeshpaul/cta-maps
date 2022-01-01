@@ -21,7 +21,7 @@ import { IoIosClose } from 'react-icons/io';
 
 import { useSystemStore } from 'store/system/SystemStore';
 
-import './Info.scss';
+import 'info/Info.scss';
 
 export const Info: FunctionComponent = () => {
     const { t } = useTranslation();

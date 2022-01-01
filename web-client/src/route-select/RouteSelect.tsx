@@ -24,8 +24,8 @@ import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
-import { useDataStore } from '../store/data/DataStore';
-import { Route } from '../store/data/DataStore.Types';
+import { useDataStore } from 'store/data/DataStore';
+import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 
 interface RouteExtended extends Route {
