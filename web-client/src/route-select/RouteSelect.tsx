@@ -24,8 +24,8 @@ import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
-import { useStore } from '../store/Store';
-import { Route } from '../store/Store.Types';
+import { useDataStore } from '../store/data/DataStore';
+import { Route } from '../store/data/DataStore.Types';
 
 interface RouteExtended extends Route {
     selected: boolean;
@@ -40,7 +40,7 @@ export const RouteSelect: FunctionComponent = () => {
     const [
         { routeSelectOpen, routesLoading, routes: currentRoutes },
         { closeRouteSelect, getRoutes, setRoute, removeRoute, removeAllRoutes },
-    ] = useStore();
+    ] = useDataStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [computedRoutes, setComputedRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');

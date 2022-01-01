@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AppStatus, Pattern, Prediction, Route, Vehicle } from './Store.Types';
+import { AppStatus, Pattern, Prediction, Route, Vehicle } from './DataStore.Types';
 
 interface LocaleResponse {
     data: string;

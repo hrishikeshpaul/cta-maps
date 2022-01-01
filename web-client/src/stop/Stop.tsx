@@ -22,13 +22,13 @@ import { useTranslation } from 'react-i18next';
 import { FaLocationArrow } from 'react-icons/fa';
 import { FiChevronDown } from 'react-icons/fi';
 
-import { useStore } from '../store/Store';
-import { getPredictions } from '../store/Service';
-import { Juncture, Prediction } from '../store/Store.Types';
+import { useDataStore } from '../store/data/DataStore';
+import { getPredictions } from '../store/data/DataService';
+import { Juncture, Prediction } from '../store/data/DataStore.Types';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ stop }, { closeStop }] = useStore();
+    const [{ stop }, { closeStop }] = useDataStore();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);

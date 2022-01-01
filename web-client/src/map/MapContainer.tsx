@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { MdMyLocation } from 'react-icons/md';
 
 import { darkStyle, lightStyle } from './Map.Styles';
-import { getSingleVehicle, getVehicles } from '../store/Service';
-import { useStore } from '../store/Store';
-import { Point, Stop, Vehicle, ColorMode } from '../store/Store.Types';
+import { getSingleVehicle, getVehicles } from '../store/data/DataService';
+import { useDataStore } from '../store/data/DataStore';
+import { Point, Stop, Vehicle, ColorMode } from '../store/data/DataStore.Types';
 
 import './MapContainer.scss';
 
@@ -51,7 +51,7 @@ export const MapContainer: FunctionComponent = () => {
     const [
         { currentLocation, patterns, vehicleRoutes, dragging },
         { setDragging, openStop, setCurrentLocation, setVehicleRoutes },
-    ] = useStore();
+    ] = useDataStore();
     const { colorMode } = useColorMode();
     const toast = useToast({
         variant: 'solid',

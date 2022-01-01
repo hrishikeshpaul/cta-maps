@@ -7,7 +7,7 @@ import { App } from './App';
 
 import reportWebVitals from './reportWebVitals';
 import './index.scss';
-import { StoreProvider } from './store/Store';
+import { DataStoreProvider } from './store/data/DataStore';
 import { LocaleProvider } from './i18n/LocaleProvider';
 
 const theme = extendTheme({
@@ -33,12 +33,12 @@ ReactDOM.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <StoreProvider>
+            <DataStoreProvider>
                 <>
                     <LocaleProvider />
                     <App />
                 </>
-            </StoreProvider>
+            </DataStoreProvider>
         </ChakraProvider>
     </React.StrictMode>,
     document.getElementById('root'),

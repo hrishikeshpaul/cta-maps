@@ -6,12 +6,12 @@ import { Nav } from './nav/Nav';
 import { RouteSelect } from './route-select/RouteSelect';
 import { Settings } from './settings/Settings';
 import { Stop } from './stop/Stop';
-import { useStore } from './store/Store';
+import { useDataStore } from './store/data/DataStore';
 
 import './App.scss';
 
 export const App = () => {
-    const [{ systemLoading }] = useStore();
+    const [{ systemLoading }] = useDataStore();
 
     return (
         <>

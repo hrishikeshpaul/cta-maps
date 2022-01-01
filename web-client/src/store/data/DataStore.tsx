@@ -2,11 +2,11 @@ import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Di
 
 import { useToast } from '@chakra-ui/react';
 
-import { cancelGetPattern, cancelGetSingleVehicle, cancelGetVehicles, getPattern, getRoutes } from './Service';
-import { Route, StoreState, Pattern, Stop, Point, ColorMode, ColorModeKey, LocaleKey } from './Store.Types';
-import { Locale } from '../i18n/LocaleProvider';
+import { cancelGetPattern, cancelGetSingleVehicle, cancelGetVehicles, getPattern, getRoutes } from './DataService';
+import { Route, DataStoreState, Pattern, Stop, Point, ColorMode, ColorModeKey, LocaleKey } from './DataStore.Types';
+import { Locale } from '../../i18n/LocaleProvider';
 
-export enum StoreActionType {
+export enum DataStoreActionType {
     SetRouteSelect,
     SetDragging,
     SetRoutesLoading,
@@ -90,8 +90,8 @@ interface PayloadSetSystemLoading {
     loading: boolean;
 }
 
-interface StoreAction {
-    type: StoreActionType;
+interface DataStoreAction {
+    type: DataStoreActionType;
     payload?:
         | PayloadSetRouteSelect
         | PayloadSetDragging
@@ -111,11 +111,11 @@ interface StoreAction {
         | PayloadSetSystemLoading;
 }
 
-interface StoreProviderProps {
+interface DataStoreProviderProps {
     children: ReactNode;
 }
 
-export const initialStoreState: StoreState = {
+export const initialStoreState: DataStoreState = {
     systemLoading: true,
     routeSelectOpen: false,
     idleAlertOpen: false,
@@ -136,20 +136,20 @@ export const initialStoreState: StoreState = {
     },
 };
 
-const StoreStateContext = createContext<StoreState | undefined>(undefined);
-const StoreDispatchContext = createContext<Dispatch<StoreAction> | undefined>(undefined);
+const DataStoreStateContext = createContext<DataStoreState | undefined>(undefined);
+const DataStoreDispatchContext = createContext<Dispatch<DataStoreAction> | undefined>(undefined);
 
-const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
+const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStoreState => {
     switch (action.type) {
-        case StoreActionType.SetRouteSelect:
+        case DataStoreActionType.SetRouteSelect:
             return { ...state, routeSelectOpen: (action.payload as PayloadSetRouteSelect).open };
-        case StoreActionType.SetDragging:
+        case DataStoreActionType.SetDragging:
             return { ...state, dragging: (action.payload as PayloadSetDragging).dragging };
-        case StoreActionType.SetRoutesLoading:
+        case DataStoreActionType.SetRoutesLoading:
             return { ...state, routesLoading: (action.payload as PayloadRoutesLoading).loading };
-        case StoreActionType.SetRoute:
+        case DataStoreActionType.SetRoute:
             return { ...state, routes: [...state.routes, { ...(action.payload as PayloadSetRoute).route }] };
-        case StoreActionType.RemoveRoute:
+        case DataStoreActionType.RemoveRoute:
             const { id } = action.payload as PayloadRemoveRoute;
             const updatedRoutes = state.routes.filter((route) => route.route !== id);
             const updatedPatterns = state.patterns.filter((pattern) => pattern.route !== id);
@@ -161,44 +161,44 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                 patterns: [...updatedPatterns],
                 vehicleRoutes: updatedVehicleRoutes,
             };
-        case StoreActionType.RemoveAllRoutes:
+        case DataStoreActionType.RemoveAllRoutes:
             return { ...state, routes: [], patterns: [], vehicleRoutes: new Set() };
-        case StoreActionType.SetPatternLoading:
+        case DataStoreActionType.SetPatternLoading:
             return {
                 ...state,
                 patternLoading: (action.payload as PayloadPatternLoading).loading,
             };
-        case StoreActionType.SetPattern:
+        case DataStoreActionType.SetPattern:
             return {
                 ...state,
                 patterns: [...state.patterns, ...(action.payload as PayloadSetPattern).pattern],
             };
-        case StoreActionType.SetInfo:
+        case DataStoreActionType.SetInfo:
             return {
                 ...state,
                 infoOpen: (action.payload as PayloadSetInfo).open,
             };
-        case StoreActionType.SetStop:
+        case DataStoreActionType.SetStop:
             return {
                 ...state,
                 stop: (action.payload as PayloadSetStop).stop,
             };
-        case StoreActionType.SetCurrentLocation:
+        case DataStoreActionType.SetCurrentLocation:
             return {
                 ...state,
                 currentLocation: (action.payload as PayloadSetCurrentLocation).location,
             };
-        case StoreActionType.SetVehicleRoutes:
+        case DataStoreActionType.SetVehicleRoutes:
             return {
                 ...state,
                 vehicleRoutes: (action.payload as PayloadSetVehicleRoutes).route,
             };
-        case StoreActionType.SetSettingsDrawer:
+        case DataStoreActionType.SetSettingsDrawer:
             return {
                 ...state,
                 settingsOpen: (action.payload as PayloadSetSettingsDrawer).open,
             };
-        case StoreActionType.SetColorMode:
+        case DataStoreActionType.SetColorMode:
             return {
                 ...state,
                 settings: {
@@ -206,7 +206,7 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                     colorMode: (action.payload as PayloadSetColorMode).mode,
                 },
             };
-        case StoreActionType.SetLocale:
+        case DataStoreActionType.SetLocale:
             return {
                 ...state,
                 settings: {
@@ -214,12 +214,12 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
                     locale: (action.payload as PayloadSetLocale).locale,
                 },
             };
-        case StoreActionType.SetIdleAlert:
+        case DataStoreActionType.SetIdleAlert:
             return {
                 ...state,
                 idleAlertOpen: (action.payload as PayloadSetIdleAlert).open,
             };
-        case StoreActionType.SetSystemLoading:
+        case DataStoreActionType.SetSystemLoading:
             return {
                 ...state,
                 systemLoading: (action.payload as PayloadSetSystemLoading).loading,
@@ -230,28 +230,28 @@ const storeReducer = (state: StoreState, action: StoreAction): StoreState => {
     }
 };
 
-export const StoreProvider: FunctionComponent<StoreProviderProps> = ({ children }) => {
+export const DataStoreProvider: FunctionComponent<DataStoreProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(storeReducer, initialStoreState);
 
     return (
-        <StoreStateContext.Provider value={state}>
-            <StoreDispatchContext.Provider value={dispatch}>{children}</StoreDispatchContext.Provider>
-        </StoreStateContext.Provider>
+        <DataStoreStateContext.Provider value={state}>
+            <DataStoreDispatchContext.Provider value={dispatch}>{children}</DataStoreDispatchContext.Provider>
+        </DataStoreStateContext.Provider>
     );
 };
 
-const useStoreState = (): StoreState => {
-    const context = useContext(StoreStateContext);
+const useDataStoreState = (): DataStoreState => {
+    const context = useContext(DataStoreStateContext);
 
     if (context === undefined) {
-        throw new Error('useStoreState must be used within StoreProvider');
+        throw new Error('useDataStoreState must be used within StoreProvider');
     }
 
     return context;
 };
 
-const useStoreDispatch = (): Dispatch<StoreAction> => {
-    const context = useContext(StoreDispatchContext);
+const useDataStoreDispatch = (): Dispatch<DataStoreAction> => {
+    const context = useContext(DataStoreDispatchContext);
 
     if (context === undefined) {
         throw new Error('UseStoreState must be used within StoreProvider');
@@ -260,7 +260,7 @@ const useStoreDispatch = (): Dispatch<StoreAction> => {
     return context;
 };
 
-interface StoreActionApis {
+interface DataStoreActionApis {
     openRouteSelect: () => void;
     closeRouteSelect: () => void;
     setDragging: (value: boolean) => void;
@@ -283,52 +283,52 @@ interface StoreActionApis {
     setSystemLoading: (loading: boolean) => void;
 }
 
-export const useStore = (): [StoreState, StoreActionApis] => {
-    const dispatch = useStoreDispatch();
+export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
+    const dispatch = useDataStoreDispatch();
     const toast = useToast();
 
-    const actionApis: StoreActionApis = {
+    const actionApis: DataStoreActionApis = {
         openRouteSelect: () => {
-            dispatch({ type: StoreActionType.SetRouteSelect, payload: { open: true } });
+            dispatch({ type: DataStoreActionType.SetRouteSelect, payload: { open: true } });
         },
         closeRouteSelect: async () => {
-            dispatch({ type: StoreActionType.SetRouteSelect, payload: { open: false } });
+            dispatch({ type: DataStoreActionType.SetRouteSelect, payload: { open: false } });
         },
         openInfo: () => {
-            dispatch({ type: StoreActionType.SetInfo, payload: { open: true } });
+            dispatch({ type: DataStoreActionType.SetInfo, payload: { open: true } });
         },
         closeInfo: async () => {
-            dispatch({ type: StoreActionType.SetInfo, payload: { open: false } });
+            dispatch({ type: DataStoreActionType.SetInfo, payload: { open: false } });
         },
         setDragging: (dragging: boolean) => {
-            dispatch({ type: StoreActionType.SetDragging, payload: { dragging } });
+            dispatch({ type: DataStoreActionType.SetDragging, payload: { dragging } });
         },
         getRoutes: async () => {
             try {
-                dispatch({ type: StoreActionType.SetRoutesLoading, payload: { loading: true } });
+                dispatch({ type: DataStoreActionType.SetRoutesLoading, payload: { loading: true } });
                 const response = await getRoutes();
 
-                dispatch({ type: StoreActionType.SetRoutesLoading, payload: { loading: false } });
+                dispatch({ type: DataStoreActionType.SetRoutesLoading, payload: { loading: false } });
 
                 return response;
             } catch (err: any) {
-                dispatch({ type: StoreActionType.SetRoutesLoading, payload: { loading: false } });
+                dispatch({ type: DataStoreActionType.SetRoutesLoading, payload: { loading: false } });
                 toast({ description: err.response.data, status: 'error' });
 
                 return null;
             }
         },
         setRoute: async (route: Route) => {
-            dispatch({ type: StoreActionType.SetRoute, payload: { route } });
-            dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: true } });
+            dispatch({ type: DataStoreActionType.SetRoute, payload: { route } });
+            dispatch({ type: DataStoreActionType.SetPatternLoading, payload: { loading: true } });
 
             try {
                 const response = await getPattern(route.route, route.color);
 
-                dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
-                dispatch({ type: StoreActionType.SetPattern, payload: { pattern: response } });
+                dispatch({ type: DataStoreActionType.SetPatternLoading, payload: { loading: false } });
+                dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
             } catch (err: any) {
-                dispatch({ type: StoreActionType.SetPatternLoading, payload: { loading: false } });
+                dispatch({ type: DataStoreActionType.SetPatternLoading, payload: { loading: false } });
                 toast({ description: err.response.data, status: 'error' });
             }
         },
@@ -336,47 +336,47 @@ export const useStore = (): [StoreState, StoreActionApis] => {
             cancelGetSingleVehicle();
             cancelGetPattern();
             cancelGetVehicles();
-            dispatch({ type: StoreActionType.RemoveRoute, payload: { id } });
+            dispatch({ type: DataStoreActionType.RemoveRoute, payload: { id } });
         },
         removeAllRoutes: () => {
-            dispatch({ type: StoreActionType.RemoveAllRoutes });
+            dispatch({ type: DataStoreActionType.RemoveAllRoutes });
         },
         openStop: (stop: Stop) => {
-            dispatch({ type: StoreActionType.SetStop, payload: { stop } });
+            dispatch({ type: DataStoreActionType.SetStop, payload: { stop } });
         },
         closeStop: () => {
-            dispatch({ type: StoreActionType.SetStop, payload: { stop: null } });
+            dispatch({ type: DataStoreActionType.SetStop, payload: { stop: null } });
         },
         setCurrentLocation: (location: Point) => {
-            dispatch({ type: StoreActionType.SetCurrentLocation, payload: { location } });
+            dispatch({ type: DataStoreActionType.SetCurrentLocation, payload: { location } });
         },
         setVehicleRoutes: (route: Set<string>) => {
-            dispatch({ type: StoreActionType.SetVehicleRoutes, payload: { route } });
+            dispatch({ type: DataStoreActionType.SetVehicleRoutes, payload: { route } });
         },
         openSettings: () => {
-            dispatch({ type: StoreActionType.SetSettingsDrawer, payload: { open: true } });
+            dispatch({ type: DataStoreActionType.SetSettingsDrawer, payload: { open: true } });
         },
         closeSettings: () => {
-            dispatch({ type: StoreActionType.SetSettingsDrawer, payload: { open: false } });
+            dispatch({ type: DataStoreActionType.SetSettingsDrawer, payload: { open: false } });
         },
         setColorMode: (mode: ColorMode) => {
-            dispatch({ type: StoreActionType.SetColorMode, payload: { mode } });
+            dispatch({ type: DataStoreActionType.SetColorMode, payload: { mode } });
         },
         setLocale: (locale: Locale) => {
             localStorage.setItem(LocaleKey, locale);
 
-            dispatch({ type: StoreActionType.SetLocale, payload: { locale } });
+            dispatch({ type: DataStoreActionType.SetLocale, payload: { locale } });
         },
         openIdleAlert: () => {
-            dispatch({ type: StoreActionType.SetIdleAlert, payload: { open: true } });
+            dispatch({ type: DataStoreActionType.SetIdleAlert, payload: { open: true } });
         },
         closeIdleAlert: () => {
-            dispatch({ type: StoreActionType.SetIdleAlert, payload: { open: false } });
+            dispatch({ type: DataStoreActionType.SetIdleAlert, payload: { open: false } });
         },
         setSystemLoading: (loading: boolean) => {
-            dispatch({ type: StoreActionType.SetSystemLoading, payload: { loading } });
+            dispatch({ type: DataStoreActionType.SetSystemLoading, payload: { loading } });
         },
     };
 
-    return [useStoreState(), actionApis];
+    return [useDataStoreState(), actionApis];
 };

@@ -20,10 +20,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { IoIosClose } from 'react-icons/io';
 
-import { useStore } from '../store/Store';
-import { ColorMode, Status } from '../store/Store.Types';
+import { useDataStore } from '../store/data/DataStore';
+import { ColorMode, Status } from '../store/data/DataStore.Types';
 import { Locale, LocaleLabels } from '../i18n/LocaleProvider';
-import { getAppStatus } from '../store/Service';
+import { getAppStatus } from '../store/data/DataService';
 
 const StatusMapper = {
     [Status.Success]: 'green.300',
@@ -33,7 +33,7 @@ const StatusMapper = {
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
-    const [{ settingsOpen, settings }, { closeSettings, setColorMode, setLocale }] = useStore();
+    const [{ settingsOpen, settings }, { closeSettings, setColorMode, setLocale }] = useDataStore();
     const { toggleColorMode } = useColorMode();
     const [status, setStatus] = useState<{ web: string; server: string } | null>(null);
 

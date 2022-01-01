@@ -1,4 +1,4 @@
-import { Locale } from '../i18n/LocaleProvider';
+import { Locale } from '../../i18n/LocaleProvider';
 
 export const ColorModeKey = 'chakra-ui-color-mode';
 export const LocaleKey = 'cta-maps-locale';
@@ -96,7 +96,7 @@ export interface AppStatus {
     server: Status;
 }
 
-export interface StoreState {
+export interface DataStoreState {
     systemLoading: boolean;
     routeSelectOpen: boolean;
     infoOpen: boolean;

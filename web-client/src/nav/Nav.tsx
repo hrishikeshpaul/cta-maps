@@ -4,11 +4,11 @@ import { Avatar, Box, Button, IconButton, Flex, Text, useColorModeValue } from '
 import { useTranslation } from 'react-i18next';
 import { FiSettings } from 'react-icons/fi';
 
-import { useStore } from '../store/Store';
+import { useDataStore } from '../store/data/DataStore';
 
 export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ dragging, routes }, { openRouteSelect, openInfo, openSettings }] = useStore();
+    const [{ dragging, routes }, { openRouteSelect, openInfo, openSettings }] = useDataStore();
     const [selected, setSelected] = useState<boolean>(false);
     const buttonBg = useColorModeValue('white', 'gray.600');
     const buttonColor = useColorModeValue('black', 'white');

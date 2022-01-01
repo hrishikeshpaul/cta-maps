@@ -19,13 +19,13 @@ import { useTranslation } from 'react-i18next';
 import { FiChevronRight } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
-import { useStore } from '../store/Store';
+import { useDataStore } from '../store/data/DataStore';
 
 import './Info.scss';
 
 export const Info: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ infoOpen }, { closeInfo }] = useStore();
+    const [{ infoOpen }, { closeInfo }] = useDataStore();
 
     const onBugReport = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/issues/new', '_blank');
