@@ -7,8 +7,10 @@ import { RouteSelect } from 'route-select/RouteSelect';
 import { Settings } from 'settings/Settings';
 import { Stop } from 'stop/Stop';
 import { useSystemStore } from 'store/system/SystemStore';
+import { io } from 'socket.io-client';
 
 import './App.scss';
+
 
 export const App = () => {
     const [{ systemLoading }] = useSystemStore();

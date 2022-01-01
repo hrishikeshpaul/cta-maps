@@ -2,8 +2,16 @@
 
 import NodeCache from 'node-cache';
 
+export const cacheKeys = {
+    locale: (lng) => `locale-${lng}-cache`,
+    routes: 'routes-cache',
+    pattern: (route) => `pattern-${route}-cache`,
+};
+
+const ttl = 60 * 60 * 24; // one day
+
 export class Cache {
-    constructor(ttl) {
+    constructor() {
         this.cache = new NodeCache({ stdTTL: ttl, checkperiod: ttl * 0.2, useClones: false });
     }
 

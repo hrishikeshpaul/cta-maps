@@ -3,19 +3,13 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 
-import { Cache } from './cache.js';
+import { Cache, cacheKeys } from './cache.js';
 import { Http } from './http.js';
 
 dotenv.config();
 
-const ttl = 60 * 60 * 24;
-const cache = new Cache(ttl);
+const cache = new Cache();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const cacheKeys = {
-    locale: (lng) => `locale-${lng}-cache`,
-    routes: 'routes-cache',
-    pattern: (route) => `pattern-${route}-cache`,
-};
 
 export const getRoutes = async () => {
     const key = cacheKeys.routes;
