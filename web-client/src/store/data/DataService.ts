@@ -5,8 +5,6 @@ import { Http } from 'utils/Http';
 import { socket } from 'utils/Socket';
 
 const { CancelToken } = axios;
-let cancelVehiclesSource = CancelToken.source();
-let cancelSingleVehicleSource = CancelToken.source();
 let cancelGetPatternSource = CancelToken.source();
 
 export const getRoutes = async (): Promise<Route[]> => {
@@ -36,38 +34,6 @@ export const cancelGetPattern = (): void => {
     cancelGetPatternSource = CancelToken.source();
 };
 
-export const getVehicles = async (rt: string[]): Promise<Vehicle[]> => {
-    const { data } = await Http.get<Vehicle[]>('/vehicles', {
-        params: {
-            rt: rt.join(','),
-        },
-        cancelToken: cancelVehiclesSource.token,
-    });
-
-    return data;
-};
-
-export const cancelGetVehicles = (): void => {
-    cancelVehiclesSource.cancel();
-    cancelVehiclesSource = CancelToken.source();
-};
-
-export const getSingleVehicle = async (rt: string): Promise<Vehicle[]> => {
-    const { data } = await Http.get<Vehicle[]>('/vehicles', {
-        params: {
-            rt,
-        },
-        cancelToken: cancelSingleVehicleSource.token,
-    });
-
-    return data;
-};
-
-export const cancelGetSingleVehicle = (): void => {
-    cancelSingleVehicleSource.cancel();
-    cancelSingleVehicleSource = CancelToken.source();
-};
-
 export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     const { data } = await Http.get<Prediction[]>('/predictions', {
         params: {
@@ -84,4 +50,8 @@ export const onRouteSelect = (route: string): void => {
 
 export const onRouteDeselect = (route: string): void => {
     socket.emit('route-remove', route);
+};
+
+export const onRouteRemoveAll = (): void => {
+    socket.emit('route-remove-all');
 };

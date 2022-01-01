@@ -53,7 +53,7 @@ export interface Vehicle {
     timestamp: string;
     position: Point;
     heading: Heading;
-    route: number;
+    route: string;
     destination: string;
     delayed: boolean;
 }
@@ -72,7 +72,6 @@ export interface Prediction {
 
 export interface DataStoreState {
     currentLocation: Point;
-    vehicleRoutes: Set<string>;
     routes: Route[];
     patterns: Pattern[];
     stop: Stop | null;

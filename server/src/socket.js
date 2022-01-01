@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import { getVehicles, checkHeading } from './util.js';
 
-const TIMER = 5000; //ms
+const TIMER = 4000; //ms
 
 class SocketConnection {
     constructor(socket) {
@@ -51,6 +51,11 @@ class SocketConnection {
         }
     }
 
+    remove_all() {
+        this.stop_timer();
+        this.routes = {};
+    }
+
     async get_vehicles(route) {
         let data = await getVehicles(route);
         data = data.map((item) => ({
@@ -70,8 +75,6 @@ class SocketConnection {
 const connectedSockets = {};
 
 const onRouteSelect = async (socket, route) => {
-    console.log('route socket id:', socket.id);
-    console.log('route:', route);
     connectedSockets[socket.id].add(route);
 };
 
@@ -81,16 +84,22 @@ const onRouteDeselect = (socket, route) => {
 
 const onDisconnect = (socket) => {
     console.log('Socket disconnected - ', socket.id);
+
     connectedSockets[socket.id].stop_timer();
     delete connectedSockets[socket.id];
 };
 
+const onRemoveAll = (socket) => {
+    connectedSockets[socket.id].remove_all();
+};
+
 export const onConnection = (socket) => {
-    // register all the listeners and emitters here
     connectedSockets[socket.id] = new SocketConnection(socket);
+
     console.log('Socket connected - ', socket.id);
 
     socket.on('route-add', _.partial(onRouteSelect, socket));
     socket.on('route-remove', _.partial(onRouteDeselect, socket));
+    socket.on('route-remove-all', _.partial(onRemoveAll, socket));
     socket.on('disconnect', _.partial(onDisconnect, socket));
 };

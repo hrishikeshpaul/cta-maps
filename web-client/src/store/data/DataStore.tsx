@@ -4,11 +4,10 @@ import { useToast } from '@chakra-ui/react';
 
 import {
     cancelGetPattern,
-    cancelGetSingleVehicle,
-    cancelGetVehicles,
     getPattern,
     getRoutes,
     onRouteDeselect,
+    onRouteRemoveAll,
     onRouteSelect,
 } from 'store/data/DataService';
 import { Route, DataStoreState, Pattern, Stop, Point, Vehicle } from 'store/data/DataStore.Types';
@@ -19,7 +18,6 @@ export enum DataStoreActionType {
     SetPattern,
     SetStop,
     SetCurrentLocation,
-    SetVehicleRoutes,
     SetVehicles,
     RemoveRoute,
     RemoveAllRoutes,
@@ -45,10 +43,6 @@ interface PayloadSetCurrentLocation {
     location: Point;
 }
 
-interface PayloadSetVehicleRoutes {
-    route: Set<string>;
-}
-
 interface PayloadSetVehicles {
     vehicles: Vehicle[];
 }
@@ -61,7 +55,6 @@ interface DataStoreAction {
         | PayloadSetPattern
         | PayloadSetStop
         | PayloadSetCurrentLocation
-        | PayloadSetVehicleRoutes
         | PayloadSetVehicles;
 }
 
@@ -75,7 +68,6 @@ export const initialStoreState: DataStoreState = {
     patterns: [],
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
-    vehicleRoutes: new Set(),
     vehicles: [],
 };
 
@@ -90,16 +82,16 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
             const { id } = action.payload as PayloadRemoveRoute;
             const updatedRoutes = state.routes.filter((route) => route.route !== id);
             const updatedPatterns = state.patterns.filter((pattern) => pattern.route !== id);
-            const updatedVehicleRoutes = new Set(Array.from(state.vehicleRoutes).filter((route) => route !== id));
+            const updatedVehicles = state.vehicles.filter((vehicle) => vehicle.route !== id);
 
             return {
                 ...state,
                 routes: [...updatedRoutes],
                 patterns: [...updatedPatterns],
-                vehicleRoutes: updatedVehicleRoutes,
+                vehicles: [...updatedVehicles],
             };
         case DataStoreActionType.RemoveAllRoutes:
-            return { ...state, routes: [], patterns: [], vehicleRoutes: new Set() };
+            return { ...state, routes: [], patterns: [], vehicles: [] };
         case DataStoreActionType.SetPattern:
             return {
                 ...state,
@@ -115,11 +107,7 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
                 ...state,
                 currentLocation: (action.payload as PayloadSetCurrentLocation).location,
             };
-        case DataStoreActionType.SetVehicleRoutes:
-            return {
-                ...state,
-                vehicleRoutes: (action.payload as PayloadSetVehicleRoutes).route,
-            };
+
         case DataStoreActionType.SetVehicles:
             return {
                 ...state,
@@ -169,7 +157,6 @@ interface DataStoreActionApis {
     openStop: (stop: Stop) => void;
     closeStop: () => void;
     setCurrentLocation: (location: Point) => void;
-    setVehicleRoutes: (route: Set<string>) => void;
     setVehicles: (vehicles: Vehicle[]) => void;
 }
 
@@ -210,13 +197,12 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             }
         },
         removeRoute: (id: string) => {
-            cancelGetSingleVehicle();
             cancelGetPattern();
-            cancelGetVehicles();
             onRouteDeselect(id);
             dispatch({ type: DataStoreActionType.RemoveRoute, payload: { id } });
         },
         removeAllRoutes: () => {
+            onRouteRemoveAll();
             dispatch({ type: DataStoreActionType.RemoveAllRoutes });
         },
         openStop: (stop: Stop) => {
@@ -228,11 +214,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         setCurrentLocation: (location: Point) => {
             dispatch({ type: DataStoreActionType.SetCurrentLocation, payload: { location } });
         },
-        setVehicleRoutes: (route: Set<string>) => {
-            dispatch({ type: DataStoreActionType.SetVehicleRoutes, payload: { route } });
-        },
         setVehicles: (vehicles: Vehicle[]) => {
-            console.log({ vehicles });
             dispatch({ type: DataStoreActionType.SetVehicles, payload: { vehicles } });
         },
     };

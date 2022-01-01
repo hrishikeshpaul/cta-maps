@@ -78,6 +78,8 @@ export const RouteSelect: FunctionComponent = () => {
                 mutatedRoutes.push({ ...route, selected: false });
             }
         });
+
+        setComputedRoutes(mutatedRoutes);
     }, [currentRoutes]); // eslint-disable-line
 
     useEffect(() => {

@@ -24,7 +24,7 @@ const DEBOUNCE_TIME = 500; // ms
 
 export const IdleAlert: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ vehicleRoutes }, { removeAllRoutes }] = useDataStore();
+    const [{ vehicles }, { removeAllRoutes }] = useDataStore();
     const [{ idleAlertOpen }, { closeIdleAlert, openIdleAlert }] = useSystemStore();
     const [time, setTime] = useState<number>(ROUTES_RESET_TIME);
     const { reset, pause, resume } = useIdleTimer({
@@ -53,12 +53,12 @@ export const IdleAlert: FunctionComponent = () => {
     }, [time]); // eslint-disable-line
 
     useEffect(() => {
-        if (vehicleRoutes.size === 0) {
+        if (vehicles.length === 0) {
             pause();
         } else {
             resume();
         }
-    }, [vehicleRoutes]); // eslint-disable-line
+    }, [vehicles]); // eslint-disable-line
 
     return (
         <>

@@ -6,9 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { MdMyLocation } from 'react-icons/md';
 
 import { darkStyle, lightStyle } from 'map/Map.Styles';
-import { getSingleVehicle, getVehicles } from 'store/data/DataService';
 import { useDataStore } from 'store/data/DataStore';
-import { Point, Stop, Vehicle } from 'store/data/DataStore.Types';
+import { Point, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import { ColorMode } from 'store/system/SystemStore.Types';
 
@@ -51,8 +50,7 @@ interface Line extends PolylineProps {
 export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ dragging }, { setDragging }] = useSystemStore();
-    const [{ currentLocation, patterns, vehicleRoutes }, { openStop, setCurrentLocation, setVehicleRoutes }] =
-        useDataStore();
+    const [{ currentLocation, patterns, vehicles }, { openStop, setCurrentLocation }] = useDataStore();
     const { colorMode } = useColorMode();
     const toast = useToast({
         variant: 'solid',
@@ -61,8 +59,6 @@ export const MapContainer: FunctionComponent = () => {
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
-    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-    const [intervalTimer, setIntervalTimer] = useState<NodeJS.Timer | null>(null);
     const [paths, setPaths] = useState<Point[]>([]);
     const buttonBg = useColorModeValue('white', 'gray.600');
 
@@ -104,27 +100,9 @@ export const MapContainer: FunctionComponent = () => {
     }, []); // eslint-disable-line
 
     useEffect(() => {
-        if (vehicleRoutes.size) {
-            if (intervalTimer) clearInterval(intervalTimer);
-
-            setIntervalTimer(
-                setInterval(async () => {
-                    const vehicles = await getVehicles(Array.from(vehicleRoutes));
-                    setVehicles(vehicles);
-                }, 5000),
-            );
-        }
-    }, [vehicleRoutes]); // eslint-disable-line
-
-    useEffect(() => {
         const lines: any[] = [];
-        const routes: Set<string> = new Set();
-        const updatedVehicles: Vehicle[] = [];
-
-        setVehicles([]);
 
         patterns.forEach(async (pattern) => {
-            routes.add(pattern.route);
             const newLine = {
                 ...basePolylineOptions,
                 paths: pattern.paths,
@@ -137,28 +115,8 @@ export const MapContainer: FunctionComponent = () => {
             lines.push(newLine);
         });
 
-        if (routes.size) {
-            routes.forEach(async (route) => {
-                try {
-                    const currentVehicles = await getSingleVehicle(route);
-
-                    updatedVehicles.push(...currentVehicles);
-                    setVehicleRoutes(new Set([...Array.from(vehicleRoutes), route]));
-                } catch (err: any) {
-                    toast.closeAll();
-                    toast({ description: err.response.data, status: 'error' });
-                }
-            });
-
-            setVehicles(updatedVehicles);
-        } else {
-            setVehicles([]);
-            setVehicleRoutes(new Set());
-            if (intervalTimer) clearInterval(intervalTimer);
-        }
-
         setLines(lines);
-    }, [patterns]); // eslint-disable-line
+    }, [patterns]);
 
     useEffect(() => {
         if (map) {
