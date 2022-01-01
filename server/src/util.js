@@ -89,6 +89,14 @@ export const getGitHubWorkflow = async () => {
     return { web, server };
 };
 
+export const getLatestVersion = async () => {
+    const { data } = await axios.get(process.env.GITHUB_VERSION_URL, {
+        headers: { Authorization: `token ${GITHUB_TOKEN}` },
+    });
+
+    return data.tag_name;
+};
+
 export const getLocaleJson = async (lng) => {
     const key = cacheKeys.locale(lng);
     const value = cache.get(key);

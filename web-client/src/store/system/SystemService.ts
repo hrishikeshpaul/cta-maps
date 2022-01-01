@@ -17,3 +17,9 @@ export const getLocaleJson = async (url: string): Promise<LocaleResponse> => {
 
     return { data, status };
 };
+
+export const getVersion = async (): Promise<string> => {
+    const { data } = await Http.get('/version');
+
+    return data;
+};

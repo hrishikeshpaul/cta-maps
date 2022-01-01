@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import express from 'express';
-import { getPatterns, getRoutes, getPredictions, getGitHubWorkflow, getLocaleJson } from './util.js';
+import { getPatterns, getRoutes, getPredictions, getGitHubWorkflow, getLocaleJson, getLatestVersion } from './util.js';
 
 const convertTimestamp = (timestamp) => {
     const [date, time] = timestamp.split(' ');
@@ -123,6 +123,16 @@ router.get('/app-status', async (_, res) => {
         res.send(response);
     } catch (err) {
         res.status(400).send('Failed to update app status');
+    }
+});
+
+router.get('/version', async (_, res) => {
+    try {
+        const data = await getLatestVersion();
+
+        res.send(data);
+    } catch (err) {
+        res.status(400).send('Failed to get version');
     }
 });
 

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import {
     Avatar,
@@ -22,10 +22,12 @@ import { IoIosClose } from 'react-icons/io';
 import { useSystemStore } from 'store/system/SystemStore';
 
 import 'info/Info.scss';
+import { getVersion } from 'store/system/SystemService';
 
 export const Info: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ infoOpen }, { closeInfoDrawer }] = useSystemStore();
+    const [version, setVersion] = useState<string>('');
 
     const onBugReport = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/issues/new', '_blank');
@@ -34,6 +36,18 @@ export const Info: FunctionComponent = () => {
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
     };
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await getVersion();
+                setVersion(data);
+            } catch (err: any) {
+                console.log(err.response);
+            }
+        })();
+    }, []);
+
     return (
         <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
             <DrawerOverlay />
@@ -56,9 +70,10 @@ export const Info: FunctionComponent = () => {
                     <Flex flexDir="column" alignItems="center" px="4">
                         <Avatar src="/logo.svg" size="xl" />
                         <Text color="gray.400" pt="2" textAlign="center" fontSize="xs">
-                            v1.0.0
+                            {version}
                         </Text>
                         <Text
+                            pt="1"
                             color={useColorModeValue('gray.600', 'gray.200')}
                             textAlign="center"
                             fontSize="sm"
@@ -100,7 +115,7 @@ export const Info: FunctionComponent = () => {
                         .
                     </Text>
                     <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.200')}>
-                        © 2021 CTA Maps. All rights reserved.
+                        © {new Date().getFullYear()} CTA Maps. All rights reserved.
                     </Text>
                 </DrawerFooter>
             </DrawerContent>
