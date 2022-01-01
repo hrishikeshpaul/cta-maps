@@ -136,7 +136,15 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     return (
-        <Drawer isOpen={routeSelectOpen} placement="bottom" onClose={() => closeRouteSelect()} autoFocus={false}>
+        <Drawer
+            isOpen={routeSelectOpen}
+            placement="bottom"
+            onClose={() => {
+                setQuery('');
+                closeRouteSelect();
+            }}
+            autoFocus={false}
+        >
             <DrawerOverlay />
             <DrawerContent height="85%" borderRadius="xl">
                 <DrawerHeader px="4">
