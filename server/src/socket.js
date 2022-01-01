@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+
 import { getVehicles, checkHeading } from './util.js';
 
 const TIMER = 4000; //ms

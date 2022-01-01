@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Pattern, Prediction, Route, Vehicle } from 'store/data/DataStore.Types';
+import { Pattern, Prediction, Route } from 'store/data/DataStore.Types';
 import { Http } from 'utils/Http';
 import { socket } from 'utils/Socket';
 

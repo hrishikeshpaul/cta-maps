@@ -50,6 +50,6 @@ export const SocketModule: FunctionComponent = () => {
                 socket.emit('disconnect').disconnect();
             };
         }
-    }, [socket]);
+    }, [socket]); // eslint-disable-line
     return <></>;
 };
