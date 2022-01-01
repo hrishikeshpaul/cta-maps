@@ -22,10 +22,10 @@ export class Cache {
 
     log_hit(key) {
         this.log_stats();
-        console.info(`Cache Hit - [${key}]`);
+        console.info(`Cache Hit: ${key}`);
     }
 
     log_miss(key) {
-        console.info(`Cache Miss - [${key}]`);
+        console.info(`Cache Miss: ${key}`);
     }
 }

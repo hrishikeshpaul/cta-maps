@@ -1,8 +1,3 @@
-import { Locale } from '../../i18n/LocaleProvider';
-
-export const ColorModeKey = 'chakra-ui-color-mode';
-export const LocaleKey = 'cta-maps-locale';
-
 export enum PointType {
     S = 'S', // stop
     W = 'W', // waypoint
@@ -25,11 +20,6 @@ export enum Heading {
 export enum Juncture {
     A = 'A', // arrival
     D = 'D', // departure
-}
-
-export enum ColorMode {
-    Light = 'light',
-    Dark = 'dark',
 }
 
 export interface Route {
@@ -80,25 +70,11 @@ export interface Prediction {
     delayed: boolean;
 }
 
-export interface Setting {
-    colorMode: ColorMode;
-    locale: Locale;
-}
-
 export interface DataStoreState {
-    systemLoading: boolean;
-    routeSelectOpen: boolean;
-    infoOpen: boolean;
-    settingsOpen: boolean;
-    idleAlertOpen: boolean;
-    dragging: boolean;
-    routesLoading: boolean;
-    patternLoading: boolean;
     currentLocation: Point;
     vehicleRoutes: Set<string>;
     routes: Route[];
     patterns: Pattern[];
     stop: Stop | null;
-    settings: Setting;
     error?: any;
 }

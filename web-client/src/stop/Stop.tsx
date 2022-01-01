@@ -22,9 +22,9 @@ import { useTranslation } from 'react-i18next';
 import { FaLocationArrow } from 'react-icons/fa';
 import { FiChevronDown } from 'react-icons/fi';
 
-import { useDataStore } from '../store/data/DataStore';
-import { getPredictions } from '../store/data/DataService';
-import { Juncture, Prediction } from '../store/data/DataStore.Types';
+import { useDataStore } from 'store/data/DataStore';
+import { getPredictions } from 'store/data/DataService';
+import { Juncture, Prediction } from 'store/data/DataStore.Types';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();

@@ -12,7 +12,7 @@ const ttl = 60 * 60 * 24;
 const cache = new Cache(ttl);
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const cacheKeys = {
-    locale: 'locale-cache',
+    locale: (lng) => `locale-${lng}-cache`,
     routes: 'routes-cache',
     pattern: (route) => `pattern-${route}-cache`,
 };
@@ -95,7 +95,7 @@ export const getGitHubWorkflow = async () => {
 };
 
 export const getLocaleJson = async (lng) => {
-    const key = cacheKeys.locale;
+    const key = cacheKeys.locale(lng);
     const value = cache.get(key);
 
     if (value) {
@@ -105,8 +105,8 @@ export const getLocaleJson = async (lng) => {
 
     const { data, status } = await axios.get(`${process.env.LOCALE_URL}/${lng}.json`);
 
+    cache.log_miss(key);
     cache.set(key, { data, status });
-    console.info(`[${key}] cache miss`);
 
     return { data, status };
 };

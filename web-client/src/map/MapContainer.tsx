@@ -5,13 +5,14 @@ import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-g
 import { useTranslation } from 'react-i18next';
 import { MdMyLocation } from 'react-icons/md';
 
-import { darkStyle, lightStyle } from './Map.Styles';
-import { getSingleVehicle, getVehicles } from '../store/data/DataService';
-import { useDataStore } from '../store/data/DataStore';
+import { darkStyle, lightStyle } from 'map/Map.Styles';
+import { getSingleVehicle, getVehicles } from 'store/data/DataService';
+import { useDataStore } from 'store/data/DataStore';
+import { Point, Stop, Vehicle } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
-import { Point, Stop, Vehicle, ColorMode } from '../store/data/DataStore.Types';
+import { ColorMode } from 'store/system/SystemStore.Types';
 
-import './MapContainer.scss';
+import 'map/MapContainer.scss';
 
 const defaultZoom = 13;
 

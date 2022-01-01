@@ -15,7 +15,7 @@ import {
     useInterval,
 } from '@chakra-ui/react';
 
-import { useDataStore } from '../store/data/DataStore';
+import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 
 const ROUTES_RESET_TIME = 120; // in seconds
