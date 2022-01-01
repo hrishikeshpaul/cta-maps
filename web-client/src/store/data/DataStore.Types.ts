@@ -77,4 +77,5 @@ export interface DataStoreState {
     patterns: Pattern[];
     stop: Stop | null;
     error?: any;
+    vehicles: Vehicle[];
 }

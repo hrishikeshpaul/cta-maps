@@ -7,10 +7,9 @@ import { RouteSelect } from 'route-select/RouteSelect';
 import { Settings } from 'settings/Settings';
 import { Stop } from 'stop/Stop';
 import { useSystemStore } from 'store/system/SystemStore';
-import { io } from 'socket.io-client';
+import { SocketModule } from 'utils/SocketModule';
 
 import './App.scss';
-
 
 export const App = () => {
     const [{ systemLoading }] = useSystemStore();
@@ -21,6 +20,7 @@ export const App = () => {
                 <Landing />
             ) : (
                 <div className="App">
+                    <SocketModule />
                     <IdleAlert />
                     <Nav />
                     <RouteSelect />

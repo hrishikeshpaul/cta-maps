@@ -8,8 +8,10 @@ import {
     cancelGetVehicles,
     getPattern,
     getRoutes,
+    onRouteDeselect,
+    onRouteSelect,
 } from 'store/data/DataService';
-import { Route, DataStoreState, Pattern, Stop, Point } from 'store/data/DataStore.Types';
+import { Route, DataStoreState, Pattern, Stop, Point, Vehicle } from 'store/data/DataStore.Types';
 import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
 export enum DataStoreActionType {
@@ -18,6 +20,7 @@ export enum DataStoreActionType {
     SetStop,
     SetCurrentLocation,
     SetVehicleRoutes,
+    SetVehicles,
     RemoveRoute,
     RemoveAllRoutes,
 }
@@ -46,6 +49,10 @@ interface PayloadSetVehicleRoutes {
     route: Set<string>;
 }
 
+interface PayloadSetVehicles {
+    vehicles: Vehicle[];
+}
+
 interface DataStoreAction {
     type: DataStoreActionType;
     payload?:
@@ -54,7 +61,8 @@ interface DataStoreAction {
         | PayloadSetPattern
         | PayloadSetStop
         | PayloadSetCurrentLocation
-        | PayloadSetVehicleRoutes;
+        | PayloadSetVehicleRoutes
+        | PayloadSetVehicles;
 }
 
 interface DataStoreProviderProps {
@@ -68,6 +76,7 @@ export const initialStoreState: DataStoreState = {
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
     vehicleRoutes: new Set(),
+    vehicles: [],
 };
 
 const DataStoreStateContext = createContext<DataStoreState | undefined>(undefined);
@@ -110,6 +119,11 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
             return {
                 ...state,
                 vehicleRoutes: (action.payload as PayloadSetVehicleRoutes).route,
+            };
+        case DataStoreActionType.SetVehicles:
+            return {
+                ...state,
+                vehicles: (action.payload as PayloadSetVehicles).vehicles,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -156,6 +170,7 @@ interface DataStoreActionApis {
     closeStop: () => void;
     setCurrentLocation: (location: Point) => void;
     setVehicleRoutes: (route: Set<string>) => void;
+    setVehicles: (vehicles: Vehicle[]) => void;
 }
 
 export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
@@ -186,6 +201,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             try {
                 const response = await getPattern(route.route, route.color);
 
+                onRouteSelect(route.route);
                 systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
                 dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
             } catch (err: any) {
@@ -197,6 +213,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             cancelGetSingleVehicle();
             cancelGetPattern();
             cancelGetVehicles();
+            onRouteDeselect(id);
             dispatch({ type: DataStoreActionType.RemoveRoute, payload: { id } });
         },
         removeAllRoutes: () => {
@@ -213,6 +230,10 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         setVehicleRoutes: (route: Set<string>) => {
             dispatch({ type: DataStoreActionType.SetVehicleRoutes, payload: { route } });
+        },
+        setVehicles: (vehicles: Vehicle[]) => {
+            console.log({ vehicles });
+            dispatch({ type: DataStoreActionType.SetVehicles, payload: { vehicles } });
         },
     };
 

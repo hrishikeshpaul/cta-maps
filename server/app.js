@@ -13,7 +13,7 @@ import { onConnection } from './src/socket.js';
 dotenv.config();
 const app = express();
 const httpServer = http.createServer(app);
-const io = new Server(httpServer, { cors: '*' });
+const io = new Server(httpServer, { cors: '*', transports: ['websocket'], allowUpgrades: false });
 
 app.use(cors());
 

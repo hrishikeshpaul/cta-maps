@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { Pattern, Prediction, Route, Vehicle } from 'store/data/DataStore.Types';
 import { Http } from 'utils/Http';
+import { socket } from 'utils/Socket';
 
 const { CancelToken } = axios;
 let cancelVehiclesSource = CancelToken.source();
@@ -75,4 +76,12 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     });
 
     return data;
+};
+
+export const onRouteSelect = (route: string): void => {
+    socket.emit('route-add', route);
+};
+
+export const onRouteDeselect = (route: string): void => {
+    socket.emit('route-remove', route);
 };

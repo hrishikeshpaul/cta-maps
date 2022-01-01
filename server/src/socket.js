@@ -1,6 +1,96 @@
 'use strict';
 
+import _ from 'lodash';
+import { getVehicles, checkHeading } from './util.js';
+
+const TIMER = 5000; //ms
+
+class SocketConnection {
+    constructor(socket) {
+        this.routes = {};
+        this.timer = null;
+        this.socket = socket;
+    }
+
+    start_timer() {
+        const that = this;
+
+        this.timer = setInterval(async () => {
+            const routeStr = Object.keys(this.routes).join(',');
+            const data = await this.get_vehicles(routeStr);
+
+            that.socket.emit('update-vehicles', data);
+        }, TIMER);
+    }
+
+    stop_timer() {
+        clearInterval(this.timer);
+        this.timer = null;
+    }
+
+    async add(route) {
+        try {
+            const data = await this.get_vehicles(route);
+            this.routes[route] = true;
+
+            if (this.timer === null) {
+                this.start_timer();
+            }
+
+            this.socket.emit('update-vehicles', data);
+        } catch (err) {
+            this.socket.emit('error', { response: { data: err } });
+        }
+    }
+
+    remove(route) {
+        delete this.routes[route];
+
+        if (Object.keys(this.routes).length === 0) {
+            this.stop_timer();
+        }
+    }
+
+    async get_vehicles(route) {
+        let data = await getVehicles(route);
+        data = data.map((item) => ({
+            id: item.vid,
+            timestamp: item.tmstmp,
+            position: { lat: parseFloat(item.lat), lng: parseFloat(item.lon) },
+            route: item.rt,
+            destination: item.des,
+            delayed: item.dly,
+            heading: checkHeading(parseInt(item.hdg, 10)),
+        }));
+
+        return data;
+    }
+}
+
+const connectedSockets = {};
+
+const onRouteSelect = async (socket, route) => {
+    console.log('route socket id:', socket.id);
+    console.log('route:', route);
+    connectedSockets[socket.id].add(route);
+};
+
+const onRouteDeselect = (socket, route) => {
+    connectedSockets[socket.id].remove(route);
+};
+
+const onDisconnect = (socket) => {
+    console.log('Socket disconnected - ', socket.id);
+    connectedSockets[socket.id].stop_timer();
+    delete connectedSockets[socket.id];
+};
+
 export const onConnection = (socket) => {
     // register all the listeners and emitters here
-    console.log(socket);
+    connectedSockets[socket.id] = new SocketConnection(socket);
+    console.log('Socket connected - ', socket.id);
+
+    socket.on('route-add', _.partial(onRouteSelect, socket));
+    socket.on('route-remove', _.partial(onRouteDeselect, socket));
+    socket.on('disconnect', _.partial(onDisconnect, socket));
 };
