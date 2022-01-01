@@ -105,6 +105,7 @@ export const RouteSelect: FunctionComponent = () => {
                 setRoute({ route, name, color });
                 if (computedRouteIdx !== -1) {
                     const old = [...computedRoutes];
+                    
                     old[computedRouteIdx].selected = true;
                     setComputedRoutes([...old]);
                 }
@@ -112,6 +113,7 @@ export const RouteSelect: FunctionComponent = () => {
                 removeRoute(route);
                 if (computedRouteIdx !== -1) {
                     const old = [...computedRoutes];
+
                     old[computedRouteIdx].selected = false;
                     setComputedRoutes([...old]);
                 }

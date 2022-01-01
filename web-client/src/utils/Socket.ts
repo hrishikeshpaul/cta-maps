@@ -1,3 +1,3 @@
-import socketIOClient from 'socket.io-client';
+import socketClient from 'socket.io-client';
 
-export const socket = socketIOClient(process.env.REACT_APP_BASE_URL!, { transports: ['websocket'] });
+export const socket = socketClient(process.env.REACT_APP_BASE_URL!, { transports: ['websocket'] });
