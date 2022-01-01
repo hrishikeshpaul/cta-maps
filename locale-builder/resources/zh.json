@@ -35,5 +35,15 @@
   "STATUS": "地位",
   "SERVER": "服务器",
   "WEBSITE": "网站",
-  "LIVE": "居住"
+  "LIVE": "居住",
+  "LOCATION": "地点",
+  "ALLOW_LOCATION": "允许位置",
+  "NORTHBOUND": "北行",
+  "SOUTHBOUND": "南行",
+  "WESTBOUND": "西行",
+  "EASTBOUND": "东行",
+  "SERVER_DISCONNECT": "重新连接到服务器..",
+  "SERVER_CONNECT": "服务器已连接！",
+  "SERVER_ERROR": "服务器错误。请重新选择路线",
+  "GENERIC_ERROR": "没有找到数据"
 }

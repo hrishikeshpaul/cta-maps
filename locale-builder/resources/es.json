@@ -35,5 +35,15 @@
   "STATUS": "Estado",
   "SERVER": "Servidor",
   "WEBSITE": "Sitio web",
-  "LIVE": "Vivir"
+  "LIVE": "Vivir",
+  "LOCATION": "Ubicación",
+  "ALLOW_LOCATION": "Permitir ubicación",
+  "NORTHBOUND": "Dirección norte",
+  "SOUTHBOUND": "Hacia el sur",
+  "WESTBOUND": "Hacia el oeste",
+  "EASTBOUND": "Hacia el este",
+  "SERVER_DISCONNECT": "Reconectando al servidor ...",
+  "SERVER_CONNECT": "¡Servidor conectado!",
+  "SERVER_ERROR": "Error del Servidor. Vuelva a seleccionar las rutas",
+  "GENERIC_ERROR": "Datos no encontrados"
 }
