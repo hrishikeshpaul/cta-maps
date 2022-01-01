@@ -8,6 +8,7 @@ import { MdMyLocation } from 'react-icons/md';
 import { darkStyle, lightStyle } from './Map.Styles';
 import { getSingleVehicle, getVehicles } from '../store/data/DataService';
 import { useDataStore } from '../store/data/DataStore';
+import { useSystemStore } from 'store/system/SystemStore';
 import { Point, Stop, Vehicle, ColorMode } from '../store/data/DataStore.Types';
 
 import './MapContainer.scss';
@@ -48,10 +49,9 @@ interface Line extends PolylineProps {
 
 export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [
-        { currentLocation, patterns, vehicleRoutes, dragging },
-        { setDragging, openStop, setCurrentLocation, setVehicleRoutes },
-    ] = useDataStore();
+    const [{ dragging }, { setDragging }] = useSystemStore();
+    const [{ currentLocation, patterns, vehicleRoutes }, { openStop, setCurrentLocation, setVehicleRoutes }] =
+        useDataStore();
     const { colorMode } = useColorMode();
     const toast = useToast({
         variant: 'solid',

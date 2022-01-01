@@ -5,6 +5,7 @@ import { useToast } from '@chakra-ui/react';
 import { cancelGetPattern, cancelGetSingleVehicle, cancelGetVehicles, getPattern, getRoutes } from './DataService';
 import { Route, DataStoreState, Pattern, Stop, Point, ColorMode, ColorModeKey, LocaleKey } from './DataStore.Types';
 import { Locale } from '../../i18n/LocaleProvider';
+import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
 export enum DataStoreActionType {
     SetRouteSelect,
@@ -285,6 +286,7 @@ interface DataStoreActionApis {
 
 export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
     const dispatch = useDataStoreDispatch();
+    const systemDispatch = useSystemStoreDispatch();
     const toast = useToast();
 
     const actionApis: DataStoreActionApis = {
@@ -305,14 +307,14 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         getRoutes: async () => {
             try {
-                dispatch({ type: DataStoreActionType.SetRoutesLoading, payload: { loading: true } });
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: true } });
                 const response = await getRoutes();
 
-                dispatch({ type: DataStoreActionType.SetRoutesLoading, payload: { loading: false } });
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
 
                 return response;
             } catch (err: any) {
-                dispatch({ type: DataStoreActionType.SetRoutesLoading, payload: { loading: false } });
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
                 toast({ description: err.response.data, status: 'error' });
 
                 return null;

@@ -4,8 +4,8 @@ import i18n from 'i18next';
 import HttpApi from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
-import { getLocaleJson } from '../store/data/DataService';
-import { LocaleKey } from '../store/data/DataStore.Types';
+import { LocaleKey } from 'store/data/DataStore.Types';
+import { getLocaleJson } from 'store/system/SystemService';
 import { useSystemStore } from 'store/system/SystemStore';
 
 export enum Locale {

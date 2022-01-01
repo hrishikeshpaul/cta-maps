@@ -26,6 +26,7 @@ import { IoIosClose } from 'react-icons/io';
 
 import { useDataStore } from '../store/data/DataStore';
 import { Route } from '../store/data/DataStore.Types';
+import { useSystemStore } from 'store/system/SystemStore';
 
 interface RouteExtended extends Route {
     selected: boolean;
@@ -37,10 +38,8 @@ const fuseOptions = {
 
 export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [
-        { routeSelectOpen, routesLoading, routes: currentRoutes },
-        { closeRouteSelect, getRoutes, setRoute, removeRoute, removeAllRoutes },
-    ] = useDataStore();
+    const [{ routes: currentRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] = useDataStore();
+    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [computedRoutes, setComputedRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');

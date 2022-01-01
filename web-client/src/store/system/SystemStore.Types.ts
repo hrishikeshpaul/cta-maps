@@ -13,6 +13,17 @@ export interface Setting {
     locale: Locale;
 }
 
+export enum Status {
+    Success = 'success',
+    InProgress = 'in_progress',
+    Failure = 'failure',
+}
+
+export interface AppStatus {
+    web: Status;
+    server: Status;
+}
+
 export interface SystemStoreState {
     systemLoading: boolean;
     routeSelectOpen: boolean;

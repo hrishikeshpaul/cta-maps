@@ -14,6 +14,11 @@ export enum SystemStoreActionType {
     SetIdleAlert,
     SetSystemLoading,
     SetSettings,
+    SetRoutesLoading,
+}
+
+interface PayloadSetRoutesLoading {
+    loading: boolean;
 }
 
 interface PayloadSetRouteSelectDrawer {
@@ -90,6 +95,11 @@ const SystemStoreDispatchContext = createContext<Dispatch<SystemStoreAction> | u
 
 const storeReducer = (state: SystemStoreState, action: SystemStoreAction): SystemStoreState => {
     switch (action.type) {
+        case SystemStoreActionType.SetRoutesLoading:
+            return {
+                ...state,
+                routesLoading: (action.payload as PayloadSetRoutesLoading).loading,
+            };
         case SystemStoreActionType.SetRouteSelectDrawer:
             return { ...state, routeSelectOpen: (action.payload as PayloadSetRouteSelectDrawer).open };
         case SystemStoreActionType.SetDragging:
@@ -161,7 +171,7 @@ const useSystemStoreState = (): SystemStoreState => {
     return context;
 };
 
-const useSystemStoreDispatch = (): Dispatch<SystemStoreAction> => {
+export const useSystemStoreDispatch = (): Dispatch<SystemStoreAction> => {
     const context = useContext(SystemStoreDispatchContext);
 
     if (context === undefined) {

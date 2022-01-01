@@ -19,13 +19,13 @@ import { useTranslation } from 'react-i18next';
 import { FiChevronRight } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
-import { useDataStore } from '../store/data/DataStore';
+import { useSystemStore } from 'store/system/SystemStore';
 
 import './Info.scss';
 
 export const Info: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ infoOpen }, { closeInfo }] = useDataStore();
+    const [{ infoOpen }, { closeInfoDrawer }] = useSystemStore();
 
     const onBugReport = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/issues/new', '_blank');
@@ -35,7 +35,7 @@ export const Info: FunctionComponent = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
     };
     return (
-        <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfo} autoFocus={false}>
+        <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerHeader px="4">
@@ -46,7 +46,7 @@ export const Info: FunctionComponent = () => {
                             fontSize="3xl"
                             aria-label="close"
                             mr="-3"
-                            onClick={closeInfo}
+                            onClick={closeInfoDrawer}
                             icon={<IoIosClose />}
                         />
                     </Flex>

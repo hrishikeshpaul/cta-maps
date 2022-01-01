@@ -1,15 +1,8 @@
 import axios from 'axios';
 
-import { AppStatus, Pattern, Prediction, Route, Vehicle } from './DataStore.Types';
+import { Pattern, Prediction, Route, Vehicle } from 'store/data/DataStore.Types';
+import { Http } from 'utils/Http';
 
-interface LocaleResponse {
-    data: string;
-    status: number;
-}
-
-const Http = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
-});
 const { CancelToken } = axios;
 let cancelVehiclesSource = CancelToken.source();
 let cancelSingleVehicleSource = CancelToken.source();
@@ -82,16 +75,4 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     });
 
     return data;
-};
-
-export const getAppStatus = async (): Promise<AppStatus> => {
-    const { data } = await Http.get<AppStatus>('/app-status');
-
-    return data;
-};
-
-export const getLocaleJson = async (url: string): Promise<LocaleResponse> => {
-    const { data, status } = await Http.get(url);
-
-    return { data, status };
 };
