@@ -193,7 +193,9 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
                 dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
             } catch (err: any) {
                 systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
-                toast({ description: err.response.data, status: 'error' });
+                if (err.response) {
+                    toast({ description: err.response.data, status: 'error' });
+                }
             }
         },
         removeRoute: (id: string) => {

@@ -2,29 +2,7 @@
 
 import fs from 'fs';
 import express from 'express';
-import { getPatterns, getRoutes, getVehicles, getPredictions, getGitHubWorkflow, getLocaleJson } from './util.js';
-
-const checkHeading = (heading) => {
-    if (heading >= 0 && heading <= 45) {
-        return 'N';
-    } else if (heading > 45 && heading <= 90) {
-        return 'NE';
-    } else if (heading > 90 && heading <= 135) {
-        return 'E';
-    } else if (heading > 135 && heading <= 180) {
-        return 'SE';
-    } else if (heading > 180 && heading <= 225) {
-        return 'S';
-    } else if (heading > 225 && heading <= 270) {
-        return 'SW';
-    } else if (heading > 270 && heading <= 315) {
-        return 'W';
-    } else if (heading > 315 && heading <= 360) {
-        return 'NW';
-    } else {
-        return 'F';
-    }
-};
+import { getPatterns, getRoutes, getPredictions, getGitHubWorkflow, getLocaleJson } from './util.js';
 
 const convertTimestamp = (timestamp) => {
     const [date, time] = timestamp.split(' ');
@@ -44,7 +22,7 @@ const checkStatus = (status) => {
 
 const router = express.Router();
 
-router.get('/routes', async (req, res) => {
+router.get('/routes', async (_, res) => {
     try {
         let data = await getRoutes();
 
@@ -52,25 +30,6 @@ router.get('/routes', async (req, res) => {
             route: item.rt,
             name: item.rtnm,
             color: item.rtclr,
-        }));
-
-        res.send(data);
-    } catch (err) {
-        res.status(400).send(err);
-    }
-});
-
-router.get('/vehicles', async (req, res) => {
-    try {
-        let data = await getVehicles(req.query.rt);
-        data = data.map((item) => ({
-            id: item.vid,
-            timestamp: item.tmstmp,
-            position: { lat: parseFloat(item.lat), lng: parseFloat(item.lon) },
-            route: item.rt,
-            destination: item.des,
-            delayed: item.dly,
-            heading: checkHeading(parseInt(item.hdg, 10)),
         }));
 
         res.send(data);

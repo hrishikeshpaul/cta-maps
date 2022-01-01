@@ -16,10 +16,14 @@ class SocketConnection {
         const that = this;
 
         this.timer = setInterval(async () => {
-            const routeStr = Object.keys(this.routes).join(',');
-            const data = await this.get_vehicles(routeStr);
+            try {
+                const routeStr = Object.keys(this.routes).join(',');
+                const data = await this.get_vehicles(routeStr);
 
-            that.socket.emit('update-vehicles', data);
+                that.socket.emit('update-vehicles', data);
+            } catch (err) {
+                that.socket.emit('server-error');
+            }
         }, TIMER);
     }
 
@@ -39,7 +43,7 @@ class SocketConnection {
 
             this.socket.emit('update-vehicles', data);
         } catch (err) {
-            this.socket.emit('error', { response: { data: err } });
+            this.socket.emit('error', err);
         }
     }
 
@@ -83,7 +87,7 @@ const onRouteDeselect = (socket, route) => {
 };
 
 const onDisconnect = (socket) => {
-    console.log('Socket disconnected - ', socket.id);
+    console.info('Socket disconnected -', socket.id);
 
     connectedSockets[socket.id].stop_timer();
     delete connectedSockets[socket.id];
@@ -96,7 +100,7 @@ const onRemoveAll = (socket) => {
 export const onConnection = (socket) => {
     connectedSockets[socket.id] = new SocketConnection(socket);
 
-    console.log('Socket connected - ', socket.id);
+    console.info('Socket connected -', socket.id);
 
     socket.on('route-add', _.partial(onRouteSelect, socket));
     socket.on('route-remove', _.partial(onRouteDeselect, socket));

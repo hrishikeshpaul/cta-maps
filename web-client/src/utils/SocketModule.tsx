@@ -10,8 +10,12 @@ export const SocketModule: FunctionComponent = () => {
 
     useEffect(() => {
         if (socket) {
-            socket.on('error', () => {
-                console.log('connect error');
+            socket.on('error', (error) => {
+                toast.closeAll();
+                toast({
+                    description: error,
+                    status: 'error',
+                });
             });
 
             socket.on('disconnect', () => {
@@ -32,6 +36,15 @@ export const SocketModule: FunctionComponent = () => {
             });
 
             socket.on('update-vehicles', setVehicles);
+
+            socket.on('server-error', () => {
+                toast.closeAll();
+                toast({
+                    description: 'Server error. Please reselect routes.',
+                    status: 'error',
+                });
+                removeAllRoutes();
+            });
 
             return () => {
                 socket.emit('disconnect').disconnect();
