@@ -150,7 +150,7 @@ const useDataStoreDispatch = (): Dispatch<DataStoreAction> => {
 };
 
 interface DataStoreActionApis {
-    getRoutes: () => Promise<Route[] | null>;
+    getRoutes: (search?: string, filter?: string, limit?: number, index?: number) => Promise<Route[] | null>;
     setRoute: (route: Route) => void;
     removeRoute: (id: string) => void;
     removeAllRoutes: () => void;
@@ -166,10 +166,10 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
     const toast = useToast();
 
     const actionApis: DataStoreActionApis = {
-        getRoutes: async () => {
+        getRoutes: async (search?: string, filter?: string, limit?: number, index?: number) => {
             try {
                 systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: true } });
-                const response = await getRoutes();
+                const response = await getRoutes(search, filter, limit, index);
 
                 systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
 

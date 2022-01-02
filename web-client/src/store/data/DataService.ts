@@ -7,8 +7,10 @@ import { socket } from 'utils/Socket';
 const { CancelToken } = axios;
 let cancelGetPatternSource = CancelToken.source();
 
-export const getRoutes = async (): Promise<Route[]> => {
-    const { data } = await Http.get<Route[]>('/routes');
+export const getRoutes = async (search?: string, filter?: string, limit?: number, index?: number): Promise<Route[]> => {
+    const { data } = await Http.get<Route[]>('/routes', {
+        params: { search, filter, limit, index },
+    });
 
     return new Promise((resolve) => {
         setTimeout(async () => {

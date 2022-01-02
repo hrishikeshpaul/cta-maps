@@ -19,7 +19,6 @@ import {
     DrawerFooter,
     Button,
 } from '@chakra-ui/react';
-import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
@@ -32,90 +31,86 @@ interface RouteExtended extends Route {
     selected: boolean;
 }
 
-const fuseOptions = {
-    keys: ['route', 'name'],
-};
-
 export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] = useDataStore();
     const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
-    const [computedRoutes, setComputedRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
-    const fuse = new Fuse(routes!, fuseOptions);
+    const [index, setIndex] = useState<number>(1);
+
+    const handleScroll = async (e: any) => {
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        const filter = currentRoutes.map((route) => route.route).join(',');
+
+        if (bottom) {
+            setIndex(index + 1);
+            const response = await getRoutes(query, filter, 10, index + 1);
+
+            if (response)
+                setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
+        }
+    };
+
+    const onOpen = async () => {
+        const filter = currentRoutes.map((route) => route.route).join(',');
+        const response = await getRoutes(query, filter, 10, index);
+        const selectedRoutes: RouteExtended[] = currentRoutes.map((route) => ({ ...route, selected: true }));
+        let unselectedRoutes: RouteExtended[] = [];
+
+        if (response) {
+            unselectedRoutes = response.map((route) => ({ ...route, selected: false }));
+        }
+
+        setRoutes([...selectedRoutes, ...unselectedRoutes]);
+    };
 
     useEffect(() => {
         if (routeSelectOpen) {
             (async () => {
-                const responseRoutes = await getRoutes();
-                const selectedRoutes: RouteExtended[] = [];
-                const unselectedRoutes: RouteExtended[] = [];
-
-                responseRoutes?.forEach((route) => {
-                    const foundRouteIdx = currentRoutes.findIndex((r) => r.route === route.route);
-                    if (foundRouteIdx !== -1) {
-                        selectedRoutes.push({ ...route, selected: true });
-                    } else {
-                        unselectedRoutes.push({ ...route, selected: false });
-                    }
-                });
-
-                setRoutes([...selectedRoutes, ...unselectedRoutes]);
-                setComputedRoutes([...selectedRoutes, ...unselectedRoutes]);
+                await onOpen();
             })();
+        } else {
+            setQuery('');
+            setIndex(1);
+            closeRouteSelect();
         }
     }, [routeSelectOpen]); // eslint-disable-line
 
     useEffect(() => {
-        const mutatedRoutes: RouteExtended[] = [];
+        (async () => {
+            if (query) {
+                const filter = currentRoutes.map((route) => route.route).join(',');
+                const response = await getRoutes(query, filter, 10, index);
 
-        routes?.forEach((route) => {
-            const foundRouteIdx = currentRoutes.findIndex((r) => r.route === route.route);
-            if (foundRouteIdx !== -1) {
-                mutatedRoutes.push({ ...route, selected: true });
+                if (response) {
+                    setRoutes(response.map((route) => ({ ...route, selected: false })));
+                }
             } else {
-                mutatedRoutes.push({ ...route, selected: false });
+                await onOpen();
             }
-        });
-
-        setComputedRoutes(mutatedRoutes);
-    }, [currentRoutes]); // eslint-disable-line
-
-    useEffect(() => {
-        if (query) {
-            const results = fuse.search(query);
-            const computed: RouteExtended[] = [];
-
-            results.forEach((result) => {
-                computed.push(result.item);
-            });
-
-            setComputedRoutes(computed);
-        } else {
-            if (routes) setComputedRoutes(routes);
-        }
+        })();
     }, [query]); // eslint-disable-line
 
     const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
         const onToggle = () => {
-            const computedRouteIdx = computedRoutes.findIndex((r) => r.route === route);
+            const computedRouteIdx = routes.findIndex((r) => r.route === route);
 
             if (!selected) {
                 setRoute({ route, name, color });
                 if (computedRouteIdx !== -1) {
-                    const old = [...computedRoutes];
-                    
+                    const old = [...routes];
+
                     old[computedRouteIdx].selected = true;
-                    setComputedRoutes([...old]);
+                    setRoutes([...old]);
                 }
             } else {
                 removeRoute(route);
                 if (computedRouteIdx !== -1) {
-                    const old = [...computedRoutes];
+                    const old = [...routes];
 
                     old[computedRouteIdx].selected = false;
-                    setComputedRoutes([...old]);
+                    setRoutes([...old]);
                 }
             }
         };
@@ -138,15 +133,7 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     return (
-        <Drawer
-            isOpen={routeSelectOpen}
-            placement="bottom"
-            onClose={() => {
-                setQuery('');
-                closeRouteSelect();
-            }}
-            autoFocus={false}
-        >
+        <Drawer isOpen={routeSelectOpen} placement="bottom" onClose={closeRouteSelect} autoFocus={false}>
             <DrawerOverlay />
             <DrawerContent height="85%" borderRadius="xl">
                 <DrawerHeader px="4">
@@ -187,18 +174,16 @@ export const RouteSelect: FunctionComponent = () => {
                     </InputGroup>
                 </DrawerHeader>
 
-                <DrawerBody px="4">
+                <DrawerBody px="4" onScroll={handleScroll}>
+                    {routes.map((route) => (
+                        <RouteCard {...route} key={route.route} />
+                    ))}
+
                     {routesLoading ? (
                         <Center>
                             <Spinner color="blue.500" />
                         </Center>
-                    ) : (
-                        <>
-                            {computedRoutes.map((route) => (
-                                <RouteCard {...route} key={route.route} />
-                            ))}
-                        </>
-                    )}
+                    ) : null}
                 </DrawerBody>
                 {currentRoutes.length ? (
                     <DrawerFooter justifyContent="center">
