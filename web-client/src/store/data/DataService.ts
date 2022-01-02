@@ -12,11 +12,7 @@ export const getRoutes = async (search?: string, filter?: string, limit?: number
         params: { search, filter, limit, index },
     });
 
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-            resolve(data);
-        }, 250);
-    });
+    return data;
 };
 
 export const getPattern = async (route: string, color: string): Promise<Pattern[]> => {

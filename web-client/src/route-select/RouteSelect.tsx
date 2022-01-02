@@ -27,6 +27,8 @@ import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 
+const LIMIT = 10;
+
 interface RouteExtended extends Route {
     selected: boolean;
 }
@@ -45,7 +47,7 @@ export const RouteSelect: FunctionComponent = () => {
 
         if (bottom) {
             setIndex(index + 1);
-            const response = await getRoutes(query, filter, 10, index + 1);
+            const response = await getRoutes(query, filter, LIMIT, index + 1);
 
             if (response)
                 setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
@@ -54,7 +56,7 @@ export const RouteSelect: FunctionComponent = () => {
 
     const onOpen = async () => {
         const filter = currentRoutes.map((route) => route.route).join(',');
-        const response = await getRoutes(query, filter, 10, index);
+        const response = await getRoutes(query, filter, LIMIT, index);
         const selectedRoutes: RouteExtended[] = currentRoutes.map((route) => ({ ...route, selected: true }));
         let unselectedRoutes: RouteExtended[] = [];
 
@@ -81,7 +83,7 @@ export const RouteSelect: FunctionComponent = () => {
         (async () => {
             if (query) {
                 const filter = currentRoutes.map((route) => route.route).join(',');
-                const response = await getRoutes(query, filter, 10, index);
+                const response = await getRoutes(query, filter, LIMIT, index);
 
                 if (response) {
                     setRoutes(response.map((route) => ({ ...route, selected: false })));
