@@ -26,6 +26,7 @@ import { IoIosClose } from 'react-icons/io';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
+import useDebounce from 'utils/Hook';
 
 const LIMIT = 10;
 
@@ -37,9 +38,11 @@ export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] = useDataStore();
     const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
+    const [mounted, setMounted] = useState<boolean>(false);
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(1);
+    const debouncedQuery = useDebounce(query);
 
     const handleScroll = async (e: any) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -53,6 +56,14 @@ export const RouteSelect: FunctionComponent = () => {
                 setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
         }
     };
+
+    useEffect(() => {
+        setMounted(true);
+
+        return () => {
+            setMounted(false);
+        };
+    }, []);
 
     const onOpen = async () => {
         const filter = currentRoutes.map((route) => route.route).join(',');
@@ -81,18 +92,20 @@ export const RouteSelect: FunctionComponent = () => {
 
     useEffect(() => {
         (async () => {
-            if (query) {
+            if (debouncedQuery) {
                 const filter = currentRoutes.map((route) => route.route).join(',');
-                const response = await getRoutes(query, filter, LIMIT, index);
+                const response = await getRoutes(debouncedQuery, filter, LIMIT, index);
 
                 if (response) {
                     setRoutes(response.map((route) => ({ ...route, selected: false })));
                 }
             } else {
-                await onOpen();
+                if (mounted) {
+                    await onOpen();
+                }
             }
         })();
-    }, [query]); // eslint-disable-line
+    }, [debouncedQuery]); // eslint-disable-line
 
     const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
         const onToggle = () => {
