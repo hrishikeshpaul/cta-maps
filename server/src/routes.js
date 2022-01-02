@@ -1,7 +1,9 @@
 'use strict';
 
-import fs from 'fs';
 import express from 'express';
+import fs from 'fs';
+import Fuse from 'fuse.js';
+
 import { getPatterns, getRoutes, getPredictions, getGitHubWorkflow, getLocaleJson, getLatestVersion } from './util.js';
 
 const convertTimestamp = (timestamp) => {
@@ -20,10 +22,16 @@ const checkStatus = (status) => {
     return 'in_progress';
 };
 
+const paginate = (array, limit, index) => {
+    return array.slice((index - 1) * limit, index * limit);
+};
+
 const router = express.Router();
 
-router.get('/routes', async (_, res) => {
+router.get('/routes', async (req, res) => {
     try {
+        const { search, filter, limit, index } = req.query;
+
         let data = await getRoutes();
 
         data = data.map((item) => ({
@@ -32,7 +40,24 @@ router.get('/routes', async (_, res) => {
             color: item.rtclr,
         }));
 
-        res.send(data);
+        if (filter) {
+            const filterRoutes = filter.split(',');
+
+            filterRoutes.forEach((route) => {
+                data = data.filter((d) => d.route !== route);
+            });
+        }
+
+        if (search) {
+            const fuse = new Fuse(data, { keys: ['route', 'name'] });
+            const searchedRoutes = fuse.search(search);
+
+            data = searchedRoutes.map((f) => f.item);
+        }
+
+        const paginatedResponses = paginate(data, limit || 10, index || 1);
+
+        res.send(paginatedResponses);
     } catch (err) {
         res.status(400).send(err);
     }
