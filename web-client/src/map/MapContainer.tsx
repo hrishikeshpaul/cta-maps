@@ -166,10 +166,11 @@ export const MapContainer: FunctionComponent = () => {
                         <>
                             {vehicles.map((vehicle) => (
                                 <Marker
-                                    zIndex={5}
                                     icon={VehicleIconMapper[vehicle.heading]}
                                     position={vehicle.position}
                                     key={vehicle.id}
+                                    visible={map?.getBounds()?.contains(vehicle.position)}
+                                    zIndex={5}
                                 />
                             ))}
                         </>
@@ -180,11 +181,12 @@ export const MapContainer: FunctionComponent = () => {
                             {showStops &&
                                 line.stops.map((stop) => (
                                     <Marker
-                                        zIndex={4}
                                         icon="/stop.svg"
                                         position={{ lat: stop.lat, lng: stop.lng }}
                                         key={`stop-${stop.id}`}
                                         onClick={() => openStop(stop)}
+                                        visible={map?.getBounds()?.contains({ lat: stop.lat, lng: stop.lng })}
+                                        zIndex={4}
                                     ></Marker>
                                 ))}
                         </div>
