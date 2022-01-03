@@ -88,7 +88,7 @@ const onRouteDeselect = (socket, route) => {
 };
 
 const onDisconnect = (socket) => {
-    console.info(`Socket[${socket.id}] disconnected`);
+    console.info(`Socket[${socket.id}] disconnected..`);
 
     connectedSockets[socket.id].stop_timer();
     delete connectedSockets[socket.id];
