@@ -13,7 +13,7 @@ import { SocketModule } from 'utils/SocketModule';
 
 import './App.scss';
 
-const IDLE_TIME = 2000; // 3 minutes
+const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
