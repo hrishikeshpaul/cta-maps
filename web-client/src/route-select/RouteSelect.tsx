@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState, ChangeEvent } from 'react';
+import { FunctionComponent, useEffect, useState, ChangeEvent, UIEvent } from 'react';
 
 import {
     Drawer,
@@ -44,8 +44,8 @@ export const RouteSelect: FunctionComponent = () => {
     const [index, setIndex] = useState<number>(1);
     const debouncedQuery = useDebounce(query);
 
-    const handleScroll = async (e: any) => {
-        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
+        const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight;
         const filter = currentRoutes.map((route) => route.route).join(',');
 
         if (bottom) {
@@ -150,7 +150,7 @@ export const RouteSelect: FunctionComponent = () => {
     return (
         <Drawer isOpen={routeSelectOpen} placement="bottom" onClose={closeRouteSelect} autoFocus={false}>
             <DrawerOverlay />
-            <DrawerContent height="85%" borderRadius="xl">
+            <DrawerContent height="85%" borderRadius="xl" onScroll={() => console.log('hello')}>
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
                         <Text fontWeight="bold">{t('SELECT_ROUTES')}</Text>
