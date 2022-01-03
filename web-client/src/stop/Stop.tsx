@@ -101,7 +101,7 @@ export const Stop: FunctionComponent = () => {
                                     </Badge>
                                 )}
                             </Text>
-                            <Text fontSize="xs">{t('direction')}</Text>
+                            <Text fontSize="xs">{t(direction)}</Text>
                         </Box>
                     </Flex>
                     <Text fontWeight={500}>{timestamp}</Text>
