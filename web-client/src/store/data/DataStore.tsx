@@ -6,6 +6,8 @@ import {
     cancelGetPattern,
     getPattern,
     getRoutes,
+    onActive,
+    onIdle,
     onRouteDeselect,
     onRouteRemoveAll,
     onRouteSelect,
@@ -158,6 +160,8 @@ interface DataStoreActionApis {
     closeStop: () => void;
     setCurrentLocation: (location: Point) => void;
     setVehicles: (vehicles: Vehicle[]) => void;
+    onIdle: () => void;
+    onActive: () => void;
 }
 
 export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
@@ -218,6 +222,12 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         setVehicles: (vehicles: Vehicle[]) => {
             dispatch({ type: DataStoreActionType.SetVehicles, payload: { vehicles } });
+        },
+        onIdle: () => {
+            onIdle();
+        },
+        onActive: () => {
+            onActive();
         },
     };
 

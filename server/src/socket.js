@@ -88,7 +88,7 @@ const onRouteDeselect = (socket, route) => {
 };
 
 const onDisconnect = (socket) => {
-    console.info('Socket disconnected -', socket.id);
+    console.info(`Socket[${socket.id}] disconnected`);
 
     connectedSockets[socket.id].stop_timer();
     delete connectedSockets[socket.id];
@@ -98,13 +98,31 @@ const onRemoveAll = (socket) => {
     connectedSockets[socket.id].remove_all();
 };
 
+const onIdle = (socket) => {
+    console.log(`Socket[${socket.id}] idle. Stopping vehicle data..`);
+
+    connectedSockets[socket.id].stop_timer();
+};
+
+const onActive = (socket) => {
+    console.log(`Socket[${socket.id}] active. Fetching vehicle data..`);
+
+    const connection = connectedSockets[socket.id];
+
+    if (connection && Object.keys(connection.routes).length) {
+        connectedSockets[socket.id].start_timer();
+    }
+};
+
 export const onConnection = (socket) => {
     connectedSockets[socket.id] = new SocketConnection(socket);
 
-    console.info('Socket connected -', socket.id);
+    console.info(`Socket[${socket.id}] connected`);
 
     socket.on('route-add', _.partial(onRouteSelect, socket));
     socket.on('route-remove', _.partial(onRouteDeselect, socket));
     socket.on('route-remove-all', _.partial(onRemoveAll, socket));
+    socket.on('idle', _.partial(onIdle, socket));
+    socket.on('active', _.partial(onActive, socket));
     socket.on('disconnect', _.partial(onDisconnect, socket));
 };

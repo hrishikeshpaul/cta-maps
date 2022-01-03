@@ -53,3 +53,11 @@ export const onRouteDeselect = (route: string): void => {
 export const onRouteRemoveAll = (): void => {
     socket.emit('route-remove-all');
 };
+
+export const onIdle = (): void => {
+    socket.emit('idle');
+};
+
+export const onActive = (): void => {
+    socket.emit('active');
+};
