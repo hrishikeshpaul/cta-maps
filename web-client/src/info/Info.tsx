@@ -61,7 +61,7 @@ export const Info: FunctionComponent = () => {
             <DrawerContent>
                 <DrawerHeader px="4">
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontWeight="bold">TrackCTA</Text>
+                        <Text fontWeight="bold">trackCTA</Text>
                         <IconButton
                             variant="ghost"
                             fontSize="3xl"
