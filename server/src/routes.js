@@ -165,11 +165,12 @@ router.get('/locale/:ns/:lng', async (req, res) => {
     const { ns, lng } = req.params;
 
     try {
-        const { data } = await getLocaleJson(lng);
+        const { data } = await getLocaleJson(ns, lng);
 
         res.send(data).status(200);
     } catch (err) {
-        res.send(fs.readFileSync('src/res/en.json')).status(200);
+        console.log(err.response.data);
+        res.send(fs.readFileSync('src/locales/common_en.json')).status(200);
     }
 });
 

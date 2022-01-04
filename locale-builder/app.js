@@ -13,7 +13,9 @@ const translate = new Translate({
 });
 
 async function convertCommon() {
-  const englishLocaleJson = JSON.parse(fs.readFileSync("resources/common/en.json"));
+  const englishLocaleJson = JSON.parse(
+    fs.readFileSync("resources/common/en.json")
+  );
 
   locales.forEach(async (locale) => {
     const output = {};
@@ -37,7 +39,9 @@ async function convertCommon() {
 }
 
 async function convertFAQ() {
-  const englishLocaleJson = JSON.parse(fs.readFileSync("resources/faq/en.json"));
+  const englishLocaleJson = JSON.parse(
+    fs.readFileSync("resources/faq/en.json")
+  );
 
   locales.forEach(async (locale) => {
     const output = {};
@@ -62,9 +66,11 @@ async function convertFAQ() {
 
 switch (process.argv[2]) {
   case "common":
-    convertCommon();
+    console.log("Translating common locales...");
+    // convertCommon();
     break;
   case "faq":
-    convertFAQ();
+    console.log("Translating FAQ locales...");
+    // convertFAQ();
     break;
 }
