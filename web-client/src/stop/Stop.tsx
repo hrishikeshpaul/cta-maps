@@ -126,6 +126,7 @@ export const Stop: FunctionComponent = () => {
                         <IconButton
                             variant="ghost"
                             fontSize="2xl"
+                            mr="-3"
                             aria-label="close"
                             onClick={() => {
                                 closeStop();
