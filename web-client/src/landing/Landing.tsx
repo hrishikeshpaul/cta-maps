@@ -9,7 +9,7 @@ export const Landing: FunctionComponent = () => {
                 <Fade in={true}>
                     <Avatar src="/logo.svg" size="xl" />
                     <Text fontSize="xl" pt="2" fontWeight="bold">
-                        CTA Maps
+                        trackCTA
                     </Text>
                     <Text fontSize="sm">v1.3.0-alpha</Text>
                     <Spinner mt="4" size="md" color="blue.300" />
