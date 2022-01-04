@@ -1,4 +1,4 @@
-name: Deploy Web client to Firebase Hosting
+name: Deploy Web Client to Firebase Hosting
 "on":
   push:
     paths:
