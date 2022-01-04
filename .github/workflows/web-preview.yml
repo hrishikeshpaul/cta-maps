@@ -1,0 +1,36 @@
+name: Deploy Web client to Firebase Hosting
+"on":
+  pull_request:
+    paths:
+      - web-client/**
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        working-directory: ./web-client
+        run: yarn install
+
+      - name: Build
+        working-directory: ./web-client
+        run: yarn build
+        env:
+          REACT_APP_MAPS_API_KEY: ${{ secrets.REACT_APP_MAPS_API_KEY }}
+          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRACKCTA }}"
+          channelId: "preview-${{ GITHUB_SHA }}"
+          expires: 2d
+          projectId: trackcta
