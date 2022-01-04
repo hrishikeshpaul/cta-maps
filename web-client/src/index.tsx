@@ -3,10 +3,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ChakraProvider, extendTheme, theme as ChakraTheme, ThemeConfig, ColorModeScript } from '@chakra-ui/react';
 
+import { App } from 'App';
 import { LocaleProvider } from 'i18n/LocaleProvider';
 import { DataStoreProvider } from 'store/data/DataStore';
 import { SystemStoreProvider } from 'store/system/SystemStore';
-import { App } from './App';
+
 import reportWebVitals from './reportWebVitals';
 
 import './index.scss';

@@ -97,20 +97,16 @@ export const getLatestVersion = async () => {
     return data.tag_name;
 };
 
-export const getLocaleJson = async (lng) => {
-    const key = cacheKeys.locale(lng);
+export const getLocaleJson = async (ns, lng) => {
+    const key = cacheKeys.locale(ns, lng);
     const value = cache.get(key);
-
-    if (lng === 'en' && process.env.NODE_ENV === 'development') {
-        return fs.readFileSync('./res/en.json');
-    }
 
     if (value) {
         cache.log_hit(key);
         return Promise.resolve(value);
     }
 
-    const { data, status } = await axios.get(`${process.env.LOCALE_URL}/${lng}.json`);
+    const { data, status } = await axios.get(`${process.env.LOCALE_URL}/${ns}/${lng}.json`);
 
     cache.log_miss(key);
     cache.set(key, { data, status });

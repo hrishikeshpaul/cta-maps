@@ -161,8 +161,8 @@ router.get('/version', async (_, res) => {
     }
 });
 
-router.get('/locale/:lng', async (req, res) => {
-    const lng = req.params.lng;
+router.get('/locale/:ns/:lng', async (req, res) => {
+    const { ns, lng } = req.params;
 
     try {
         const { data } = await getLocaleJson(lng);

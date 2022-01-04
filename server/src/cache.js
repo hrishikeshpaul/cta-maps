@@ -3,7 +3,7 @@
 import NodeCache from 'node-cache';
 
 export const cacheKeys = {
-    locale: (lng) => `locale-${lng}-cache`,
+    locale: (ns, lng) => `locale-${ns}-${lng}-cache`,
     routes: 'routes-cache',
     pattern: (route) => `pattern-${route}-cache`,
 };

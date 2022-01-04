@@ -32,16 +32,17 @@ export const LocaleProvider: FunctionComponent = () => {
                 {
                     fallbackLng: Locale.EN,
                     lng: Locale.EN,
-                    ns: ['translations'],
-                    defaultNS: 'translations',
+                    ns: ['common'],
+                    defaultNS: 'common',
                     react: {
                         useSuspense: false,
                     },
                     backend: {
                         allowMultiLoading: true,
-                        loadPath: '/locale/{{lng}}',
+                        loadPath: '/locale/{{ns}}/{{lng}}',
                         request: async (_, url, __, callback) => {
                             try {
+                                console.log(url);
                                 const { data, status } = await getLocaleJson(url);
                                 callback(null, { data, status });
                                 setSystemLoading(false);
