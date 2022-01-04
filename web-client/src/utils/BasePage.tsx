@@ -34,7 +34,13 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                 </Button>
             </Flex>
             <Container maxW="container.lg">{children}</Container>
-            <Flex justifyContent="space-between" alignItems="center" boxShadow="sm" mt="12" p="4">
+            <Flex
+                justifyContent="space-between"
+                alignItems="center"
+                mt="12"
+                p="4"
+                borderTop={`1px solid ${borderBottom}`}
+            >
                 <Text fontSize="xs" pt="1" color={useColorModeValue('gray.600', 'gray.200')}>
                     © {new Date().getFullYear()} trackCTA. All rights reserved.
                 </Text>
