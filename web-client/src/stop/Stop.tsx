@@ -127,7 +127,10 @@ export const Stop: FunctionComponent = () => {
                             variant="ghost"
                             fontSize="2xl"
                             aria-label="close"
-                            onClick={closeStop}
+                            onClick={() => {
+                                closeStop();
+                                setFilter({});
+                            }}
                             icon={<FiChevronDown />}
                         />
                     </Flex>

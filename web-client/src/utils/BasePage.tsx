@@ -14,18 +14,17 @@ interface Props {
 export const BasePage: FunctionComponent<Props> = ({ children }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const borderBottom = useColorModeValue('#ececec', '#2D3748');
 
     return (
         <Container maxW="container.lg">
             <Flex
+                zIndex={100}
                 position="sticky"
                 top="0"
                 justifyContent="space-between"
                 alignItems="center"
                 mb="6"
                 p="4"
-                borderBottom={`1px solid ${borderBottom}`}
                 backgroundColor={useColorModeValue('white', 'gray.800')}
             >
                 <Info disableAvatarShadow />
@@ -39,9 +38,8 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                 alignItems="center"
                 mt="12"
                 p="4"
-                borderTop={`1px solid ${borderBottom}`}
             >
-                <Text fontSize="xs" pt="1" color={useColorModeValue('gray.600', 'gray.200')}>
+                <Text fontSize="xs" pt="1">
                     © {new Date().getFullYear()} trackCTA. All rights reserved.
                 </Text>
             </Flex>

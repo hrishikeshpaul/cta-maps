@@ -2,24 +2,26 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Box } from '@chakra-ui/react';
 
+import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 
 export const Overlay: FunctionComponent = () => {
     const [{ routeSelectOpen }] = useSystemStore();
+    const [{ stop }] = useDataStore();
     const [show, setShow] = useState<boolean>(false);
     const [opShow, setOpShow] = useState<boolean>(false);
 
     useEffect(() => {
-        setOpShow(routeSelectOpen);
-        
-        if (routeSelectOpen) {
+        setOpShow(routeSelectOpen || !!stop);
+
+        if (routeSelectOpen || !!stop) {
             setShow(true);
         } else {
             setTimeout(() => {
                 setShow(false);
             }, 150);
         }
-    }, [routeSelectOpen]);
+    }, [routeSelectOpen, stop]);
 
     return (
         <Box

@@ -19,7 +19,7 @@ const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
-    const [, { onIdle, onActive }] = useDataStore();
+    const [{ stop }, { onIdle, onActive }] = useDataStore();
     const [{ systemLoading, routeSelectOpen }] = useSystemStore();
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
@@ -49,7 +49,7 @@ export const App = () => {
                                     <Nav />
                                     <SocketModule />
                                     <Stop />
-                                    {routeSelectOpen && <Overlay />}
+                                    {(routeSelectOpen || !!stop) && <Overlay />}
                                     <MapContainer />
                                     <RouteSelect />
                                 </div>
