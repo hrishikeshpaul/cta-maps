@@ -1,5 +1,5 @@
 name: Deploy Web client to Firebase Hosting
-'on':
+"on":
   push:
     paths:
       - web-client/**
@@ -19,8 +19,8 @@ jobs:
       - name: Install dependencies
         working-directory: ./web-client
         run: yarn install
-      
-      - name: Build 
+
+      - name: Build
         working-directory: ./web-client
         run: yarn build
         env:
@@ -30,7 +30,7 @@ jobs:
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CTA_BUS_MAPS }}'
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRACKCTA }}"
           channelId: live
           projectId: trackcta
