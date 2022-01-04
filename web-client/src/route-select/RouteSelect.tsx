@@ -206,17 +206,5 @@ export const RouteSelect: FunctionComponent = () => {
                 </Box>
             ) : null}
         </Drawer>
-        // <Slide direction="bottom" in={routeSelectOpen} unmountOnExit>
-        //     <Container maxW="container.lg" px={{ base: '0', md: '4' }}>
-        //         <Box
-        //             bg={useColorModeValue('white', 'gray.700')}
-        //             borderTopRightRadius="xl"
-        //             borderTopLeftRadius="xl"
-        //             boxShadow="xl"
-        //         >
-
-        //         </Box>
-        //     </Container>
-        // </Slide>
     );
 };
