@@ -6,8 +6,8 @@ import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 
 export const Overlay: FunctionComponent = () => {
-    const [{ routeSelectOpen }] = useSystemStore();
-    const [{ stop }] = useDataStore();
+    const [{ routeSelectOpen }, { closeRouteSelect }] = useSystemStore();
+    const [{ stop }, { closeStop }] = useDataStore();
     const [show, setShow] = useState<boolean>(false);
     const [opShow, setOpShow] = useState<boolean>(false);
 
@@ -25,6 +25,10 @@ export const Overlay: FunctionComponent = () => {
 
     return (
         <Box
+            onClick={() => {
+                if (routeSelectOpen) closeRouteSelect();
+                if (!!stop) closeStop();
+            }}
             w="100%"
             h="100%"
             bg="gray.900"
