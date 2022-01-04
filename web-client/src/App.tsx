@@ -48,8 +48,8 @@ export const App = () => {
                             path="/"
                             element={
                                 <div className="App">
-                                    <SocketModule />
                                     <Nav />
+                                    <SocketModule />
                                     <RouteSelect />
                                     <Info />
                                     <Stop />

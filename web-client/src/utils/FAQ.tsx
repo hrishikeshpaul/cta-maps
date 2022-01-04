@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 
 import i18next from 'i18next';
 
@@ -16,37 +16,38 @@ import {
 import { BasePage } from './BasePage';
 import { useTranslation } from 'react-i18next';
 
-export const FAQ: FunctionComponent = () => {
-    const { t } = useTranslation();
+const faqData = [
+    {
+        q: 'Q1',
+        a: 'A1',
+    },
+];
 
-    useEffect(() => {
-        (async () => {
-            i18next.loadNamespaces('faq', (err, t) => {
-                console.log(t);
-            });
-        })();
-    }, []);
+export const FAQ: FunctionComponent = () => {
+    const { t } = useTranslation('faq');
 
     return (
         <BasePage>
             <Container height="5000px">
-                <Heading>{t('FAQ')}</Heading>
+                <Heading>{t('FAQ', { ns: 'common' })}</Heading>
+                {/* {loading ? (
+                    <Center pt="6">
+                        <Spinner />
+                    </Center>
+                ) : null} */}
+
                 <Accordion mt="6" allowMultiple>
-                    <AccordionItem>
-                        <h2>
+                    {faqData.map((data) => (
+                        <AccordionItem key={data.q}>
                             <AccordionButton>
                                 <Box flex="1" textAlign="left" fontWeight="600">
-                                    Section 1 title
+                                    {t(data.q)}
                                 </Box>
                                 <AccordionIcon />
                             </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat.
-                        </AccordionPanel>
-                    </AccordionItem>
+                            <AccordionPanel pb={4}>{t(data.a)}</AccordionPanel>
+                        </AccordionItem>
+                    ))}
                 </Accordion>
             </Container>
         </BasePage>

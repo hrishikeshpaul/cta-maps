@@ -1,4 +1,5 @@
 {
     "Q1": "Is the data live?",
-    "A1": "Yes it is live. The data is retrieved from CTA servers. Although, there is a delay of about 3s."
+    "A1": "Yes it is live. The data is retrieved from CTA servers. Although, there is a delay of about 3s.",
+    "Q2": ""
 }

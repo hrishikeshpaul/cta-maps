@@ -166,7 +166,7 @@ router.get('/locale/:ns/:lng', async (req, res) => {
 
     try {
         const { data } = await getLocaleJson(ns, lng);
-        console.log(data);
+
         res.send(data).status(200);
     } catch (err) {
         console.log(err);

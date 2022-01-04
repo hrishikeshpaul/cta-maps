@@ -18,6 +18,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { FiChevronRight } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 import { useSystemStore } from 'store/system/SystemStore';
 
@@ -25,6 +26,7 @@ import 'info/Info.scss';
 import { getVersion } from 'store/system/SystemService';
 
 export const Info: FunctionComponent = () => {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [{ infoOpen }, { closeInfoDrawer }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
@@ -47,6 +49,10 @@ export const Info: FunctionComponent = () => {
             }
         })();
     }, []);
+
+    const onNavigate = (path: string) => {
+        navigate(path);
+    };
 
     return (
         <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
@@ -87,7 +93,12 @@ export const Info: FunctionComponent = () => {
                             <Text className="item-text">{t('USAGE_MANUAL')}</Text>
                             <FiChevronRight />
                         </Flex>
-                        <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
+                        <Flex
+                            p="4"
+                            className="item"
+                            _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
+                            onClick={() => onNavigate('/faq')}
+                        >
                             <Text className="item-text">{t('FAQ')}</Text>
                             <FiChevronRight />
                         </Flex>

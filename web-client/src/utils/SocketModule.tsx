@@ -48,10 +48,6 @@ export const SocketModule: FunctionComponent = () => {
                 });
                 removeAllRoutes();
             });
-
-            return () => {
-                socket.emit('disconnect').disconnect();
-            };
         }
     }, [socket]); // eslint-disable-line
 

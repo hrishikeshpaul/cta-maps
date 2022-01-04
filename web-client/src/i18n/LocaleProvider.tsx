@@ -42,8 +42,8 @@ export const LocaleProvider: FunctionComponent = () => {
                         loadPath: '/locale/{{ns}}/{{lng}}',
                         request: async (_, url, __, callback) => {
                             try {
-                                console.log(url);
                                 const { data, status } = await getLocaleJson(url);
+
                                 callback(null, { data, status });
                                 setSystemLoading(false);
                             } catch (err: any) {
