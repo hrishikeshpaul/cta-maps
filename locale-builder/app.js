@@ -67,10 +67,10 @@ async function convertFAQ() {
 switch (process.argv[2]) {
   case "common":
     console.log("Translating common locales...");
-    // convertCommon();
+    convertCommon();
     break;
   case "faq":
     console.log("Translating FAQ locales...");
-    // convertFAQ();
+    convertFAQ();
     break;
 }
