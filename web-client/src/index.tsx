@@ -11,7 +11,6 @@ import { SystemStoreProvider } from 'store/system/SystemStore';
 import reportWebVitals from './reportWebVitals';
 
 import './index.scss';
-import { SocketModule } from 'utils/SocketModule';
 
 const theme = extendTheme({
     config: {

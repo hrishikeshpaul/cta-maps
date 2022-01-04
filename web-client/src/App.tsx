@@ -1,5 +1,3 @@
-import { lazy } from 'react';
-
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
