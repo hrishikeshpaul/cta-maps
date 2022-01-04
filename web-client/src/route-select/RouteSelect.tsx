@@ -45,7 +45,8 @@ export const RouteSelect: FunctionComponent = () => {
     const debouncedQuery = useDebounce(query);
 
     const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
-        const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight;
+        const bottom =
+            e.currentTarget.scrollHeight - Math.ceil(e.currentTarget.scrollTop) === e.currentTarget.clientHeight;
         const filter = currentRoutes.map((route) => route.route).join(',');
 
         if (bottom) {
