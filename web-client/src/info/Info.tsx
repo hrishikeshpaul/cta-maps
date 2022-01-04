@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 
 import {
     Avatar,
@@ -31,13 +31,31 @@ export const Info: FunctionComponent = () => {
     const [{ infoOpen }, { closeInfoDrawer }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
 
-    const onBugReport = () => {
-        window.open('https://github.com/hrishikeshpaul/cta-maps/issues/new', '_blank');
-    };
-
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
     };
+
+    const items = useMemo(
+        () => [
+            {
+                text: t('USAGE_MANUAL'),
+                onClick: () => onNavigate('/manual'),
+            },
+            {
+                text: t('FAQ'),
+                onClick: () => onNavigate('/faq'),
+            },
+            {
+                text: t('REPORT_BUG'),
+                onClick: () => onNavigate('/contact'),
+            },
+            {
+                text: t('SETTINGS'),
+                onClick: () => onNavigate('/settings'),
+            },
+        ],
+        [],
+    );
 
     useEffect(() => {
         (async () => {
@@ -90,28 +108,12 @@ export const Info: FunctionComponent = () => {
                         </Text>
                     </Flex>
                     <Box mt="8" className="info-box">
-                        <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
-                            <Text className="item-text">{t('USAGE_MANUAL')}</Text>
-                            <FiChevronRight />
-                        </Flex>
-                        <Flex
-                            p="4"
-                            className="item"
-                            _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
-                            onClick={() => onNavigate('/faq')}
-                        >
-                            <Text className="item-text">{t('FAQ')}</Text>
-                            <FiChevronRight />
-                        </Flex>
-                        <Flex
-                            p="4"
-                            className="item"
-                            onClick={onBugReport}
-                            _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
-                        >
-                            <Text className="item-text">{t('REPORT_BUG')}</Text>
-                            <FiChevronRight />
-                        </Flex>
+                        {items.map((item) => (
+                            <Flex p="4" className="item" onClick={item.onClick}>
+                                <Text className="item-text">{item.text}</Text>
+                                <FiChevronRight />
+                            </Flex>
+                        ))}
                     </Box>
                 </DrawerBody>
                 <DrawerFooter justifyContent="flex-start" flexDir="column" px="4">
