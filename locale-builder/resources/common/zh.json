@@ -26,9 +26,6 @@
   "ESPANOL": "西班牙语",
   "CHINESE": "中国人",
   "SECONDS": "秒",
-  "INACTIVITY": "不活动警报",
-  "INACTIVE_TIMER_MESSAGE": "由于不活动，您选择的路线将在",
-  "INACTIVE_MESSAGE": "由于不活动，您选择的路线已被重置。",
   "STILL_HERE": "还在",
   "I_BACK": "我回来了",
   "DELAYED": "延迟",
@@ -45,5 +42,6 @@
   "SERVER_DISCONNECT": "重新连接到服务器..",
   "SERVER_CONNECT": "服务器已连接！",
   "SERVER_ERROR": "服务器错误。请重新选择路线",
-  "GENERIC_ERROR": "没有找到数据"
+  "GENERIC_ERROR": "没有找到数据",
+  "GO_TO_MAPS": "前往地图"
 }
