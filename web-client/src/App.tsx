@@ -58,9 +58,9 @@ export const App = () => {
                                         <Nav />
                                     </Container>
                                     <SocketModule />
-                                    <RouteSelect />
                                     <Stop />
                                     <MapContainer />
+                                    <RouteSelect />
                                 </div>
                             }
                         />
