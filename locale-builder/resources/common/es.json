@@ -26,9 +26,6 @@
   "ESPANOL": "Espanol",
   "CHINESE": "chino",
   "SECONDS": "segundos",
-  "INACTIVITY": "Alerta de inactividad",
-  "INACTIVE_TIMER_MESSAGE": "Debido a la inactividad, las rutas seleccionadas se restablecerán en",
-  "INACTIVE_MESSAGE": "Debido a la inactividad, se restablecieron las rutas seleccionadas.",
   "STILL_HERE": "Aún aquí",
   "I_BACK": "Ya estoy de vuelta",
   "DELAYED": "Demorado",
@@ -45,5 +42,6 @@
   "SERVER_DISCONNECT": "Reconectando al servidor ...",
   "SERVER_CONNECT": "¡Servidor conectado!",
   "SERVER_ERROR": "Error del Servidor. Vuelva a seleccionar las rutas",
-  "GENERIC_ERROR": "Datos no encontrados"
+  "GENERIC_ERROR": "Datos no encontrados",
+  "GO_TO_MAPS": "Ir a Mapas"
 }
