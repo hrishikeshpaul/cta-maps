@@ -33,7 +33,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
             <Box>{children}</Box>
             <Flex justifyContent="space-between" alignItems="center" boxShadow="sm" mt="12" p="4">
                 <Text fontSize="xs" pt="1" color={useColorModeValue('gray.600', 'gray.200')}>
-                    © {new Date().getFullYear()} CTA Maps. All rights reserved.
+                    © {new Date().getFullYear()} trackCTA. All rights reserved.
                 </Text>
             </Flex>
         </Box>

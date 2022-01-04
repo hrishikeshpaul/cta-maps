@@ -127,7 +127,7 @@ export const Info: FunctionComponent = () => {
                         .
                     </Text>
                     <Text fontSize="xs" pt="1" color={useColorModeValue('gray.600', 'gray.200')}>
-                        © {new Date().getFullYear()} CTA Maps. All rights reserved.
+                        © {new Date().getFullYear()} trackCTA. All rights reserved.
                     </Text>
                 </DrawerFooter>
             </DrawerContent>
