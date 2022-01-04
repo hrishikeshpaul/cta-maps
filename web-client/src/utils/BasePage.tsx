@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode } from 'react';
 
-import { Box, Flex, Button, useColorModeValue, Text } from '@chakra-ui/react';
+import { Box, Container, Flex, Button, useColorModeValue, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { HiArrowRight as ArrowRight } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
@@ -14,9 +14,10 @@ interface Props {
 export const BasePage: FunctionComponent<Props> = ({ children }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const borderBottom = useColorModeValue('#ececec', '#2D3748');
 
     return (
-        <Box>
+        <Container maxW="container.lg">
             <Flex
                 position="sticky"
                 top="0"
@@ -24,6 +25,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                 alignItems="center"
                 mb="6"
                 p="4"
+                borderBottom={`1px solid ${borderBottom}`}
                 backgroundColor={useColorModeValue('white', 'gray.800')}
             >
                 <Info disableAvatarShadow />
@@ -31,12 +33,12 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                     {t('GO_TO_MAPS')}
                 </Button>
             </Flex>
-            <Box>{children}</Box>
+            <Container maxW="container.lg">{children}</Container>
             <Flex justifyContent="space-between" alignItems="center" boxShadow="sm" mt="12" p="4">
                 <Text fontSize="xs" pt="1" color={useColorModeValue('gray.600', 'gray.200')}>
                     © {new Date().getFullYear()} trackCTA. All rights reserved.
                 </Text>
             </Flex>
-        </Box>
+        </Container>
     );
 };

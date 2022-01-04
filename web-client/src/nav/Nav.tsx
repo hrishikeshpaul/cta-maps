@@ -2,16 +2,16 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, Button, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FiSettings } from 'react-icons/fi';
 
 import { Info } from 'info/Info';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
+import { MdMyLocation } from 'react-icons/md';
 
 export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes }] = useDataStore();
-    const [{ dragging }, { openRouteSelect, openSettings }] = useSystemStore();
+    const [{ dragging }, { openRouteSelect, onLocationButtonPress }] = useSystemStore();
     const [selected, setSelected] = useState<boolean>(false);
     const buttonBg = useColorModeValue('white', 'gray.600');
     const buttonColor = useColorModeValue('black', 'white');
@@ -29,7 +29,6 @@ export const Nav: FunctionComponent = () => {
             justifyContent="space-between"
             alignItems="center"
             w="100%"
-            className="nav"
             p="4"
             opacity={dragging ? '0.25' : '1'}
             transition="0.25s opacity ease-in-out"
@@ -48,12 +47,11 @@ export const Nav: FunctionComponent = () => {
                 )}
             </Button>
             <IconButton
+                aria-label="my-location"
+                icon={<MdMyLocation />}
                 bg={buttonBg}
-                aria-label="help-icon"
-                icon={<FiSettings />}
                 boxShadow="lg"
-                onClick={openSettings}
-                zIndex="-1"
+                onClick={() => onLocationButtonPress(true)}
             />
         </Flex>
     );
