@@ -34,6 +34,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
     const { t } = useTranslation();
     const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
+    const borderBottom = useColorModeValue('#ececec', '#4A5568');
 
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
@@ -124,18 +125,20 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                             </Text>
                         </Flex>
                         <Box mt="8" className="info-box">
-                            {items.map((item) => (
-                                <Flex
-                                    p="4"
-                                    borderBottom="1px solid #ececec"
-                                    className="item"
-                                    onClick={item.onClick}
-                                    key={item.text}
-                                >
-                                    <Text className="item-text">{item.text}</Text>
-                                    <FiChevronRight />
-                                </Flex>
-                            ))}
+                            {items.map((item) => {
+                                return (
+                                    <Flex
+                                        p="4"
+                                        borderBottom={`1px solid ${borderBottom}`}
+                                        className="item"
+                                        onClick={item.onClick}
+                                        key={item.text}
+                                    >
+                                        <Text className="item-text">{item.text}</Text>
+                                        <FiChevronRight />
+                                    </Flex>
+                                );
+                            })}
                         </Box>
                     </DrawerBody>
                     <DrawerFooter justifyContent="flex-start" flexDir="column" px="4">
