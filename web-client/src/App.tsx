@@ -12,12 +12,10 @@ import { Settings } from 'settings/Settings';
 import { Stop } from 'stop/Stop';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
+import { FAQ } from 'utils/FAQ';
 import { SocketModule } from 'utils/SocketModule';
 
 import './App.scss';
-import { FAQ } from 'utils/FAQ';
-
-// const FAQ = lazy(() => import('utils/FAQ').then((module) => ({ default: module.FAQ })));
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms

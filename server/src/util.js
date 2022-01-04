@@ -98,6 +98,10 @@ export const getLatestVersion = async () => {
 };
 
 export const getLocaleJson = async (ns, lng) => {
+    if (process.env.NODE_ENV === 'development' && ns === 'common' && lng === 'en') {
+        return { data: fs.readFileSync('./src/locales/common_en.json'), status: 200 };
+    }
+
     const key = cacheKeys.locale(ns, lng);
     const value = cache.get(key);
 

@@ -1,6 +1,7 @@
 import { FunctionComponent, ReactNode } from 'react';
 
 import { Box, Flex, Button, Avatar, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { HiArrowRight as ArrowRight } from 'react-icons/hi';
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export const BasePage: FunctionComponent<Props> = ({ children }) => {
+    const { t } = useTranslation();
+
     return (
         <Box>
             <Flex
@@ -22,7 +25,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
             >
                 <Avatar h="40px" w="40px" src="logo.svg" size="md" />
                 <Button colorScheme="blue" rightIcon={<ArrowRight />}>
-                    Go to Maps
+                    {t('GO_TO_MAPS')}
                 </Button>
             </Flex>
             <Box>{children}</Box>

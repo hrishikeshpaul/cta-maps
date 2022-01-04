@@ -166,10 +166,10 @@ router.get('/locale/:ns/:lng', async (req, res) => {
 
     try {
         const { data } = await getLocaleJson(ns, lng);
-
+        console.log(data);
         res.send(data).status(200);
     } catch (err) {
-        console.log(err.response.data);
+        console.log(err);
         res.send(fs.readFileSync('src/locales/common_en.json')).status(200);
     }
 });

@@ -45,5 +45,6 @@
     "SERVER_DISCONNECT": "Reconnecting to server..",
     "SERVER_CONNECT": "Server connected!",
     "SERVER_ERROR": "Server error. Please re-select routes",
-    "GENERIC_ERROR": "No data found"
+    "GENERIC_ERROR": "No data found",
+    "GO_TO_MAPS": "Go to Maps"
 }

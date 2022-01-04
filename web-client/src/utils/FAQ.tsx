@@ -12,9 +12,13 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from '@chakra-ui/react';
+
 import { BasePage } from './BasePage';
+import { useTranslation } from 'react-i18next';
 
 export const FAQ: FunctionComponent = () => {
+    const { t } = useTranslation();
+
     useEffect(() => {
         (async () => {
             i18next.loadNamespaces('faq', (err, t) => {
@@ -26,7 +30,7 @@ export const FAQ: FunctionComponent = () => {
     return (
         <BasePage>
             <Container height="5000px">
-                <Heading>Frequently Asked Questions</Heading>
+                <Heading>{t('FAQ')}</Heading>
                 <Accordion mt="6" allowMultiple>
                     <AccordionItem>
                         <h2>
