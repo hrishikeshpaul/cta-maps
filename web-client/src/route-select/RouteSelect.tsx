@@ -90,6 +90,20 @@ export const RouteSelect: FunctionComponent = () => {
     }, [routeSelectOpen]); // eslint-disable-line
 
     useEffect(() => {
+        if (currentRoutes.length === 0) {
+            setRoutes((prevRoutes) => {
+                const updatedRoutes: RouteExtended[] = [...prevRoutes];
+
+                prevRoutes.forEach((route, i) => {
+                    route.selected = false;
+                });
+
+                return updatedRoutes;
+            });
+        }
+    }, [currentRoutes]);
+
+    useEffect(() => {
         (async () => {
             if (debouncedQuery) {
                 const filter = currentRoutes.map((route) => route.route).join(',');
