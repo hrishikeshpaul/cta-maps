@@ -16,36 +16,25 @@ import {
 import { BasePage } from './BasePage';
 import { useTranslation } from 'react-i18next';
 
-const faqData = [
-    {
-        q: 'Q1',
-        a: 'A1',
-    },
-];
+const faqData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export const FAQ: FunctionComponent = () => {
     const { t } = useTranslation('faq');
 
     return (
         <BasePage>
-            <Container height="5000px">
+            <Container>
                 <Heading>{t('FAQ', { ns: 'common' })}</Heading>
-                {/* {loading ? (
-                    <Center pt="6">
-                        <Spinner />
-                    </Center>
-                ) : null} */}
-
                 <Accordion mt="6" allowMultiple>
                     {faqData.map((data) => (
-                        <AccordionItem key={data.q}>
-                            <AccordionButton>
+                        <AccordionItem key={data}>
+                            <AccordionButton py="5">
                                 <Box flex="1" textAlign="left" fontWeight="600">
-                                    {t(data.q)}
+                                    {t(`Q${data}`)}
                                 </Box>
                                 <AccordionIcon />
                             </AccordionButton>
-                            <AccordionPanel pb={4}>{t(data.a)}</AccordionPanel>
+                            <AccordionPanel pb={4}>{t(`A${data}`)}</AccordionPanel>
                         </AccordionItem>
                     ))}
                 </Accordion>
