@@ -187,7 +187,7 @@ export const RouteSelect: FunctionComponent = () => {
                     />
                 </InputGroup>
             </Box>
-            <Box px="4" maxH="600px" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
+            <Box px="4" h="65vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
                 {routes.map((route) => (
                     <RouteCard {...route} key={route.route} />
                 ))}

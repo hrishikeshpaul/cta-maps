@@ -3,12 +3,6 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import {
     Center,
     Box,
-    Drawer,
-    DrawerBody,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerFooter,
     Text,
     IconButton,
     Flex,
@@ -17,6 +11,7 @@ import {
     Badge,
     Button,
     Divider,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FaLocationArrow } from 'react-icons/fa';
@@ -25,6 +20,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions } from 'store/data/DataService';
 import { Juncture, Prediction } from 'store/data/DataStore.Types';
+import { Drawer } from 'components/Drawer';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -38,6 +34,7 @@ export const Stop: FunctionComponent = () => {
         [Juncture.A]: (time: number) => (time < 2 ? t('ARRIVE_SHORTLY') : `${t('ARRIVE')} ${time} mins`),
         [Juncture.D]: (time: number) => (time < 2 ? t('DEPART_SHORTLY') : `${t('DEPART')} ${time} mins`),
     };
+    const bg = useColorModeValue('white', 'gray.700');
 
     useEffect(() => {
         (async () => {
@@ -119,27 +116,36 @@ export const Stop: FunctionComponent = () => {
     };
 
     return (
-        <Drawer isOpen={!!stop} placement="bottom" onClose={closeStop} autoFocus={false}>
-            <DrawerOverlay />
-            <DrawerContent borderTopRadius="xl" height="80%">
-                <DrawerHeader pl="4" pr="1">
-                    <Flex justifyContent="space-between" alignItems="center" overflow="hidden">
-                        <Text isTruncated fontWeight="bold">
-                            {stop?.name}
-                        </Text>
-                        <Flex>
-                            <IconButton
-                                variant="ghost"
-                                fontSize="2xl"
-                                aria-label="close"
-                                onClick={closeStop}
-                                icon={<FiChevronDown />}
-                            />
-                        </Flex>
+        <Drawer open={!!stop} direction="bottom">
+            <Box p="4">
+                <Flex justifyContent="space-between" alignItems="center" overflow="hidden">
+                    <Text fontSize="xl" isTruncated fontWeight="bold">
+                        {stop?.name}
+                    </Text>
+                    <Flex>
+                        <IconButton
+                            variant="ghost"
+                            fontSize="2xl"
+                            aria-label="close"
+                            onClick={closeStop}
+                            icon={<FiChevronDown />}
+                        />
                     </Flex>
-                </DrawerHeader>
-
-                <DrawerBody px="4" pt="0" className="info">
+                </Flex>
+                <Flex py="2" overflowX="auto">
+                    {routes.map((route) => (
+                        <Button
+                            mr="4"
+                            mb="2"
+                            key={route}
+                            onClick={() => onFilterChange(route)}
+                            colorScheme={filter[route] ? 'blue' : 'gray'}
+                        >
+                            {route}
+                        </Button>
+                    ))}
+                </Flex>
+                <Box className="info" h="60vh" overflow="auto">
                     {loading ? (
                         <Center>
                             <Spinner />
@@ -148,19 +154,6 @@ export const Stop: FunctionComponent = () => {
                         <Box>
                             {predictions.length ? (
                                 <>
-                                    <Flex py="2">
-                                        {routes.map((route) => (
-                                            <Button
-                                                mr="4"
-                                                mb="2"
-                                                key={route}
-                                                onClick={() => onFilterChange(route)}
-                                                colorScheme={filter[route] ? 'blue' : 'gray'}
-                                            >
-                                                {route}
-                                            </Button>
-                                        ))}
-                                    </Flex>
                                     {predictions.map((prediction) => (
                                         <RenderPred {...prediction} key={prediction.id} />
                                     ))}
@@ -170,13 +163,13 @@ export const Stop: FunctionComponent = () => {
                             )}
                         </Box>
                     )}
-                </DrawerBody>
-                <DrawerFooter justifyContent="center">
+                </Box>
+                <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4">
                     <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
                         <Text pr="2">{t('GET_DIR')}</Text>
                     </Button>
-                </DrawerFooter>
-            </DrawerContent>
+                </Box>
+            </Box>
         </Drawer>
     );
 };
