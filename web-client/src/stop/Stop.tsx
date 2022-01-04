@@ -135,7 +135,7 @@ export const Stop: FunctionComponent = () => {
                         />
                     </Flex>
                 </Flex>
-                <Flex py="2" overflowX="auto" px="4">
+                <Flex pb="2" overflowX="auto" px="4">
                     {routes.map((route) => (
                         <Button
                             mr="4"
