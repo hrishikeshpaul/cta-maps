@@ -51,6 +51,7 @@ export const Info: FunctionComponent = () => {
     }, []);
 
     const onNavigate = (path: string) => {
+        closeInfoDrawer();
         navigate(path);
     };
 
