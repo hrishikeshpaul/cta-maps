@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Button, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Container, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { Info } from 'info/Info';
@@ -25,34 +25,44 @@ export const Nav: FunctionComponent = () => {
     }, [routes]);
 
     return (
-        <Flex
-            justifyContent="space-between"
-            alignItems="center"
-            w="100%"
-            p="4"
-            opacity={dragging ? '0.25' : '1'}
-            transition="0.25s opacity ease-in-out"
+        <Container
+            maxW="container.lg"
+            p="0"
+            position="fixed"
+            top="0"
+            left="50%"
+            transform="translate(-50%)"
+            zIndex={100}
         >
-            <Info />
-            <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
-                <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : buttonColor}>
-                    {t('ROUTES')}
-                </Text>
-                {selected && (
-                    <Flex flexWrap="wrap" mt="1">
-                        {routes.map((route) => (
-                            <Box h="12px" w="15px" bg={route.color} mx="1" borderRadius="sm" key={route.route} />
-                        ))}
-                    </Flex>
-                )}
-            </Button>
-            <IconButton
-                aria-label="my-location"
-                icon={<MdMyLocation />}
-                bg={buttonBg}
-                boxShadow="lg"
-                onClick={() => onLocationButtonPress(true)}
-            />
-        </Flex>
+            <Flex
+                justifyContent="space-between"
+                alignItems="center"
+                w="100%"
+                p="4"
+                opacity={dragging ? '0.25' : '1'}
+                transition="0.25s opacity ease-in-out"
+            >
+                <Info />
+                <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
+                    <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : buttonColor}>
+                        {t('ROUTES')}
+                    </Text>
+                    {selected && (
+                        <Flex flexWrap="wrap" mt="1">
+                            {routes.map((route) => (
+                                <Box h="12px" w="15px" bg={route.color} mx="1" borderRadius="sm" key={route.route} />
+                            ))}
+                        </Flex>
+                    )}
+                </Button>
+                <IconButton
+                    aria-label="my-location"
+                    icon={<MdMyLocation />}
+                    bg={buttonBg}
+                    boxShadow="lg"
+                    onClick={() => onLocationButtonPress(true)}
+                />
+            </Flex>
+        </Container>
     );
 };

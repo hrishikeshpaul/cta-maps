@@ -8,10 +8,3 @@
         z-index: 2;
     }
 }
-
-.chakra-modal__content {
-    max-width: 1024px !important;
-    left: 50% !important;
-    // transform: translateX(0px) translateY(0%) translateZ(0px) !important;
-    transform: translate(-50%) !important;
-}

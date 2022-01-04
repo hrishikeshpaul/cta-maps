@@ -13,7 +13,7 @@ import { FAQ } from 'utils/FAQ';
 import { SocketModule } from 'utils/SocketModule';
 
 import './App.scss';
-import { Container } from '@chakra-ui/react';
+import { Overlay } from 'components/Overlay';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -46,20 +46,13 @@ export const App = () => {
                             path="/"
                             element={
                                 <div className="App">
-                                    <Container
-                                        maxW="container.lg"
-                                        p="0"
-                                        position="fixed"
-                                        top="0"
-                                        left="50%"
-                                        transform="translate(-50%)"
-                                        zIndex={100}
-                                    >
-                                        <Nav />
-                                    </Container>
+                                    <Nav />
                                     <SocketModule />
                                     <Stop />
+                                    <Overlay />
+
                                     <MapContainer />
+
                                     <RouteSelect />
                                 </div>
                             }
