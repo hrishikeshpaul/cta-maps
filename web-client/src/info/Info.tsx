@@ -31,7 +31,7 @@ interface Props {
 
 export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) => {
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t } = useTranslation('common');
     const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
     const borderBottom = useColorModeValue('#ececec', '#4A5568');
