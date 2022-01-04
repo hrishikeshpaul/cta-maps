@@ -16,6 +16,10 @@ export enum SystemStoreActionType {
     SetSettings,
     SetRoutesLoading,
     SetAllowLocation,
+    ToggleLocationButtonPress,
+}
+interface PayloadToggleLocationButtonPress {
+    value: boolean;
 }
 
 interface PayloadSetRoutesLoading {
@@ -74,7 +78,8 @@ interface SystemStoreAction {
         | PayloadSetLocale
         | PayloadSetIdleAlert
         | PayloadSetSystemLoading
-        | PayloadSetAllowLocation;
+        | PayloadSetAllowLocation
+        | PayloadToggleLocationButtonPress;
 }
 
 interface SystemStoreProviderProps {
@@ -90,6 +95,7 @@ export const initialStoreState: SystemStoreState = {
     patternLoading: false,
     infoOpen: false,
     settingsOpen: false,
+    onCurrentLocationPress: false,
     settings: {
         colorMode: (localStorage.getItem(ColorModeKey) as ColorMode) || ColorMode.Light,
         locale: (localStorage.getItem(LocaleKey) as Locale) || Locale.EN,
@@ -157,6 +163,12 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 ...state,
                 settings: { ...state.settings, allowLocation: (action.payload as PayloadSetAllowLocation).allow },
             };
+        case SystemStoreActionType.ToggleLocationButtonPress: {
+            return {
+                ...state,
+                onCurrentLocationPress: (action.payload as PayloadToggleLocationButtonPress).value,
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -207,6 +219,7 @@ interface SystemStoreActionApis {
     closeIdleAlert: () => void;
     setSystemLoading: (loading: boolean) => void;
     setAllowLocation: (allow: boolean) => void;
+    onLocationButtonPress: (value: boolean) => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -253,6 +266,9 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         setAllowLocation: (allow: boolean) => {
             localStorage.setItem(AllowLocationKey, JSON.stringify(allow));
             dispatch({ type: SystemStoreActionType.SetAllowLocation, payload: { allow } });
+        },
+        onLocationButtonPress: (value: boolean) => {
+            dispatch({ type: SystemStoreActionType.ToggleLocationButtonPress, payload: { value } });
         },
     };
 

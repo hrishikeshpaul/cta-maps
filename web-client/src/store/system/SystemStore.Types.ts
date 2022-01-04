@@ -27,6 +27,7 @@ export interface AppStatus {
 }
 
 export interface SystemStoreState {
+    onCurrentLocationPress: boolean;
     systemLoading: boolean;
     routeSelectOpen: boolean;
     infoOpen: boolean;

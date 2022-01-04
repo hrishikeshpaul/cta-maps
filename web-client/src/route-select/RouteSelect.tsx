@@ -1,11 +1,7 @@
 import { FunctionComponent, useEffect, useState, ChangeEvent, UIEvent } from 'react';
 
 import {
-    Drawer,
-    DrawerBody,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
+    Box,
     Text,
     IconButton,
     Flex,
@@ -16,8 +12,8 @@ import {
     Spinner,
     Center,
     Switch,
-    DrawerFooter,
     Button,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
@@ -27,6 +23,7 @@ import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
+import { Drawer } from 'components/Drawer';
 
 const LIMIT = 10;
 
@@ -43,6 +40,7 @@ export const RouteSelect: FunctionComponent = () => {
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(1);
     const debouncedQuery = useDebounce(query);
+    const bg = useColorModeValue('white', 'gray.700');
 
     const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
         const bottom =
@@ -90,6 +88,20 @@ export const RouteSelect: FunctionComponent = () => {
             closeRouteSelect();
         }
     }, [routeSelectOpen]); // eslint-disable-line
+
+    useEffect(() => {
+        if (currentRoutes.length === 0) {
+            setRoutes((prevRoutes) => {
+                const updatedRoutes: RouteExtended[] = [...prevRoutes];
+
+                prevRoutes.forEach((route, i) => {
+                    route.selected = false;
+                });
+
+                return updatedRoutes;
+            });
+        }
+    }, [currentRoutes]);
 
     useEffect(() => {
         (async () => {
@@ -149,66 +161,64 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     return (
-        <Drawer isOpen={routeSelectOpen} placement="bottom" onClose={closeRouteSelect} autoFocus={false}>
-            <DrawerOverlay />
-            <DrawerContent height="85%" borderRadius="xl" onScroll={() => console.log('hello')}>
-                <DrawerHeader px="4">
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontWeight="bold">{t('SELECT_ROUTES')}</Text>
-                        <IconButton
-                            variant="ghost"
-                            fontSize="2xl"
-                            aria-label="close"
-                            mr="-3"
-                            onClick={closeRouteSelect}
-                            icon={<FiChevronDown />}
-                        />
-                    </Flex>
-                    <InputGroup mt="2">
-                        <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
-                        {query && (
-                            <InputRightElement>
-                                <IconButton
-                                    variant="ghost"
-                                    aria-label="clear"
-                                    icon={<IoIosClose />}
-                                    size="sm"
-                                    fontSize="3xl"
-                                    color="gray.500"
-                                    onClick={() => setQuery('')}
-                                />
-                            </InputRightElement>
-                        )}
-                        <Input
-                            name="query"
-                            value={query}
-                            placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                setQuery(e.target.value);
-                            }}
-                        />
-                    </InputGroup>
-                </DrawerHeader>
+        <Drawer direction="bottom" open={routeSelectOpen}>
+            <Box p="4">
+                <Flex justifyContent="space-between" alignItems="center">
+                    <Text fontSize="xl" fontWeight="bold">
+                        {t('SELECT_ROUTES')}
+                    </Text>
+                    <IconButton
+                        variant="ghost"
+                        fontSize="2xl"
+                        aria-label="close"
+                        mr="-3"
+                        onClick={closeRouteSelect}
+                        icon={<FiChevronDown />}
+                    />
+                </Flex>
+                <InputGroup mt="2">
+                    <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
+                    {query && (
+                        <InputRightElement>
+                            <IconButton
+                                variant="ghost"
+                                aria-label="clear"
+                                icon={<IoIosClose />}
+                                size="sm"
+                                fontSize="3xl"
+                                color="gray.500"
+                                onClick={() => setQuery('')}
+                            />
+                        </InputRightElement>
+                    )}
+                    <Input
+                        name="query"
+                        value={query}
+                        placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setQuery(e.target.value);
+                        }}
+                    />
+                </InputGroup>
+            </Box>
+            <Box px="4" h="65vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
+                {routes.map((route) => (
+                    <RouteCard {...route} key={route.route} />
+                ))}
 
-                <DrawerBody px="4" onScroll={handleScroll}>
-                    {routes.map((route) => (
-                        <RouteCard {...route} key={route.route} />
-                    ))}
-
-                    {routesLoading ? (
-                        <Center>
-                            <Spinner color="blue.500" />
-                        </Center>
-                    ) : null}
-                </DrawerBody>
-                {currentRoutes.length ? (
-                    <DrawerFooter justifyContent="center">
-                        <Button onClick={removeAllRoutes}>
-                            {t('DESELECT_ALL')} ({currentRoutes.length})
-                        </Button>
-                    </DrawerFooter>
+                {routesLoading ? (
+                    <Center>
+                        <Spinner color="blue.500" />
+                    </Center>
                 ) : null}
-            </DrawerContent>
+            </Box>
+            {currentRoutes.length ? (
+                <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4">
+                    <Button onClick={removeAllRoutes}>
+                        {t('DESELECT_ALL')} ({currentRoutes.length})
+                    </Button>
+                </Box>
+            ) : null}
         </Drawer>
     );
 };

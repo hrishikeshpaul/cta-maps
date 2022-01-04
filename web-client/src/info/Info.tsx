@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     Avatar,
@@ -21,23 +21,54 @@ import { IoIosClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 import { useSystemStore } from 'store/system/SystemStore';
-
-import 'info/Info.scss';
 import { getVersion } from 'store/system/SystemService';
 
-export const Info: FunctionComponent = () => {
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-    const [{ infoOpen }, { closeInfoDrawer }] = useSystemStore();
-    const [version, setVersion] = useState<string>('');
+import 'info/Info.scss';
 
-    const onBugReport = () => {
-        window.open('https://github.com/hrishikeshpaul/cta-maps/issues/new', '_blank');
-    };
+interface Props {
+    disableAvatarShadow?: boolean;
+}
+
+export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) => {
+    const navigate = useNavigate();
+    const { t } = useTranslation('common');
+    const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer }] = useSystemStore();
+    const [version, setVersion] = useState<string>('');
+    const borderBottom = useColorModeValue('#ececec', '#4A5568');
 
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
     };
+
+    const onNavigate = useCallback(
+        (path: string) => {
+            closeInfoDrawer();
+            navigate(path);
+        },
+        [closeInfoDrawer, navigate],
+    );
+
+    const items = useMemo(
+        () => [
+            {
+                text: t('USAGE_MANUAL'),
+                onClick: () => onNavigate('/manual'),
+            },
+            {
+                text: t('FAQ'),
+                onClick: () => onNavigate('/faq'),
+            },
+            {
+                text: t('CONTACT'),
+                onClick: () => onNavigate('/contact'),
+            },
+            {
+                text: t('SETTINGS'),
+                onClick: () => onNavigate('/settings'),
+            },
+        ],
+        [t, onNavigate],
+    );
 
     useEffect(() => {
         (async () => {
@@ -50,87 +81,84 @@ export const Info: FunctionComponent = () => {
         })();
     }, []);
 
-    const onNavigate = (path: string) => {
-        closeInfoDrawer();
-        navigate(path);
-    };
-
     return (
-        <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
-            <DrawerOverlay />
-            <DrawerContent>
-                <DrawerHeader px="4">
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontWeight="bold">trackCTA</Text>
-                        <IconButton
-                            variant="ghost"
-                            fontSize="3xl"
-                            aria-label="close"
-                            mr="-3"
-                            onClick={closeInfoDrawer}
-                            icon={<IoIosClose />}
-                        />
-                    </Flex>
-                </DrawerHeader>
+        <>
+            <Avatar
+                src="/logo.svg"
+                size="sm"
+                boxShadow={disableAvatarShadow ? 'none' : 'lg'}
+                onClick={openInfoDrawer}
+                h="40px"
+                w="40px"
+            />
+            <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader px="4">
+                        <Flex justifyContent="space-between" alignItems="center">
+                            <Text fontWeight="bold">trackCTA</Text>
+                            <IconButton
+                                variant="ghost"
+                                fontSize="3xl"
+                                aria-label="close"
+                                mr="-3"
+                                onClick={closeInfoDrawer}
+                                icon={<IoIosClose />}
+                            />
+                        </Flex>
+                    </DrawerHeader>
 
-                <DrawerBody px="0" pt="0" className="info">
-                    <Flex flexDir="column" alignItems="center" px="4">
-                        <Avatar src="/logo.svg" size="xl" />
-                        <Text color="gray.400" pt="2" textAlign="center" fontSize="xs">
-                            {version}
+                    <DrawerBody px="0" pt="0" className="info">
+                        <Flex flexDir="column" alignItems="center" px="4">
+                            <Avatar src="/logo.svg" size="xl" />
+                            <Text color="gray.400" pt="2" textAlign="center" fontSize="xs">
+                                {version}
+                            </Text>
+                            <Text
+                                pt="1"
+                                color={useColorModeValue('gray.600', 'gray.200')}
+                                textAlign="center"
+                                fontSize="sm"
+                                fontWeight="medium"
+                            >
+                                {t('DESCRIPTION')}
+                            </Text>
+                        </Flex>
+                        <Box mt="8" className="info-box">
+                            {items.map((item) => {
+                                return (
+                                    <Flex
+                                        p="4"
+                                        borderBottom={`1px solid ${borderBottom}`}
+                                        className="item"
+                                        onClick={item.onClick}
+                                        key={item.text}
+                                    >
+                                        <Text className="item-text">{item.text}</Text>
+                                        <FiChevronRight />
+                                    </Flex>
+                                );
+                            })}
+                        </Box>
+                    </DrawerBody>
+                    <DrawerFooter justifyContent="flex-start" flexDir="column" px="4">
+                        <Text fontSize="sm">
+                            {t('CONTRIBUTE')}{' '}
+                            <Link
+                                fontWeight="bold"
+                                color={useColorModeValue('blue.500', 'blue.200')}
+                                onClick={onContribute}
+                            >
+                                {t('START_HERE')}
+                            </Link>
+                            .
                         </Text>
-                        <Text
-                            pt="1"
-                            color={useColorModeValue('gray.600', 'gray.200')}
-                            textAlign="center"
-                            fontSize="sm"
-                            fontWeight="medium"
-                        >
-                            {t('DESCRIPTION')}
+                        <Text fontSize="xs" pt="1" color={useColorModeValue('gray.600', 'gray.200')}>
+                            © {new Date().getFullYear()} trackCTA. All rights reserved.
                         </Text>
-                    </Flex>
-                    <Box mt="8" className="info-box">
-                        <Flex p="4" className="item" _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}>
-                            <Text className="item-text">{t('USAGE_MANUAL')}</Text>
-                            <FiChevronRight />
-                        </Flex>
-                        <Flex
-                            p="4"
-                            className="item"
-                            _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
-                            onClick={() => onNavigate('/faq')}
-                        >
-                            <Text className="item-text">{t('FAQ')}</Text>
-                            <FiChevronRight />
-                        </Flex>
-                        <Flex
-                            p="4"
-                            className="item"
-                            onClick={onBugReport}
-                            _active={{ bg: useColorModeValue('gray.200', 'gray.500') }}
-                        >
-                            <Text className="item-text">{t('REPORT_BUG')}</Text>
-                            <FiChevronRight />
-                        </Flex>
-                    </Box>
-                </DrawerBody>
-                <DrawerFooter justifyContent="flex-start" flexDir="column" px="4">
-                    <Text fontSize="sm">
-                        {t('CONTRIBUTE')}{' '}
-                        <Link
-                            fontWeight="bold"
-                            color={useColorModeValue('blue.500', 'blue.200')}
-                            onClick={onContribute}
-                        >
-                            {t('START_HERE')}
-                        </Link>
-                        .
-                    </Text>
-                    <Text fontSize="xs" pt="1" color={useColorModeValue('gray.600', 'gray.200')}>
-                        © {new Date().getFullYear()} trackCTA. All rights reserved.
-                    </Text>
-                </DrawerFooter>
-            </DrawerContent>
-        </Drawer>
+                    </DrawerFooter>
+                </DrawerContent>
+            </Drawer>
+        </>
     );
 };

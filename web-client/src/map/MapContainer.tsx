@@ -1,9 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { IconButton, useColorMode, useToast, useColorModeValue, Center, Spinner } from '@chakra-ui/react';
+import { useColorMode, useToast, Center, Spinner } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
-import { MdMyLocation } from 'react-icons/md';
 
 import { darkStyle, lightStyle } from 'map/Map.Styles';
 import { useDataStore } from 'store/data/DataStore';
@@ -49,18 +48,15 @@ interface Line extends PolylineProps {
 
 export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ dragging, settings }, { setDragging, setAllowLocation }] = useSystemStore();
+    const [{ settings, onCurrentLocationPress }, { setDragging, setAllowLocation, onLocationButtonPress }] =
+        useSystemStore();
     const [{ currentLocation, patterns, vehicles }, { openStop, setCurrentLocation }] = useDataStore();
     const { colorMode } = useColorMode();
-    const toast = useToast({
-        variant: 'solid',
-        position: 'bottom',
-    });
+    const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
     const [paths, setPaths] = useState<Point[]>([]);
-    const buttonBg = useColorModeValue('white', 'gray.600');
 
     const mapOptions = {
         disableDefaultUI: true,
@@ -102,6 +98,13 @@ export const MapContainer: FunctionComponent = () => {
     useEffect(() => {
         onGetCurrentLocation();
     }, []); // eslint-disable-line
+
+    useEffect(() => {
+        if (onCurrentLocationPress) {
+            onGetCurrentLocation();
+            onLocationButtonPress(false);
+        }
+    }, [onCurrentLocationPress]); // eslint-disable-line
 
     useEffect(() => {
         const lines: any[] = [];
@@ -193,17 +196,6 @@ export const MapContainer: FunctionComponent = () => {
                     ))}
                 </GoogleMap>
             </LoadScript>
-            <IconButton
-                aria-label="my-location"
-                icon={<MdMyLocation />}
-                position="fixed"
-                top="72px"
-                right="16px"
-                bg={buttonBg}
-                boxShadow="lg"
-                onClick={onGetCurrentLocation}
-                opacity={dragging ? '0.25' : '1'}
-            />
         </div>
     );
 };

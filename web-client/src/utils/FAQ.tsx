@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react';
 
 import {
     Box,
-    Container,
     Heading,
     Accordion,
     AccordionItem,
@@ -21,22 +20,20 @@ export const FAQ: FunctionComponent = () => {
 
     return (
         <BasePage>
-            <Container>
-                <Heading>{t('FAQ', { ns: 'common' })}</Heading>
-                <Accordion mt="6" allowMultiple>
-                    {faqData.map((data) => (
-                        <AccordionItem key={data}>
-                            <AccordionButton py="5">
-                                <Box flex="1" textAlign="left" fontWeight="600">
-                                    {t(`Q${data}`)}
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                            <AccordionPanel pb={4}>{t(`A${data}`)}</AccordionPanel>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
-            </Container>
+            <Heading>{t('FAQ', { ns: 'common' })}</Heading>
+            <Accordion mt="6" allowMultiple>
+                {faqData.map((data) => (
+                    <AccordionItem key={data}>
+                        <AccordionButton py="5">
+                            <Box flex="1" textAlign="left" fontWeight="600">
+                                {t(`Q${data}`)}
+                            </Box>
+                            <AccordionIcon />
+                        </AccordionButton>
+                        <AccordionPanel pb={4}>{t(`A${data}`)}</AccordionPanel>
+                    </AccordionItem>
+                ))}
+            </Accordion>
         </BasePage>
     );
 };
