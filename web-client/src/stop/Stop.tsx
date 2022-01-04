@@ -117,8 +117,8 @@ export const Stop: FunctionComponent = () => {
 
     return (
         <Drawer open={!!stop} direction="bottom">
-            <Box p="4">
-                <Flex justifyContent="space-between" alignItems="center" overflow="hidden">
+            <Box>
+                <Flex justifyContent="space-between" alignItems="center" overflow="hidden" p="4">
                     <Text fontSize="xl" isTruncated fontWeight="bold">
                         {stop?.name}
                     </Text>
@@ -135,7 +135,7 @@ export const Stop: FunctionComponent = () => {
                         />
                     </Flex>
                 </Flex>
-                <Flex py="2" overflowX="auto">
+                <Flex py="2" overflowX="auto" px="4">
                     {routes.map((route) => (
                         <Button
                             mr="4"
@@ -148,7 +148,7 @@ export const Stop: FunctionComponent = () => {
                         </Button>
                     ))}
                 </Flex>
-                <Box className="info" h="60vh" overflow="auto">
+                <Box className="info" h="60vh" pb="72px" overflow="auto" px="4">
                     {loading ? (
                         <Center>
                             <Spinner />
