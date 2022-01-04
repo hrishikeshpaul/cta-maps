@@ -1,18 +1,6 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 
-import {
-    Box,
-    Container,
-    Heading,
-    Flex,
-    RadioGroup,
-    useColorMode,
-    Text,
-    Stack,
-    Radio,
-    Switch,
-    Spinner,
-} from '@chakra-ui/react';
+import { Box, Heading, Flex, RadioGroup, useColorMode, Text, Stack, Radio, Switch, Spinner } from '@chakra-ui/react';
 
 import { BasePage } from './BasePage';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +17,7 @@ const StatusMapper = {
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
-    const [{ settingsOpen, settings }, { closeSettings, setColorMode, setLocale }] = useSystemStore();
+    const [{ settings }, { setColorMode, setLocale }] = useSystemStore();
     const { toggleColorMode } = useColorMode();
     const [status, setStatus] = useState<{ web: string; server: string } | null>(null);
 

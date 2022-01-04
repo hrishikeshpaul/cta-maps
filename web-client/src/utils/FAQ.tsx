@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react';
 
 import {
     Box,
-    Container,
     Heading,
     Accordion,
     AccordionItem,

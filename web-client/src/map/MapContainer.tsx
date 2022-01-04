@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useColorMode, useToast, useColorModeValue, Center, Spinner } from '@chakra-ui/react';
+import { useColorMode, useToast, Center, Spinner } from '@chakra-ui/react';
 import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
 
@@ -104,7 +104,7 @@ export const MapContainer: FunctionComponent = () => {
             onGetCurrentLocation();
             onLocationButtonPress(false);
         }
-    }, [onCurrentLocationPress]);
+    }, [onCurrentLocationPress]); // eslint-disable-line
 
     useEffect(() => {
         const lines: any[] = [];

@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode } from 'react';
 
-import { Box, Container, Flex, Button, useColorModeValue, Text } from '@chakra-ui/react';
+import { Container, Flex, Button, useColorModeValue, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { HiArrowRight as ArrowRight } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
