@@ -1,16 +1,17 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Avatar, Box, Button, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiSettings } from 'react-icons/fi';
 
+import { Info } from 'info/Info';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 
 export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes }] = useDataStore();
-    const [{ dragging }, { openInfoDrawer, openRouteSelect, openSettings }] = useSystemStore();
+    const [{ dragging }, { openRouteSelect, openSettings }] = useSystemStore();
     const [selected, setSelected] = useState<boolean>(false);
     const buttonBg = useColorModeValue('white', 'gray.600');
     const buttonColor = useColorModeValue('black', 'white');
@@ -33,7 +34,7 @@ export const Nav: FunctionComponent = () => {
             opacity={dragging ? '0.25' : '1'}
             transition="0.25s opacity ease-in-out"
         >
-            <Avatar src="/logo.svg" size="sm" boxShadow="lg" onClick={openInfoDrawer} h="40px" w="40px" />
+            <Info />
             <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
                 <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : buttonColor}>
                     {t('ROUTES')}

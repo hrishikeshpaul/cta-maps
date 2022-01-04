@@ -1,7 +1,6 @@
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Info } from 'info/Info';
 import { Landing } from 'landing/Landing';
 import { MapContainer } from 'map/MapContainer';
 import { Nav } from 'nav/Nav';
@@ -49,7 +48,6 @@ export const App = () => {
                                     <Nav />
                                     <SocketModule />
                                     <RouteSelect />
-                                    <Info />
                                     <Stop />
                                     <Settings />
                                     <MapContainer />
