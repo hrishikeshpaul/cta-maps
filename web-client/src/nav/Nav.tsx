@@ -52,6 +52,7 @@ export const Nav: FunctionComponent = () => {
                 icon={<FiSettings />}
                 boxShadow="lg"
                 onClick={openSettings}
+                zIndex="-1"
             />
         </Flex>
     );
