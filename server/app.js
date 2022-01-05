@@ -1,14 +1,14 @@
 'use strict';
 
-import dotenv from 'dotenv';
-import chalk from 'chalk';
-import cors from 'cors';
-import express from 'express';
-import http from 'http';
-import { Server } from 'socket.io';
+const dotenv = require('dotenv');
+const chalk = require('chalk');
+const cors = require('cors');
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 
-import router from './functions/src/routes.js';
-import { onConnection } from './functions/src/socket.js';
+const router = require('./src/routes');
+const { onConnection } = require('./src/socket');
 
 dotenv.config();
 const app = express();

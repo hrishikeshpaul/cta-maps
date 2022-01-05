@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 
-const { getVehicles, checkHeading } = require('./util.js');
+const { getVehicles, checkHeading } = require('./util');
 
 const TIMER = 4000; //ms
 
