@@ -27,11 +27,14 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                 p="4"
                 backgroundColor={useColorModeValue('white', 'gray.800')}
             >
-                <HStack alignItems="center" spacing={4} display={{ base: 'none', md: 'flex' }}>
+                <HStack alignItems="center" spacing={8} display={{ base: 'none', md: 'flex' }}>
                     <Avatar src="/logo.svg" h="40px" w="40px" />
-                    <Link>Hello</Link>
-                    <Link>Hello</Link>
-                    <Link>Hello</Link>
+                    <Link fontWeight="bold" pl="4">
+                        Usage
+                    </Link>
+                    <Link fontWeight="bold">Contact</Link>
+                    <Link fontWeight="bold">Legal</Link>
+                    <Link fontWeight="bold">Settings</Link>
                 </HStack>
 
                 <Box display={{ base: 'block', md: 'none' }}>
