@@ -1,8 +1,8 @@
 'use strict';
 
-import NodeCache from 'node-cache';
+const NodeCache = require('node-cache');
 
-export const cacheKeys = {
+const cacheKeys = {
     locale: (ns, lng) => `locale-${ns}-${lng}-cache`,
     routes: 'routes-cache',
     pattern: (route) => `pattern-${route}-cache`,
@@ -10,7 +10,7 @@ export const cacheKeys = {
 
 const ttl = 60 * 60 * 24; // one day
 
-export class Cache {
+class Cache {
     constructor() {
         this.cache = new NodeCache({ stdTTL: ttl, checkperiod: ttl * 0.2, useClones: false });
     }
@@ -37,3 +37,8 @@ export class Cache {
         console.info(`Cache Miss: ${key}`);
     }
 }
+
+module.exports = {
+    Cache,
+    cacheKeys,
+};

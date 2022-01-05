@@ -1,10 +1,17 @@
 'use strict';
 
-import express from 'express';
-import fs from 'fs';
-import Fuse from 'fuse.js';
+const express = require('express');
+const fs = require('fs');
+const Fuse = require('fuse.js');
 
-import { getPatterns, getRoutes, getPredictions, getGitHubWorkflow, getLocaleJson, getLatestVersion } from './util.js';
+const {
+    getPatterns,
+    getRoutes,
+    getPredictions,
+    getGitHubWorkflow,
+    getLocaleJson,
+    getLatestVersion,
+} = require('./util.js');
 
 const convertTimestamp = (timestamp) => {
     const [date, time] = timestamp.split(' ');
@@ -174,4 +181,4 @@ router.get('/locale/:ns/:lng', async (req, res) => {
     }
 });
 
-export default router;
+module.exports = router;

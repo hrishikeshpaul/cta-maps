@@ -1,10 +1,12 @@
-import axios from 'axios';
-import chalk from 'chalk';
-import dotenv from 'dotenv';
+'use strict';
+
+const axios = require('axios');
+const chalk = require('chalk');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-export const Http = axios.create({
+const Http = axios.create({
     baseURL: process.env.CTA_BASE_URL,
     params: {
         key: process.env.CTA_KEY,
@@ -36,3 +38,7 @@ Http.interceptors.response.use((response) => {
 
     return { data: busResponse };
 });
+
+module.exports = {
+    Http,
+};

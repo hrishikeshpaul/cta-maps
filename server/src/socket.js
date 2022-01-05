@@ -1,8 +1,8 @@
 'use strict';
 
-import _ from 'lodash';
+const _ = require('lodash');
 
-import { getVehicles, checkHeading } from './util.js';
+const { getVehicles, checkHeading } = require('./util.js');
 
 const TIMER = 4000; //ms
 
@@ -114,7 +114,7 @@ const onActive = (socket) => {
     }
 };
 
-export const onConnection = (socket) => {
+const onConnection = (socket) => {
     connectedSockets[socket.id] = new SocketConnection(socket);
 
     console.info(`Socket[${socket.id}] connected`);
@@ -125,4 +125,8 @@ export const onConnection = (socket) => {
     socket.on('idle', _.partial(onIdle, socket));
     socket.on('active', _.partial(onActive, socket));
     socket.on('disconnect', _.partial(onDisconnect, socket));
+};
+
+module.exports = {
+    onConnection,
 };

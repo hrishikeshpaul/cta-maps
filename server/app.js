@@ -7,8 +7,8 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 
-import router from './src/routes.js';
-import { onConnection } from './src/socket.js';
+import router from './functions/src/routes.js';
+import { onConnection } from './functions/src/socket.js';
 
 dotenv.config();
 const app = express();

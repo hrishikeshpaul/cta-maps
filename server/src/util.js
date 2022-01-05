@@ -1,18 +1,18 @@
 'use strict';
 
-import axios from 'axios';
-import dotenv from 'dotenv';
-import fs from 'fs';
+const axios = require('axios');
+const dotenv = require('dotenv');
+const fs = require('fs');
 
-import { Cache, cacheKeys } from './cache.js';
-import { Http } from './http.js';
+const { Cache, cacheKeys } = require('./cache.js');
+const { Http } = require('./http.js');
 
 dotenv.config();
 
 const cache = new Cache();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-export const getRoutes = async () => {
+const getRoutes = async () => {
     const key = cacheKeys.routes;
     const routes = cache.get(key);
 
@@ -33,7 +33,7 @@ export const getRoutes = async () => {
     return data['routes'];
 };
 
-export const getVehicles = async (routes) => {
+const getVehicles = async (routes) => {
     const { data, error } = await Http.get('/getvehicles', {
         params: { rt: routes },
     });
@@ -45,7 +45,7 @@ export const getVehicles = async (routes) => {
     return data['vehicle'];
 };
 
-export const getPatterns = async (route) => {
+const getPatterns = async (route) => {
     const key = cacheKeys.pattern(route);
     const pattern = cache.get(key);
 
@@ -68,7 +68,7 @@ export const getPatterns = async (route) => {
     return data['ptr'];
 };
 
-export const getPredictions = async (stop) => {
+const getPredictions = async (stop) => {
     const { data, error } = await Http.get('/getpredictions', {
         params: { stpid: stop },
     });
@@ -80,7 +80,7 @@ export const getPredictions = async (stop) => {
     return data['prd'];
 };
 
-export const getGitHubWorkflow = async () => {
+const getGitHubWorkflow = async () => {
     const [{ data: web }, { data: server }] = await Promise.all([
         axios.get(process.env.GITHUB_WORKFLOW_WEB_URL, { headers: { Authorization: `token ${GITHUB_TOKEN}` } }),
         axios.get(process.env.GITHUB_WORKFLOW_SERVER_URL, { headers: { Authorization: `token ${GITHUB_TOKEN}` } }),
@@ -89,7 +89,7 @@ export const getGitHubWorkflow = async () => {
     return { web, server };
 };
 
-export const getLatestVersion = async () => {
+const getLatestVersion = async () => {
     const { data } = await axios.get(process.env.GITHUB_VERSION_URL, {
         headers: { Authorization: `token ${GITHUB_TOKEN}` },
     });
@@ -97,7 +97,7 @@ export const getLatestVersion = async () => {
     return data.tag_name;
 };
 
-export const getLocaleJson = async (ns, lng) => {
+const getLocaleJson = async (ns, lng) => {
     if (process.env.NODE_ENV === 'development' && ns === 'common' && lng === 'en') {
         return { data: fs.readFileSync('./src/locales/common_en.json'), status: 200 };
     }
@@ -122,7 +122,7 @@ export const getLocaleJson = async (ns, lng) => {
     return { data, status };
 };
 
-export const checkHeading = (heading) => {
+const checkHeading = (heading) => {
     if (heading >= 0 && heading <= 45) {
         return 'N';
     } else if (heading > 45 && heading <= 90) {
@@ -143,3 +143,14 @@ export const checkHeading = (heading) => {
         return 'F';
     }
 };
+
+module.exports = {
+    getGitHubWorkflow,
+    getLatestVersion,
+    getLocaleJson,
+    getPatterns,
+    getPredictions,
+    getRoutes,
+    getVehicles,
+    checkHeading
+}
