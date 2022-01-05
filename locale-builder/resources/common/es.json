@@ -43,5 +43,5 @@
   "SERVER_CONNECT": "¡Servidor conectado!",
   "SERVER_ERROR": "Error del Servidor. Vuelva a seleccionar las rutas",
   "GENERIC_ERROR": "Datos no encontrados",
-  "GO_TO_MAPS": "Ir a Mapas"
+  "START_TRACKING": "Iniciar seguimiento"
 }
