@@ -50,7 +50,7 @@ export const Settings: FunctionComponent = () => {
     return (
         <BasePage>
             <Heading>{t('SETTINGS')}</Heading>
-            <Box mt="6">
+            <Box mt="8">
                 <Text fontWeight="bold" color="gray.400" fontSize="sm">
                     {t('APPEARANCE')}
                 </Text>

@@ -90,6 +90,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                 onClick={openInfoDrawer}
                 h="40px"
                 w="40px"
+                cursor="pointer"
             />
             <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
                 <DrawerOverlay />
@@ -129,10 +130,12 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                                 return (
                                     <Flex
                                         p="4"
+                                        py="6"
                                         borderBottom={`1px solid ${borderBottom}`}
                                         className="item"
                                         onClick={item.onClick}
                                         key={item.text}
+                                        _hover={{ bg: borderBottom }}
                                     >
                                         <Text className="item-text">{item.text}</Text>
                                         <FiChevronRight />

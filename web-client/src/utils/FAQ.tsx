@@ -21,11 +21,11 @@ export const FAQ: FunctionComponent = () => {
     return (
         <BasePage>
             <Heading>{t('FAQ', { ns: 'common' })}</Heading>
-            <Accordion mt="6" allowMultiple>
+            <Accordion mt="8" allowMultiple>
                 {faqData.map((data) => (
                     <AccordionItem key={data}>
                         <AccordionButton py="5">
-                            <Box flex="1" textAlign="left" fontWeight="600">
+                            <Box flex="1" textAlign="left" fontWeight="600" fontSize="lg">
                                 {t(`Q${data}`)}
                             </Box>
                             <AccordionIcon />
