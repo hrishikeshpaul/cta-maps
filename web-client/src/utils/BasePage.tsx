@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode } from 'react';
 
-import { Container, Flex, Button, useColorModeValue, Text } from '@chakra-ui/react';
+import { Box, Container, Flex, Button, useColorModeValue, Text, Avatar, Divider, HStack, Link } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { HiArrowRight as ArrowRight } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
@@ -27,14 +27,31 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                 p="4"
                 backgroundColor={useColorModeValue('white', 'gray.800')}
             >
-                <Info disableAvatarShadow />
+                <HStack alignItems="center" spacing={4} display={{ base: 'none', md: 'flex' }}>
+                    <Avatar src="/logo.svg" h="40px" w="40px" />
+                    <Link>Hello</Link>
+                    <Link>Hello</Link>
+                    <Link>Hello</Link>
+                </HStack>
+
+                <Box display={{ base: 'block', md: 'none' }}>
+                    <Info disableAvatarShadow />
+                </Box>
+
                 <Button colorScheme="blue" rightIcon={<ArrowRight />} onClick={() => navigate('/')}>
-                    {t('GO_TO_MAPS')}
+                    {t('START_TRACKING')}
                 </Button>
             </Flex>
             <Container maxW="container.lg">{children}</Container>
-            <Flex justifyContent="space-between" alignItems="center" mt="12" p="4">
-                <Text fontSize="xs" pt="1">
+            <Divider mt="12" />
+            <Flex justifyContent="space-between" alignItems="center" p="4" flexDir={{ base: 'column', md: 'row' }}>
+                <Flex alignItems="center">
+                    <Avatar src="/logo.svg" size="sm" />
+                    <Text pl="2" fontWeight={800}>
+                        trackCTA
+                    </Text>
+                </Flex>
+                <Text fontSize="xs" pt={{ base: '4', md: '0' }}>
                     © {new Date().getFullYear()} trackCTA. All rights reserved.
                 </Text>
             </Flex>

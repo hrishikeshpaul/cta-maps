@@ -1,3 +1,4 @@
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ const DEBOUNCE_TIME = 500; // ms
 export const App = () => {
     const [{ stop }, { onIdle, onActive }] = useDataStore();
     const [{ systemLoading, routeSelectOpen }] = useSystemStore();
+    const color = useColorModeValue('gray.700', 'gray.200');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
         onIdle: () => {
@@ -40,25 +42,27 @@ export const App = () => {
             {systemLoading ? (
                 <Landing />
             ) : (
-                <BrowserRouter>
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <div className="App">
-                                    <Nav />
-                                    <SocketModule />
-                                    <Stop />
-                                    {(routeSelectOpen || !!stop) && <Overlay />}
-                                    <MapContainer />
-                                    <RouteSelect />
-                                </div>
-                            }
-                        />
-                        <Route path="/faq" element={<FAQ />} />
-                        <Route path="/settings" element={<Settings />} />
-                    </Routes>
-                </BrowserRouter>
+                <Box color={color} h="100%" w="100%">
+                    <BrowserRouter>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <Box className="App">
+                                        <Nav />
+                                        <SocketModule />
+                                        <Stop />
+                                        {(routeSelectOpen || !!stop) && <Overlay />}
+                                        <MapContainer />
+                                        <RouteSelect />
+                                    </Box>
+                                }
+                            />
+                            <Route path="/faq" element={<FAQ />} />
+                            <Route path="/settings" element={<Settings />} />
+                        </Routes>
+                    </BrowserRouter>
+                </Box>
             )}
         </>
     );

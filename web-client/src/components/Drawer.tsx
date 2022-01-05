@@ -10,9 +10,10 @@ interface Props {
 
 export const Drawer: FunctionComponent<Props> = ({ direction, open, children }) => {
     return (
-        <Slide direction={direction} in={open} unmountOnExit style={{zIndex: 101}}>
+        <Slide direction={direction} in={open} unmountOnExit style={{ zIndex: 101 }}>
             <Container maxW="container.lg" px={{ base: '0', md: '4' }}>
                 <Box
+                    px={{ base: '0', md: '2' }}
                     bg={useColorModeValue('white', 'gray.700')}
                     borderTopRightRadius="xl"
                     borderTopLeftRadius="xl"

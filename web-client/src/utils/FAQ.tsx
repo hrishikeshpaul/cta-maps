@@ -8,6 +8,8 @@ import {
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
+    Link,
+    Text,
 } from '@chakra-ui/react';
 
 import { BasePage } from './BasePage';
@@ -34,6 +36,13 @@ export const FAQ: FunctionComponent = () => {
                     </AccordionItem>
                 ))}
             </Accordion>
+            <Text mt="6">
+                Please reach out to us{' '}
+                <Link fontWeight="bold" colorScheme="blue">
+                    here
+                </Link>{' '}
+                if you have any further questions.
+            </Text>
         </BasePage>
     );
 };
