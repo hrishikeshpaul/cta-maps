@@ -7,7 +7,7 @@ name: Build Common Locales
     branches:
       - main
 jobs:
-  build-locales:
+  build-common-locales:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository

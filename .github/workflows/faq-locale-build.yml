@@ -7,7 +7,7 @@ name: Build FAQ Locales
     branches:
       - main
 jobs:
-  build-locales:
+  build-faq-locales:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
