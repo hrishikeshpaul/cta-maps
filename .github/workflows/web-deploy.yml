@@ -1,8 +1,8 @@
-name: Deploy Web Client to Firebase Hosting
+name: Deploy Web App to Firebase Hosting
 "on":
   push:
     paths:
-      - web-client/**
+      - web-app/**
     branches:
       - main
 jobs:
@@ -17,11 +17,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory: ./web-client
+        working-directory: ./web-app
         run: yarn install
 
       - name: Build
-        working-directory: ./web-client
+        working-directory: ./web-app
         run: yarn build
         env:
           REACT_APP_MAPS_API_KEY: ${{ secrets.REACT_APP_MAPS_API_KEY }}

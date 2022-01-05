@@ -1,8 +1,8 @@
-name: Deploy Web Client Preview to Firebase Hosting
+name: Deploy Web App Preview to Firebase Hosting
 "on":
   pull_request:
     paths:
-      - web-client/**
+      - web-app/**
 
 jobs:
   build_and_deploy_preview:
@@ -16,11 +16,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory: ./web-client
+        working-directory: ./web-app
         run: yarn install
 
       - name: Build
-        working-directory: ./web-client
+        working-directory: ./web-app
         run: yarn build
         env:
           REACT_APP_MAPS_API_KEY: ${{ secrets.REACT_APP_MAPS_API_KEY }}
