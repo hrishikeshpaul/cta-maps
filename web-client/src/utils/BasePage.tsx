@@ -16,7 +16,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
     const navigate = useNavigate();
 
     return (
-        <Container maxW="container.lg">
+        <Container maxW="container.lg" p="0">
             <Flex
                 zIndex={100}
                 position="sticky"
@@ -33,12 +33,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                 </Button>
             </Flex>
             <Container maxW="container.lg">{children}</Container>
-            <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                mt="12"
-                p="4"
-            >
+            <Flex justifyContent="space-between" alignItems="center" mt="12" p="4">
                 <Text fontSize="xs" pt="1">
                     © {new Date().getFullYear()} trackCTA. All rights reserved.
                 </Text>
