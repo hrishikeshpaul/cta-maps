@@ -7,7 +7,8 @@ import { Box, View, useToast } from 'native-base';
 import MapView, { Marker } from 'react-native-maps';
 
 import { useDataStore } from '../store/data/DataStore';
-import LocationMarker from '../../assets/markers/Location';
+import LocationMarker from '../../assets/markers/LocationMarker';
+import { Toast } from '../shared/Toast';
 
 export const Map = () => {
     const [{ currentLocation }, { setCurrentLocation }] = useDataStore();
@@ -17,7 +18,7 @@ export const Map = () => {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                toast.show({ description: 'Location could not be retrieved...', status: 'warning' });
+                toast.show({ render: () => <Toast description="Could not get location.." status="warning" /> });
                 return;
             }
 
@@ -26,7 +27,7 @@ export const Map = () => {
             } = await Location.getCurrentPositionAsync({});
 
             setCurrentLocation({ lat: latitude, lng: longitude });
-            toast.show({ description: 'Location updated...', status: 'success' });
+            toast.show({ render: () => <Toast description="Current location updated..." status="success" /> });
         })();
     }, []);
 
