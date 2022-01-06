@@ -1,35 +1,28 @@
-import { REACT_APP_MAPS_API_KEY } from "@env";
-import MapView from "react-native-maps";
+import { StyleSheet } from 'react-native';
 
-import { StyleSheet, Text, View } from "react-native";
-
-import { NativeBaseProvider, Box } from "native-base";
-import * as Location from "expo-location";
+import { NativeBaseProvider, Box, Button } from 'native-base';
+import { Map } from './src/map/Map';
+import { DataStoreProvider } from './src/store/data/DataStore';
+import { SystemStoreProvider } from './src/store/system/SystemStore';
 
 export default function App() {
-  return (
-    <NativeBaseProvider>
-      <Box style={styles.container}>
-        {/* <MapView
-          style={{ height: "100%", width: "100%" }}
-          key={REACT_APP_MAPS_API_KEY}
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        /> */}
-      </Box>
-    </NativeBaseProvider>
-  );
+    return (
+        <NativeBaseProvider>
+            <SystemStoreProvider>
+                <DataStoreProvider>
+                    <Box style={styles.container}>
+                        <Map />
+                    </Box>
+                </DataStoreProvider>
+            </SystemStoreProvider>
+        </NativeBaseProvider>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    container: {
+        flex: 1,
+        height: '100%',
+        width: '100%',
+    },
 });
