@@ -61,28 +61,35 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     const handleScroll = async ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-        if (isCloseToBottom(nativeEvent) && !routesLoading) {
-            console.log('here');
-            setIndex(index + 1);
-            const filter = currentRoutes.map((route) => route.route).join(',');
-            const response = await getRoutes(query, filter, LIMIT, index + 1);
+        try {
+            if (isCloseToBottom(nativeEvent) && !routesLoading) {
+                setIndex(index + 1);
+                const filter = currentRoutes.map((route) => route.route).join(',');
+                const response = await getRoutes(query, filter, LIMIT, index + 1);
 
-            if (response)
-                setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
+                if (response)
+                    setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
+            }
+        } catch (err) {
+            console.log('handlescroll', err);
         }
     };
 
     const onOpen = async () => {
-        const filter = currentRoutes.map((route) => route.route).join(',');
-        const response = await getRoutes(query, filter, LIMIT, index);
-        const selectedRoutes: RouteExtended[] = currentRoutes.map((route) => ({ ...route, selected: true }));
-        let unselectedRoutes: RouteExtended[] = [];
+        try {
+            const filter = currentRoutes.map((route) => route.route).join(',');
+            const response = await getRoutes(query, filter, LIMIT, index);
+            const selectedRoutes: RouteExtended[] = currentRoutes.map((route) => ({ ...route, selected: true }));
+            let unselectedRoutes: RouteExtended[] = [];
 
-        if (response) {
-            unselectedRoutes = response.map((route) => ({ ...route, selected: false }));
+            if (response) {
+                unselectedRoutes = response.map((route) => ({ ...route, selected: false }));
+            }
+
+            setRoutes([...selectedRoutes, ...unselectedRoutes]);
+        } catch (err) {
+            console.log('onOpen', err);
         }
-
-        setRoutes([...selectedRoutes, ...unselectedRoutes]);
     };
 
     useEffect(() => {
@@ -285,7 +292,7 @@ export const RouteSelect: FunctionComponent = () => {
 
                 {currentRoutes.length ? (
                     <Flex bg={bg} p="4" justifyContent="center" direction="row">
-                        <Button onPress={() => removeAllRoutes()} w="50%" colorScheme="light" borderRadius="xl">
+                        <Button onPress={() => removeAllRoutes()} w="50%" colorScheme="blue" borderRadius="xl">
                             {t('DESELECT_ALL')}
                         </Button>
                     </Flex>

@@ -9,7 +9,7 @@ import { socket } from './Socket';
 
 export const SocketProvider: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [, { setVehicles, removeAllRoutes }] = useDataStore();
+    const [, { setVehicles, removeAllRoutes, onIdle, onActive }] = useDataStore();
     const toast = useToast();
 
     useEffect(() => {
@@ -18,13 +18,14 @@ export const SocketProvider: FunctionComponent = () => {
                 switch (AppState.currentState) {
                     case 'inactive':
                     case 'background':
-                        socket.disconnect();
+                    case 'unknown':
+                        onIdle();
                         break;
                     case 'active':
-                        socket.connect();
+                        onActive();
                         break;
                     default:
-                        socket.disconnect();
+                        console.log('what');
                 }
             });
 
@@ -65,10 +66,6 @@ export const SocketProvider: FunctionComponent = () => {
                 removeAllRoutes();
             });
         }
-
-        return () => {
-            console.log('socket disconnected');
-        };
     }, [socket]); // eslint-disable-line
 
     return <></>;
