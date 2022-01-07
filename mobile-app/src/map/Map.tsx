@@ -51,13 +51,13 @@ export const Map = () => {
                     </View>
                 </Marker>
             </MapView>
+            {/*  */}
         </Box>
     );
 };
 
 const styles = StyleSheet.create({
     mapContainer: {
-        flex: 1,
         height: '100%',
         width: '100%',
     },
