@@ -62,6 +62,7 @@ export const RouteSelect: FunctionComponent = () => {
 
     const handleScroll = async ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
         if (isCloseToBottom(nativeEvent) && !routesLoading) {
+            console.log('here');
             setIndex(index + 1);
             const filter = currentRoutes.map((route) => route.route).join(',');
             const response = await getRoutes(query, filter, LIMIT, index + 1);

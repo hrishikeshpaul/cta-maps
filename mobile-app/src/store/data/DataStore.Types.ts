@@ -29,8 +29,8 @@ export interface Route {
 }
 
 export interface Point {
-    lat: number;
-    lng: number;
+    latitude: number;
+    longitude: number;
 }
 
 export interface Stop extends Point {

@@ -5,7 +5,7 @@ import { REACT_APP_MAPS_API_KEY } from '@env';
 import * as Location from 'expo-location';
 import { Box, View, useToast, useColorMode } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import MapView, { Marker, MapPolylineProps, Polyline } from 'react-native-maps';
+import MapView, { Marker, MapPolylineProps, Polyline, LatLng } from 'react-native-maps';
 
 import { useDataStore } from '../store/data/DataStore';
 import LocationMarker from '../../assets/markers/LocationMarker';
@@ -16,23 +16,18 @@ import { ColorMode } from '../store/system/SystemStore.Types';
 
 import { darkStyle, lightStyle } from './Map.Styles';
 
-const basePolylineOptions = {
-    strokeOpacity: 0.9,
-    strokeWeight: 4,
-    clickable: false,
-    draggable: false,
-    editable: false,
-    visible: true,
-    zIndex: 1,
-};
-
-interface Line extends MapPolylineProps {
+interface Line {
     paths: Point[];
     stops: Stop[];
-    id: string;
+    id: number;
+    strokeColor: string;
 }
 
 const defaultZoom = 14;
+const deltas = {
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+};
 
 export const Map: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -83,7 +78,7 @@ export const Map: FunctionComponent = () => {
             });
         }
 
-        setCurrentLocation({ lat: latitude, lng: longitude });
+        setCurrentLocation({ latitude, longitude });
         toast.show({ render: () => <Toast description={t('LOCATION_UPDATED')} status="success" /> });
     };
 
@@ -100,6 +95,32 @@ export const Map: FunctionComponent = () => {
         }
     }, [onCurrentLocationPress]);
 
+    useEffect(() => {
+        const lines: Line[] = [];
+
+        patterns.forEach(async (pattern) => {
+            if (pattern.paths) {
+                const newLine: Line = {
+                    paths: pattern.paths,
+                    strokeColor: pattern.strokeColor,
+                    id: pattern.pid,
+                    stops: pattern.stops,
+                };
+
+                setPaths((p) => [...p, ...pattern.paths]);
+                lines.push(newLine);
+            }
+        });
+
+        setLines(lines);
+    }, [patterns]);
+
+    useEffect(() => {
+        if (map) {
+            map.current?.fitToCoordinates(paths, { animated: true });
+        }
+    }, [paths]); // eslint-disable-line
+
     return (
         <Box style={styles.mapContainer}>
             <MapView
@@ -108,17 +129,39 @@ export const Map: FunctionComponent = () => {
                 style={styles.map}
                 key={REACT_APP_MAPS_API_KEY}
                 initialRegion={{
-                    latitude: currentLocation.lat,
-                    longitude: currentLocation.lng,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
+                    ...currentLocation,
+                    ...deltas,
+                }}
+                onRegionChange={(region) => {
+                    if (region.latitudeDelta !== deltas.latitudeDelta) {
+                        const zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2);
+                        if (zoom! >= 15) setShowStops(true);
+                        else setShowStops(false);
+                    }
                 }}
             >
-                <Marker coordinate={{ latitude: currentLocation.lat, longitude: currentLocation.lng }}>
+                <Marker coordinate={currentLocation}>
                     <View>
                         <LocationMarker />
                     </View>
                 </Marker>
+
+                {lines.map((line: Line) => (
+                    <Box key={line.id}>
+                        <Polyline coordinates={line.paths} strokeColor={line.strokeColor} strokeWidth={6} />
+                        {showStops &&
+                            line.stops.map((stop) => (
+                                <Marker
+                                    // icon="/stop.svg"
+                                    coordinate={{ latitude: stop.latitude, longitude: stop.longitude }}
+                                    key={`stop-${stop.id}`}
+                                    // onClick={() => openStop(stop)}
+                                    // visible={map?.getBounds()?.contains({ lat: stop.lat, lng: stop.lng })}
+                                    zIndex={4}
+                                ></Marker>
+                            ))}
+                    </Box>
+                ))}
             </MapView>
             {/*  */}
         </Box>

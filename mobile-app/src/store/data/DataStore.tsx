@@ -67,7 +67,7 @@ export const initialStoreState: DataStoreState = {
     routes: [],
     patterns: [],
     error: undefined,
-    currentLocation: { lat: 41.88, lng: -87.64 },
+    currentLocation: { latitude: 41.88, longitude: -87.64 },
     vehicles: [],
 };
 

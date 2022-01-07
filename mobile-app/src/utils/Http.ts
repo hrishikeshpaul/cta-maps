@@ -1,5 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
+
+import { REACT_APP_BASE_URL } from '@env';
 
 export const Http = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}/v1/api`,
+    baseURL: `${REACT_APP_BASE_URL}/v1/api`,
 });
