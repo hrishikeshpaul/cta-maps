@@ -16,6 +16,7 @@ import {
     ScrollView,
     Icon,
     IconButton,
+    Divider,
 } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -171,6 +172,7 @@ export const RouteSelect: FunctionComponent = () => {
                     </Flex>
                     <Switch colorScheme="blue" size="lg" isChecked={selected} onChange={onToggle} />
                 </Flex>
+                <Divider />
             </TouchableOpacity>
         );
     };
@@ -226,7 +228,7 @@ export const RouteSelect: FunctionComponent = () => {
                             InputRightElement={
                                 query && routesLoading ? (
                                     <Spinner color="blue.500" mr="2" />
-                                ) : (
+                                ) : query ? (
                                     <IconButton
                                         variant="ghost"
                                         aria-label="clear"
@@ -245,6 +247,8 @@ export const RouteSelect: FunctionComponent = () => {
                                         color="gray.500"
                                         onPress={() => setQuery('')}
                                     />
+                                ) : (
+                                    <></>
                                 )
                             }
                             InputLeftElement={

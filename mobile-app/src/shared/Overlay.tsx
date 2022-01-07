@@ -8,11 +8,8 @@ export const Overlay: FunctionComponent = () => {
     const [{ routeSelectOpen }, { closeRouteSelect }] = useSystemStore();
     const [{ stop }, { closeStop }] = useDataStore();
     const [show, setShow] = useState<boolean>(false);
-    const [opShow, setOpShow] = useState<boolean>(false);
 
     useEffect(() => {
-        setOpShow(routeSelectOpen || !!stop);
-
         if (routeSelectOpen || !!stop) {
             setShow(true);
         } else {
