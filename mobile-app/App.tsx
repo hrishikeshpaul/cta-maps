@@ -1,10 +1,10 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { NativeBaseProvider, Box, useColorModeValue, Center, Spinner } from 'native-base';
+import { NativeBaseProvider, Box, Center, Spinner } from 'native-base';
 
 import { Map } from './src/map/Map';
-import { DataStoreProvider, useDataStore } from './src/store/data/DataStore';
+import { DataStoreProvider } from './src/store/data/DataStore';
 import { SystemStoreProvider, useSystemStore } from './src/store/system/SystemStore';
 import { Nav } from './src/nav/Nav';
 import { RouteSelect } from './src/route-select/RouteSelect';
