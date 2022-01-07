@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import MapView, { Marker, MapPolylineProps, Polyline, LatLng } from 'react-native-maps';
 
 import { useDataStore } from '../store/data/DataStore';
-import LocationMarker from '../../assets/markers/LocationMarker';
 import { Toast } from '../shared/Toast';
 import { Point, Stop } from '../store/data/DataStore.Types';
 import { useSystemStore } from '../store/system/SystemStore';
@@ -16,8 +15,6 @@ import { ColorMode } from '../store/system/SystemStore.Types';
 
 import { darkStyle, lightStyle } from './Map.Styles';
 import StopMarker from '../../assets/markers/StopMarker';
-
-import RBush, { BBox } from 'rbush';
 
 interface Line {
     paths: Point[];
@@ -32,30 +29,18 @@ const deltas = {
     longitudeDelta: 0.0421,
 };
 
-class MyRBush extends RBush<Stop> {
-    toBBox([x, y]: any) {
-        return { minX: x, minY: y, maxX: x, maxY: y };
-    }
-    compareMinX(a: any, b: any) {
-        return a.x - b.x;
-    }
-    compareMinY(a: any, b: any) {
-        return a.y - b.y;
-    }
-}
-
 export const Map: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ settings, onCurrentLocationPress }, { setDragging, setAllowLocation, onLocationButtonPress }] =
         useSystemStore();
     const [{ currentLocation, patterns, vehicles }, { openStop, setCurrentLocation }] = useDataStore();
     const { colorMode } = useColorMode();
-    const map = useRef<MapView | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
     const [paths, setPaths] = useState<Point[]>([]);
-    const [tree, setTree] = useState<MyRBush>([] as any);
     const [viewPort, setViewPort] = useState<Point[]>([]);
+    const map = useRef<MapView | null>(null);
+
     const toast = useToast();
 
     const mapOptions = {
@@ -114,7 +99,6 @@ export const Map: FunctionComponent = () => {
 
     useEffect(() => {
         const lines: Line[] = [];
-        const stops: Stop[] = [];
 
         patterns.forEach(async (pattern) => {
             if (pattern.paths) {
@@ -127,12 +111,8 @@ export const Map: FunctionComponent = () => {
 
                 setPaths((p) => [...p, ...pattern.paths]);
                 lines.push(newLine);
-                stops.push(...pattern.stops);
             }
         });
-        const t = new RBush<Stop>();
-        t.load(stops);
-        setTree(t);
         setLines(lines);
     }, [patterns]);
 
@@ -142,16 +122,12 @@ export const Map: FunctionComponent = () => {
         }
     }, [paths]); // eslint-disable-line
 
-    const isInside = (x: number, y: number, z1: number, z2: number, z3: number, z4: number) => {
-        const x1 = Math.min(z1, z3);
-        const x2 = Math.max(z1, z3);
-        const y1 = Math.min(z2, z4);
-        const y2 = Math.max(z2, z4);
-        if (x1 <= x && x <= x2 && y1 <= y && y <= y2) {
-            return true;
-        } else {
-            return false;
-        }
+    const isInside = (stop: Stop, northEast: LatLng, southWest: LatLng) => {
+        const { latitude: x, longitude: y } = stop;
+        const { latitude: neX, longitude: neY } = northEast;
+        const { latitude: swX, longitude: swY } = southWest;
+
+        return Math.min(neX, swX) <= x && x <= Math.max(neX, swX) && Math.min(neY, swY) <= y && y <= Math.max(neY, swY);
     };
 
     return (
@@ -169,21 +145,16 @@ export const Map: FunctionComponent = () => {
                 showsCompass={false}
                 showsUserLocation
                 followsUserLocation
-                onRegionChangeComplete={(region) => {
+                onRegionChangeComplete={async (region) => {
                     if (region.latitudeDelta !== deltas.latitudeDelta) {
                         const zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2);
                         if (zoom! >= 15) {
                             setShowStops(true);
-                            setViewPort([
-                                {
-                                    latitude: region.latitude + region.latitudeDelta / 2,
-                                    longitude: region.longitude - region.longitudeDelta / 2,
-                                },
-                                {
-                                    latitude: region.latitude - region.latitudeDelta / 2,
-                                    longitude: region.longitude + region.longitudeDelta / 2,
-                                },
-                            ]);
+                            if (map) {
+                                const { northEast, southWest } = await map.current!.getMapBoundaries();
+
+                                setViewPort([northEast, southWest]);
+                            }
                         } else setShowStops(false);
                     }
                 }}
@@ -193,27 +164,18 @@ export const Map: FunctionComponent = () => {
                         <Polyline coordinates={line.paths} strokeColor={line.strokeColor} strokeWidth={6} zIndex={9} />
                         {showStops &&
                             line.stops.map((stop) => {
-                                const [topLeft, bottomRight] = viewPort;
-                                if (
-                                    isInside(
-                                        stop.latitude,
-                                        stop.longitude,
-                                        topLeft.latitude,
-                                        topLeft.longitude,
-                                        bottomRight.latitude,
-                                        bottomRight.longitude,
-                                    )
-                                ) {
+                                const [northEast, southWest] = viewPort;
+                                if (northEast && northEast && isInside(stop, northEast, southWest)) {
                                     return (
                                         <Marker
                                             coordinate={{ latitude: stop.latitude, longitude: stop.longitude }}
                                             key={`stop-${stop.id}-${line.id}`}
-                                            // onClick={() => openStop(stop)}
+                                            onPress={() => openStop(stop)}
                                             zIndex={10}
                                         >
-                                            {/* <View>
+                                            <View>
                                                 <StopMarker />
-                                            </View> */}
+                                            </View>
                                         </Marker>
                                     );
                                 }
