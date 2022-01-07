@@ -12,7 +12,7 @@ import {
     onRouteRemoveAll,
     onRouteSelect,
 } from 'store/data/DataService';
-import { Route, DataStoreState, Pattern, Stop, Point, Vehicle } from 'store/data/DataStore.Types';
+import { Route, DataStoreState, Pattern, Stop, Point, Vehicle, SavedStopsKey } from 'store/data/DataStore.Types';
 import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
 export enum DataStoreActionType {
@@ -21,8 +21,13 @@ export enum DataStoreActionType {
     SetStop,
     SetCurrentLocation,
     SetVehicles,
+    SetSavedStop,
     RemoveRoute,
     RemoveAllRoutes,
+}
+
+interface PayloadSetSavedStop {
+    stops: string[];
 }
 
 interface PayloadSetRoute {
@@ -57,7 +62,8 @@ interface DataStoreAction {
         | PayloadSetPattern
         | PayloadSetStop
         | PayloadSetCurrentLocation
-        | PayloadSetVehicles;
+        | PayloadSetVehicles
+        | PayloadSetSavedStop;
 }
 
 interface DataStoreProviderProps {
@@ -71,6 +77,7 @@ export const initialStoreState: DataStoreState = {
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
     vehicles: [],
+    savedStops: JSON.parse(localStorage.getItem(SavedStopsKey) || '[]'),
 };
 
 const DataStoreStateContext = createContext<DataStoreState | undefined>(undefined);
@@ -114,6 +121,13 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
             return {
                 ...state,
                 vehicles: (action.payload as PayloadSetVehicles).vehicles,
+            };
+        case DataStoreActionType.SetSavedStop:
+            localStorage.setItem(SavedStopsKey, JSON.stringify((action.payload as PayloadSetSavedStop).stops));
+
+            return {
+                ...state,
+                savedStops: (action.payload as PayloadSetSavedStop).stops,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -162,9 +176,12 @@ interface DataStoreActionApis {
     setVehicles: (vehicles: Vehicle[]) => void;
     onIdle: () => void;
     onActive: () => void;
+    saveStop: (id: string) => void;
+    unSaveStop: (id: string) => void;
 }
 
 export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
+    const state = useDataStoreState();
     const dispatch = useDataStoreDispatch();
     const systemDispatch = useSystemStoreDispatch();
     const toast = useToast();
@@ -228,6 +245,15 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         onActive: () => {
             onActive();
+        },
+        saveStop: (id: string) => {
+            const savedStops = [...state.savedStops, id];
+            dispatch({ type: DataStoreActionType.SetSavedStop, payload: { stops: savedStops } });
+        },
+        unSaveStop: (id: string) => {
+            const savedStops = state.savedStops.filter((s) => s !== id);
+
+            dispatch({ type: DataStoreActionType.SetSavedStop, payload: { stops: savedStops } });
         },
     };
 

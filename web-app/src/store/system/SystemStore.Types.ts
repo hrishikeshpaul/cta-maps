@@ -1,8 +1,8 @@
 import { Locale } from 'i18n/LocaleProvider';
 
 export const ColorModeKey = 'chakra-ui-color-mode';
-export const LocaleKey = 'cta-maps-locale';
-export const AllowLocationKey = 'cta-maps-allow-location';
+export const LocaleKey = 'track-cta-locale';
+export const AllowLocationKey = 'track-cta-allow-location';
 
 export enum ColorMode {
     Light = 'light',

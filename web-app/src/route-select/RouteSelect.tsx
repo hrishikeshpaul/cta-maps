@@ -14,16 +14,17 @@ import {
     Switch,
     Button,
     useColorModeValue,
+    Divider,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
+import { Drawer } from 'components/Drawer';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
-import { Drawer } from 'components/Drawer';
 
 const LIMIT = 10;
 
@@ -144,19 +145,22 @@ export const RouteSelect: FunctionComponent = () => {
         };
 
         return (
-            <Flex justifyContent="space-between" alignItems="center" py="3">
-                <Flex alignItems="center" overflow="hidden">
-                    <Center h="40px" w="40px" bg={color} borderRadius="md">
-                        <Text color="white" fontWeight="bold">
-                            {route}
+            <>
+                <Flex justifyContent="space-between" alignItems="center" py="3">
+                    <Flex alignItems="center" overflow="hidden">
+                        <Center h="40px" w="40px" bg={color} borderRadius="md">
+                            <Text color="white" fontWeight="bold">
+                                {route}
+                            </Text>
+                        </Center>
+                        <Text px="4" isTruncated fontWeight={500}>
+                            {name}
                         </Text>
-                    </Center>
-                    <Text px="4" isTruncated fontWeight={500}>
-                        {name}
-                    </Text>
+                    </Flex>
+                    <Switch size="lg" isChecked={selected} onChange={onToggle} />
                 </Flex>
-                <Switch size="lg" isChecked={selected} onChange={onToggle} />
-            </Flex>
+                <Divider />
+            </>
         );
     };
 
@@ -164,7 +168,7 @@ export const RouteSelect: FunctionComponent = () => {
         <Drawer direction="bottom" open={routeSelectOpen}>
             <Box p="4">
                 <Flex justifyContent="space-between" alignItems="center">
-                    <Text fontSize="xl" fontWeight="bold">
+                    <Text fontSize="2xl" fontWeight="bold">
                         {t('SELECT_ROUTES')}
                     </Text>
                     <IconButton

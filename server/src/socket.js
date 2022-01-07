@@ -11,6 +11,7 @@ class SocketConnection {
         this.routes = {};
         this.timer = null;
         this.socket = socket;
+        this.idleTimer = null;
     }
 
     start_timer() {

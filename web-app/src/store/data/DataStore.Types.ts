@@ -1,3 +1,5 @@
+export const SavedStopsKey = 'track-cta-saved-stops';
+
 export enum PointType {
     S = 'S', // stop
     W = 'W', // waypoint
@@ -77,4 +79,5 @@ export interface DataStoreState {
     stop: Stop | null;
     error?: any;
     vehicles: Vehicle[];
+    savedStops: string[];
 }

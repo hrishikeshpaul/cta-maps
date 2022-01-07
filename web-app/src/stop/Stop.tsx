@@ -14,6 +14,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { BsHeartFill, BsHeart } from 'react-icons/bs';
 import { FaLocationArrow } from 'react-icons/fa';
 import { FiChevronDown } from 'react-icons/fi';
 
@@ -24,17 +25,26 @@ import { Drawer } from 'components/Drawer';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ stop }, { closeStop }] = useDataStore();
+    const [{ stop, savedStops }, { closeStop, saveStop, unSaveStop }] = useDataStore();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);
     const [filter, setFilter] = useState<Record<string, boolean>>({});
+    const [isFav, setIsFav] = useState<boolean>(false);
     const toast = useToast();
     const JunctureMapper = {
         [Juncture.A]: (time: number) => (time < 2 ? t('ARRIVE_SHORTLY') : `${t('ARRIVE')} ${time} mins`),
         [Juncture.D]: (time: number) => (time < 2 ? t('DEPART_SHORTLY') : `${t('DEPART')} ${time} mins`),
     };
     const bg = useColorModeValue('white', 'gray.700');
+
+    useEffect(() => {
+        if (stop && savedStops.includes(stop.id)) {
+            setIsFav(true);
+        } else {
+            setIsFav(false);
+        }
+    }, [savedStops, stop]); // eslint-disable-line
 
     useEffect(() => {
         (async () => {
@@ -76,6 +86,14 @@ export const Stop: FunctionComponent = () => {
             setFilter({ ...oldFilter });
         } else {
             setFilter({ ...filter, [route]: true });
+        }
+    };
+
+    const onFavHandle = () => {
+        if (savedStops.includes(stop!.id)) {
+            unSaveStop(stop!.id);
+        } else {
+            saveStop(stop!.id);
         }
     };
 
@@ -131,6 +149,7 @@ export const Stop: FunctionComponent = () => {
                             onClick={() => {
                                 closeStop();
                                 setFilter({});
+                                setIsFav(false);
                             }}
                             icon={<FiChevronDown />}
                         />
@@ -168,10 +187,17 @@ export const Stop: FunctionComponent = () => {
                         </Box>
                     )}
                 </Box>
-                <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4">
-                    <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
-                        <Text pr="2">{t('GET_DIR')}</Text>
-                    </Button>
+                <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4" w="100%">
+                    <Flex justifyContent="space-between" w="100%">
+                        <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
+                            <Text pr="2">{t('GET_DIR')}</Text>
+                        </Button>
+                        <IconButton
+                            aria-label="favorite"
+                            icon={isFav ? <BsHeartFill /> : <BsHeart />}
+                            onClick={onFavHandle}
+                        />
+                    </Flex>
                 </Box>
             </Box>
         </Drawer>
