@@ -54,9 +54,12 @@ export const Map: FunctionComponent = () => {
 
     const onGetCurrentLocation = async () => {
         toast.closeAll();
-        toast.show({ description: t('RETRIEVING_LOCATION'), status: 'info' });
+        toast.show({
+            render: () => <Toast description={t('RETRIEVING_LOCATION')} status="warning" />,
+        });
 
         const { status } = await Location.requestForegroundPermissionsAsync();
+
         if (status !== 'granted') {
             toast.show({
                 render: () => <Toast description={t('RETRIEVE_LOCATION_FAIL')} status="warning" />,
@@ -88,7 +91,14 @@ export const Map: FunctionComponent = () => {
         (async () => {
             await onGetCurrentLocation();
         })();
-    }, []);
+    }, []); // eslint-disable-line
+
+    useEffect(() => {
+        if (onCurrentLocationPress) {
+            onGetCurrentLocation();
+            onLocationButtonPress(false);
+        }
+    }, [onCurrentLocationPress]);
 
     return (
         <Box style={styles.mapContainer}>

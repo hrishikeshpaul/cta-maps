@@ -7,7 +7,7 @@ import { LogoIcon } from '../../assets/logo/Logo';
 import { useSystemStore } from '../store/system/SystemStore';
 
 export const Nav: FunctionComponent = () => {
-    const [, { openRouteSelect }] = useSystemStore();
+    const [, { openRouteSelect, onLocationButtonPress }] = useSystemStore();
     return (
         <Box
             display="flex"
@@ -40,6 +40,7 @@ export const Nav: FunctionComponent = () => {
                 borderRadius="xl"
                 bg="white"
                 icon={<MaterialIcons name="my-location" size={24} color="black" />}
+                onPress={() => onLocationButtonPress(true)}
             ></IconButton>
         </Box>
     );
