@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { NativeBaseProvider, Box, Button } from 'native-base';
+import { NativeBaseProvider, Box } from 'native-base';
+
 import { Map } from './src/map/Map';
 import { DataStoreProvider } from './src/store/data/DataStore';
 import { SystemStoreProvider } from './src/store/system/SystemStore';

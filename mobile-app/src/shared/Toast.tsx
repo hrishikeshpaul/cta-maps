@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 
 import { MaterialIcons } from '@expo/vector-icons';
-import { Box, Icon, Flex, Text } from 'native-base';
+import { Box, Text } from 'native-base';
 import { StyleSheet, View } from 'react-native';
 
 interface Props {
@@ -22,7 +22,7 @@ const StatusToIconMapper: Record<string, any> = {
 
 export const Toast: FunctionComponent<Props> = ({ description, status }) => {
     return (
-        <Box bg={StatusToColorMapper[status]} p="2" rounded="md" w="80%">
+        <Box bg={StatusToColorMapper[status]} p="2" rounded="md">
             <View style={styles.flex}>
                 {StatusToIconMapper[status]}
                 <Text pl="4" color="white">

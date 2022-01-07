@@ -11,14 +11,16 @@ import LocationMarker from '../../assets/markers/LocationMarker';
 import { Toast } from '../shared/Toast';
 
 export const Map = () => {
-    const [{ currentLocation }, { setCurrentLocation }] = useDataStore();
+    const [{ currentLocation }, { setCurrentLocation, getRoutes }] = useDataStore();
     const toast = useToast();
 
     useEffect(() => {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                toast.show({ render: () => <Toast description="Could not get location.." status="warning" /> });
+                toast.show({
+                    render: () => <Toast description="Could not get location.." status="warning" />,
+                });
                 return;
             }
 
