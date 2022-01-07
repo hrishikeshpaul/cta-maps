@@ -1,6 +1,7 @@
-import React, { FunctionComponent, useRef, useEffect, useState, useMemo, useCallback } from 'react';
+import React, { FunctionComponent, useRef, useEffect, useState } from 'react';
 import { Dimensions, TouchableOpacity, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import {
     Box,
     View,
@@ -17,9 +18,8 @@ import {
     IconButton,
 } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
-
 import RBSheet from 'react-native-raw-bottom-sheet';
+
 import { useSystemStore } from '../store/system/SystemStore';
 import { useDataStore } from '../store/data/DataStore';
 import { Route } from '../store/data/DataStore.Types';
@@ -169,7 +169,7 @@ export const RouteSelect: FunctionComponent = () => {
                             {name}
                         </Text>
                     </Flex>
-                    <Switch size="lg" isChecked={selected} onChange={onToggle} />
+                    <Switch colorScheme="blue" size="lg" isChecked={selected} onChange={onToggle} />
                 </Flex>
             </TouchableOpacity>
         );
@@ -182,7 +182,7 @@ export const RouteSelect: FunctionComponent = () => {
                 onOpen={() => {
                     setTimeout(() => {
                         setBsOpenFinish(true);
-                    }, 300);
+                    }, 400);
                 }}
                 animationType="fade"
                 closeOnDragDown={!isScrolling}
@@ -224,7 +224,7 @@ export const RouteSelect: FunctionComponent = () => {
                             borderRadius="xl"
                             placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
                             InputRightElement={
-                                routesLoading ? (
+                                query && routesLoading ? (
                                     <Spinner color="blue.500" mr="2" />
                                 ) : (
                                     <IconButton
@@ -260,7 +260,7 @@ export const RouteSelect: FunctionComponent = () => {
                 </Box>
                 <ScrollView
                     px="4"
-                    pb={currentRoutes.length ? '12' : '4'}
+                    pb={currentRoutes.length ? '14' : '4'}
                     pt="2"
                     onScroll={handleScroll}
                     onScrollBeginDrag={() => setIsScrolling(true)}
@@ -276,11 +276,11 @@ export const RouteSelect: FunctionComponent = () => {
                 </ScrollView>
 
                 {currentRoutes.length ? (
-                    <Box position="absolute" bottom="0" left="50%" bg={bg} p="4">
-                        <Button onPress={() => removeAllRoutes()}>
-                            {t('DESELECT_ALL')} ({currentRoutes.length})
+                    <Flex bg={bg} p="4" justifyContent="center" direction="row">
+                        <Button onPress={() => removeAllRoutes()} w="50%" colorScheme="light" borderRadius="xl">
+                            {t('DESELECT_ALL')}
                         </Button>
-                    </Box>
+                    </Flex>
                 ) : null}
             </RBSheet>
         </View>
