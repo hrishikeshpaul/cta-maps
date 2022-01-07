@@ -11,6 +11,7 @@ import { Nav } from './src/nav/Nav';
 import { RouteSelect } from './src/route-select/RouteSelect';
 import { LocaleProvider } from './src/i18n/LocaleProvider';
 import { Overlay } from './src/shared/Overlay';
+import { SocketProvider } from './src/utils/SockerProvider';
 
 const theme = extendTheme({
     fontConfig: {
@@ -78,11 +79,10 @@ export default function App() {
 
         return !systemLoading ? (
             <Box style={styles.container}>
+                <SocketProvider />
                 <Nav />
                 <Overlay />
-
                 <Map />
-
                 <RouteSelect />
             </Box>
         ) : (
