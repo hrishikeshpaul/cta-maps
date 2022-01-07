@@ -1,13 +1,21 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { MaterialIcons } from '@expo/vector-icons';
-import { Box, Button, IconButton, Text } from 'native-base';
+import { Box, Button, IconButton, Text, useColorModeValue, Flex } from 'native-base';
+import { useTranslation } from 'react-i18next';
 
 import { LogoIcon } from '../../assets/logo/Logo';
 import { useSystemStore } from '../store/system/SystemStore';
+import { useDataStore } from '../store/data/DataStore';
 
 export const Nav: FunctionComponent = () => {
-    const [, { openRouteSelect, onLocationButtonPress }] = useSystemStore();
+    const { t } = useTranslation();
+    const [{ routes }] = useDataStore();
+    const [{ dragging }, { openRouteSelect, onLocationButtonPress }] = useSystemStore();
+    const [selected, setSelected] = useState<boolean>(false);
+    const buttonBg = useColorModeValue('white', 'gray.600');
+    const buttonColor = useColorModeValue('black', 'white');
+
     return (
         <Box
             display="flex"
@@ -26,14 +34,23 @@ export const Nav: FunctionComponent = () => {
             <Button
                 shadow="9"
                 borderRadius="xl"
-                bg="white"
+                bg={buttonBg}
+                color={buttonColor}
                 size="lg"
                 _pressed={{ bg: 'gray.200' }}
                 onPress={() => openRouteSelect()}
+                flexDirection="column"
             >
                 <Text px="6" py="1" fontWeight="bold">
                     Routes
                 </Text>
+                {selected && (
+                    <Flex flexWrap="wrap" mt="1" direction="row">
+                        {routes.map((route) => (
+                            <Box h="12px" w="15px" bg={route.color} mx="1" borderRadius="sm" key={route.route} />
+                        ))}
+                    </Flex>
+                )}
             </Button>
             <IconButton
                 shadow="9"
