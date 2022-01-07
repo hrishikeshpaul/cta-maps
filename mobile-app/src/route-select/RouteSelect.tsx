@@ -1,11 +1,5 @@
 import React, { FunctionComponent, useRef, useEffect, useState, useMemo, useCallback } from 'react';
-import {
-    Dimensions,
-    TouchableOpacity,
-    NativeScrollEvent,
-    NativeSyntheticEvent,
-    TextInputTextInputEventData,
-} from 'react-native';
+import { Dimensions, TouchableOpacity, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
 import {
     Box,
@@ -25,8 +19,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 
-import BottomSheet from '@gorhom/bottom-sheet';
-
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSystemStore } from '../store/system/SystemStore';
 import { useDataStore } from '../store/data/DataStore';
@@ -41,10 +33,9 @@ interface RouteExtended extends Route {
 
 export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
-    const bottomSheetRef = useRef<BottomSheet>(null);
 
     const [{ routes: currentRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] = useDataStore();
-    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
+    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect, setRouteLoading }] = useSystemStore();
     const [mounted, setMounted] = useState<boolean>(false);
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
@@ -52,9 +43,8 @@ export const RouteSelect: FunctionComponent = () => {
     const [isScrolling, setIsScrolling] = useState<boolean>(false);
     const debouncedQuery = useDebounce(query);
     const bg = useColorModeValue('white', 'gray.700');
-    const refRBSheet = useRef<any>(null);
-
-    const snapPoints = useMemo(() => ['25%', '50%'], []);
+    const refRBSheet = useRef<RBSheet | null>(null);
+    const [bsOpenFinish, setBsOpenFinish] = useState<boolean>(false);
 
     useEffect(() => {
         setMounted(true);
@@ -71,7 +61,6 @@ export const RouteSelect: FunctionComponent = () => {
 
     const handleScroll = async ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
         if (isCloseToBottom(nativeEvent) && !routesLoading) {
-            console.log('reached-bottom');
             setIndex(index + 1);
             const filter = currentRoutes.map((route) => route.route).join(',');
             const response = await getRoutes(query, filter, LIMIT, index + 1);
@@ -96,11 +85,12 @@ export const RouteSelect: FunctionComponent = () => {
 
     useEffect(() => {
         if (routeSelectOpen) {
-            refRBSheet.current.open();
+            refRBSheet!.current!.open();
             (async () => {
                 await onOpen();
             })();
         } else {
+            setBsOpenFinish(false);
             setQuery('');
             setIndex(1);
             closeRouteSelect();
@@ -138,6 +128,11 @@ export const RouteSelect: FunctionComponent = () => {
         })();
     }, [debouncedQuery]); // eslint-disable-line
 
+    useEffect(() => {
+        if (query) setRouteLoading(true);
+        else setRouteLoading(false);
+    }, [query]);
+
     const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
         const onToggle = () => {
             const computedRouteIdx = routes.findIndex((r) => r.route === route);
@@ -166,11 +161,11 @@ export const RouteSelect: FunctionComponent = () => {
                 <Flex justifyContent="space-between" alignItems="center" direction="row">
                     <Flex alignItems="center" overflow="hidden" direction="row">
                         <Center h="40px" w="40px" bg={color} borderRadius="md">
-                            <Text color="white" fontWeight="bold">
+                            <Text fontSize="md" color="white" fontWeight="bold">
                                 {route}
                             </Text>
                         </Center>
-                        <Text px="4" isTruncated fontWeight={500}>
+                        <Text fontSize="md" px="4" isTruncated fontWeight={500}>
                             {name}
                         </Text>
                     </Flex>
@@ -180,16 +175,16 @@ export const RouteSelect: FunctionComponent = () => {
         );
     };
 
-    // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
-    }, []);
-
     return (
         <View shadow="9" style={{ height: '100%' }}>
             <RBSheet
                 ref={refRBSheet}
-                animationType="slide"
+                onOpen={() => {
+                    setTimeout(() => {
+                        setBsOpenFinish(true);
+                    }, 300);
+                }}
+                animationType="fade"
                 closeOnDragDown={!isScrolling}
                 closeOnPressMask={false}
                 height={Dimensions.get('window').height * 0.8}
@@ -211,45 +206,46 @@ export const RouteSelect: FunctionComponent = () => {
                     },
                 }}
             >
-                {/* <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}> */}
                 <Box p="4" borderRadius="xl" py="2">
                     <Flex direction="row" justifyContent="space-between" alignItems="center" py="2">
-                        <Text fontSize="2xl" fontWeight="bold">
+                        <Text fontSize="2xl" fontWeight="900">
                             {t('SELECT_ROUTES')}
                         </Text>
                     </Flex>
                     <Box pt="1">
                         <Input
-                            fontSize="lg"
+                            fontSize="md"
                             fontWeight="400"
                             _focus={{ borderColor: 'blue.500', borderWidth: 2 }}
-                            onTextInput={({
-                                nativeEvent: { text },
-                            }: NativeSyntheticEvent<TextInputTextInputEventData>) => {
+                            onChangeText={(text) => {
                                 setQuery(text);
                             }}
-                            value={query}
+                            defaultValue={query}
                             borderRadius="xl"
                             placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
                             InputRightElement={
-                                <IconButton
-                                    variant="ghost"
-                                    aria-label="clear"
-                                    px="2"
-                                    icon={
-                                        <Icon
-                                            as={<AntDesign name="close" size={24} />}
-                                            size={5}
-                                            ml="2"
-                                            color="muted.400"
-                                        />
-                                    }
-                                    _pressed={{ bg: 'transparent', color: 'black' }}
-                                    size="sm"
-                                    fontSize="3xl"
-                                    color="gray.500"
-                                    onPress={() => setQuery('')}
-                                />
+                                routesLoading ? (
+                                    <Spinner color="blue.500" mr="2" />
+                                ) : (
+                                    <IconButton
+                                        variant="ghost"
+                                        aria-label="clear"
+                                        px="2"
+                                        icon={
+                                            <Icon
+                                                as={<AntDesign name="close" size={24} />}
+                                                size={5}
+                                                ml="2"
+                                                color="muted.400"
+                                            />
+                                        }
+                                        _pressed={{ bg: 'transparent', color: 'black' }}
+                                        size="sm"
+                                        fontSize="3xl"
+                                        color="gray.500"
+                                        onPress={() => setQuery('')}
+                                    />
+                                )
                             }
                             InputLeftElement={
                                 <Icon
@@ -271,9 +267,7 @@ export const RouteSelect: FunctionComponent = () => {
                     onScrollEndDrag={() => setIsScrolling(false)}
                     scrollEventThrottle={400}
                 >
-                    {routes.map((route) => (
-                        <RouteCard {...route} key={route.route} />
-                    ))}
+                    {bsOpenFinish && routes.map((route) => <RouteCard {...route} key={route.route} />)}
                     {routesLoading ? (
                         <Center>
                             <Spinner color="blue.500" />
@@ -288,7 +282,6 @@ export const RouteSelect: FunctionComponent = () => {
                         </Button>
                     </Box>
                 ) : null}
-                {/* </BottomSheet> */}
             </RBSheet>
         </View>
     );

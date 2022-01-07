@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet,  } from 'react-native';
 
 import { NativeBaseProvider, Box, extendTheme, useColorModeValue, Center, Spinner } from 'native-base';
 import { useFonts } from 'expo-font';

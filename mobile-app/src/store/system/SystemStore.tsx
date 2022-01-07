@@ -19,6 +19,7 @@ export enum SystemStoreActionType {
     SetSettings,
     SetRoutesLoading,
     SetAllowLocation,
+    SetRouteLoading,
     ToggleLocationButtonPress,
 }
 interface PayloadToggleLocationButtonPress {
@@ -69,6 +70,10 @@ interface PayloadSetAllowLocation {
     allow: boolean;
 }
 
+interface PayloadSetRouteLoading {
+    loading: boolean;
+}
+
 interface SystemStoreAction {
     type: SystemStoreActionType;
     payload?:
@@ -82,7 +87,8 @@ interface SystemStoreAction {
         | PayloadSetIdleAlert
         | PayloadSetSystemLoading
         | PayloadSetAllowLocation
-        | PayloadToggleLocationButtonPress;
+        | PayloadToggleLocationButtonPress
+        | PayloadSetRouteLoading;
 }
 
 interface SystemStoreProviderProps {
@@ -166,6 +172,12 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 onCurrentLocationPress: (action.payload as PayloadToggleLocationButtonPress).value,
             };
         }
+        case SystemStoreActionType.SetRouteLoading: {
+            return {
+                ...state,
+                routesLoading: (action.payload as PayloadSetRouteLoading).loading,
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -211,12 +223,13 @@ interface SystemStoreActionApis {
     openSettings: () => void;
     closeSettings: () => void;
     setColorMode: (mode: ColorMode) => void;
-    // setLocale: (locale: Locale) => void;
+    setLocale: (locale: Locale) => void;
     openIdleAlert: () => void;
     closeIdleAlert: () => void;
     setSystemLoading: (loading: boolean) => void;
     setAllowLocation: (allow: boolean) => void;
     onLocationButtonPress: (value: boolean) => void;
+    setRouteLoading: (loading: boolean) => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -247,10 +260,9 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         setColorMode: (mode: ColorMode) => {
             dispatch({ type: SystemStoreActionType.SetColorMode, payload: { mode } });
         },
-        // setLocale: (locale: Locale) => {
-        //     localStorage.setItem(LocaleKey, locale);
-        //     dispatch({ type: SystemStoreActionType.SetLocale, payload: { locale } });
-        // },
+        setLocale: (locale: Locale) => {
+            dispatch({ type: SystemStoreActionType.SetLocale, payload: { locale } });
+        },
         openIdleAlert: () => {
             dispatch({ type: SystemStoreActionType.SetIdleAlert, payload: { open: true } });
         },
@@ -266,6 +278,9 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         },
         onLocationButtonPress: (value: boolean) => {
             dispatch({ type: SystemStoreActionType.ToggleLocationButtonPress, payload: { value } });
+        },
+        setRouteLoading: (loading: boolean) => {
+            dispatch({ type: SystemStoreActionType.SetRouteLoading, payload: { loading } });
         },
     };
 

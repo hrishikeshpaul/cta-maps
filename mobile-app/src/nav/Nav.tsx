@@ -28,6 +28,7 @@ export const Nav: FunctionComponent = () => {
                 borderRadius="xl"
                 bg="white"
                 size="lg"
+                _pressed={{ bg: 'gray.200' }}
                 onPress={() => openRouteSelect()}
             >
                 <Text px="6" py="1" fontWeight="bold">
