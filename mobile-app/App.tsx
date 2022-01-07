@@ -5,6 +5,7 @@ import { NativeBaseProvider, Box } from 'native-base';
 import { Map } from './src/map/Map';
 import { DataStoreProvider } from './src/store/data/DataStore';
 import { SystemStoreProvider } from './src/store/system/SystemStore';
+import { Nav } from './src/nav/Nav';
 
 export default function App() {
     return (
@@ -12,6 +13,7 @@ export default function App() {
             <SystemStoreProvider>
                 <DataStoreProvider>
                     <Box style={styles.container}>
+                        <Nav />
                         <Map />
                     </Box>
                 </DataStoreProvider>
