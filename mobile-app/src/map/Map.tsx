@@ -5,7 +5,7 @@ import { REACT_APP_MAPS_API_KEY } from '@env';
 import * as Location from 'expo-location';
 import { Box, View, useToast, useColorMode } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import MapView, { Marker, MapPolylineProps, Polyline, LatLng } from 'react-native-maps';
+import MapView, { Marker, Polyline, LatLng } from 'react-native-maps';
 
 import { useDataStore } from '../store/data/DataStore';
 import { Toast } from '../shared/Toast';
@@ -15,6 +15,7 @@ import { ColorMode } from '../store/system/SystemStore.Types';
 
 import { darkStyle, lightStyle } from './Map.Styles';
 import StopMarker from '../../assets/markers/StopMarker';
+import BusMarker from '../../assets/markers/BusMarker';
 
 interface Line {
     paths: Point[];
