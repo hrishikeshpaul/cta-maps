@@ -6,6 +6,7 @@ import { Map } from './src/map/Map';
 import { DataStoreProvider } from './src/store/data/DataStore';
 import { SystemStoreProvider } from './src/store/system/SystemStore';
 import { Nav } from './src/nav/Nav';
+import { RouteSelect } from './src/route-select/RouteSelect';
 
 export default function App() {
     return (
@@ -15,6 +16,7 @@ export default function App() {
                     <Box style={styles.container}>
                         <Nav />
                         <Map />
+                        <RouteSelect />
                     </Box>
                 </DataStoreProvider>
             </SystemStoreProvider>

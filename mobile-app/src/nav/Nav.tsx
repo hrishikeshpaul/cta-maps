@@ -4,8 +4,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Box, Button, IconButton, Text } from 'native-base';
 
 import { LogoIcon } from '../../assets/Logo';
+import { useSystemStore } from '../store/system/SystemStore';
 
 export const Nav: FunctionComponent = () => {
+    const [, { openRouteSelect }] = useSystemStore();
     return (
         <Box
             display="flex"
@@ -18,15 +20,22 @@ export const Nav: FunctionComponent = () => {
             w="100%"
             px="4"
         >
-            <Box h="10" w="10">
+            <Box h="10" w="10" shadow="9">
                 <LogoIcon />
             </Box>
-            <Button borderRadius="xl" colorScheme="blue" size="lg">
-                <Text px="6" py="1" fontWeight="bold" color="white">
+            <Button
+                shadow="9"
+                borderRadius="xl"
+                bg="white"
+                size="lg"
+                onPress={() => openRouteSelect()}
+            >
+                <Text px="6" py="1" fontWeight="bold">
                     Routes
                 </Text>
             </Button>
             <IconButton
+                shadow="9"
                 borderRadius="xl"
                 bg="white"
                 icon={<MaterialIcons name="my-location" size={24} color="black" />}
