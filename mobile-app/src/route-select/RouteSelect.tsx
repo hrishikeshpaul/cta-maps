@@ -208,7 +208,10 @@ export const RouteSelect: FunctionComponent = () => {
                     },
                 }}
             >
-                <Box p="4" borderRadius="xl" py="2">
+                <Flex bg={bg} p="4" pb="0" justifyContent="center" direction="row">
+                    <Box h="1" bg="gray.300" w="10" borderRadius="xl" />
+                </Flex>
+                <Box p="4" borderRadius="xl" pt="0">
                     <Flex direction="row" justifyContent="space-between" alignItems="center" py="2">
                         <Text fontSize="2xl" fontWeight="900">
                             {t('SELECT_ROUTES')}

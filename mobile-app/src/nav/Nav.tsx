@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Box, Button, IconButton, Text } from 'native-base';
 
-import { LogoIcon } from '../../assets/Logo';
+import { LogoIcon } from '../../assets/logo/Logo';
 import { useSystemStore } from '../store/system/SystemStore';
 
 export const Nav: FunctionComponent = () => {
