@@ -123,8 +123,7 @@ export const Map: FunctionComponent = () => {
         }
     }, [paths]); // eslint-disable-line
 
-    const isInside = (stop: Stop, northEast: LatLng, southWest: LatLng) => {
-        const { latitude: x, longitude: y } = stop;
+    const isInside = (x: number, y: number, northEast: LatLng, southWest: LatLng) => {
         const { latitude: neX, longitude: neY } = northEast;
         const { latitude: swX, longitude: swY } = southWest;
 
@@ -147,26 +146,51 @@ export const Map: FunctionComponent = () => {
                 showsUserLocation
                 followsUserLocation
                 onRegionChangeComplete={async (region) => {
+                    if (map) {
+                        const { northEast, southWest } = await map.current!.getMapBoundaries();
+
+                        setViewPort([northEast, southWest]);
+                    }
+
                     if (region.latitudeDelta !== deltas.latitudeDelta) {
                         const zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2);
                         if (zoom! >= 15) {
                             setShowStops(true);
-                            if (map) {
-                                const { northEast, southWest } = await map.current!.getMapBoundaries();
-
-                                setViewPort([northEast, southWest]);
-                            }
                         } else setShowStops(false);
                     }
                 }}
             >
+                {vehicles && (
+                    <>
+                        {vehicles.map((vehicle) => {
+                            const [northEast, southWest] = viewPort;
+                            const { latitude, longitude } = vehicle.position;
+                            return (
+                                northEast &&
+                                southWest &&
+                                isInside(latitude, longitude, northEast, southWest) && (
+                                    <Marker coordinate={vehicle.position} key={vehicle.id} zIndex={11}>
+                                        <View>
+                                            <BusMarker direction={vehicle.headingNum} />
+                                        </View>
+                                    </Marker>
+                                )
+                            );
+                        })}
+                    </>
+                )}
+
                 {lines.map((line: Line) => (
                     <Box key={line.id}>
                         <Polyline coordinates={line.paths} strokeColor={line.strokeColor} strokeWidth={6} zIndex={9} />
                         {showStops &&
                             line.stops.map((stop) => {
                                 const [northEast, southWest] = viewPort;
-                                if (northEast && northEast && isInside(stop, northEast, southWest)) {
+                                if (
+                                    northEast &&
+                                    northEast &&
+                                    isInside(stop.latitude, stop.longitude, northEast, southWest)
+                                ) {
                                     return (
                                         <Marker
                                             coordinate={{ latitude: stop.latitude, longitude: stop.longitude }}

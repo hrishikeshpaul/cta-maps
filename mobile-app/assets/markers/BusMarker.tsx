@@ -100,28 +100,6 @@ export default function BusMarker({ direction }: Props) {
 
             <G id="arrow" transform="translate(4.8 0.026)">
                 <Arrow direction={direction || 0} />
-                {/* <Path
-                    id="Path_18"
-                    data-name="Path 18"
-                    d="M18,15.662V7.5"
-                    transform="translate(-14.595 -7.5)"
-                    fill="none"
-                    stroke="#c84a44"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                />
-                <Path
-                    id="Path_19"
-                    data-name="Path 19"
-                    d="M7.5,11.581,10.9,7.5l3.4,4.081"
-                    transform="translate(-7.5 -7.5)"
-                    fill="none"
-                    stroke="#c84a44"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                /> */}
             </G>
         </Svg>
     );
