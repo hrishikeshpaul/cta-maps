@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import { StyleSheet,  } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { NativeBaseProvider, Box, extendTheme, useColorModeValue, Center, Spinner } from 'native-base';
 import { useFonts } from 'expo-font';
@@ -10,6 +10,7 @@ import { SystemStoreProvider, useSystemStore } from './src/store/system/SystemSt
 import { Nav } from './src/nav/Nav';
 import { RouteSelect } from './src/route-select/RouteSelect';
 import { LocaleProvider } from './src/i18n/LocaleProvider';
+import { Overlay } from './src/shared/Overlay';
 
 const theme = extendTheme({
     fontConfig: {
@@ -78,7 +79,10 @@ export default function App() {
         return !systemLoading ? (
             <Box style={styles.container}>
                 <Nav />
+                <Overlay />
+
                 <Map />
+
                 <RouteSelect />
             </Box>
         ) : (

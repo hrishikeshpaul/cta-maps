@@ -16,7 +16,7 @@ export const Nav: FunctionComponent = () => {
             flexDirection="row"
             position="absolute"
             top="12"
-            zIndex="100"
+            zIndex="99"
             w="100%"
             px="4"
         >
