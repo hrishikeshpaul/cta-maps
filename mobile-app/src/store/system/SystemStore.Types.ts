@@ -1,4 +1,4 @@
-// import { Locale } from 'i18n/LocaleProvider';
+import { Locale } from '../../i18n/Locale';
 
 export const ColorModeKey = 'chakra-ui-color-mode';
 export const LocaleKey = 'cta-maps-locale';
@@ -11,7 +11,7 @@ export enum ColorMode {
 
 export interface Setting {
     colorMode: ColorMode;
-    // locale?: Locale;
+    locale: Locale;
 }
 
 export enum Status {

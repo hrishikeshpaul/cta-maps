@@ -2,6 +2,7 @@ import React, { FunctionComponent, useRef, useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 
 import { Box, View, Text, useColorModeValue, Flex, Center, Switch, Input, IconButton } from 'native-base';
+import { useTranslation } from 'react-i18next';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSystemStore } from '../store/system/SystemStore';
@@ -16,6 +17,8 @@ interface RouteExtended extends Route {
 }
 
 export const RouteSelect: FunctionComponent = () => {
+    const { t } = useTranslation();
+
     const [{ routes: currentRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] = useDataStore();
     const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
     const [mounted, setMounted] = useState<boolean>(false);
@@ -114,8 +117,7 @@ export const RouteSelect: FunctionComponent = () => {
                 <Box px="4" borderRadius="xl">
                     <Flex direction="row" justifyContent="space-between" alignItems="center">
                         <Text fontSize="xl" fontWeight="bold">
-                            {/* {t('SELECT_ROUTES')} */}
-                            Select Routes
+                            {t('SELECT_ROUTES')}
                         </Text>
                     </Flex>
                 </Box>

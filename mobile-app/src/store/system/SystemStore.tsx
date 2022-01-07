@@ -1,7 +1,10 @@
 import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
-// import { Locale } from 'i18n/LocaleProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { Locale } from '../../i18n/Locale';
 import { SystemStoreState, ColorMode, ColorModeKey, LocaleKey, AllowLocationKey } from './SystemStore.Types';
+import { localStorage } from '../../utils/LocalStorage';
 
 export enum SystemStoreActionType {
     SetRouteSelectDrawer,
@@ -50,9 +53,9 @@ interface PayloadSetColorMode {
     mode: ColorMode;
 }
 
-// interface PayloadSetLocale {
-//     locale: Locale;
-// }
+interface PayloadSetLocale {
+    locale: Locale;
+}
 
 interface PayloadSetIdleAlert {
     open: boolean;
@@ -75,7 +78,7 @@ interface SystemStoreAction {
         | PayloadSetInfoDrawer
         | PayloadSetSettingsDrawer
         | PayloadSetColorMode
-        // | PayloadSetLocale
+        | PayloadSetLocale
         | PayloadSetIdleAlert
         | PayloadSetSystemLoading
         | PayloadSetAllowLocation
@@ -98,7 +101,7 @@ export const initialStoreState: SystemStoreState = {
     onCurrentLocationPress: false,
     settings: {
         colorMode: ColorMode.Light,
-        // locale: (localStorage.getItem(LocaleKey) as Locale) || Locale.EN,
+        locale: Locale.EN,
     },
 };
 
@@ -139,14 +142,14 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                     colorMode: (action.payload as PayloadSetColorMode).mode,
                 },
             };
-        // case SystemStoreActionType.SetLocale:
-        //     return {
-        //         ...state,
-        //         settings: {
-        //             ...state.settings,
-        //             locale: (action.payload as PayloadSetLocale).locale,
-        //         },
-        //     };
+        case SystemStoreActionType.SetLocale:
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    locale: (action.payload as PayloadSetLocale).locale,
+                },
+            };
         case SystemStoreActionType.SetIdleAlert:
             return {
                 ...state,

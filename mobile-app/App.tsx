@@ -8,6 +8,7 @@ import { DataStoreProvider } from './src/store/data/DataStore';
 import { SystemStoreProvider } from './src/store/system/SystemStore';
 import { Nav } from './src/nav/Nav';
 import { RouteSelect } from './src/route-select/RouteSelect';
+import { LocaleProvider } from './src/i18n/LocaleProvider';
 
 const theme = extendTheme({
     fontConfig: {
@@ -69,17 +70,20 @@ export default function App() {
     }
 
     return (
-        <NativeBaseProvider theme={theme}>
-            <SystemStoreProvider>
-                <DataStoreProvider>
-                    <Box style={styles.container}>
-                        <Nav />
-                        <Map />
-                        <RouteSelect />
-                    </Box>
-                </DataStoreProvider>
-            </SystemStoreProvider>
-        </NativeBaseProvider>
+        <>
+            <NativeBaseProvider theme={theme}>
+                <SystemStoreProvider>
+                    <DataStoreProvider>
+                        <Box style={styles.container}>
+                            <LocaleProvider />
+                            <Nav />
+                            <Map />
+                            <RouteSelect />
+                        </Box>
+                    </DataStoreProvider>
+                </SystemStoreProvider>
+            </NativeBaseProvider>
+        </>
     );
 }
 
