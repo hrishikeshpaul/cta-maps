@@ -140,20 +140,18 @@ export const Stop: FunctionComponent = () => {
                     <Text fontSize="2xl" isTruncated fontWeight="bold">
                         {stop?.name}
                     </Text>
-                    <Flex>
-                        <IconButton
-                            variant="ghost"
-                            fontSize="2xl"
-                            mr="-3"
-                            aria-label="close"
-                            onClick={() => {
-                                closeStop();
-                                setFilter({});
-                                setIsFav(false);
-                            }}
-                            icon={<FiChevronDown />}
-                        />
-                    </Flex>
+                    <IconButton
+                        variant="ghost"
+                        fontSize="2xl"
+                        mr="-3"
+                        aria-label="close"
+                        onClick={() => {
+                            closeStop();
+                            setFilter({});
+                            setIsFav(false);
+                        }}
+                        icon={<FiChevronDown />}
+                    />
                 </Flex>
                 <Flex pb="2" overflowX="auto" px="4">
                     {routes.map((route) => (
@@ -168,7 +166,7 @@ export const Stop: FunctionComponent = () => {
                         </Button>
                     ))}
                 </Flex>
-                <Box className="info" h="60vh" pb="72px" overflow="auto" px="4">
+                <Box h="60vh" pb="72px" overflowY="auto" px="4">
                     {loading ? (
                         <Center>
                             <Spinner />

@@ -20,15 +20,6 @@ const theme = extendTheme({
         ...ChakraTheme.shadows,
         outline: 'none',
     },
-    components: {
-        Button: {
-            baseStyle: {
-                _focus: {
-                    boxShadow: 'lg',
-                },
-            },
-        },
-    },
 });
 
 ReactDOM.render(

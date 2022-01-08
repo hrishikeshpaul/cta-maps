@@ -55,6 +55,7 @@ export const Favorites: FunctionComponent = () => {
                                     key={`fav-${favorite.id}`}
                                     _active={{ bg }}
                                     onClick={() => {
+                                        closeFavorites();
                                         openStop(favorite);
                                     }}
                                 >
