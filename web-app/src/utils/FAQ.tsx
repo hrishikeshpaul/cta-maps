@@ -15,7 +15,7 @@ import {
 import { BasePage } from './BasePage';
 import { useTranslation } from 'react-i18next';
 
-const faqData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const faqData = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export const FAQ: FunctionComponent = () => {
     const { t } = useTranslation('faq');

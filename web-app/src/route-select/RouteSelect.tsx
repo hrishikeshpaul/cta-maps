@@ -17,6 +17,7 @@ import {
     Divider,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { FaCheck as Check } from 'react-icons/fa';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
@@ -122,8 +123,6 @@ export const RouteSelect: FunctionComponent = () => {
     }, [debouncedQuery]); // eslint-disable-line
 
     const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
-        // const routeBg = useColorModeValue('#ececec', '#4A5568');
-
         const onToggle = () => {
             const computedRouteIdx = routes.findIndex((r) => r.route === route);
 
@@ -219,15 +218,18 @@ export const RouteSelect: FunctionComponent = () => {
                         </Center>
                     ) : null}
                 </Box>
-                {currentRoutes.length ? (
-                    <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4" w="100%">
-                        <Center>
-                            <Button onClick={removeAllRoutes} colorScheme="blue">
-                                {t('DESELECT_ALL')} ({currentRoutes.length})
+                <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4" w="100%">
+                    <Flex justifyContent={currentRoutes.length ? 'space-between' : 'flex-end'}>
+                        {currentRoutes.length ? (
+                            <Button onClick={removeAllRoutes} variant="link">
+                                {t('DESELECT_ALL')}
                             </Button>
-                        </Center>
-                    </Box>
-                ) : null}
+                        ) : null}
+                        <Button colorScheme="blue" onClick={closeRouteSelect} rightIcon={<Check fontSize="2xl" />}>
+                            {t('DONE')}
+                        </Button>
+                    </Flex>
+                </Box>
             </Box>
         </Drawer>
     );
