@@ -14,7 +14,7 @@ import './index.scss';
 
 const theme = extendTheme({
     config: {
-        cssVarPrefix: 'cta-maps',
+        cssVarPrefix: 'trackcta',
     } as ThemeConfig,
     shadows: {
         ...ChakraTheme.shadows,

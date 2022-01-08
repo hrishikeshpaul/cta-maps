@@ -97,7 +97,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                 <DrawerContent>
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">
-                            <Text fontWeight="bold">trackCTA</Text>
+                            <Text fontWeight="bold" fontSize='2xl'>trackCTA</Text>
                             <IconButton
                                 variant="ghost"
                                 fontSize="3xl"

@@ -135,9 +135,9 @@ export const Stop: FunctionComponent = () => {
 
     return (
         <Drawer open={!!stop} direction="bottom">
-            <Box>
+            <Box position="relative">
                 <Flex justifyContent="space-between" alignItems="center" overflow="hidden" p="4">
-                    <Text fontSize="xl" isTruncated fontWeight="bold">
+                    <Text fontSize="2xl" isTruncated fontWeight="bold">
                         {stop?.name}
                     </Text>
                     <Flex>

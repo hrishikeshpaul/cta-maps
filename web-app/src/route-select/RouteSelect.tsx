@@ -166,63 +166,67 @@ export const RouteSelect: FunctionComponent = () => {
 
     return (
         <Drawer direction="bottom" open={routeSelectOpen}>
-            <Box p="4">
-                <Flex justifyContent="space-between" alignItems="center">
-                    <Text fontSize="2xl" fontWeight="bold">
-                        {t('SELECT_ROUTES')}
-                    </Text>
-                    <IconButton
-                        variant="ghost"
-                        fontSize="2xl"
-                        aria-label="close"
-                        mr="-3"
-                        onClick={closeRouteSelect}
-                        icon={<FiChevronDown />}
-                    />
-                </Flex>
-                <InputGroup mt="2">
-                    <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
-                    {query && (
-                        <InputRightElement>
-                            <IconButton
-                                variant="ghost"
-                                aria-label="clear"
-                                icon={<IoIosClose />}
-                                size="sm"
-                                fontSize="3xl"
-                                color="gray.500"
-                                onClick={() => setQuery('')}
-                            />
-                        </InputRightElement>
-                    )}
-                    <Input
-                        name="query"
-                        value={query}
-                        placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setQuery(e.target.value);
-                        }}
-                    />
-                </InputGroup>
-            </Box>
-            <Box px="4" h="65vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
-                {routes.map((route) => (
-                    <RouteCard {...route} key={route.route} />
-                ))}
+            <Box position="relative">
+                <Box p="4">
+                    <Flex justifyContent="space-between" alignItems="center">
+                        <Text fontSize="2xl" fontWeight="bold">
+                            {t('SELECT_ROUTES')}
+                        </Text>
+                        <IconButton
+                            variant="ghost"
+                            fontSize="2xl"
+                            aria-label="close"
+                            mr="-3"
+                            onClick={closeRouteSelect}
+                            icon={<FiChevronDown />}
+                        />
+                    </Flex>
+                    <InputGroup mt="2">
+                        <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
+                        {query && (
+                            <InputRightElement>
+                                <IconButton
+                                    variant="ghost"
+                                    aria-label="clear"
+                                    icon={<IoIosClose />}
+                                    size="sm"
+                                    fontSize="3xl"
+                                    color="gray.500"
+                                    onClick={() => setQuery('')}
+                                />
+                            </InputRightElement>
+                        )}
+                        <Input
+                            name="query"
+                            value={query}
+                            placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                setQuery(e.target.value);
+                            }}
+                        />
+                    </InputGroup>
+                </Box>
+                <Box px="4" h="65vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
+                    {routes.map((route) => (
+                        <RouteCard {...route} key={route.route} />
+                    ))}
 
-                {routesLoading ? (
-                    <Center>
-                        <Spinner color="blue.500" />
-                    </Center>
+                    {routesLoading ? (
+                        <Center>
+                            <Spinner color="blue.500" />
+                        </Center>
+                    ) : null}
+                </Box>
+                {currentRoutes.length ? (
+                    <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4" w="100%">
+                        <Center>
+                            <Button onClick={removeAllRoutes} colorScheme="blue">
+                                {t('DESELECT_ALL')} ({currentRoutes.length})
+                            </Button>
+                        </Center>
+                    </Box>
                 ) : null}
             </Box>
-            {currentRoutes.length ? (
-                <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4">
-                    <Button onClick={removeAllRoutes}>
-                        {t('DESELECT_ALL')} ({currentRoutes.length})
-                    </Button>
-                </Box>
-            ) : null}
         </Drawer>
     );
 };

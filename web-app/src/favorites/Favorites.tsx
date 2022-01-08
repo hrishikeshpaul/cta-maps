@@ -34,7 +34,9 @@ export const Favorites: FunctionComponent = () => {
                 <DrawerContent>
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">
-                            <Text fontWeight="bold">{t('FAVORITES')}</Text>
+                            <Text fontWeight="bold" fontSize="2xl">
+                                {t('FAVORITES')}
+                            </Text>
                             <IconButton
                                 variant="ghost"
                                 fontSize="3xl"
