@@ -15,9 +15,10 @@ import {
     Button,
     useColorModeValue,
     Divider,
+    Icon,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FaCheck as Check } from 'react-icons/fa';
+import { IoCheckmark as Check } from 'react-icons/io5';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
@@ -225,7 +226,15 @@ export const RouteSelect: FunctionComponent = () => {
                                 {t('DESELECT_ALL')}
                             </Button>
                         ) : null}
-                        <Button colorScheme="blue" onClick={closeRouteSelect} rightIcon={<Check fontSize="2xl" />}>
+                        <Button
+                            colorScheme="blue"
+                            onClick={closeRouteSelect}
+                            rightIcon={
+                                <Icon fontSize="2xl">
+                                    <Check />
+                                </Icon>
+                            }
+                        >
                             {t('DONE')}
                         </Button>
                     </Flex>
