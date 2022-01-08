@@ -43,5 +43,6 @@
     "SERVER_CONNECT": "Server connected!",
     "SERVER_ERROR": "Server error. Please re-select routes",
     "GENERIC_ERROR": "No data found",
-    "START_TRACKING": "Start Tracking"
+    "START_TRACKING": "Start Tracking",
+    "FAVORITES": "Favorite Stops"
 }

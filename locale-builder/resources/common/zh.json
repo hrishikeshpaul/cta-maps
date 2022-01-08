@@ -43,5 +43,6 @@
   "SERVER_CONNECT": "服务器已连接！",
   "SERVER_ERROR": "服务器错误。请重新选择路线",
   "GENERIC_ERROR": "没有找到数据",
-  "START_TRACKING": "开始追踪"
+  "START_TRACKING": "开始追踪",
+  "FAVORITES": "最喜欢的站点"
 }
