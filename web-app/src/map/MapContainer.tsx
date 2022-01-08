@@ -196,7 +196,8 @@ export const MapContainer: FunctionComponent = () => {
                     ))}
                 </GoogleMap>
             </LoadScript>
-            <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={1000} bottom="1" right="1" />
+
+            <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={1000} bottom="2" right="2" />
         </div>
     );
 };
