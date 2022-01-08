@@ -14,6 +14,7 @@ import {
     Flex,
     Link,
     useColorModeValue,
+    Badge,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiChevronRight, FiMenu } from 'react-icons/fi';
@@ -54,18 +55,22 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
             {
                 text: t('USAGE_MANUAL'),
                 onClick: () => onNavigate('/manual'),
+                comingSoon: true,
             },
             {
                 text: t('FAQ'),
                 onClick: () => onNavigate('/faq'),
+                comingSoon: false,
             },
             {
                 text: t('CONTACT'),
                 onClick: () => onNavigate('/contact'),
+                comingSoon: true,
             },
             {
                 text: t('SETTINGS'),
                 onClick: () => onNavigate('/settings'),
+                comingSoon: false,
             },
         ],
         [t, onNavigate],
@@ -138,7 +143,14 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                                         key={item.text}
                                         _hover={{ bg: borderBottom }}
                                     >
-                                        <Text className="item-text">{item.text}</Text>
+                                        <Text className="item-text">
+                                            {item.text}
+                                            {item.comingSoon && (
+                                                <Badge ml="2" variant="subtle" colorScheme="orange">
+                                                    Coming soon
+                                                </Badge>
+                                            )}
+                                        </Text>
                                         <FiChevronRight />
                                     </Flex>
                                 );
