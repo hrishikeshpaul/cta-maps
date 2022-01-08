@@ -25,7 +25,7 @@ import { Drawer } from 'components/Drawer';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ stop, savedStops }, { closeStop, saveStop, unSaveStop }] = useDataStore();
+    const [{ stop, favorites }, { closeStop, saveStop, unSaveStop }] = useDataStore();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);
@@ -39,12 +39,12 @@ export const Stop: FunctionComponent = () => {
     const bg = useColorModeValue('white', 'gray.700');
 
     useEffect(() => {
-        if (stop && savedStops.includes(stop.id)) {
+        if (stop && favorites[stop.id]) {
             setIsFav(true);
         } else {
             setIsFav(false);
         }
-    }, [savedStops, stop]); // eslint-disable-line
+    }, [favorites, stop]); // eslint-disable-line
 
     useEffect(() => {
         (async () => {
@@ -90,10 +90,10 @@ export const Stop: FunctionComponent = () => {
     };
 
     const onFavHandle = () => {
-        if (savedStops.includes(stop!.id)) {
+        if (stop && favorites[stop.id]) {
             unSaveStop(stop!.id);
         } else {
-            saveStop(stop!.id);
+            saveStop(stop!.id, stop!.name);
         }
     };
 

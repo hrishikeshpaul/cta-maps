@@ -1,4 +1,4 @@
-export const SavedStopsKey = 'track-cta-saved-stops';
+export const FavoritesKey = 'track-cta-favorites';
 
 export enum PointType {
     S = 'S', // stop
@@ -60,6 +60,11 @@ export interface Vehicle {
     delayed: boolean;
 }
 
+export interface Favorite {
+    name: string;
+    id: string;
+}
+
 export interface Prediction {
     type: Juncture;
     name: string;
@@ -79,5 +84,5 @@ export interface DataStoreState {
     stop: Stop | null;
     error?: any;
     vehicles: Vehicle[];
-    savedStops: string[];
+    favorites: Record<string, Favorite>;
 }

@@ -1,12 +1,13 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Button, Container, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Container, IconButton, Flex, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { MdMyLocation } from 'react-icons/md';
+import { BsHeart } from 'react-icons/bs';
 
 import { Info } from 'info/Info';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
-import { MdMyLocation } from 'react-icons/md';
 
 export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -36,7 +37,7 @@ export const Nav: FunctionComponent = () => {
         >
             <Flex
                 justifyContent="space-between"
-                alignItems="center"
+                alignItems="start"
                 w="100%"
                 p="4"
                 opacity={dragging ? '0.25' : '1'}
@@ -55,13 +56,22 @@ export const Nav: FunctionComponent = () => {
                         </Flex>
                     )}
                 </Button>
-                <IconButton
-                    aria-label="my-location"
-                    icon={<MdMyLocation />}
-                    bg={buttonBg}
-                    boxShadow="lg"
-                    onClick={() => onLocationButtonPress(true)}
-                />
+                <VStack spacing="4">
+                    <IconButton
+                        aria-label="my-favorites"
+                        icon={<BsHeart />}
+                        bg={buttonBg}
+                        boxShadow="lg"
+                        onClick={() => onLocationButtonPress(true)}
+                    />
+                    <IconButton
+                        aria-label="my-location"
+                        icon={<MdMyLocation />}
+                        bg={buttonBg}
+                        boxShadow="lg"
+                        onClick={() => onLocationButtonPress(true)}
+                    />
+                </VStack>
             </Flex>
         </Container>
     );
