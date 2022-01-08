@@ -12,16 +12,7 @@ import {
     onRouteRemoveAll,
     onRouteSelect,
 } from 'store/data/DataService';
-import {
-    Route,
-    DataStoreState,
-    Pattern,
-    Stop,
-    Point,
-    Vehicle,
-    FavoritesKey,
-    Favorite,
-} from 'store/data/DataStore.Types';
+import { Route, DataStoreState, Pattern, Stop, Point, Vehicle, FavoritesKey } from 'store/data/DataStore.Types';
 import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
 export enum DataStoreActionType {

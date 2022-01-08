@@ -60,11 +60,6 @@ export interface Vehicle {
     delayed: boolean;
 }
 
-export interface Favorite {
-    name: string;
-    id: string;
-}
-
 export interface Prediction {
     type: Juncture;
     name: string;
