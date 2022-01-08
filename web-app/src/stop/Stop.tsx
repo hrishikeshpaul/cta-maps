@@ -93,7 +93,7 @@ export const Stop: FunctionComponent = () => {
         if (stop && favorites[stop.id]) {
             unSaveStop(stop!.id);
         } else {
-            saveStop(stop!.id, stop!.name);
+            saveStop(stop!);
         }
     };
 

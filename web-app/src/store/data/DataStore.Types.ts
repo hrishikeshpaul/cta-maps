@@ -84,5 +84,5 @@ export interface DataStoreState {
     stop: Stop | null;
     error?: any;
     vehicles: Vehicle[];
-    favorites: Record<string, Favorite>;
+    favorites: Record<string, Stop>;
 }

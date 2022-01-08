@@ -12,7 +12,7 @@ import { useSystemStore } from 'store/system/SystemStore';
 export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes }] = useDataStore();
-    const [{ dragging }, { openRouteSelect, onLocationButtonPress }] = useSystemStore();
+    const [{ dragging }, { openRouteSelect, onLocationButtonPress, openFavorites }] = useSystemStore();
     const [selected, setSelected] = useState<boolean>(false);
     const buttonBg = useColorModeValue('white', 'gray.600');
     const buttonColor = useColorModeValue('black', 'white');
@@ -62,7 +62,7 @@ export const Nav: FunctionComponent = () => {
                         icon={<BsHeart />}
                         bg={buttonBg}
                         boxShadow="lg"
-                        onClick={() => onLocationButtonPress(true)}
+                        onClick={openFavorites}
                     />
                     <IconButton
                         aria-label="my-location"

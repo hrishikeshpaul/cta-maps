@@ -16,7 +16,12 @@ export enum SystemStoreActionType {
     SetSettings,
     SetRoutesLoading,
     SetAllowLocation,
+    SetFavoritesDrawer,
     ToggleLocationButtonPress,
+}
+
+interface PayloadSetFavoritesDrawer {
+    open: boolean;
 }
 interface PayloadToggleLocationButtonPress {
     value: boolean;
@@ -79,7 +84,8 @@ interface SystemStoreAction {
         | PayloadSetIdleAlert
         | PayloadSetSystemLoading
         | PayloadSetAllowLocation
-        | PayloadToggleLocationButtonPress;
+        | PayloadToggleLocationButtonPress
+        | PayloadSetFavoritesDrawer;
 }
 
 interface SystemStoreProviderProps {
@@ -87,6 +93,7 @@ interface SystemStoreProviderProps {
 }
 
 export const initialStoreState: SystemStoreState = {
+    favoritesOpen: false,
     systemLoading: true,
     routeSelectOpen: false,
     idleAlertOpen: false,
@@ -169,6 +176,12 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 onCurrentLocationPress: (action.payload as PayloadToggleLocationButtonPress).value,
             };
         }
+        case SystemStoreActionType.SetFavoritesDrawer: {
+            return {
+                ...state,
+                favoritesOpen: (action.payload as PayloadSetFavoritesDrawer).open,
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -220,6 +233,8 @@ interface SystemStoreActionApis {
     setSystemLoading: (loading: boolean) => void;
     setAllowLocation: (allow: boolean) => void;
     onLocationButtonPress: (value: boolean) => void;
+    openFavorites: () => void;
+    closeFavorites: () => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -269,6 +284,12 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         },
         onLocationButtonPress: (value: boolean) => {
             dispatch({ type: SystemStoreActionType.ToggleLocationButtonPress, payload: { value } });
+        },
+        openFavorites: () => {
+            dispatch({ type: SystemStoreActionType.SetFavoritesDrawer, payload: { open: true } });
+        },
+        closeFavorites: () => {
+            dispatch({ type: SystemStoreActionType.SetFavoritesDrawer, payload: { open: false } });
         },
     };
 

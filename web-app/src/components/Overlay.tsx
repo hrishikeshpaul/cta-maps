@@ -35,7 +35,7 @@ export const Overlay: FunctionComponent = () => {
             opacity={opShow ? '0.6' : '0'}
             transition="opacity 0.2s ease-in-out"
             position="fixed"
-            zIndex={show ? 100 : 1}
+            zIndex={show ? 1401 : 1}
         />
     );
 };

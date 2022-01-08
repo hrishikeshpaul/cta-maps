@@ -36,7 +36,7 @@ export enum DataStoreActionType {
 }
 
 interface PayloadSetFavorites {
-    favorites: Record<string, Favorite>;
+    favorites: Record<string, Stop>;
 }
 
 interface PayloadSetRoute {
@@ -185,7 +185,7 @@ interface DataStoreActionApis {
     setVehicles: (vehicles: Vehicle[]) => void;
     onIdle: () => void;
     onActive: () => void;
-    saveStop: (id: string, name: string) => void;
+    saveStop: (stop: Stop) => void;
     unSaveStop: (id: string) => void;
 }
 
@@ -255,9 +255,9 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         onActive: () => {
             onActive();
         },
-        saveStop: (id: string, name: string) => {
+        saveStop: (stop: Stop) => {
             const favorites = { ...state.favorites };
-            favorites[id] = { id, name };
+            favorites[stop.id] = stop;
             dispatch({ type: DataStoreActionType.SetFavorites, payload: { favorites } });
         },
         unSaveStop: (id: string) => {

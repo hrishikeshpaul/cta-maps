@@ -2,6 +2,8 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import { Overlay } from 'components/Overlay';
+import { Favorites } from 'favorites/Favorites';
 import { Landing } from 'landing/Landing';
 import { MapContainer } from 'map/MapContainer';
 import { Nav } from 'nav/Nav';
@@ -14,7 +16,6 @@ import { FAQ } from 'utils/FAQ';
 import { SocketModule } from 'utils/SocketModule';
 
 import './App.scss';
-import { Overlay } from 'components/Overlay';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -49,9 +50,10 @@ export const App = () => {
                                 path="/"
                                 element={
                                     <Box className="App">
+                                        <Stop />
                                         <Nav />
                                         <SocketModule />
-                                        <Stop />
+                                        <Favorites />
                                         {(routeSelectOpen || !!stop) && <Overlay />}
                                         <MapContainer />
                                         <RouteSelect />
