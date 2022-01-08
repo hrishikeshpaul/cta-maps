@@ -52,7 +52,7 @@ export const Favorites: FunctionComponent = () => {
                         {Object.values(favorites).map((favorite) => {
                             return (
                                 <Box
-                                    key={`fav-${favorites.id}`}
+                                    key={`fav-${favorite.id}`}
                                     _active={{ bg }}
                                     onClick={() => {
                                         openStop(favorite);
