@@ -122,6 +122,8 @@ export const RouteSelect: FunctionComponent = () => {
     }, [debouncedQuery]); // eslint-disable-line
 
     const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
+        // const routeBg = useColorModeValue('#ececec', '#4A5568');
+
         const onToggle = () => {
             const computedRouteIdx = routes.findIndex((r) => r.route === route);
 
@@ -145,7 +147,7 @@ export const RouteSelect: FunctionComponent = () => {
         };
 
         return (
-            <>
+            <Box px="4">
                 <Flex justifyContent="space-between" alignItems="center" py="3">
                     <Flex alignItems="center" overflow="hidden">
                         <Center h="40px" w="40px" bg={color} borderRadius="md">
@@ -160,7 +162,7 @@ export const RouteSelect: FunctionComponent = () => {
                     <Switch size="lg" isChecked={selected} onChange={onToggle} />
                 </Flex>
                 <Divider />
-            </>
+            </Box>
         );
     };
 
@@ -206,7 +208,7 @@ export const RouteSelect: FunctionComponent = () => {
                         />
                     </InputGroup>
                 </Box>
-                <Box px="4" h="65vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
+                <Box h="65vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
                     {routes.map((route) => (
                         <RouteCard {...route} key={route.route} />
                     ))}
