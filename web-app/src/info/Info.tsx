@@ -16,7 +16,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FiChevronRight } from 'react-icons/fi';
+import { FiChevronRight, FiMenu } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,6 +35,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
     const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
     const borderBottom = useColorModeValue('#ececec', '#4A5568');
+    const buttonBg = useColorModeValue('white', 'gray.600');
 
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
@@ -83,21 +84,21 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
 
     return (
         <>
-            <Avatar
-                src="/logo.svg"
-                size="sm"
-                boxShadow={disableAvatarShadow ? 'none' : 'lg'}
+            <IconButton
+                aria-label="menu-icon"
+                icon={<FiMenu />}
+                variant="ghost"
+                bg={buttonBg}
                 onClick={openInfoDrawer}
-                h="40px"
-                w="40px"
-                cursor="pointer"
             />
             <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">
-                            <Text fontWeight="bold" fontSize='2xl'>trackCTA</Text>
+                            <Text fontWeight="bold" fontSize="2xl">
+                                trackCTA
+                            </Text>
                             <IconButton
                                 variant="ghost"
                                 fontSize="3xl"
