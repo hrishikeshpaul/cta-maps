@@ -13,7 +13,6 @@ import {
     Center,
     Switch,
     Button,
-    useColorModeValue,
     Divider,
     Icon,
 } from '@chakra-ui/react';
@@ -22,11 +21,11 @@ import { HiCheck as Check } from 'react-icons/hi';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
-import { Drawer } from 'components/Drawer';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
+import { BottomSheet } from 'components/BottomSheet';
 
 const LIMIT = 10;
 
@@ -43,7 +42,6 @@ export const RouteSelect: FunctionComponent = () => {
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(1);
     const debouncedQuery = useDebounce(query);
-    const bg = useColorModeValue('white', 'gray.700');
 
     const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
         const bottom =
@@ -167,47 +165,47 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     return (
-        <Drawer direction="bottom" open={routeSelectOpen}>
-            <Box position="relative">
-                <Box p="4">
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontSize="2xl" fontWeight="bold">
-                            {t('SELECT_ROUTES')}
-                        </Text>
-                        <IconButton
-                            variant="ghost"
-                            fontSize="2xl"
-                            aria-label="close"
-                            mr="-3"
-                            onClick={closeRouteSelect}
-                            icon={<FiChevronDown />}
-                        />
-                    </Flex>
-                    <InputGroup mt="2">
-                        <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
-                        {query && (
-                            <InputRightElement>
-                                <IconButton
-                                    variant="ghost"
-                                    aria-label="clear"
-                                    icon={<IoIosClose />}
-                                    size="sm"
-                                    fontSize="3xl"
-                                    color="gray.500"
-                                    onClick={() => setQuery('')}
-                                />
-                            </InputRightElement>
-                        )}
-                        <Input
-                            name="query"
-                            value={query}
-                            placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                setQuery(e.target.value);
-                            }}
-                        />
-                    </InputGroup>
-                </Box>
+        <BottomSheet.Wrapper isOpen={routeSelectOpen} zIndex={1500} onClose={closeRouteSelect}>
+            <BottomSheet.Header>
+                <Flex justifyContent="space-between" alignItems="center">
+                    <Text fontSize="2xl" fontWeight="bold">
+                        {t('SELECT_ROUTES')}
+                    </Text>
+                    <IconButton
+                        variant="ghost"
+                        fontSize="2xl"
+                        aria-label="close"
+                        mr="-3"
+                        onClick={closeRouteSelect}
+                        icon={<FiChevronDown />}
+                    />
+                </Flex>
+                <InputGroup mt="2">
+                    <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
+                    {query && (
+                        <InputRightElement>
+                            <IconButton
+                                variant="ghost"
+                                aria-label="clear"
+                                icon={<IoIosClose />}
+                                size="sm"
+                                fontSize="3xl"
+                                color="gray.500"
+                                onClick={() => setQuery('')}
+                            />
+                        </InputRightElement>
+                    )}
+                    <Input
+                        name="query"
+                        value={query}
+                        placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setQuery(e.target.value);
+                        }}
+                    />
+                </InputGroup>
+            </BottomSheet.Header>
+            <BottomSheet.Body>
                 <Box h="65vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
                     {routes.map((route) => (
                         <RouteCard {...route} key={route.route} />
@@ -219,27 +217,27 @@ export const RouteSelect: FunctionComponent = () => {
                         </Center>
                     ) : null}
                 </Box>
-                <Box position="absolute" bottom="0" left="50%" transform="translate(-50%)" bg={bg} p="4" w="100%">
-                    <Flex justifyContent={currentRoutes.length ? 'space-between' : 'flex-end'}>
-                        {currentRoutes.length ? (
-                            <Button onClick={removeAllRoutes} variant="link">
-                                {t('DESELECT_ALL')}
-                            </Button>
-                        ) : null}
-                        <Button
-                            colorScheme="blue"
-                            onClick={closeRouteSelect}
-                            rightIcon={
-                                <Icon fontSize="18pt">
-                                    <Check />
-                                </Icon>
-                            }
-                        >
-                            {t('DONE')}
+            </BottomSheet.Body>
+            <BottomSheet.Footer>
+                <Flex w="100%" justifyContent={currentRoutes.length ? 'space-between' : 'flex-end'}>
+                    {currentRoutes.length ? (
+                        <Button onClick={removeAllRoutes} variant="link">
+                            {t('DESELECT_ALL')}
                         </Button>
-                    </Flex>
-                </Box>
-            </Box>
-        </Drawer>
+                    ) : null}
+                    <Button
+                        colorScheme="blue"
+                        onClick={closeRouteSelect}
+                        rightIcon={
+                            <Icon fontSize="18pt">
+                                <Check />
+                            </Icon>
+                        }
+                    >
+                        {t('DONE')}
+                    </Button>
+                </Flex>
+            </BottomSheet.Footer>
+        </BottomSheet.Wrapper>
     );
 };
