@@ -97,7 +97,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                 onClick={openInfoDrawer}
             />
             <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
-                <DrawerOverlay />
+                <DrawerOverlay onClick={closeInfoDrawer} />
                 <DrawerContent>
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">

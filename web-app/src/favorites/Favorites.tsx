@@ -39,7 +39,7 @@ export const Favorites: FunctionComponent = () => {
                 closeOnOverlayClick
                 id="favorites"
             >
-                <DrawerOverlay />
+                <DrawerOverlay onClick={closeFavorites} />
                 <DrawerContent position="absolute">
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">
