@@ -12,7 +12,7 @@ import {
     onRouteRemoveAll,
     onRouteSelect,
 } from 'store/data/DataService';
-import { Route, DataStoreState, Pattern, Stop, Point, Vehicle, FavoritesKey } from 'store/data/DataStore.Types';
+import { Route, DataStoreState, Pattern, Stop, Point, Vehicle, FavoriteStopsKey } from 'store/data/DataStore.Types';
 import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
 export enum DataStoreActionType {
@@ -21,13 +21,13 @@ export enum DataStoreActionType {
     SetStop,
     SetCurrentLocation,
     SetVehicles,
-    SetFavorites,
+    SetFavoriteStops,
     RemoveRoute,
     RemoveAllRoutes,
 }
 
-interface PayloadSetFavorites {
-    favorites: Record<string, Stop>;
+interface PayloadSetFavoriteStops {
+    favoriteStops: Record<string, Stop>;
 }
 
 interface PayloadSetRoute {
@@ -63,7 +63,7 @@ interface DataStoreAction {
         | PayloadSetStop
         | PayloadSetCurrentLocation
         | PayloadSetVehicles
-        | PayloadSetFavorites;
+        | PayloadSetFavoriteStops;
 }
 
 interface DataStoreProviderProps {
@@ -77,7 +77,7 @@ export const initialStoreState: DataStoreState = {
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
     vehicles: [],
-    favorites: JSON.parse(localStorage.getItem(FavoritesKey) || '{}'),
+    favoriteStops: JSON.parse(localStorage.getItem(FavoriteStopsKey) || '{}'),
 };
 
 const DataStoreStateContext = createContext<DataStoreState | undefined>(undefined);
@@ -122,12 +122,12 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
                 ...state,
                 vehicles: (action.payload as PayloadSetVehicles).vehicles,
             };
-        case DataStoreActionType.SetFavorites:
-            localStorage.setItem(FavoritesKey, JSON.stringify((action.payload as PayloadSetFavorites).favorites));
+        case DataStoreActionType.SetFavoriteStops:
+            localStorage.setItem(FavoriteStopsKey, JSON.stringify((action.payload as PayloadSetFavoriteStops).favoriteStops));
 
             return {
                 ...state,
-                favorites: (action.payload as PayloadSetFavorites).favorites,
+                favoriteStops: (action.payload as PayloadSetFavoriteStops).favoriteStops,
             };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
@@ -247,15 +247,15 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             onActive();
         },
         saveStop: (stop: Stop) => {
-            const favorites = { ...state.favorites };
-            favorites[stop.id] = stop;
-            dispatch({ type: DataStoreActionType.SetFavorites, payload: { favorites } });
+            const favoriteStops = { ...state.favoriteStops };
+            favoriteStops[stop.id] = stop;
+            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { favoriteStops } });
         },
         unSaveStop: (id: string) => {
-            const favorites = { ...state.favorites };
-            delete favorites[id];
+            const favoriteStops = { ...state.favoriteStops };
+            delete favoriteStops[id];
 
-            dispatch({ type: DataStoreActionType.SetFavorites, payload: { favorites } });
+            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { favoriteStops } });
         },
     };
 

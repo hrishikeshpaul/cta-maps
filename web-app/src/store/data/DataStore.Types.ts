@@ -1,4 +1,5 @@
-export const FavoritesKey = 'track-cta-favorites';
+export const FavoriteStopsKey = 'track-cta-favorite-stops';
+export const FavoriteBussesKey = 'track-cta-favorite-busses';
 
 export enum PointType {
     S = 'S', // stop
@@ -79,5 +80,5 @@ export interface DataStoreState {
     stop: Stop | null;
     error?: any;
     vehicles: Vehicle[];
-    favorites: Record<string, Stop>;
+    favoriteStops: Record<string, Stop>;
 }

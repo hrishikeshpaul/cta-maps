@@ -19,7 +19,7 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
         <BottomSheet.Wrapper isOpen={inspectorOpen} onClose={closeInspector} zIndex={1600}>
             <BottomSheet.Body />
             <BottomSheet.Footer>
-                <Flex alignItems="center" overflow="hidden" w="100%" fontSize="lg">
+                <Flex alignItems="center" overflow="hidden" w="100%">
                     <Center h="40px" w="40px" bg={color} borderRadius="md">
                         <Text color="white" fontWeight="bold">
                             {route}
@@ -31,7 +31,7 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
                 </Flex>
                 <Flex>
                     <IconButton aria-label="favorite" icon={<BsHeartFill />} />
-                    <IconButton aria-label="close" ml="4" icon={<FiChevronDown />} />
+                    <IconButton aria-label="close" ml="4" icon={<FiChevronDown />} onClick={closeInspector} />
                 </Flex>
             </BottomSheet.Footer>
         </BottomSheet.Wrapper>

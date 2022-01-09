@@ -24,7 +24,7 @@ import { useDataStore } from 'store/data/DataStore';
 
 export const Favorites: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ favorites }, { openStop }] = useDataStore();
+    const [{ favoriteStops }, { openStop }] = useDataStore();
     const [{ favoritesOpen }, { closeFavorites }] = useSystemStore();
     const bg = useColorModeValue('#ececec', '#4A5568');
 
@@ -37,7 +37,7 @@ export const Favorites: FunctionComponent = () => {
                 onClose={closeFavorites}
                 autoFocus={false}
                 closeOnOverlayClick
-                id="favorites"
+                id="favoriteStops"
             >
                 <DrawerOverlay onClick={closeFavorites} />
                 <DrawerContent position="absolute">
@@ -58,12 +58,12 @@ export const Favorites: FunctionComponent = () => {
                     </DrawerHeader>
 
                     <DrawerBody px="0" pt="0">
-                        {Object.values(favorites).length === 0 && (
+                        {Object.values(favoriteStops).length === 0 && (
                             <Center h="100%">
                                 <Text px="4">{t('ADD_FAVORITES')}</Text>
                             </Center>
                         )}
-                        {Object.values(favorites).map((favorite) => {
+                        {Object.values(favoriteStops).map((favorite) => {
                             return (
                                 <Box key={`fav-${favorite.id}`} _active={{ bg }} onClick={() => openStop(favorite)}>
                                     <Flex p="4" alignItems="center" justifyContent="space-between" overflow="hidden">

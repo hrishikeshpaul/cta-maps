@@ -15,7 +15,7 @@ import 'stop/Stop.scss';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ stop, favorites }, { closeStop, saveStop, unSaveStop }] = useDataStore();
+    const [{ stop, favoriteStops }, { closeStop, saveStop, unSaveStop }] = useDataStore();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);
@@ -28,12 +28,12 @@ export const Stop: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        if (stop && favorites[stop.id]) {
+        if (stop && favoriteStops[stop.id]) {
             setIsFav(true);
         } else {
             setIsFav(false);
         }
-    }, [favorites, stop]); // eslint-disable-line
+    }, [favoriteStops, stop]); // eslint-disable-line
 
     useEffect(() => {
         (async () => {
@@ -79,7 +79,7 @@ export const Stop: FunctionComponent = () => {
     };
 
     const onFavHandle = () => {
-        if (stop && favorites[stop.id]) {
+        if (stop && favoriteStops[stop.id]) {
             unSaveStop(stop!.id);
         } else {
             saveStop(stop!);

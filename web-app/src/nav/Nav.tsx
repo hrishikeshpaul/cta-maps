@@ -58,7 +58,7 @@ export const Nav: FunctionComponent = () => {
                 </Button>
                 <VStack spacing="4">
                     <IconButton
-                        aria-label="my-favorites"
+                        aria-label="my-favoriteStops"
                         icon={<BsHeart />}
                         bg={buttonBg}
                         boxShadow="lg"
