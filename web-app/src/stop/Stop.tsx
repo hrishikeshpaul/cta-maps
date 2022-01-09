@@ -12,13 +12,6 @@ import {
     Button,
     Divider,
     useColorModeValue,
-    Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    Container,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { BsHeartFill, BsHeart } from 'react-icons/bs';
@@ -30,6 +23,7 @@ import { getPredictions } from 'store/data/DataService';
 import { Juncture, Prediction } from 'store/data/DataStore.Types';
 
 import 'stop/Stop.scss';
+import { BottomSheet } from 'components/BottomSheet';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -113,7 +107,7 @@ export const Stop: FunctionComponent = () => {
                         <Center h="30px" w="30px">
                             <Text fontWeight="bold">{route}</Text>
                         </Center>
-                        <Box pl="2">
+                        <Box pl="4">
                             <Text>
                                 <Text as="span" fontWeight={500}>
                                     {JunctureMapper[type](time)}
@@ -132,6 +126,7 @@ export const Stop: FunctionComponent = () => {
                 <Divider />
             </>
         );
+
         if (Object.keys(filter).length && filter[route]) {
             return <PredictionCard />;
         } else if (Object.keys(filter).length === 0) {
@@ -142,81 +137,68 @@ export const Stop: FunctionComponent = () => {
     };
 
     return (
-        <Drawer isOpen={!!stop} placement="bottom" size="md" onClose={closeStop} autoFocus={false} closeOnOverlayClick>
-            <DrawerOverlay zIndex={1500} />
-            <DrawerContent position="absolute" zIndex={1501} id="content" bg="transparent">
-                <Container
-                    maxW="container.lg"
-                    bg={bg}
-                    px={{ base: '0', md: '2' }}
-                    borderTopRightRadius="2xl"
-                    borderTopLeftRadius="2xl"
-                >
-                    <DrawerHeader px="4">
-                        <Flex justifyContent="space-between" alignItems="center">
-                            <Text fontWeight="bold" fontSize="2xl">
-                                {stop?.name}
-                            </Text>
-                            <IconButton
-                                variant="ghost"
-                                fontSize="2xl"
-                                aria-label="close"
-                                mr="-3"
-                                onClick={closeStop}
-                                icon={<FiChevronDown />}
-                            />
-                        </Flex>
-                        <Flex pt="4" overflowX="auto">
-                            {routes.map((route) => (
-                                <Button
-                                    mr="4"
-                                    mb="2"
-                                    key={route}
-                                    onClick={() => onFilterChange(route)}
-                                    colorScheme={filter[route] ? 'blue' : 'gray'}
-                                >
-                                    {route}
-                                </Button>
-                            ))}
-                        </Flex>
-                    </DrawerHeader>
-
-                    <DrawerBody px="0" pt="0">
-                        <Box h="60vh" pb="72px" overflowY="auto" px="4">
-                            {loading ? (
-                                <Center>
-                                    <Spinner />
-                                </Center>
+        <BottomSheet.Wrapper isOpen={!!stop} onClose={closeStop} zIndex={1500}>
+            <BottomSheet.Header>
+                <Flex justifyContent="space-between" alignItems="center">
+                    <Text fontWeight="bold" fontSize="2xl">
+                        {stop?.name}
+                    </Text>
+                    <IconButton
+                        variant="ghost"
+                        fontSize="2xl"
+                        aria-label="close"
+                        mr="-3"
+                        onClick={closeStop}
+                        icon={<FiChevronDown />}
+                    />
+                </Flex>
+                <Flex pt="4" overflowX="auto">
+                    {routes.map((route) => (
+                        <Button
+                            mr="4"
+                            mb="2"
+                            key={route}
+                            onClick={() => onFilterChange(route)}
+                            colorScheme={filter[route] ? 'blue' : 'gray'}
+                        >
+                            {route}
+                        </Button>
+                    ))}
+                </Flex>
+            </BottomSheet.Header>
+            <BottomSheet.Body>
+                <Box h="50vh" pb="72px" overflowY="auto" px="4">
+                    {loading ? (
+                        <Center>
+                            <Spinner />
+                        </Center>
+                    ) : (
+                        <Box>
+                            {predictions.length ? (
+                                <>
+                                    {predictions.map((prediction) => (
+                                        <RenderPred {...prediction} key={prediction.id} />
+                                    ))}
+                                </>
                             ) : (
-                                <Box>
-                                    {predictions.length ? (
-                                        <>
-                                            {predictions.map((prediction) => (
-                                                <RenderPred {...prediction} key={prediction.id} />
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <Text>{t('NO_SCHEDULE_AVAILABLE')}</Text>
-                                    )}
-                                </Box>
+                                <Text>{t('NO_SCHEDULE_AVAILABLE')}</Text>
                             )}
                         </Box>
-                    </DrawerBody>
-
-                    <DrawerFooter>
-                        <Flex justifyContent="space-between" w="100%">
-                            <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
-                                <Text pr="2">{t('GET_DIR')}</Text>
-                            </Button>
-                            <IconButton
-                                aria-label="favorite"
-                                icon={isFav ? <BsHeartFill /> : <BsHeart />}
-                                onClick={onFavHandle}
-                            />
-                        </Flex>
-                    </DrawerFooter>
-                </Container>
-            </DrawerContent>
-        </Drawer>
+                    )}
+                </Box>
+            </BottomSheet.Body>
+            <BottomSheet.Footer>
+                <Flex justifyContent="space-between" w="100%">
+                    <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
+                        <Text pr="2">{t('GET_DIR')}</Text>
+                    </Button>
+                    <IconButton
+                        aria-label="favorite"
+                        icon={isFav ? <BsHeartFill /> : <BsHeart />}
+                        onClick={onFavHandle}
+                    />
+                </Flex>
+            </BottomSheet.Footer>
+        </BottomSheet.Wrapper>
     );
 };
