@@ -95,6 +95,8 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                 variant="ghost"
                 bg={buttonBg}
                 onClick={openInfoDrawer}
+                fontSize={disableAvatarShadow ? 'xl' : 'md'}
+                boxShadow={disableAvatarShadow ? 'none' : 'lg'}
             />
             <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
                 <DrawerOverlay onClick={closeInfoDrawer} />
