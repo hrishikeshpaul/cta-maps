@@ -18,7 +18,7 @@ import {
     Icon,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { IoCheckmark as Check } from 'react-icons/io5';
+import { HiCheck as Check } from 'react-icons/hi';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
@@ -230,7 +230,7 @@ export const RouteSelect: FunctionComponent = () => {
                             colorScheme="blue"
                             onClick={closeRouteSelect}
                             rightIcon={
-                                <Icon fontSize="2xl">
+                                <Icon fontSize="18pt">
                                     <Check />
                                 </Icon>
                             }
