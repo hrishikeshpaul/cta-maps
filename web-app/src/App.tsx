@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Favorites } from 'favorites/Favorites';
 import { Landing } from 'landing/Landing';
-import { MapContainer } from 'map/MapContainer';
+import { MapContainer } from 'map-container/MapContainer';
 import { Nav } from 'nav/Nav';
 import { RouteSelect } from 'route-select/RouteSelect';
 import { Settings } from 'utils/Settings';

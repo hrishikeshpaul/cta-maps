@@ -25,7 +25,7 @@ import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
-import { BottomSheet } from 'components/BottomSheet';
+import { BottomSheet } from 'shared/BottomSheet';
 
 const LIMIT = 10;
 

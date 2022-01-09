@@ -1,23 +1,17 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useColorMode, useToast, Center, Spinner, Avatar } from '@chakra-ui/react';
-import { GoogleMap, LoadScript, Polyline, PolylineProps, Marker } from '@react-google-maps/api';
+import { useToast, Avatar } from '@chakra-ui/react';
+import { Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
 
-import { darkStyle, lightStyle } from 'map/Map.Styles';
+import { Map } from 'shared/Map';
 import { useDataStore } from 'store/data/DataStore';
 import { Point, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
-import { ColorMode } from 'store/system/SystemStore.Types';
 
-import 'map/MapContainer.scss';
+import 'map-container/MapContainer.scss';
 
 const defaultZoom = 13;
-
-const containerStyle = {
-    width: '100%',
-    height: '100%',
-};
 
 const basePolylineOptions = {
     strokeOpacity: 0.9,
@@ -51,19 +45,11 @@ export const MapContainer: FunctionComponent = () => {
     const [{ settings, onCurrentLocationPress }, { setDragging, setAllowLocation, onLocationButtonPress }] =
         useSystemStore();
     const [{ currentLocation, patterns, vehicles }, { openStop, setCurrentLocation }] = useDataStore();
-    const { colorMode } = useColorMode();
     const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
     const [paths, setPaths] = useState<Point[]>([]);
-
-    const mapOptions = {
-        disableDefaultUI: true,
-        styles: colorMode === ColorMode.Light ? lightStyle : darkStyle,
-        maxZoom: 19,
-        minZoom: 7,
-    };
 
     const onGetCurrentLocation = () => {
         toast.closeAll();
@@ -140,69 +126,53 @@ export const MapContainer: FunctionComponent = () => {
 
     return (
         <div className="map-container">
-            <LoadScript
-                googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}
-                loadingElement={
-                    <Center h="100%">
-                        <Spinner color="blue.300" />
-                    </Center>
-                }
-                onUnmount={() => {
-                    console.log('load script unmount');
+            <Map
+                defaultZoom={defaultZoom}
+                onLoad={(map) => {
+                    if (map) setMap(map);
+                }}
+                center={currentLocation}
+                onDragStart={() => setDragging(true)}
+                onDragEnd={() => setDragging(false)}
+                onZoomChanged={() => {
+                    if (map) {
+                        const zoom = map.getZoom();
+                        if (zoom! >= 15) setShowStops(true);
+                        else setShowStops(false);
+                    }
                 }}
             >
-                <GoogleMap
-                    onLoad={(map) => {
-                        console.log('map loaded');
-                        if (map) setMap(map);
-                    }}
-                    mapContainerStyle={containerStyle}
-                    center={currentLocation}
-                    zoom={defaultZoom}
-                    options={mapOptions}
-                    clickableIcons={false}
-                    onDragStart={() => setDragging(true)}
-                    onDragEnd={() => setDragging(false)}
-                    onZoomChanged={() => {
-                        if (map) {
-                            const zoom = map.getZoom();
-                            if (zoom! >= 15) setShowStops(true);
-                            else setShowStops(false);
-                        }
-                    }}
-                >
-                    {settings.allowLocation && <Marker icon="/location.svg" position={currentLocation} />}
-                    {vehicles && (
-                        <>
-                            {vehicles.map((vehicle) => (
+                {settings.allowLocation && <Marker icon="/location.svg" position={currentLocation} />}
+                {vehicles && (
+                    <>
+                        {vehicles.map((vehicle) => (
+                            <Marker
+                                icon={VehicleIconMapper[vehicle.heading]}
+                                position={vehicle.position}
+                                key={vehicle.id}
+                                visible={map?.getBounds()?.contains(vehicle.position)}
+                                zIndex={5}
+                            />
+                        ))}
+                    </>
+                )}
+                {lines.map((line: Line) => (
+                    <div key={line.id}>
+                        <Polyline path={line.paths} options={{ ...line }} />
+                        {showStops &&
+                            line.stops.map((stop) => (
                                 <Marker
-                                    icon={VehicleIconMapper[vehicle.heading]}
-                                    position={vehicle.position}
-                                    key={vehicle.id}
-                                    visible={map?.getBounds()?.contains(vehicle.position)}
-                                    zIndex={5}
-                                />
+                                    icon="/stop.svg"
+                                    position={{ lat: stop.lat, lng: stop.lng }}
+                                    key={`stop-${stop.id}`}
+                                    onClick={() => openStop(stop)}
+                                    visible={map?.getBounds()?.contains({ lat: stop.lat, lng: stop.lng })}
+                                    zIndex={4}
+                                ></Marker>
                             ))}
-                        </>
-                    )}
-                    {lines.map((line: Line) => (
-                        <div key={line.id}>
-                            <Polyline path={line.paths} options={{ ...line }} />
-                            {showStops &&
-                                line.stops.map((stop) => (
-                                    <Marker
-                                        icon="/stop.svg"
-                                        position={{ lat: stop.lat, lng: stop.lng }}
-                                        key={`stop-${stop.id}`}
-                                        onClick={() => openStop(stop)}
-                                        visible={map?.getBounds()?.contains({ lat: stop.lat, lng: stop.lng })}
-                                        zIndex={4}
-                                    ></Marker>
-                                ))}
-                        </div>
-                    ))}
-                </GoogleMap>
-            </LoadScript>
+                    </div>
+                ))}
+            </Map>
 
             <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={1000} bottom="2" right="2" />
         </div>
