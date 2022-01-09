@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Avatar, Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ import { FAQ } from 'utils/FAQ';
 import { SocketModule } from 'utils/SocketModule';
 
 import './App.scss';
+import { MapLoader } from 'shared/map/Map';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -48,14 +49,24 @@ export const App = () => {
                             <Route
                                 path="/"
                                 element={
-                                    <Box h="100%">
-                                        <SocketModule />
-                                        <MapContainer />
-                                        <Nav />
-                                        <Stop />
-                                        <Favorites />
-                                        <RouteSelect />
-                                    </Box>
+                                    <MapLoader>
+                                        <Box h="100%">
+                                            <SocketModule />
+                                            <MapContainer />
+                                            <Nav />
+                                            <Stop />
+                                            <Favorites />
+                                            <RouteSelect />
+                                            <Avatar
+                                                src="/logo.svg"
+                                                size="xs"
+                                                position="fixed"
+                                                zIndex={100}
+                                                bottom="2"
+                                                right="2"
+                                            />
+                                        </Box>
+                                    </MapLoader>
                                 }
                             />
                             <Route path="/faq" element={<FAQ />} />

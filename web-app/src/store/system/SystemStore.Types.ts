@@ -27,6 +27,7 @@ export interface AppStatus {
 }
 
 export interface SystemStoreState {
+    inspectorOpen: boolean;
     favoritesOpen: boolean;
     onCurrentLocationPress: boolean;
     systemLoading: boolean;

@@ -17,7 +17,12 @@ export enum SystemStoreActionType {
     SetRoutesLoading,
     SetAllowLocation,
     SetFavoritesDrawer,
+    SetInspectorDrawer,
     ToggleLocationButtonPress,
+}
+
+interface PayloadSetInspectorDrawer {
+    open: boolean;
 }
 
 interface PayloadSetFavoritesDrawer {
@@ -85,7 +90,8 @@ interface SystemStoreAction {
         | PayloadSetSystemLoading
         | PayloadSetAllowLocation
         | PayloadToggleLocationButtonPress
-        | PayloadSetFavoritesDrawer;
+        | PayloadSetFavoritesDrawer
+        | PayloadSetInspectorDrawer;
 }
 
 interface SystemStoreProviderProps {
@@ -93,6 +99,7 @@ interface SystemStoreProviderProps {
 }
 
 export const initialStoreState: SystemStoreState = {
+    inspectorOpen: false,
     favoritesOpen: false,
     systemLoading: true,
     routeSelectOpen: false,
@@ -182,6 +189,12 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 favoritesOpen: (action.payload as PayloadSetFavoritesDrawer).open,
             };
         }
+        case SystemStoreActionType.SetInspectorDrawer: {
+            return {
+                ...state,
+                inspectorOpen: (action.payload as PayloadSetInspectorDrawer).open,
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -235,6 +248,8 @@ interface SystemStoreActionApis {
     onLocationButtonPress: (value: boolean) => void;
     openFavorites: () => void;
     closeFavorites: () => void;
+    openInspector: () => void;
+    closeInspector: () => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -290,6 +305,12 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         },
         closeFavorites: () => {
             dispatch({ type: SystemStoreActionType.SetFavoritesDrawer, payload: { open: false } });
+        },
+        openInspector: () => {
+            dispatch({ type: SystemStoreActionType.SetInspectorDrawer, payload: { open: true } });
+        },
+        closeInspector: () => {
+            dispatch({ type: SystemStoreActionType.SetInspectorDrawer, payload: { open: false } });
         },
     };
 

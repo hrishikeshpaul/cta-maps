@@ -46,7 +46,7 @@ const BottomSheetWrapper: FunctionComponent<Props> = ({ isOpen, onClose, zIndex,
     return (
         <Drawer isOpen={isOpen} placement="bottom" size="sm" onClose={onClose} autoFocus={false} closeOnOverlayClick>
             <DrawerOverlay zIndex={zIndex} onClick={onClose} />
-            <DrawerContent position="absolute" zIndex={zIndex + 1} id="content" bg="transparent">
+            <DrawerContent position="absolute" zIndex={zIndex + 1} bg="transparent">
                 <Container
                     maxW="container.lg"
                     bg={bg}
