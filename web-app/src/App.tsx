@@ -2,7 +2,6 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Overlay } from 'components/Overlay';
 import { Favorites } from 'favorites/Favorites';
 import { Landing } from 'landing/Landing';
 import { MapContainer } from 'map/MapContainer';
@@ -21,8 +20,8 @@ const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
-    const [{ stop }, { onIdle, onActive }] = useDataStore();
-    const [{ systemLoading, routeSelectOpen }] = useSystemStore();
+    const [, { onIdle, onActive }] = useDataStore();
+    const [{ systemLoading }] = useSystemStore();
     const color = useColorModeValue('gray.700', 'gray.200');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
@@ -50,12 +49,13 @@ export const App = () => {
                                 path="/"
                                 element={
                                     <Box className="App">
-                                        <Stop />
-                                        <Nav />
                                         <SocketModule />
-                                        <Favorites />
-                                        {(routeSelectOpen || !!stop) && <Overlay />}
+
                                         <MapContainer />
+                                        <Nav />
+                                        {/* {(routeSelectOpen || !!stop) && <Overlay />} */}
+                                        <Stop />
+                                        <Favorites />
                                         <RouteSelect />
                                     </Box>
                                 }

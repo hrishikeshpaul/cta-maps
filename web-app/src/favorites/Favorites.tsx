@@ -30,9 +30,17 @@ export const Favorites: FunctionComponent = () => {
 
     return (
         <>
-            <Drawer isOpen={favoritesOpen} placement="right" size="md" onClose={closeFavorites} autoFocus={false}>
+            <Drawer
+                isOpen={favoritesOpen}
+                placement="right"
+                size="md"
+                onClose={closeFavorites}
+                autoFocus={false}
+                closeOnOverlayClick
+                id="favorites"
+            >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent position="absolute">
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">
                             <Text fontWeight="bold" fontSize="2xl">
@@ -57,14 +65,7 @@ export const Favorites: FunctionComponent = () => {
                         )}
                         {Object.values(favorites).map((favorite) => {
                             return (
-                                <Box
-                                    key={`fav-${favorite.id}`}
-                                    _active={{ bg }}
-                                    onClick={() => {
-                                        closeFavorites();
-                                        openStop(favorite);
-                                    }}
-                                >
+                                <Box key={`fav-${favorite.id}`} _active={{ bg }} onClick={() => openStop(favorite)}>
                                     <Flex p="4" alignItems="center" justifyContent="space-between" overflow="hidden">
                                         <Text fontWeight="600" isTruncated>
                                             {favorite.name}
