@@ -154,7 +154,7 @@ export const Stop: FunctionComponent = () => {
                 </Flex>
             </BottomSheet.Header>
             <BottomSheet.Body>
-                <Box h="50vh" pb="72px" overflowY="auto" px="4">
+                <Box h="50vh" overflowY="auto" px="4">
                     {loading ? (
                         <Center>
                             <Spinner />
