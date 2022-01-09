@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import { useColorMode, Center, Spinner, Avatar, Box } from '@chakra-ui/react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
-import { darkStyle, lightStyle } from 'shared/Map.Styles';
+import { darkStyle, lightStyle } from 'shared/map/Map.Styles';
 import { Point } from 'store/data/DataStore.Types';
 import { ColorMode } from 'store/system/SystemStore.Types';
 

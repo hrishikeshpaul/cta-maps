@@ -6,7 +6,7 @@ import { BsHeartFill, BsHeart } from 'react-icons/bs';
 import { FaLocationArrow } from 'react-icons/fa';
 import { FiChevronDown } from 'react-icons/fi';
 
-import { BottomSheet } from 'shared/BottomSheet';
+import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions } from 'store/data/DataService';
 import { Juncture, Prediction } from 'store/data/DataStore.Types';

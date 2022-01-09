@@ -4,7 +4,7 @@ import { useToast, Avatar } from '@chakra-ui/react';
 import { Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
 
-import { Map } from 'shared/Map';
+import { Map } from 'shared/map/Map';
 import { useDataStore } from 'store/data/DataStore';
 import { Point, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
