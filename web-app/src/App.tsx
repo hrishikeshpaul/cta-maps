@@ -6,16 +6,16 @@ import { Favorites } from 'favorites/Favorites';
 import { Landing } from 'landing/Landing';
 import { MapContainer } from 'map-container/MapContainer';
 import { Nav } from 'nav/Nav';
-import { RouteSelect } from 'route-select/RouteSelect';
-import { Settings } from 'utils/Settings';
+import { MapLoader } from 'shared/map/Map';
 import { Stop } from 'stop/Stop';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
+import { RouteSelect } from 'route-select/RouteSelect';
 import { FAQ } from 'utils/FAQ';
+import { Settings } from 'utils/Settings';
 import { SocketModule } from 'utils/SocketModule';
 
 import './App.scss';
-import { MapLoader } from 'shared/map/Map';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
