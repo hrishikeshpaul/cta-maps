@@ -4,11 +4,9 @@ import { Text, Center, Flex, IconButton } from '@chakra-ui/react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FiChevronDown } from 'react-icons/fi';
 
-import { Map } from 'shared/map/Map';
-import { useSystemStore } from 'store/system/SystemStore';
-import { useDataStore } from 'store/data/DataStore';
-import { Route } from 'store/data/DataStore.Types';
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
+import { useSystemStore } from 'store/system/SystemStore';
+import { Route } from 'store/data/DataStore.Types';
 
 interface Props {
     data: Route;
