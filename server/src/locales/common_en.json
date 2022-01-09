@@ -45,5 +45,6 @@
     "GENERIC_ERROR": "No data found",
     "START_TRACKING": "Start Tracking",
     "FAVORITES": "Favorite Stops",
-    "DONE": "Done"
+    "DONE": "Done",
+    "ADD_FAVORITES": "No favorite stops found."
 }

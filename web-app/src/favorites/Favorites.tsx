@@ -13,6 +13,7 @@ import {
     DrawerContent,
     Text,
     useColorModeValue,
+    Center,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiChevronRight } from 'react-icons/fi';
@@ -49,6 +50,11 @@ export const Favorites: FunctionComponent = () => {
                     </DrawerHeader>
 
                     <DrawerBody px="0" pt="0">
+                        {Object.values(favorites).length === 0 && (
+                            <Center h="100%">
+                                <Text px="4">{t('ADD_FAVORITES')}</Text>
+                            </Center>
+                        )}
                         {Object.values(favorites).map((favorite) => {
                             return (
                                 <Box
