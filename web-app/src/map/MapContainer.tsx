@@ -97,6 +97,9 @@ export const MapContainer: FunctionComponent = () => {
 
     useEffect(() => {
         onGetCurrentLocation();
+        return () => {
+            setMap(null);
+        };
     }, []); // eslint-disable-line
 
     useEffect(() => {
@@ -144,9 +147,13 @@ export const MapContainer: FunctionComponent = () => {
                         <Spinner color="blue.300" />
                     </Center>
                 }
+                onUnmount={() => {
+                    console.log('load script unmount');
+                }}
             >
                 <GoogleMap
                     onLoad={(map) => {
+                        console.log('map loaded');
                         if (map) setMap(map);
                     }}
                     mapContainerStyle={containerStyle}

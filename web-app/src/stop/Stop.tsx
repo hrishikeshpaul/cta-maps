@@ -1,29 +1,17 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import {
-    Center,
-    Box,
-    Text,
-    IconButton,
-    Flex,
-    useToast,
-    Spinner,
-    Badge,
-    Button,
-    Divider,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Center, Box, Text, IconButton, Flex, useToast, Spinner, Badge, Button, Divider } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { BsHeartFill, BsHeart } from 'react-icons/bs';
 import { FaLocationArrow } from 'react-icons/fa';
 import { FiChevronDown } from 'react-icons/fi';
 
+import { BottomSheet } from 'components/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions } from 'store/data/DataService';
 import { Juncture, Prediction } from 'store/data/DataStore.Types';
 
 import 'stop/Stop.scss';
-import { BottomSheet } from 'components/BottomSheet';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -38,7 +26,6 @@ export const Stop: FunctionComponent = () => {
         [Juncture.A]: (time: number) => (time < 2 ? t('ARRIVE_SHORTLY') : `${t('ARRIVE')} ${time} mins`),
         [Juncture.D]: (time: number) => (time < 2 ? t('DEPART_SHORTLY') : `${t('DEPART')} ${time} mins`),
     };
-    const bg = useColorModeValue('white', 'gray.700');
 
     useEffect(() => {
         if (stop && favorites[stop.id]) {

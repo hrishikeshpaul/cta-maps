@@ -22,7 +22,6 @@ const DEBOUNCE_TIME = 500; // ms
 export const App = () => {
     const [, { onIdle, onActive }] = useDataStore();
     const [{ systemLoading }] = useSystemStore();
-    const color = useColorModeValue('gray.700', 'gray.200');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
         onIdle: () => {
@@ -36,6 +35,7 @@ export const App = () => {
         },
         debounce: DEBOUNCE_TIME,
     });
+    const color = useColorModeValue('gray.700', 'gray.200');
 
     return (
         <>
@@ -48,12 +48,10 @@ export const App = () => {
                             <Route
                                 path="/"
                                 element={
-                                    <Box className="App">
+                                    <Box h="100%">
                                         <SocketModule />
-
                                         <MapContainer />
                                         <Nav />
-                                        {/* {(routeSelectOpen || !!stop) && <Overlay />} */}
                                         <Stop />
                                         <Favorites />
                                         <RouteSelect />
