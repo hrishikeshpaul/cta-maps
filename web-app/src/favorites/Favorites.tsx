@@ -29,7 +29,7 @@ import { useDataStore } from 'store/data/DataStore';
 
 export const Favorites: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ favoriteStops, favoriteRoutes }, { openStop, unSaveRoute, setRoute }] = useDataStore();
+    const [{ favoriteStops, favoriteRoutes }, { openStop, unSaveRoute }] = useDataStore();
     const [{ favoritesOpen }, { closeFavorites }] = useSystemStore();
     const bg = useColorModeValue('#ececec', '#4A5568');
 

@@ -28,6 +28,7 @@ import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { Inspector } from 'inspector/Inspector';
+import { RouteOption } from './RouteOption';
 
 const LIMIT = 10;
 
@@ -37,8 +38,9 @@ interface RouteExtended extends Route {
 
 export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ routes: currentRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] = useDataStore();
-    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect, openInspector }] = useSystemStore();
+    const [{ routes: currentRoutes, favoriteRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] =
+        useDataStore();
+    const [{ routeSelectOpen, routesLoading, settings }, { closeRouteSelect, openInspector }] = useSystemStore();
     const [mounted, setMounted] = useState<boolean>(false);
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
@@ -68,8 +70,17 @@ export const RouteSelect: FunctionComponent = () => {
         };
     }, []);
 
+    const getFilter = () => {
+        return (
+            currentRoutes
+                .map((route) => route.route)
+                // .concat(Object.values(favoriteRoutes).map((route) => route.route))
+                .join(',')
+        );
+    };
+
     const onOpen = async () => {
-        const filter = currentRoutes.map((route) => route.route).join(',');
+        const filter = getFilter();
         const response = await getRoutes(query, filter, LIMIT, index);
         const selectedRoutes: RouteExtended[] = currentRoutes.map((route) => ({ ...route, selected: true }));
         let unselectedRoutes: RouteExtended[] = [];
@@ -124,66 +135,9 @@ export const RouteSelect: FunctionComponent = () => {
         })();
     }, [debouncedQuery]); // eslint-disable-line
 
-    const RouteCard: FunctionComponent<RouteExtended> = ({ route, name, color, selected }) => {
-        const [clicked, setClicked] = useState<boolean>(false);
-        const routeCardBg = useColorModeValue('#ececec', '#4A5568');
-
-        const onToggle = (e: ChangeEvent<HTMLInputElement>) => {
-            e.stopPropagation();
-            const computedRouteIdx = routes.findIndex((r) => r.route === route);
-
-            if (!selected) {
-                setRoute({ route, name, color });
-                if (computedRouteIdx !== -1) {
-                    const old = [...routes];
-
-                    old[computedRouteIdx].selected = true;
-                    setRoutes([...old]);
-                }
-            } else {
-                removeRoute(route);
-                if (computedRouteIdx !== -1) {
-                    const old = [...routes];
-
-                    old[computedRouteIdx].selected = false;
-                    setRoutes([...old]);
-                }
-            }
-
-            setClicked(false);
-        };
-
-        return (
-            <Box px="4" id="route-card" _active={{ bg: !clicked ? routeCardBg : 'none' }}>
-                <Flex justifyContent="space-between" alignItems="center" py="3">
-                    <Flex
-                        alignItems="center"
-                        overflow="hidden"
-                        w="100%"
-                        onClick={() => {
-                            setInspectorData({ route, color, name });
-                            openInspector();
-                        }}
-                    >
-                        <Center h="40px" w="40px" bg={color} borderRadius="md">
-                            <Text color="white" fontWeight="bold">
-                                {route}
-                            </Text>
-                        </Center>
-                        <Text px="4" isTruncated fontWeight={500}>
-                            {name}
-                        </Text>
-                    </Flex>
-                    <Switch name="switch" size="lg" isChecked={selected} onChange={onToggle} />
-                </Flex>
-                <Divider />
-            </Box>
-        );
-    };
-
     return (
         <>
-            <Inspector data={inspectorData} />
+            <Inspector data={inspectorData} onGetData={onOpen} />
             <BottomSheet.Wrapper isOpen={routeSelectOpen} zIndex={1500} onClose={closeRouteSelect}>
                 <BottomSheet.Header>
                     <Flex justifyContent="space-between" alignItems="center">
@@ -225,10 +179,39 @@ export const RouteSelect: FunctionComponent = () => {
                     </InputGroup>
                 </BottomSheet.Header>
                 <BottomSheet.Body>
-                    <Box h="60vh" overflow="auto" onScroll={handleScroll} pb={currentRoutes.length ? '72px' : '4'}>
-                        {routes.map((route) => (
-                            <RouteCard {...route} key={route.route} />
+                    <Box h="60vh" overflow="auto" onScroll={handleScroll} pb="4">
+                        <Text px="4" fontSize="sm" fontWeight="800" opacity="0.8" pt="2">
+                            {t('FAVORITES')}
+                        </Text>
+                        {Object.values(favoriteRoutes).map((route) => (
+                            <RouteOption
+                                onChange={setRoutes}
+                                routes={routes}
+                                currentRoute={{
+                                    ...route,
+                                    selected: currentRoutes.findIndex((r) => r.route === route.route) !== -1,
+                                }}
+                                setInspectorData={setInspectorData}
+                                key={route.route}
+                            />
                         ))}
+
+                        <Text px="4" fontSize="sm" fontWeight="800" opacity="0.8" pt="4">
+                            {t('ALL_ROUTES')}
+                        </Text>
+
+                        {routes.map(
+                            (route) =>
+                                !favoriteRoutes[route.route] && (
+                                    <RouteOption
+                                        onChange={setRoutes}
+                                        setInspectorData={setInspectorData}
+                                        routes={routes}
+                                        currentRoute={route}
+                                        key={route.route}
+                                    />
+                                ),
+                        )}
 
                         {routesLoading ? (
                             <Center>

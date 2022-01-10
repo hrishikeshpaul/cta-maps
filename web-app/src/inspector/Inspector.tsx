@@ -11,9 +11,10 @@ import { useDataStore } from 'store/data/DataStore';
 
 interface Props {
     data: Route;
+    onGetData: () => void;
 }
 
-export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color } }) => {
+export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color }, onGetData }) => {
     const [{ favoriteRoutes }, { saveRoute, unSaveRoute }] = useDataStore();
     const [{ inspectorOpen }, { closeInspector }] = useSystemStore();
     const [isFav, setIsFav] = useState<boolean>(false);
