@@ -80,6 +80,55 @@ const getPredictions = async (stop) => {
     return data['prd'];
 };
 
+const getRouteDirections = async (route) => {
+    const key = cacheKeys.direction(route);
+    const directions = cache.get(key);
+
+    if (directions) {
+        cache.log_hit(key);
+        return directions;
+    }
+
+    const { data, error } = await Http.get('/getdirections', {
+        params: { rt: route },
+    });
+
+    if (error) {
+        throw error;
+    }
+
+    const response = data['directions'].map((dir) => dir.dir);
+
+    cache.log_miss(key);
+    cache.set(key, response);
+
+    return response;
+};
+
+const getStops = async (route, direction) => {
+    const key = cacheKeys.stops(route, direction);
+    const stops = cache.get(key);
+
+    if (stops) {
+        cache.log_hit(key);
+        return stops;
+    }
+
+    const { data, error } = await Http.get('/getstops', {
+        params: { rt: route, dir: direction },
+    });
+
+    if (error) {
+        throw error;
+    }
+
+    const response = { direction, route, stops: data['stops'] };
+    cache.log_miss(key);
+    cache.set(key, response);
+
+    return response;
+};
+
 const getGitHubWorkflow = async () => {
     const [{ data: web }, { data: server }] = await Promise.all([
         axios.get(process.env.GITHUB_WORKFLOW_WEB_URL, { headers: { Authorization: `token ${GITHUB_TOKEN}` } }),
@@ -152,5 +201,7 @@ module.exports = {
     getPredictions,
     getRoutes,
     getVehicles,
-    checkHeading
-}
+    getRouteDirections,
+    getStops,
+    checkHeading,
+};

@@ -11,6 +11,8 @@ const {
     getGitHubWorkflow,
     getLocaleJson,
     getLatestVersion,
+    getRouteDirections,
+    getStops,
 } = require('./util.js');
 
 const convertTimestamp = (timestamp) => {
@@ -144,6 +146,18 @@ router.get('/predictions', async (req, res) => {
     }
 });
 
+router.get('/stops', async (req, res) => {
+    const { route } = req.query;
+    try {
+        const directions = await getRouteDirections(route);
+        const stopPromises = directions.map((dir) => getStops(route, dir));
+        const stops = await Promise.all(stopPromises);
+
+        res.send(stops);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
 router.get('/app-status', async (_, res) => {
     try {
         const data = await getGitHubWorkflow();
