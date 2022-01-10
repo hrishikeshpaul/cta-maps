@@ -15,12 +15,11 @@ import {
     HStack,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FiChevronRight, FiMenu } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
-import { LanguageIcon, MoonIcon } from 'utils/Icons';
 import { LocaleColorMode } from 'shared/LocaleColorMode';
 
 export const Drawer: FC = () => {
+    const { t } = useTranslation();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (

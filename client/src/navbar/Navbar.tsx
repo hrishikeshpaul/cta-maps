@@ -1,27 +1,15 @@
 import { FC } from 'react';
 
-import {
-    Avatar,
-    Box,
-    Button,
-    Container,
-    Flex,
-    HStack,
-    IconButton,
-    Link,
-    useColorMode,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Container, Flex, HStack, Link, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
+
 import { Drawer } from 'drawer/Drawer';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRightIcon, LanguageIcon, MoonIcon, SunIcon } from 'utils/Icons';
+import { ArrowRightIcon } from 'utils/Icons';
 import { LocaleColorMode } from 'shared/LocaleColorMode';
 
 export const Navbar: FC = () => {
     const { t } = useTranslation();
-    const { colorMode, toggleColorMode } = useColorMode();
-    const navigate = useNavigate();
     const bg = useColorModeValue('white', 'gray.800');
 
     const onStart = () => {
@@ -29,7 +17,7 @@ export const Navbar: FC = () => {
     };
 
     const onRoute = (path: string) => {
-        navigate(path);
+        // navigate(path);
     };
 
     return (
@@ -37,14 +25,14 @@ export const Navbar: FC = () => {
             <Container maxW="container.lg">
                 <Flex justifyContent="space-between" alignItems="center">
                     <HStack alignItems="center" spacing={8} display={{ base: 'none', md: 'flex' }}>
-                        <Avatar src="/logo.svg" h="40px" w="40px" cursor="pointer" onClick={() => onRoute('/')} />
-                        <Link fontWeight="bold" pl="4" onClick={() => onRoute('/manual')}>
+                        <Avatar src="/logo.svg" h="40px" w="40px" cursor="pointer" as={NavLink} to="/" />
+                        <Link fontWeight="bold" pl="4" to="/manual" as={NavLink}>
                             {t('MANUAL')}
                         </Link>
-                        <Link fontWeight="bold" onClick={() => onRoute('/faq')}>
+                        <Link fontWeight="bold" to="/faq">
                             {t('FAQ')}
                         </Link>
-                        <Link fontWeight="bold" onClick={() => onRoute('/contact')}>
+                        <Link fontWeight="bold" to="/contact">
                             {t('CONTACT')}
                         </Link>
                     </HStack>
