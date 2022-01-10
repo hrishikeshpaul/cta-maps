@@ -4,5 +4,12 @@
     "FAQ": "FAQ",
     "START_TRACKING": "Start Tracking",
     "FAQ_FULL": "Frequently Asked Questions",
-    "TAGLINE": "Tired of endlessly waiting at your bus stop?"
+    "TAGLINE": "Tired of endlessly waiting at your bus stop?",
+    "WHY": "Why trackCTA?",
+    "LIVE_TRACKING": "Live Tracking",
+    "LIVE_TRACKING_DETAILS": "trackCTA uses live data from the CTA servers to show the location of busses and predictions.",
+    "LOCALE": "Internationalized",
+    "LOCALE_DETAILS": "trackCTA is available in the 3 most spoken languages in Chicago - English, Spanish and Chinese.",
+    "PERSONAL": "Personalize",
+    "PERSONAL_DETAILS": "Favorite busses and stops so that you can quickly visit them whenever you want."
 }

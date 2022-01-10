@@ -16,10 +16,6 @@ export const Navbar: FC = () => {
         window.open('https://app.trackcta.com', '_blank');
     };
 
-    const onRoute = (path: string) => {
-        // navigate(path);
-    };
-
     return (
         <Flex position="fixed" p="4" top="0" bg={bg} w="100%">
             <Container maxW="container.lg">

@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { Box, Button, Center, Container, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { Features } from './Features';
 
 export const Home: FC = () => {
     const { t } = useTranslation();
@@ -52,6 +53,7 @@ export const Home: FC = () => {
                     </Button>
                 </Center>
             </Container>
+            <Features />
         </Box>
     );
 };
