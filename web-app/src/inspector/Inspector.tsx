@@ -54,7 +54,13 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
                         icon={isFav ? <BsHeartFill /> : <BsHeart />}
                         onClick={onFavHandle}
                     />
-                    <IconButton aria-label="close" ml="4" icon={<FiChevronDown />} onClick={closeInspector} />
+                    <IconButton
+                        fontSize="xl"
+                        aria-label="close"
+                        ml="4"
+                        icon={<FiChevronDown />}
+                        onClick={closeInspector}
+                    />
                 </Flex>
             </BottomSheet.Footer>
         </BottomSheet.Wrapper>
