@@ -279,6 +279,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         saveStop: (stop: Stop) => {
             const favoriteStops = { ...state.favoriteStops };
+
             favoriteStops[stop.id] = stop;
             dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { favoriteStops } });
         },
@@ -290,6 +291,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         saveRoute: (route: Route) => {
             const favoriteRoutes = { ...state.favoriteRoutes };
+
             favoriteRoutes[route.route] = route;
             dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { favoriteRoutes } });
         },

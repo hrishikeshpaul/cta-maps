@@ -2,13 +2,13 @@ import { FunctionComponent, ReactElement } from 'react';
 
 import {
     useColorModeValue,
+    Container,
     Drawer,
     DrawerBody,
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
-    Container,
 } from '@chakra-ui/react';
 
 const BottomSheetHeader: FunctionComponent = ({ children }) => {
@@ -35,7 +35,9 @@ interface Props {
     isOpen: boolean;
     onClose: () => void;
     zIndex: number;
-    children?: Array<ReactElement<typeof BottomSheetHeader | typeof BottomSheetBody | typeof BottomSheetFooter>>;
+    children?:
+        | ReactElement<typeof BottomSheetHeader | typeof BottomSheetBody | typeof BottomSheetFooter>
+        | Array<ReactElement<typeof BottomSheetHeader | typeof BottomSheetBody | typeof BottomSheetFooter>>;
 }
 
 const BottomSheetWrapper: FunctionComponent<Props> = ({ isOpen, onClose, zIndex, children }) => {
@@ -46,12 +48,12 @@ const BottomSheetWrapper: FunctionComponent<Props> = ({ isOpen, onClose, zIndex,
             <DrawerOverlay zIndex={zIndex - 100} onClick={onClose} />
             <DrawerContent position="absolute" zIndex={zIndex + 1} bg="transparent">
                 <Container
-                    maxW="container.lg"
                     bg={bg}
-                    px={{ base: '0', md: '2' }}
                     borderTopRightRadius="2xl"
                     borderTopLeftRadius="2xl"
                     boxShadow="2xl"
+                    maxW="container.lg"
+                    px={{ base: '0', md: '2' }}
                 >
                     {children}
                 </Container>

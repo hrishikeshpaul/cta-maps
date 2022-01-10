@@ -36,7 +36,6 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
 
     return (
         <BottomSheet.Wrapper isOpen={inspectorOpen} onClose={closeInspector} zIndex={1600}>
-            <BottomSheet.Body />
             <BottomSheet.Footer>
                 <Flex alignItems="center" overflow="hidden" w="100%">
                     <Center h="40px" w="40px" bg={color} borderRadius="md">
