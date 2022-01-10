@@ -11,7 +11,7 @@ export const Content: FC = () => {
     return (
         <>
             <Navbar />
-            <Box pt="80px" h="100%" w="100%" bg="teal">
+            <Box pt="80px" h="100%" w="100%">
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Home />} />

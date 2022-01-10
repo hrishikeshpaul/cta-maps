@@ -1,12 +1,12 @@
 import { StrictMode } from 'react';
+
+import { ChakraProvider, extendTheme, ThemeConfig, theme as ChakraTheme, ColorModeScript } from '@chakra-ui/react';
 import ReactDOM from 'react-dom';
 
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './index.scss';
-import { ChakraProvider, extendTheme, ThemeConfig, theme as ChakraTheme, ColorModeScript } from '@chakra-ui/react';
-import { LocaleProvider } from 'locale/LocaleProvider';
 
 const theme = extendTheme({
     config: {

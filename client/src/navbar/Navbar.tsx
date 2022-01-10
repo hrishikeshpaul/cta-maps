@@ -18,7 +18,7 @@ export const Navbar: FC = () => {
             <Container maxW="container.lg">
                 <Flex justifyContent="space-between" alignItems="center">
                     <HStack alignItems="center" spacing={8} display={{ base: 'none', md: 'flex' }}>
-                        <Avatar src="/logo.svg" h="40px" w="40px" />
+                        <Avatar src="/logo.svg" h="40px" w="40px" cursor="pointer" />
                         <Link fontWeight="bold" pl="4">
                             {t('USAGE')}
                         </Link>
