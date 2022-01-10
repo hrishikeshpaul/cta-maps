@@ -1,37 +1,18 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 
-import { Box, Heading, Flex, RadioGroup, useColorMode, Text, Stack, Radio, Switch, Spinner } from '@chakra-ui/react';
-
-import { BasePage } from './BasePage';
+import { Box, Heading, Flex, RadioGroup, useColorMode, Text, Stack, Radio, Switch } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { useSystemStore } from 'store/system/SystemStore';
-import { getAppStatus } from 'store/system/SystemService';
-import { ColorMode, Status } from 'store/system/SystemStore.Types';
-import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
 
-const StatusMapper = {
-    [Status.Success]: 'green.300',
-    [Status.InProgress]: 'orange.300',
-    [Status.Failure]: 'red.300',
-};
+import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
+import { Help } from 'shared/help/Help';
+import { useSystemStore } from 'store/system/SystemStore';
+import { ColorMode } from 'store/system/SystemStore.Types';
+import { BasePage } from 'utils/BasePage';
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
-    const [{ settings }, { setColorMode, setLocale }] = useSystemStore();
+    const [{ settings }, { setColorMode, setLocale, setShowActiveRoutes }] = useSystemStore();
     const { toggleColorMode } = useColorMode();
-    const [status, setStatus] = useState<{ web: string; server: string } | null>(null);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const response = await getAppStatus();
-                setStatus({
-                    web: response.web,
-                    server: response.server,
-                });
-            } catch (err) {}
-        })();
-    }, []);
 
     const onDarkModeToggle = () => {
         toggleColorMode();
@@ -47,9 +28,30 @@ export const Settings: FunctionComponent = () => {
         setLocale(locale as Locale);
     };
 
+    const onShowActiveRoutesChange = () => {
+        if (settings.showActiveRoutes) {
+            setShowActiveRoutes(false);
+        } else {
+            setShowActiveRoutes(true);
+        }
+    };
+
     return (
         <BasePage>
             <Heading>{t('SETTINGS')}</Heading>
+            <Box mt="8">
+                <Text fontWeight="bold" color="gray.400" fontSize="sm">
+                    {t('ROUTES')}
+                </Text>
+                <Flex justifyContent="space-between" alignItems="center" mt="2">
+                    <Flex alignItems="center">
+                        <Text pr="2">{t('SHOW_ACTIVE_ROUTES')}</Text>
+                        <Help label={t('ACTIVE_ROUTE_INFO')} />
+                    </Flex>
+
+                    <Switch size="lg" isChecked={settings.showActiveRoutes} onChange={onShowActiveRoutesChange} />
+                </Flex>
+            </Box>
             <Box mt="8">
                 <Text fontWeight="bold" color="gray.400" fontSize="sm">
                     {t('APPEARANCE')}
@@ -74,35 +76,6 @@ export const Settings: FunctionComponent = () => {
                         </Stack>
                     </RadioGroup>
                 </Flex>
-            </Box>
-            <Box mt="8">
-                <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                    {t('STATUS')}
-                </Text>
-                {status ? (
-                    <>
-                        <Flex justifyContent="space-between" alignItems="center" mt="2">
-                            <Text>{t('WEBSITE')}</Text>
-                            <Flex alignItems="center">
-                                <Box h="10px" w="10px" bg={StatusMapper[status.web as Status]} borderRadius="50%" />
-                                <Text pl="2" color="gray.400">
-                                    {t('LIVE')}
-                                </Text>
-                            </Flex>
-                        </Flex>
-                        <Flex justifyContent="space-between" alignItems="center" mt="2">
-                            <Text>{t('SERVER')}</Text>
-                            <Flex alignItems="center" borderRadius="50%">
-                                <Box h="10px" w="10px" bg={StatusMapper[status.server as Status]} borderRadius="50%" />
-                                <Text pl="2" color="gray.400">
-                                    {t('LIVE')}
-                                </Text>
-                            </Flex>
-                        </Flex>{' '}
-                    </>
-                ) : (
-                    <Spinner size="sm" color="blue.400" />
-                )}
             </Box>
         </BasePage>
     );

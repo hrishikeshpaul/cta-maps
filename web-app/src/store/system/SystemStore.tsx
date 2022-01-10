@@ -1,7 +1,14 @@
 import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { Locale } from 'i18n/LocaleProvider';
-import { SystemStoreState, ColorMode, ColorModeKey, LocaleKey, AllowLocationKey } from 'store/system/SystemStore.Types';
+import {
+    SystemStoreState,
+    ColorMode,
+    ColorModeKey,
+    LocaleKey,
+    AllowLocationKey,
+    ShowActiveRoutesKey,
+} from 'store/system/SystemStore.Types';
 
 export enum SystemStoreActionType {
     SetRouteSelectDrawer,
@@ -18,7 +25,12 @@ export enum SystemStoreActionType {
     SetAllowLocation,
     SetFavoritesDrawer,
     SetInspectorDrawer,
+    SetShowActiveRoutes,
     ToggleLocationButtonPress,
+}
+
+interface PayloadSetShowActiveRoutes {
+    show: boolean;
 }
 
 interface PayloadSetInspectorDrawer {
@@ -91,7 +103,8 @@ interface SystemStoreAction {
         | PayloadSetAllowLocation
         | PayloadToggleLocationButtonPress
         | PayloadSetFavoritesDrawer
-        | PayloadSetInspectorDrawer;
+        | PayloadSetInspectorDrawer
+        | PayloadSetShowActiveRoutes;
 }
 
 interface SystemStoreProviderProps {
@@ -114,6 +127,7 @@ export const initialStoreState: SystemStoreState = {
         colorMode: (localStorage.getItem(ColorModeKey) as ColorMode) || ColorMode.Light,
         locale: (localStorage.getItem(LocaleKey) as Locale) || Locale.EN,
         allowLocation: JSON.parse(localStorage.getItem(AllowLocationKey) || '{}') === true,
+        showActiveRoutes: JSON.parse(localStorage.getItem(ShowActiveRoutesKey) || '{}') === true,
     },
 };
 
@@ -195,6 +209,12 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 inspectorOpen: (action.payload as PayloadSetInspectorDrawer).open,
             };
         }
+        case SystemStoreActionType.SetShowActiveRoutes: {
+            return {
+                ...state,
+                settings: { ...state.settings, showActiveRoutes: (action.payload as PayloadSetShowActiveRoutes).show },
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -250,6 +270,7 @@ interface SystemStoreActionApis {
     closeFavorites: () => void;
     openInspector: () => void;
     closeInspector: () => void;
+    setShowActiveRoutes: (show: boolean) => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -311,6 +332,10 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         },
         closeInspector: () => {
             dispatch({ type: SystemStoreActionType.SetInspectorDrawer, payload: { open: false } });
+        },
+        setShowActiveRoutes: (show: boolean) => {
+            localStorage.setItem(ShowActiveRoutesKey, JSON.stringify(show));
+            dispatch({ type: SystemStoreActionType.SetShowActiveRoutes, payload: { show } });
         },
     };
 
