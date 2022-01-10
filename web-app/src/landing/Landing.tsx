@@ -11,7 +11,7 @@ export const Landing: FunctionComponent = () => {
                     <Text fontSize="xl" pt="2" fontWeight="bold">
                         trackCTA
                     </Text>
-                    <Text fontSize="sm">v1.3.0-alpha</Text>
+                    <Text fontSize="sm">v1.4.0-alpha</Text>
                     <Spinner mt="4" size="md" color="blue.300" />
                 </Fade>
             </Center>
