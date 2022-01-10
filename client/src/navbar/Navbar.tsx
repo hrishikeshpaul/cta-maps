@@ -13,10 +13,10 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { HiArrowRight as ArrowRight } from 'react-icons/hi';
-import { IoLanguage as LanguageIcon, IoMoon as MoonIcon, IoSunny as SunIcon } from 'react-icons/io5';
 import { Drawer } from 'drawer/Drawer';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRightIcon, LanguageIcon, MoonIcon, SunIcon } from 'utils/Icons';
+import { LocaleColorMode } from 'shared/LocaleColorMode';
 
 export const Navbar: FC = () => {
     const { t } = useTranslation();
@@ -54,15 +54,8 @@ export const Navbar: FC = () => {
                     </Box>
 
                     <HStack>
-                        <IconButton fontSize="xl" aria-label="locale" icon={<LanguageIcon />} variant="ghost" />
-                        <IconButton
-                            fontSize="xl"
-                            aria-label="appearance"
-                            icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-                            variant="ghost"
-                            onClick={toggleColorMode}
-                        />
-                        <Button colorScheme="blue" rightIcon={<ArrowRight />} onClick={onStart}>
+                        <LocaleColorMode display={{ base: 'none', md: 'flex' }} />
+                        <Button colorScheme="blue" rightIcon={<ArrowRightIcon />} onClick={onStart}>
                             {t('START_TRACKING')}
                         </Button>
                     </HStack>

@@ -12,10 +12,13 @@ import {
     DrawerContent,
     useDisclosure,
     IconButton,
+    HStack,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiChevronRight, FiMenu } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
+import { LanguageIcon, MoonIcon } from 'utils/Icons';
+import { LocaleColorMode } from 'shared/LocaleColorMode';
 
 export const Drawer: FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,14 +34,17 @@ export const Drawer: FC = () => {
                             <Text fontWeight="bold" fontSize="2xl">
                                 trackCTA
                             </Text>
-                            <IconButton
-                                variant="ghost"
-                                fontSize="3xl"
-                                aria-label="close"
-                                mr="-3"
-                                onClick={onClose}
-                                icon={<IoIosClose />}
-                            />
+                            <HStack>
+                                <LocaleColorMode />
+                                <IconButton
+                                    variant="ghost"
+                                    fontSize="3xl"
+                                    aria-label="close"
+                                    mr="-3"
+                                    onClick={onClose}
+                                    icon={<IoIosClose />}
+                                />
+                            </HStack>
                         </Flex>
                     </DrawerHeader>
                 </DrawerContent>
