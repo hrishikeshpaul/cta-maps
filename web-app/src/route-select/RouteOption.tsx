@@ -1,10 +1,10 @@
 import { Box, Center, Divider, Flex, Switch, Text, useColorModeValue } from '@chakra-ui/react';
-import { ChangeEvent, FunctionComponent, useState } from 'react';
+import { ChangeEvent, FunctionComponent } from 'react';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 
-interface RouteExtended extends Route {
+export interface RouteExtended extends Route {
     selected: boolean;
 }
 

@@ -11,36 +11,28 @@ import {
     InputRightElement,
     Spinner,
     Center,
-    Switch,
     Button,
-    Divider,
     Icon,
-    useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { HiCheck as Check } from 'react-icons/hi';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
+import { Inspector } from 'inspector/Inspector';
+import { RouteOption, RouteExtended } from 'route-select/RouteOption';
+import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
-import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
-import { Inspector } from 'inspector/Inspector';
-import { RouteOption } from './RouteOption';
 
 const LIMIT = 10;
 
-interface RouteExtended extends Route {
-    selected: boolean;
-}
-
 export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ routes: currentRoutes, favoriteRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] =
-        useDataStore();
-    const [{ routeSelectOpen, routesLoading, settings }, { closeRouteSelect, openInspector }] = useSystemStore();
+    const [{ routes: currentRoutes, favoriteRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
+    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
     const [mounted, setMounted] = useState<boolean>(false);
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
@@ -48,10 +40,14 @@ export const RouteSelect: FunctionComponent = () => {
     const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
     const debouncedQuery = useDebounce(query);
 
+    const getFilter = () => {
+        return currentRoutes.map((route) => route.route).join(',');
+    };
+
     const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
         const bottom =
             e.currentTarget.scrollHeight - Math.ceil(e.currentTarget.scrollTop) <= e.currentTarget.clientHeight;
-        const filter = currentRoutes.map((route) => route.route).join(',');
+        const filter = getFilter();
 
         if (bottom) {
             setIndex(index + 1);
@@ -69,15 +65,6 @@ export const RouteSelect: FunctionComponent = () => {
             setMounted(false);
         };
     }, []);
-
-    const getFilter = () => {
-        return (
-            currentRoutes
-                .map((route) => route.route)
-                // .concat(Object.values(favoriteRoutes).map((route) => route.route))
-                .join(',')
-        );
-    };
 
     const onOpen = async () => {
         const filter = getFilter();
@@ -135,6 +122,31 @@ export const RouteSelect: FunctionComponent = () => {
         })();
     }, [debouncedQuery]); // eslint-disable-line
 
+    const RenderFavorites: FunctionComponent = () => {
+        return Object.values(favoriteRoutes).length ? (
+            <>
+                <Text px="4" fontSize="sm" fontWeight="800" opacity="0.8" pt="2">
+                    {t('FAVORITES')}
+                </Text>
+
+                {Object.values(favoriteRoutes).map((route) => (
+                    <RouteOption
+                        onChange={setRoutes}
+                        routes={routes}
+                        currentRoute={{
+                            ...route,
+                            selected: currentRoutes.findIndex((r) => r.route === route.route) !== -1,
+                        }}
+                        setInspectorData={setInspectorData}
+                        key={route.route}
+                    />
+                ))}
+            </>
+        ) : (
+            <></>
+        );
+    };
+
     return (
         <>
             <Inspector data={inspectorData} onGetData={onOpen} />
@@ -178,23 +190,10 @@ export const RouteSelect: FunctionComponent = () => {
                         />
                     </InputGroup>
                 </BottomSheet.Header>
+
                 <BottomSheet.Body>
                     <Box h="60vh" overflow="auto" onScroll={handleScroll} pb="4">
-                        <Text px="4" fontSize="sm" fontWeight="800" opacity="0.8" pt="2">
-                            {t('FAVORITES')}
-                        </Text>
-                        {Object.values(favoriteRoutes).map((route) => (
-                            <RouteOption
-                                onChange={setRoutes}
-                                routes={routes}
-                                currentRoute={{
-                                    ...route,
-                                    selected: currentRoutes.findIndex((r) => r.route === route.route) !== -1,
-                                }}
-                                setInspectorData={setInspectorData}
-                                key={route.route}
-                            />
-                        ))}
+                        <RenderFavorites />
 
                         <Text px="4" fontSize="sm" fontWeight="800" opacity="0.8" pt="4">
                             {t('ALL_ROUTES')}
