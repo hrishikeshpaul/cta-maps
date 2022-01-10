@@ -125,7 +125,7 @@ export const RouteSelect: FunctionComponent = () => {
     const RenderFavorites: FunctionComponent = () => {
         return Object.values(favoriteRoutes).length ? (
             <>
-                <Text px="4" fontSize="sm" fontWeight="800" opacity="0.8" pt="2">
+                <Text px="4" fontSize="sm" fontWeight="600" opacity="0.8" pt="2">
                     {t('FAVORITES')}
                 </Text>
 
@@ -195,7 +195,7 @@ export const RouteSelect: FunctionComponent = () => {
                     <Box h="60vh" overflow="auto" onScroll={handleScroll} pb="4">
                         <RenderFavorites />
 
-                        <Text px="4" fontSize="sm" fontWeight="800" opacity="0.8" pt="4">
+                        <Text px="4" fontSize="sm" fontWeight="600" opacity="0.8" pt="4">
                             {t('ALL_ROUTES')}
                         </Text>
 
