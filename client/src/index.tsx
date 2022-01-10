@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import './index.scss';
 import { ChakraProvider, extendTheme, ThemeConfig, theme as ChakraTheme, ColorModeScript } from '@chakra-ui/react';
+import { LocaleProvider } from 'locale/LocaleProvider';
 
 const theme = extendTheme({
     config: {
