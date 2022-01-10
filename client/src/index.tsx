@@ -5,10 +5,24 @@ import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './index.scss';
+import { ChakraProvider, extendTheme, ThemeConfig, theme as ChakraTheme, ColorModeScript } from '@chakra-ui/react';
+
+const theme = extendTheme({
+    config: {
+        cssVarPrefix: 'trackcta-client',
+    } as ThemeConfig,
+    shadows: {
+        ...ChakraTheme.shadows,
+        outline: 'none',
+    },
+});
 
 ReactDOM.render(
     <StrictMode>
-        <App />
+        <ChakraProvider theme={theme}>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <App />
+        </ChakraProvider>
     </StrictMode>,
     document.getElementById('root'),
 );
