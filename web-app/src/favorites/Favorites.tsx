@@ -14,9 +14,14 @@ import {
     Text,
     useColorModeValue,
     Center,
+    Tabs,
+    TabList,
+    TabPanels,
+    Tab,
+    TabPanel,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FiChevronRight } from 'react-icons/fi';
+import { FiChevronRight, FiTrash } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 
 import { useSystemStore } from 'store/system/SystemStore';
@@ -24,7 +29,7 @@ import { useDataStore } from 'store/data/DataStore';
 
 export const Favorites: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ favoriteStops }, { openStop }] = useDataStore();
+    const [{ favoriteStops, favoriteRoutes }, { openStop, unSaveRoute }] = useDataStore();
     const [{ favoritesOpen }, { closeFavorites }] = useSystemStore();
     const bg = useColorModeValue('#ececec', '#4A5568');
 
@@ -58,26 +63,72 @@ export const Favorites: FunctionComponent = () => {
                     </DrawerHeader>
 
                     <DrawerBody px="0" pt="0">
-                        {Object.values(favoriteStops).length === 0 && (
-                            <Center h="100%">
-                                <Text px="4">{t('ADD_FAVORITES')}</Text>
-                            </Center>
-                        )}
-                        {Object.values(favoriteStops).map((favorite) => {
-                            return (
-                                <Box key={`fav-${favorite.id}`} _active={{ bg }} onClick={() => openStop(favorite)}>
-                                    <Flex p="4" alignItems="center" justifyContent="space-between" overflow="hidden">
-                                        <Text fontWeight="600" isTruncated>
-                                            {favorite.name}
-                                        </Text>
-                                        <Box pl="2">
-                                            <FiChevronRight />
-                                        </Box>
-                                    </Flex>
-                                    <Divider />
-                                </Box>
-                            );
-                        })}
+                        <Tabs isFitted>
+                            <TabList mx="4">
+                                <Tab fontWeight="600">{t('STOPS')}</Tab>
+                                <Tab fontWeight="600">{t('ROUTES')}</Tab>
+                            </TabList>
+                            <TabPanels p="0">
+                                <TabPanel px="0">
+                                    {Object.values(favoriteStops).length === 0 && (
+                                        <Text px="4">{t('ADD_FAVORITES')}</Text>
+                                    )}
+                                    {Object.values(favoriteStops).map((favorite) => {
+                                        return (
+                                            <Box
+                                                key={`fav-stops-${favorite.id}`}
+                                                _active={{ bg }}
+                                                onClick={() => openStop(favorite)}
+                                            >
+                                                <Flex
+                                                    p="4"
+                                                    alignItems="center"
+                                                    justifyContent="space-between"
+                                                    overflow="hidden"
+                                                >
+                                                    <Text fontWeight="600" isTruncated>
+                                                        {favorite.name}
+                                                    </Text>
+                                                    <Box pl="2">
+                                                        <FiChevronRight />
+                                                    </Box>
+                                                </Flex>
+                                                <Divider />
+                                            </Box>
+                                        );
+                                    })}
+                                </TabPanel>
+                                <TabPanel px="0">
+                                    {Object.values(favoriteRoutes).length === 0 && (
+                                        <Text px="4">{t('ADD_FAVORITES')}</Text>
+                                    )}
+                                    {Object.values(favoriteRoutes).map(({ route, color, name }) => {
+                                        return (
+                                            <Box key={`fav-route-${route}`} _active={{ bg }}>
+                                                <Flex justifyContent="center" alignItems="center" p="4">
+                                                    <Flex alignItems="center" overflow="hidden" w="100%">
+                                                        <Center h="40px" w="40px" bg={color} borderRadius="md">
+                                                            <Text color="white" fontWeight="bold">
+                                                                {route}
+                                                            </Text>
+                                                        </Center>
+                                                        <Text px="4" isTruncated fontWeight={500}>
+                                                            {name}
+                                                        </Text>
+                                                    </Flex>
+                                                    <IconButton
+                                                        aria-label="delete"
+                                                        icon={<FiTrash />}
+                                                        onClick={() => unSaveRoute(route)}
+                                                    />
+                                                </Flex>
+                                                <Divider />
+                                            </Box>
+                                        );
+                                    })}
+                                </TabPanel>
+                            </TabPanels>
+                        </Tabs>
                     </DrawerBody>
 
                     <DrawerFooter></DrawerFooter>

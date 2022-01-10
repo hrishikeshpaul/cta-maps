@@ -18,8 +18,6 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
     const [{ inspectorOpen }, { closeInspector }] = useSystemStore();
     const [isFav, setIsFav] = useState<boolean>(false);
 
-    console.log(route, favoriteRoutes);
-
     useEffect(() => {
         if (favoriteRoutes[route]) {
             setIsFav(true);
