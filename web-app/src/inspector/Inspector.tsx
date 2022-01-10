@@ -24,7 +24,7 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
         } else {
             setIsFav(false);
         }
-    }, [favoriteRoutes]); // eslint-disable-line
+    }, [inspectorOpen, favoriteRoutes]); // eslint-disable-line
 
     const onFavHandle = () => {
         if (favoriteRoutes[route]) {

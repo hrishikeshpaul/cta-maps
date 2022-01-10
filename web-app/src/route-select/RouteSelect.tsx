@@ -38,7 +38,7 @@ interface RouteExtended extends Route {
 export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes, setRoute, removeRoute, removeAllRoutes }] = useDataStore();
-    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect, openInspector }] = useSystemStore();
+    const [{ routeSelectOpen, routesLoading, inspectorOpen }, { closeRouteSelect, openInspector }] = useSystemStore();
     const [mounted, setMounted] = useState<boolean>(false);
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
