@@ -104,7 +104,7 @@ export const Favorites: FunctionComponent = () => {
                                     )}
                                     {Object.values(favoriteRoutes).map(({ route, color, name }) => {
                                         return (
-                                            <Box key={`fav-route-${route}`} _active={{ bg }}>
+                                            <Box key={`fav-route-${route}`}>
                                                 <Flex justifyContent="center" alignItems="center" p="4">
                                                     <Flex alignItems="center" overflow="hidden" w="100%">
                                                         <Center h="40px" w="40px" bg={color} borderRadius="md">
