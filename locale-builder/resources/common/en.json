@@ -47,5 +47,6 @@
     "ADD_FAVORITES": "There's nothing here.",
     "STOPS": "Stops",
     "SHOW_ACTIVE_ROUTES": "Show Active Routes",
-    "ACTIVE_ROUTE_INFO": "Enabling this will load your favorite routes when you reload the website"
+    "ACTIVE_ROUTE_INFO": "Enabling this will load your favorite routes when you reload the website",
+    "ALL_ROUTES": "All Routes"
 }
