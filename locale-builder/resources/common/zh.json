@@ -5,7 +5,7 @@
   "DESELECT_ALL": "取消全选",
   "ARRIVE": "抵达",
   "DEPART": "出发地",
-  "ARRIVE_SHORTLY": "很快就到了",
+  "ARRIVE_SHORTLY": "很快到达",
   "DEPART_SHORTLY": "即将出发",
   "GET_DIR": "获取路线",
   "NO_SCHEDULE_AVAILABLE": "没有可用的时间表",
@@ -39,12 +39,15 @@
   "SOUTHBOUND": "南行",
   "WESTBOUND": "西行",
   "EASTBOUND": "东行",
-  "SERVER_DISCONNECT": "重新连接服务器..",
+  "SERVER_DISCONNECT": "重新连接到服务器..",
   "SERVER_CONNECT": "服务器已连接！",
   "SERVER_ERROR": "服务器错误。请重新选择路线",
   "GENERIC_ERROR": "没有找到数据",
   "START_TRACKING": "开始追踪",
-  "FAVORITES": "最喜欢的站点",
+  "FAVORITES": "收藏夹",
   "DONE": "完毕",
-  "ADD_FAVORITES": "没有找到最喜欢的站点。"
+  "ADD_FAVORITES": "这里什么都没有。",
+  "STOPS": "停止",
+  "SHOW_ACTIVE_ROUTES": "显示活动路线",
+  "ACTIVE_ROUTE_INFO": "启用此功能将在您重新加载网站时加载您最喜欢的路线"
 }
