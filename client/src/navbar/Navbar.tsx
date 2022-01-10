@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Avatar, Box, Button, Container, Flex, HStack, Link, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { HiArrowRight as ArrowRight } from 'react-icons/hi';
+import { Drawer } from 'drawer/Drawer';
 
 export const Navbar: FC = () => {
     const { t } = useTranslation();
@@ -25,7 +26,9 @@ export const Navbar: FC = () => {
                         <Link fontWeight="bold">{t('CONTACT')}</Link>
                     </HStack>
 
-                    <Box display={{ base: 'block', md: 'none' }}>{/* <Info disableAvatarShadow /> */}</Box>
+                    <Box display={{ base: 'block', md: 'none' }}>
+                        <Drawer />
+                    </Box>
 
                     <Button colorScheme="blue" rightIcon={<ArrowRight />} onClick={onStart}>
                         {t('START_TRACKING')}
