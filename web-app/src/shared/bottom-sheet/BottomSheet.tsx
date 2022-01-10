@@ -11,8 +11,6 @@ import {
     Container,
 } from '@chakra-ui/react';
 
-import 'stop/Stop.scss';
-
 const BottomSheetHeader: FunctionComponent = ({ children }) => {
     return (
         <DrawerHeader px="4" pb="2">
@@ -45,7 +43,7 @@ const BottomSheetWrapper: FunctionComponent<Props> = ({ isOpen, onClose, zIndex,
 
     return (
         <Drawer isOpen={isOpen} placement="bottom" size="sm" onClose={onClose} autoFocus={false} closeOnOverlayClick>
-            <DrawerOverlay zIndex={zIndex} onClick={onClose} />
+            <DrawerOverlay zIndex={zIndex - 100} onClick={onClose} />
             <DrawerContent position="absolute" zIndex={zIndex + 1} bg="transparent">
                 <Container
                     maxW="container.lg"
