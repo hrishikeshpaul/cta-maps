@@ -150,7 +150,7 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
             };
         case DataStoreActionType.SetFavoriteRoutes:
             localStorage.setItem(
-                FavoriteStopsKey,
+                FavoriteRoutesKey,
                 JSON.stringify((action.payload as PayloadSetFavoriteRoutes).favoriteRoutes),
             );
 

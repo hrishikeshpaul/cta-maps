@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { Avatar, Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -21,7 +23,7 @@ const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
-    const [, { onIdle, onActive }] = useDataStore();
+    const [{ favoriteRoutes }, { onIdle, onActive, setRoute }] = useDataStore();
     const [{ systemLoading }] = useSystemStore();
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
@@ -37,6 +39,12 @@ export const App = () => {
         debounce: DEBOUNCE_TIME,
     });
     const color = useColorModeValue('gray.700', 'gray.200');
+
+    useEffect(() => {
+        Object.values(favoriteRoutes).forEach(({ route, name, color }) => {
+            setRoute({ route, name, color });
+        });
+    }, []); // eslint-disable-line
 
     return (
         <>
