@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-import { Box, Button, Center, Container, Heading, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Container, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { HiArrowRight as ArrowRight } from 'react-icons/hi';
 
 export const Home: FC = () => {
     const { t } = useTranslation();
+    const taglineColor = useColorModeValue('gray.500', 'gray.300');
 
     const onStart = () => {
         window.open('https://app.trackcta.com', '_blank');
@@ -15,8 +15,8 @@ export const Home: FC = () => {
         <Box w="100%" h="100%">
             <Container maxW="container.lg" w="100%" h="100%" px="4">
                 <Center w="100%" h="100%" textAlign="center" flexDirection="column">
-                    <Text fontSize={{ base: 'md', md: 'xl' }} color="gray.500" fontWeight="600">
-                        Tired of endlessly waiting at your bus stop?
+                    <Text fontSize={{ base: 'md', md: 'xl' }} color={taglineColor} fontWeight="600">
+                        {t('TAGLINE')}
                     </Text>
                     <Heading fontSize={{ base: '5xl', md: '7xl' }} pt="4" lineHeight="1" fontWeight="800">
                         <Text as="span" color="blue.500">
