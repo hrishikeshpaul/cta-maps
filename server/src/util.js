@@ -155,6 +155,10 @@ const getLocaleJson = async (ns, lng) => {
         return { data: fs.readFileSync('./src/locales/faq_en.json'), status: 200 };
     }
 
+    if (process.env.NODE_ENV === 'development' && ns === 'client' && lng === 'en') {
+        return { data: fs.readFileSync('./src/locales/client_en.json'), status: 200 };
+    }
+
     const key = cacheKeys.locale(ns, lng);
     const value = cache.get(key);
 
