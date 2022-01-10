@@ -38,7 +38,7 @@ export const Settings: FunctionComponent = () => {
 
     return (
         <BasePage>
-            <Heading>{t('SETTINGS')}</Heading>
+            <Heading fontWeight="bold">{t('SETTINGS')}</Heading>
             <Box mt="8">
                 <Text fontWeight="bold" color="gray.400" fontSize="sm">
                     {t('ROUTES')}

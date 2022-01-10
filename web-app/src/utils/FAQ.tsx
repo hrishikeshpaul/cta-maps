@@ -12,7 +12,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 
-import { BasePage } from './BasePage';
+import { BasePage } from 'utils/BasePage';
 import { useTranslation } from 'react-i18next';
 
 const faqData = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -22,7 +22,7 @@ export const FAQ: FunctionComponent = () => {
 
     return (
         <BasePage>
-            <Heading>{t('FAQ', { ns: 'common' })}</Heading>
+            <Heading fontWeight="bold">{t('FAQ', { ns: 'common' })}</Heading>
             <Accordion mt="8" allowMultiple>
                 {faqData.map((data) => (
                     <AccordionItem key={data}>
