@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Box, Container, Flex, Image, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { Avatar, Box, Container, Flex, Image, Link, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 const steps = [
@@ -29,22 +29,91 @@ export const Steps: FC = () => {
 
     return (
         <Box bg={bg} w="100%" py="24">
-            <Container maxW="container.lg">
+            <Container maxW="container.lg" px={{ base: '4', md: '0' }}>
                 <Box textAlign="center">
-                    <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="900">
+                    <Text fontSize={{ base: '3xl', md: 'xl' }} fontWeight="700">
                         {t('HOW_IT_WORKS')}
                     </Text>
                 </Box>
-                <Flex mt="16" justifyContent="space-between">
-                    <Box>
-                        <Text fontSize="3xl" fontWeight="900" opacity={0.5}>
-                            1.
-                        </Text>
-                        <Text fontSize="2xl" fontWeight="700">
+                <Flex
+                    position="relative"
+                    mt="24"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    direction={{ base: 'column', md: 'row' }}
+                >
+                    <Box position="absolute" top="10%" left="0">
+                        <Avatar name="1" bg="blue.500" size="sm" />
+                        <Text fontSize="6xl" fontWeight="700">
                             Visit the app
                         </Text>
                     </Box>
-                    <Image boxShadow="xl" borderRadius="xl" w="50%" src={`steps/${colorMode}/1.png`} />
+                    <Image
+                        boxShadow="xl"
+                        borderRadius="xl"
+                        w={{ base: '100%', md: '75%' }}
+                        src={`steps/${colorMode}/1.png`}
+                    />
+                </Flex>
+                <Flex
+                    position="relative"
+                    mt="24"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    direction={{ base: 'column', md: 'row' }}
+                >
+                    <Box position="absolute" top="10%" right="0">
+                        <Avatar name="2" bg="blue.500" size="sm" />
+                        <Text fontSize="6xl" fontWeight="700">
+                            Select a route
+                        </Text>
+                    </Box>
+                    <Image
+                        boxShadow="xl"
+                        borderRadius="xl"
+                        w={{ base: '100%', md: '75%' }}
+                        src={`steps/${colorMode}/2.png`}
+                    />
+                </Flex>
+                <Flex
+                    position="relative"
+                    mt="24"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    direction={{ base: 'column', md: 'row' }}
+                >
+                    <Box position="absolute" top="10%" left="0">
+                        <Avatar name="3" bg="blue.500" size="sm" />
+                        <Text fontSize="6xl" fontWeight="700">
+                            Track the busses
+                        </Text>
+                    </Box>
+                    <Image
+                        boxShadow="xl"
+                        borderRadius="xl"
+                        w={{ base: '100%', md: '75%' }}
+                        src={`steps/${colorMode}/3.png`}
+                    />
+                </Flex>
+                <Flex
+                    position="relative"
+                    mt="24"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    direction={{ base: 'column', md: 'row' }}
+                >
+                    <Box position="absolute" top="10%" right="0">
+                        <Avatar name="2" bg="blue.500" size="sm" />
+                        <Text fontSize="6xl" fontWeight="700">
+                            Check stops
+                        </Text>
+                    </Box>
+                    <Image
+                        boxShadow="xl"
+                        borderRadius="xl"
+                        w={{ base: '100%', md: '75%' }}
+                        src={`steps/${colorMode}/4.png`}
+                    />
                 </Flex>
             </Container>
         </Box>
