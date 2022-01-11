@@ -5,8 +5,6 @@ import {
     Text,
     Flex,
     Drawer as ChakraDrawer,
-    DrawerBody,
-    DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
@@ -14,12 +12,13 @@ import {
     IconButton,
     HStack,
 } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { IoIosClose } from 'react-icons/io';
+
 import { LocaleColorMode } from 'shared/LocaleColorMode';
 
 export const Drawer: FC = () => {
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
