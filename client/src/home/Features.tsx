@@ -42,7 +42,9 @@ export const Features: FC = () => {
                 <Text fontSize="2xl" fontWeight="700" pt="4">
                     {t(title)}
                 </Text>
-                <Text pt="1">{t(details)}</Text>
+                <Text pt="1" fontWeight="500">
+                    {t(details)}
+                </Text>
             </Box>
         );
     };

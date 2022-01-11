@@ -17,7 +17,7 @@ export const Navbar: FC = () => {
     };
 
     return (
-        <Flex position="fixed" p="4" top="0" bg={bg} w="100%">
+        <Flex position="fixed" p="4" top="0" bg={bg} w="100%" zIndex="10">
             <Container maxW="container.lg">
                 <Flex justifyContent="space-between" alignItems="center">
                     <HStack alignItems="center" spacing={8} display={{ base: 'none', md: 'flex' }}>

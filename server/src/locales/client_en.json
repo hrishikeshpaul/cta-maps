@@ -11,5 +11,8 @@
     "LOCALE": "Internationalized",
     "LOCALE_DETAILS": "trackCTA is available in the 3 most spoken languages in Chicago - English, Spanish and Chinese.",
     "PERSONAL": "Personalize",
-    "PERSONAL_DETAILS": "Favorite busses and stops so that you can quickly visit them whenever you want."
+    "PERSONAL_DETAILS": "Favorite busses and stops so that you can quickly visit them whenever you want.",
+    "COMING_SOON": "Coming soon on Android and iOS",
+    "ENTER_EMAIL": "Enter email...",
+    "NOTIFY_ME": "Notify Me"
 }
