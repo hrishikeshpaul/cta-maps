@@ -13,6 +13,8 @@ import {
     FormLabel,
     Textarea,
     Flex,
+    useToast,
+    useColorModeValue,
 } from '@chakra-ui/react';
 
 import { useTranslation } from 'react-i18next';
@@ -37,6 +39,10 @@ export const Contact: FC = () => {
     const { t } = useTranslation();
     const [form, setForm] = useState<Form>(initialForm);
     const [error, setError] = useState<FormError>(initialFormError);
+    const [loading, setLoading] = useState<boolean>(false);
+    const toast = useToast();
+    const bg = useColorModeValue('gray.100', 'gray.700');
+    const iconColor = useColorModeValue('gray.600', 'gray.300');
 
     const validateEmail = (email: string) => {
         const exp = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
@@ -64,7 +70,19 @@ export const Contact: FC = () => {
         setError(currentError);
 
         if (!currentError.email && !currentError.email) {
-            const response = await sendMessage(form.email, form.message);
+            try {
+                setLoading(true);
+                await sendMessage(form.email, form.message);
+
+                setLoading(false);
+                setForm(initialForm);
+                setError(initialFormError);
+                toast.closeAll();
+                toast({ description: 'Message sent!', status: 'success' });
+            } catch (err) {
+                toast.closeAll();
+                toast({ description: 'Could not send. Please try again later', status: 'error' });
+            }
         } else {
             console.log('show errors');
         }
@@ -73,16 +91,23 @@ export const Contact: FC = () => {
     return (
         <Box>
             <Container maxW="container.lg">
-                <Box pt="16" pb="24">
+                <Box pt="8" pb="24">
                     <Heading fontWeight="bold">{t('CONTACT')}</Heading>
                     <form onSubmit={onSubmit}>
                         <FormControl mt="8" isInvalid={error.email}>
                             <FormLabel fontSize="sm">{t('EMAIL')}</FormLabel>
                             <InputGroup>
-                                <InputLeftElement>
+                                <InputLeftElement color={iconColor}>
                                     <MailIcon />
                                 </InputLeftElement>
-                                <Input onChange={onChange} name="email" placeholder={t('ENTER_EMAIL')} />
+                                <Input
+                                    border="0"
+                                    bg={bg}
+                                    value={form.email}
+                                    onChange={onChange}
+                                    name="email"
+                                    placeholder={t('ENTER_EMAIL')}
+                                />
                             </InputGroup>
                             {error.email && (
                                 <Text color="red.500" pt="1" fontSize="xs">
@@ -93,12 +118,15 @@ export const Contact: FC = () => {
                         <FormControl mt="4" isInvalid={error.message}>
                             <FormLabel fontSize="sm">{t('MESSAGE')}</FormLabel>
                             <InputGroup>
-                                <InputLeftElement>
+                                <InputLeftElement color={iconColor}>
                                     <MessageIcon />
                                 </InputLeftElement>
                                 <Textarea
+                                    border="0"
+                                    value={form.message}
                                     onChange={onChange}
                                     rows={5}
+                                    bg={bg}
                                     name="message"
                                     placeholder={t('ENTER_MESSAGE')}
                                     pl="40px"
@@ -111,7 +139,7 @@ export const Contact: FC = () => {
                             )}
                         </FormControl>
                         <Flex justifyContent="flex-end">
-                            <Button mt="4" colorScheme="blue" type="submit">
+                            <Button mt="4" colorScheme="blue" type="submit" isLoading={loading}>
                                 {t('SEND')}
                             </Button>
                         </Flex>

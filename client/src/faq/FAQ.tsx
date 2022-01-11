@@ -22,7 +22,7 @@ export const FAQ: FunctionComponent = () => {
     return (
         <Box>
             <Container maxW="container.lg">
-                <Box pt="16" pb="24">
+                <Box pt="8" pb="24">
                     <Heading fontWeight="bold">{t('FAQ_FULL', { ns: 'client' })}</Heading>
                     <Accordion mt="8" allowMultiple>
                         {faqData.map((data) => (

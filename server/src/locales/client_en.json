@@ -34,5 +34,5 @@
     "SELECT_ROUTE": "Select route(s)",
     "TRACK_BUSSES": "Track the busses",
     "CHECK_STOPS": "Check stops",
-    "SEND": "Send"
+    "SEND": "Send Message"
 }

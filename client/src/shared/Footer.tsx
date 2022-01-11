@@ -54,7 +54,6 @@ export const Footer: FC = () => {
                     >
                         <Flex direction="column" justifyContent="flex-start" textAlign="start">
                             <SectionTitle label="APPLICATION" />
-                            {/* <SectionLink label="GUIDE" route="/guide" /> */}
                             <SectionLink label="FAQ" route="/faq" />
                             <SectionLink label="TERMS" route="/terms" />
                             <SectionLink label="POLICY" route="/policy" />
@@ -67,7 +66,7 @@ export const Footer: FC = () => {
                             mt={{ base: '4', md: '0' }}
                         >
                             <SectionTitle label="HELP" />
-                            <SectionLink label="CONTACT" route="/guide" />
+                            <SectionLink label="CONTACT" route="/contact" />
                             <SectionLink label="CONTRIBUTE" />
                             <SectionLink label="STATUS" route="/status" />
                         </Flex>
