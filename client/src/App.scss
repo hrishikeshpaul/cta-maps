@@ -2,3 +2,21 @@
   height: 100% !important;
   width: 100%;
 }
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 3px;
+}
+
+::-webkit-scrollbar:hover {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(142, 142, 143);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

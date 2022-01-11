@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Avatar, Box, Container, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Avatar, Box, Container, Stack, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { IconType } from 'react-icons/lib';
 
@@ -32,13 +32,11 @@ const features: FeatureItem[] = [
 
 export const Features: FC = () => {
     const { t } = useTranslation();
-    const bg = useColorModeValue('gray.100', 'gray.700');
-    const iconColor = useColorModeValue('gray.800', 'white');
 
     const Item: FC<FeatureItem> = ({ Icon, title, details }) => {
         return (
-            <Box>
-                <Avatar icon={<Icon fontSize="36px" />} bg="transparent" color={iconColor} />
+            <Box color="white">
+                <Avatar color="blue.300" icon={<Icon fontSize="36px" />} bg="transparent" />
                 <Text fontSize="2xl" fontWeight="700" pt="4">
                     {t(title)}
                 </Text>
@@ -50,10 +48,10 @@ export const Features: FC = () => {
     };
 
     return (
-        <Box bg={bg} w="100%" py="16">
+        <Box bg="blue.500" w="100%" py="24">
             <Container maxW="container.lg">
                 <Box textAlign="center">
-                    <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="900">
+                    <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="900" color="white">
                         {t('WHY')}
                     </Text>
                     <Stack
@@ -63,7 +61,7 @@ export const Features: FC = () => {
                         spacing={24}
                     >
                         {features.map((feature) => (
-                            <Item {...feature} />
+                            <Item {...feature} key={feature.title} />
                         ))}
                     </Stack>
                 </Box>
