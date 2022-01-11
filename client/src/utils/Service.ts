@@ -14,3 +14,9 @@ export const getLocaleJson = async (url: string): Promise<LocaleResponse> => {
 
     return { data, status };
 };
+
+export const sendMessage = async (email: string, message: string): Promise<string> => {
+    const { data } = await Http.post('/contact', { email, message });
+
+    return data;
+};

@@ -22,9 +22,9 @@ export const Navbar: FC = () => {
                 <Flex justifyContent="space-between" alignItems="center">
                     <HStack alignItems="center" spacing={8} display={{ base: 'none', md: 'flex' }}>
                         <Avatar src="/logo.svg" h="40px" w="40px" cursor="pointer" as={NavLink} to="/" />
-                        <Link fontWeight="600" pl="4" to="/manual" as={NavLink}>
+                        {/* <Link fontWeight="600" pl="4" to="/guide" as={NavLink}>
                             {t('GUIDE')}
-                        </Link>
+                        </Link> */}
                         <Link fontWeight="600" to="/faq" as={NavLink}>
                             {t('FAQ')}
                         </Link>

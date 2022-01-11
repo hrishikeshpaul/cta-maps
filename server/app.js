@@ -16,6 +16,7 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer, { cors: '*', transports: ['websocket'], allowUpgrades: false });
 
 app.use(cors());
+app.use(express.json());
 
 app.use('/v1/api', router);
 

@@ -15,6 +15,11 @@
     "RESPONSIVE_DETAILS": "trackCTA is a 100% responsive and is designed to work on phones",
     "COMING_SOON": "Coming soon on Android and iOS",
     "ENTER_EMAIL": "Enter email...",
+    "EMAIL": "Email",
+    "EMAIL_ERROR": "Please enter a valid email",
+    "ENTER_MESSAGE": "Enter message...",
+    "MESSAGE": "Message",
+    "MESSAGE_ERROR": "Please enter a message",
     "NOTIFY_ME": "Notify Me",
     "APPLICATION": "Application",
     "GUIDE": "Guide",
@@ -28,5 +33,6 @@
     "VISIT_THE_APP": "Visit the app",
     "SELECT_ROUTE": "Select route(s)",
     "TRACK_BUSSES": "Track the busses",
-    "CHECK_STOPS": "Check stops"
+    "CHECK_STOPS": "Check stops",
+    "SEND": "Send"
 }
