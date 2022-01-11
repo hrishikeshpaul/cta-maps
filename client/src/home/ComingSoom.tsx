@@ -11,23 +11,23 @@ export const ComingSoon: FC = () => {
     const inputBg = useColorModeValue('gray.200', 'gray.600');
 
     return (
-        <Box bg={bg} py="16" textAlign="center">
+        <Box bg={'red.500'} py="16" textAlign="center">
             <Container maxW="container.lg">
-                <Text fontWeight="900" fontSize={{ base: '3xl', md: '4xl' }}>
+                <Text fontWeight="900" fontSize={{ base: '3xl', md: '4xl' }} color="white">
                     {t('COMING_SOON')}
                 </Text>
 
                 <InputGroup mt="8">
-                    <InputLeftElement>
+                    <InputLeftElement color="white">
                         <MailIcon />
                     </InputLeftElement>
                     <Input
                         outline="none"
                         fontWeight="400"
                         placeholder={t('ENTER_EMAIL')}
-                        bg={inputBg}
+                        bg={'red.400'}
                         border="none"
-                        _placeholder={{ color: 'gray.400' }}
+                        _placeholder={{ color: 'red.100' }}
                     />
                     <Button colorScheme="blue" ml="2">
                         {t('NOTIFY_ME')}
