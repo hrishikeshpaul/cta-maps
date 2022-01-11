@@ -6,13 +6,13 @@
     "TAGLINE": "Tired of endlessly waiting at your bus stop?",
     "WHY": "Why trackCTA?",
     "LIVE_TRACKING": "Live Tracking",
-    "LIVE_TRACKING_DETAILS": "trackCTA uses live data from the CTA servers to show the location of busses and predictions.",
+    "LIVE_TRACKING_DETAILS": "The trackCTA app uses live data from the CTA servers to show the location of busses and predictions.",
     "LOCALE": "Internationalized",
-    "LOCALE_DETAILS": "trackCTA is available in the 3 most spoken languages in Chicago - English, Spanish and Chinese.",
+    "LOCALE_DETAILS": "The trackCTA app is available in the 3 most spoken languages in Chicago - English, Spanish and Chinese.",
     "PERSONAL": "Personalize",
-    "PERSONAL_DETAILS": "Favorite busses and stops so that you can quickly visit them whenever you want.",
+    "PERSONAL_DETAILS": "Bookmark your favorite busses and stops so that you can quickly visit them whenever you want.",
     "RESPONSIVE": "Responsive",
-    "RESPONSIVE_DETAILS": "trackCTA is a 100% responsive and is designed to work on phones",
+    "RESPONSIVE_DETAILS": "The trackCTA app is a 100% responsive and is designed to work on mobile phones, tablets and other screens.",
     "COMING_SOON": "Coming soon on Android and iOS",
     "ENTER_EMAIL": "Enter email...",
     "EMAIL": "Email",
@@ -34,5 +34,6 @@
     "SELECT_ROUTE": "Select route(s)",
     "TRACK_BUSSES": "Track the busses",
     "CHECK_STOPS": "Check stops",
-    "SEND": "Send Message"
+    "SEND": "Send Message",
+    "HOME": "Home"
 }
