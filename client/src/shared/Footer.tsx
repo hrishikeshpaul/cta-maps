@@ -1,42 +1,9 @@
 import { FC } from 'react';
 
-import { Avatar, Box, Container, Divider, Flex, HStack, Link, Text, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Container, Flex, Link, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
-const links = [
-    {
-        label: 'USAGE',
-        route: '/manual',
-    },
-    {
-        label: 'FAQ',
-        route: '/faq',
-    },
-    {
-        label: 'POLICY',
-        route: '/terms',
-    },
-    {
-        label: 'POLICY',
-        route: '/policy',
-    },
-    {
-        label: 'CONTRIBUTE',
-        click: () => window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank'),
-    },
-    {
-        label: 'STATUS',
-        route: '/status',
-    },
-    {
-        label: 'LANGUAGE',
-    },
-    {
-        label: 'USAGE',
-        route: '/manual',
-    },
-];
 export const Footer: FC = () => {
     const { t } = useTranslation();
     const SectionTitle: FC<{ label: string }> = ({ label }) => {
@@ -47,9 +14,9 @@ export const Footer: FC = () => {
         );
     };
 
-    const SectionLink: FC<{ label: string; route?: string; onClick?: () => void }> = ({ label, route }) => {
+    const SectionLink: FC<{ label: string; route?: string; onClick?: () => void }> = ({ label, route, onClick }) => {
         return (
-            <Link fontSize="sm" fontWeight="500" color="blue.500" as={NavLink} to={route || ''}>
+            <Link fontSize="sm" fontWeight="500" color="blue.500" as={NavLink} to={route || ''} onClick={onClick}>
                 {t(label)}
             </Link>
         );

@@ -56,7 +56,7 @@ export const Home: FC = () => {
                     </Button>
                 </Center>
             </Container>
-            <Steps />
+            {/* <Steps /> */}
             <Features />
             <ComingSoon />
             <Footer />

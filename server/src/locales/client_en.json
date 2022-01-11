@@ -1,6 +1,6 @@
 {
     "CONTACT": "Contact",
-    "FAQ": "FAQ",
+    "FAQ": "Questions",
     "START_TRACKING": "Start Tracking",
     "FAQ_FULL": "Frequently Asked Questions",
     "TAGLINE": "Tired of endlessly waiting at your bus stop?",
@@ -24,5 +24,9 @@
     "CONTRIBUTE": "Contribute",
     "STATUS": "Status",
     "LANGUAGE": "Language",
-    "HOW_IT_WORKS": "How it works"
+    "HOW_IT_WORKS": "How it works",
+    "VISIT_THE_APP": "Visit the app",
+    "SELECT_ROUTE": "Select route(s)",
+    "TRACK_BUSSES": "Track the busses",
+    "CHECK_STOPS": "Check stops"
 }

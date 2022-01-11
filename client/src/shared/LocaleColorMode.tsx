@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { HStack, IconButton, useColorMode } from '@chakra-ui/react';
-import { LanguageIcon, MoonIcon, SunIcon } from 'utils/Icons';
+import { MoonIcon, SunIcon } from 'utils/Icons';
 
 interface Props {
     display?: any;
@@ -12,7 +12,7 @@ export const LocaleColorMode: FC<Props> = ({ display }) => {
 
     return (
         <HStack display={display}>
-            <IconButton fontSize="xl" aria-label="locale" icon={<LanguageIcon />} variant="ghost" />
+            {/* <IconButton fontSize="xl" aria-label="locale" icon={<LanguageIcon />} variant="ghost" /> */}
             <IconButton
                 fontSize="xl"
                 aria-label="appearance"
