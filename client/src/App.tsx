@@ -1,10 +1,11 @@
-import { FC, useState } from 'react';
+import { FC, Suspense, useState } from 'react';
 
 import { Center, Spinner } from '@chakra-ui/react';
 import { LocaleProvider } from 'locale/LocaleProvider';
 import { Content } from 'utils/Content';
 
 import './App.scss';
+import { BrowserRouter } from 'react-router-dom';
 
 export const App: FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -12,12 +13,17 @@ export const App: FC = () => {
     return (
         <div className="App">
             <LocaleProvider setSystemLoading={setLoading} />
+            
             {loading ? (
-                <Center>
-                    <Spinner />
+                <Center h="100%" w="100%">
+                    <Spinner color="blue.400" size="lg" />
                 </Center>
             ) : (
-                <Content />
+                <Suspense fallback={null}>
+                    <BrowserRouter>
+                        <Content />
+                    </BrowserRouter>
+                </Suspense>
             )}
         </div>
     );

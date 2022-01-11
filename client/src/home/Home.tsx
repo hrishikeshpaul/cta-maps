@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { Features } from './Features';
 import { ComingSoon } from './ComingSoom';
 import { Footer } from 'shared/Footer';
-import { Steps } from './Steps';
 
 export const Home: FC = () => {
     const { t } = useTranslation();

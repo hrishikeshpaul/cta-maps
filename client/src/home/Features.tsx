@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Avatar, Box, Container, Divider, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { Avatar, Box, Container, Divider, SimpleGrid, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { IconType } from 'react-icons/lib';
 

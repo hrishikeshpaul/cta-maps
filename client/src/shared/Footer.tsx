@@ -70,7 +70,6 @@ export const Footer: FC = () => {
                             <SectionLink label="CONTACT" route="/guide" />
                             <SectionLink label="CONTRIBUTE" />
                             <SectionLink label="STATUS" route="/status" />
-                            <SectionLink label="LANGUAGE" />
                         </Flex>
                     </Flex>
                     <Rights pt="6" display={{ base: 'flex', md: 'none' }} />

@@ -1,18 +1,6 @@
 import { FC } from 'react';
 
-import {
-    Avatar,
-    Box,
-    Center,
-    Container,
-    Divider,
-    Flex,
-    Image,
-    Stack,
-    Text,
-    useColorMode,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Container, Image, Stack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 const steps = [

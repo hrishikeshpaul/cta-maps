@@ -25,10 +25,10 @@ export const Navbar: FC = () => {
                         <Link fontWeight="600" pl="4" to="/manual" as={NavLink}>
                             {t('GUIDE')}
                         </Link>
-                        <Link fontWeight="600" to="/faq">
+                        <Link fontWeight="600" to="/faq" as={NavLink}>
                             {t('FAQ')}
                         </Link>
-                        <Link fontWeight="600" to="/contact">
+                        <Link fontWeight="600" to="/contact" as={NavLink}>
                             {t('CONTACT')}
                         </Link>
                     </HStack>
@@ -37,7 +37,7 @@ export const Navbar: FC = () => {
                         <Drawer />
                     </Box>
 
-                    <HStack>
+                    <HStack spacing="4">
                         <LocaleColorMode display={{ base: 'none', md: 'flex' }} />
                         <Button colorScheme="blue" rightIcon={<ArrowRightIcon />} onClick={onStart}>
                             {t('START_TRACKING')}
