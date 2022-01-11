@@ -86,16 +86,6 @@ export const Footer: FC = () => {
                         </Flex>
                     </HStack>
                 </Flex>
-                <Divider />
-                <Flex justifyContent="center" py="2" alignItems="center">
-                    {/* <IconButton
-                        aria-label="github-button"
-                        icon={<GitHubIcon />}
-                        fontSize="xl"
-                        variant="ghost"
-                        size="sm"
-                    /> */}
-                </Flex>
             </Container>
         </Box>
     );
