@@ -41,7 +41,7 @@ export const Footer: FC = () => {
                     <Box>
                         <Flex alignItems="center">
                             <Avatar src="logo.svg" size="sm" />
-                            <Text fontWeight="700" pl="2">
+                            <Text fontWeight="800" pl="2" fontSize="sm" opacity="0.9">
                                 trackCTA
                             </Text>
                         </Flex>

@@ -14,13 +14,14 @@ import {
     HStack,
     useColorModeValue,
     DrawerBody,
-    Link,
+    LinkBox,
 } from '@chakra-ui/react';
 import { IoIosClose } from 'react-icons/io';
 import { useTranslation } from 'react-i18next';
 
 import { LocaleColorMode } from 'shared/LocaleColorMode';
 import { NavLink } from 'react-router-dom';
+import { MenuIcon } from 'utils/Icons';
 
 interface ItemProp {
     label: string;
@@ -62,26 +63,29 @@ export const Drawer: FC = () => {
 
     const Item: FC<ItemProp> = ({ label, route, onClick }) => {
         return (
-            <Box
-                bg={window.location.pathname === route ? bg : 'transparent'}
-                px="2"
-                py="4"
-                borderRadius="lg"
-                onClick={() => {
-                    onClose();
-                    if (onClick) onClick();
-                }}
-            >
-                <Link fontWeight="600" fontSize="lg" p="4" as={NavLink} to={route || ''}>
-                    {t(label)}
-                </Link>
-            </Box>
+            <LinkBox as={NavLink} to={route || ''}>
+                <Box
+                    bg={window.location.pathname === route ? bg : 'transparent'}
+                    px="4"
+                    py="4"
+                    onClick={() => {
+                        onClose();
+                        if (onClick) onClick();
+                    }}
+                >
+                    <Text fontWeight="600" fontSize="lg">
+                        {t(label)}
+                    </Text>
+                </Box>
+            </LinkBox>
         );
     };
 
     return (
         <>
-            <Avatar src="logo.svg" h="40px" w="40px" cursor="pointer" onClick={onOpen} />
+            <IconButton aria-label="icon-button" icon={<MenuIcon />} onClick={onOpen} mr="2" variant="ghost" />
+            <Avatar src="logo.svg" h="40px" w="40px" />
+
             <ChakraDrawer isOpen={isOpen} onClose={onClose} placement="left">
                 <DrawerOverlay />
                 <DrawerContent>
@@ -103,9 +107,9 @@ export const Drawer: FC = () => {
                             </HStack>
                         </Flex>
                     </DrawerHeader>
-                    <DrawerBody px="4">
+                    <DrawerBody px="0">
                         {menu.map((item) => (
-                            <Item {...item} />
+                            <Item {...item} key={`drawer-${item.label}`} />
                         ))}
                     </DrawerBody>
                 </DrawerContent>

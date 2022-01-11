@@ -48,6 +48,7 @@ export const Home: FC = () => {
                         onClick={onStart}
                         mt="10"
                         alignItems="center"
+                        fontWeight="700"
                     >
                         <Text fontSize={{ base: 'xl', md: '2xl' }} lineHeight="1">
                             {t('START_TRACKING')}

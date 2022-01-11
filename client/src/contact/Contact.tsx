@@ -138,8 +138,8 @@ export const Contact: FC = () => {
                                 </Text>
                             )}
                         </FormControl>
-                        <Flex justifyContent="flex-end">
-                            <Button mt="4" colorScheme="blue" type="submit" isLoading={loading}>
+                        <Flex justifyContent="flex-end" mt="6">
+                            <Button colorScheme="blue" type="submit" isLoading={loading}>
                                 {t('SEND')}
                             </Button>
                         </Flex>
