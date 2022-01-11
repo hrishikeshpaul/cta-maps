@@ -2,12 +2,13 @@ import { FC } from 'react';
 
 import { Box, Button, Container, Input, InputGroup, InputLeftElement, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
 import { MailIcon } from 'utils/Icons';
 
 export const ComingSoon: FC = () => {
     const { t } = useTranslation();
     const bg = useColorModeValue('gray.100', 'gray.700');
-    const inputBg = useColorModeValue('white', 'gray.600');
+    const inputBg = useColorModeValue('gray.200', 'gray.600');
 
     return (
         <Box bg={bg} py="16" textAlign="center">
@@ -21,9 +22,8 @@ export const ComingSoon: FC = () => {
                         <MailIcon />
                     </InputLeftElement>
                     <Input
-                        _focus={{ outline: '0', border: 'none' }}
                         outline="none"
-                        fontWeight="500"
+                        fontWeight="400"
                         placeholder={t('ENTER_EMAIL')}
                         bg={inputBg}
                         border="none"

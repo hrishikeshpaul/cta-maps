@@ -4,6 +4,7 @@ import { Box, Button, Center, Container, Heading, Text, useColorModeValue } from
 import { useTranslation } from 'react-i18next';
 import { Features } from './Features';
 import { ComingSoon } from './ComingSoom';
+import { Footer } from 'shared/Footer';
 
 export const Home: FC = () => {
     const { t } = useTranslation();
@@ -56,6 +57,7 @@ export const Home: FC = () => {
             </Container>
             <Features />
             <ComingSoon />
+            <Footer />
         </Box>
     );
 };

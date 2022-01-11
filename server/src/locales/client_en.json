@@ -1,5 +1,4 @@
 {
-    "MANUAL": "Manual",
     "CONTACT": "Contact",
     "FAQ": "FAQ",
     "START_TRACKING": "Start Tracking",
@@ -14,5 +13,13 @@
     "PERSONAL_DETAILS": "Favorite busses and stops so that you can quickly visit them whenever you want.",
     "COMING_SOON": "Coming soon on Android and iOS",
     "ENTER_EMAIL": "Enter email...",
-    "NOTIFY_ME": "Notify Me"
+    "NOTIFY_ME": "Notify Me",
+    "APPLICATION": "Application",
+    "GUIDE": "Guide",
+    "TERMS": "Terms",
+    "POLICY": "Policy",
+    "HELP": "Help",
+    "CONTRIBUTE": "Contribute",
+    "STATUS": "Status",
+    "LANGUAGE": "Language"
 }

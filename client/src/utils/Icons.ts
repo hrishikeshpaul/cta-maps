@@ -5,5 +5,6 @@ export {
     IoMoon as MoonIcon,
     IoSunny as SunIcon,
     IoMailOutline as MailIcon,
+    IoLogoGithub as GitHubIcon,
 } from 'react-icons/io5';
 export { RiUserHeartLine as UserHeartIcon } from 'react-icons/ri';
