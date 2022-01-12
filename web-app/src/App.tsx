@@ -6,7 +6,6 @@ import { Landing } from 'landing/Landing';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 import { AppContent } from 'utils/Content';
-import { FAQ } from 'utils/FAQ';
 import { Settings } from 'utils/Settings';
 
 import './App.scss';
