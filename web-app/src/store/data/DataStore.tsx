@@ -94,7 +94,7 @@ interface DataStoreProviderProps {
 export const initialStoreState: DataStoreState = {
     stop: null,
     vehicle: null,
-    routes: [],
+    routes: {},
     patterns: [],
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
@@ -109,21 +109,23 @@ const DataStoreDispatchContext = createContext<Dispatch<DataStoreAction> | undef
 const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStoreState => {
     switch (action.type) {
         case DataStoreActionType.SetRoute:
-            return { ...state, routes: [...state.routes, { ...(action.payload as PayloadSetRoute).route }] };
+            const { route } = action.payload as PayloadSetRoute;
+            return { ...state, routes: { ...state.routes, [route.route]: route } };
         case DataStoreActionType.RemoveRoute:
             const { id } = action.payload as PayloadRemoveRoute;
-            const updatedRoutes = state.routes.filter((route) => route.route !== id);
+            const updatedRoutes = { ...state.routes };
+            delete updatedRoutes[id];
             const updatedPatterns = state.patterns.filter((pattern) => pattern.route !== id);
             const updatedVehicles = state.vehicles.filter((vehicle) => vehicle.route !== id);
 
             return {
                 ...state,
-                routes: [...updatedRoutes],
+                routes: { ...updatedRoutes },
                 patterns: [...updatedPatterns],
                 vehicles: [...updatedVehicles],
             };
         case DataStoreActionType.RemoveAllRoutes:
-            return { ...state, routes: [], patterns: [], vehicles: [] };
+            return { ...state, routes: {}, patterns: [], vehicles: [] };
         case DataStoreActionType.SetPattern:
             return {
                 ...state,

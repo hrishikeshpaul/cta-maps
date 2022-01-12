@@ -21,7 +21,7 @@ export const Nav: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        setSelected(routes.length > 0);
+        setSelected(Object.keys(routes).length > 0);
     }, [routes]);
 
     return (
@@ -49,7 +49,7 @@ export const Nav: FunctionComponent = () => {
                     </Text>
                     {selected && (
                         <Flex flexWrap="wrap" mt="1">
-                            {routes.map((route) => (
+                            {Object.values(routes).map((route) => (
                                 <Box h="12px" w="15px" bg={route.color} mx="1" borderRadius="sm" key={route.route} />
                             ))}
                         </Flex>

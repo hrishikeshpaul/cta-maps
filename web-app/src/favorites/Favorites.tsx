@@ -19,18 +19,22 @@ import {
     TabPanels,
     Tab,
     TabPanel,
+    Icon,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { useSystemStore } from 'store/system/SystemStore';
 import { useDataStore } from 'store/data/DataStore';
-import { CloseIcon, RightIcon, TrashIcon } from 'utils/Icons';
+import { CheckIcon, CloseIcon, RightIcon, TrashIcon } from 'utils/Icons';
+import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
 
 export const Favorites: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ favoriteStops, favoriteRoutes }, { openStop, unSaveRoute }] = useDataStore();
+    const [{ favoriteStops, favoriteRoutes, routes }, { openStop, unSaveRoute, setRoute }] = useDataStore();
     const [{ favoritesOpen }, { closeFavorites }] = useSystemStore();
     const bg = useColorModeValue('#ececec', '#4A5568');
+
+    const onToggleRoute = () => {};
 
     return (
         <>
@@ -105,7 +109,12 @@ export const Favorites: FunctionComponent = () => {
                                         return (
                                             <Box key={`fav-route-${route}`}>
                                                 <Flex justifyContent="center" alignItems="center" p="4">
-                                                    <Flex alignItems="center" overflow="hidden" w="100%">
+                                                    <Flex
+                                                        alignItems="center"
+                                                        overflow="hidden"
+                                                        w="100%"
+                                                        onClick={() => setRoute({ route, color, name })}
+                                                    >
                                                         <Center h="40px" w="40px" bg={color} borderRadius="md">
                                                             <Text color="white" fontWeight="bold">
                                                                 {route}
@@ -115,11 +124,17 @@ export const Favorites: FunctionComponent = () => {
                                                             {name}
                                                         </Text>
                                                     </Flex>
-                                                    <IconButton
-                                                        aria-label="delete"
-                                                        icon={<TrashIcon />}
-                                                        onClick={() => unSaveRoute(route)}
-                                                    />
+                                                    <Flex alignItems="center">
+                                                        <Icon fontSize="2xl" mr="2">
+                                                            <CheckIcon />
+                                                        </Icon>
+
+                                                        <FavoriteIcon
+                                                            ariaLabel="fav-route"
+                                                            onClick={() => unSaveRoute(route)}
+                                                            isFav
+                                                        />
+                                                    </Flex>
                                                 </Flex>
                                                 <Divider />
                                             </Box>

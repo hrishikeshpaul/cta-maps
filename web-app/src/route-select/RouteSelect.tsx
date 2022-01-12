@@ -39,7 +39,9 @@ export const RouteSelect: FunctionComponent = () => {
     const debouncedQuery = useDebounce(query);
 
     const getFilter = () => {
-        return currentRoutes.map((route) => route.route).join(',');
+        return Object.keys(currentRoutes)
+            .map((route) => route)
+            .join(',');
     };
 
     const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
@@ -67,7 +69,10 @@ export const RouteSelect: FunctionComponent = () => {
     const onOpen = async () => {
         const filter = getFilter();
         const response = await getRoutes(query, filter, LIMIT, index);
-        const selectedRoutes: RouteExtended[] = currentRoutes.map((route) => ({ ...route, selected: true }));
+        const selectedRoutes: RouteExtended[] = Object.values(currentRoutes).map((route) => ({
+            ...route,
+            selected: true,
+        }));
         let unselectedRoutes: RouteExtended[] = [];
 
         if (response) {
@@ -90,7 +95,7 @@ export const RouteSelect: FunctionComponent = () => {
     }, [routeSelectOpen]); // eslint-disable-line
 
     useEffect(() => {
-        if (currentRoutes.length === 0) {
+        if (Object.keys(currentRoutes).length === 0) {
             setRoutes((prevRoutes) => {
                 const updatedRoutes: RouteExtended[] = [...prevRoutes];
 
@@ -106,7 +111,7 @@ export const RouteSelect: FunctionComponent = () => {
     useEffect(() => {
         (async () => {
             if (debouncedQuery) {
-                const filter = currentRoutes.map((route) => route.route).join(',');
+                const filter = getFilter();
                 const response = await getRoutes(debouncedQuery, filter, LIMIT, index);
 
                 if (response) {
@@ -133,7 +138,7 @@ export const RouteSelect: FunctionComponent = () => {
                         routes={routes}
                         currentRoute={{
                             ...route,
-                            selected: currentRoutes.findIndex((r) => r.route === route.route) !== -1,
+                            selected: !!currentRoutes[route.route],
                         }}
                         setInspectorData={setInspectorData}
                         key={route.route}

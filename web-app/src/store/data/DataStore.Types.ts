@@ -75,7 +75,7 @@ export interface Prediction {
 
 export interface DataStoreState {
     currentLocation: Point;
-    routes: Route[];
+    routes: Record<string, Route>;
     patterns: Pattern[];
     stop: Stop | null;
     vehicle: Vehicle | null;
