@@ -1,12 +1,19 @@
 {
+  "projects": {},
   "targets": {
-    "hosting": {
-      "www": [
-        "trackcta-client"
-      ],
-      "app": [
-        "trackcta"
-      ]
+    "trackcta": {
+      "hosting": {
+        "app": [
+          "trackcta"
+        ]
+      }
+    },
+    "trackcta-website": {
+      "hosting": {
+        "www": [
+          "trackcta-website"
+        ]
+      }
     }
   }
 }
