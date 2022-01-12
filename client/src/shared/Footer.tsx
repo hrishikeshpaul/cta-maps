@@ -29,6 +29,7 @@ export const Footer: FC = () => {
             </Text>
         );
     };
+    
     return (
         <Box>
             <Container maxW="container.lg">
