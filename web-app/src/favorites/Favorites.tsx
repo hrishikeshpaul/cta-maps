@@ -27,14 +27,22 @@ import { useSystemStore } from 'store/system/SystemStore';
 import { useDataStore } from 'store/data/DataStore';
 import { CheckIcon, CloseIcon, RightIcon, TrashIcon } from 'utils/Icons';
 import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
+import { Route } from 'store/data/DataStore.Types';
 
 export const Favorites: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ favoriteStops, favoriteRoutes, routes }, { openStop, unSaveRoute, setRoute }] = useDataStore();
+    const [{ favoriteStops, favoriteRoutes, routes }, { openStop, unSaveRoute, setRoute, removeRoute }] =
+        useDataStore();
     const [{ favoritesOpen }, { closeFavorites }] = useSystemStore();
     const bg = useColorModeValue('#ececec', '#4A5568');
 
-    const onToggleRoute = () => {};
+    const onToggleRoute = (route: Route) => {
+        if (routes[route.route]) {
+            removeRoute(route.route);
+        } else {
+            setRoute(route);
+        }
+    };
 
     return (
         <>
@@ -107,13 +115,13 @@ export const Favorites: FunctionComponent = () => {
                                     )}
                                     {Object.values(favoriteRoutes).map(({ route, color, name }) => {
                                         return (
-                                            <Box key={`fav-route-${route}`}>
+                                            <Box key={`fav-route-${route}`} _active={{ bg }}>
                                                 <Flex justifyContent="center" alignItems="center" p="4">
                                                     <Flex
                                                         alignItems="center"
                                                         overflow="hidden"
                                                         w="100%"
-                                                        onClick={() => setRoute({ route, color, name })}
+                                                        onClick={() => onToggleRoute({ route, color, name })}
                                                     >
                                                         <Center h="40px" w="40px" bg={color} borderRadius="md">
                                                             <Text color="white" fontWeight="bold">
@@ -124,10 +132,12 @@ export const Favorites: FunctionComponent = () => {
                                                             {name}
                                                         </Text>
                                                     </Flex>
-                                                    <Flex alignItems="center">
-                                                        <Icon fontSize="2xl" mr="2">
-                                                            <CheckIcon />
-                                                        </Icon>
+                                                    <Flex alignItems="center" pl="2">
+                                                        {routes[route] && (
+                                                            <Icon fontSize="2xl" mr="3">
+                                                                <CheckIcon />
+                                                            </Icon>
+                                                        )}
 
                                                         <FavoriteIcon
                                                             ariaLabel="fav-route"
