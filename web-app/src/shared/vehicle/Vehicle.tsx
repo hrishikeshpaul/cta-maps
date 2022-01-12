@@ -53,7 +53,7 @@ export const VehicleDrawer: FC = () => {
                 </Flex>
             </BottomSheet.Header>
             <BottomSheet.Body>
-                <Stack spacing="4" p="4">
+                <Stack spacing="6" p="4">
                     <VehicleInfo label={t('ROUTE')} data={vehicle?.route || ''} />
                     <VehicleInfo label={t('DESTINATION')} data={vehicle?.destination || ''} />
                 </Stack>
