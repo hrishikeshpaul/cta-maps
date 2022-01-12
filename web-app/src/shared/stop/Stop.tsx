@@ -7,7 +7,7 @@ import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions } from 'store/data/DataService';
 import { Juncture, Prediction } from 'store/data/DataStore.Types';
-import { DownIcon, HeartFillIcon, HeartIcon, LocationArrowIcon } from 'utils/Icons';
+import { DownIcon, LocationArrowIcon } from 'utils/Icons';
 
 import 'shared/stop/Stop.scss';
 import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';

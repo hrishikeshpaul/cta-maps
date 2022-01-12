@@ -58,7 +58,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
             },
             {
                 text: t('CONTACT'),
-                onClick: () => window.open('https://trackcta.com/cntact', '_blank'),
+                onClick: () => window.open('https://trackcta.com/contact', '_blank'),
             },
             {
                 text: t('SETTINGS'),
