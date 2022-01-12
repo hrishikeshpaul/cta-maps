@@ -1,12 +1,11 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 
 import { Landing } from 'utils/Landing';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 import { AppContent } from 'utils/Content';
-import { Settings } from 'settings/Settings';
 
 import './App.scss';
 
@@ -40,7 +39,7 @@ export const App = () => {
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<AppContent />} />
-                            <Route path="/settings" element={<Settings />} />
+                            <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
                     </BrowserRouter>
                 </Box>
