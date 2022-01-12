@@ -204,6 +204,7 @@ router.post('/contact', async (req, res) => {
 
         res.send('Sent!').status(202);
     } catch (err) {
+        console.log(err);
         res.status(400).send(err);
     }
 });

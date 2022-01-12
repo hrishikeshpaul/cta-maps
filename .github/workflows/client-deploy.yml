@@ -22,7 +22,7 @@ jobs:
 
       - name: Build
         working-directory: ./client
-        run: REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }} yarn build
+        run: yarn build
         env:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
 

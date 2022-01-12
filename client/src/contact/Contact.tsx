@@ -80,6 +80,7 @@ export const Contact: FC = () => {
                 toast.closeAll();
                 toast({ description: 'Message sent!', status: 'success' });
             } catch (err) {
+                setLoading(false);
                 toast.closeAll();
                 toast({ description: 'Could not send. Please try again later', status: 'error' });
             }
