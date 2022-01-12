@@ -4,7 +4,6 @@ import { Avatar, Box, Container, Divider, SimpleGrid, Text } from '@chakra-ui/re
 import { useTranslation } from 'react-i18next';
 
 import { IconType } from 'react-icons/lib';
-
 import { ActivityIcon, LanguageIcon, PhoneIcon, UserHeartIcon } from 'utils/Icons';
 
 interface FeatureItem {
