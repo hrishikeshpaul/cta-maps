@@ -52,20 +52,19 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
 
     const items = useMemo(
         () => [
-            {
-                text: t('USAGE_MANUAL'),
-                onClick: () => onNavigate('/manual'),
-                comingSoon: true,
-            },
+            // {
+            //     text: t('USAGE_MANUAL'),
+            //     onClick: () => onNavigate('/manual'),
+            //     comingSoon: true,
+            // },
             {
                 text: t('FAQ'),
-                onClick: () => onNavigate('/faq'),
+                onClick: () => window.open('https://trackcta.com/faq', '_blank'),
                 comingSoon: false,
             },
             {
                 text: t('CONTACT'),
-                onClick: () => onNavigate('/contact'),
-                comingSoon: true,
+                onClick: () => window.open('https://trackcta.com/cntact', '_blank'),
             },
             {
                 text: t('SETTINGS'),
