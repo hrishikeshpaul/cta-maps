@@ -44,7 +44,7 @@ export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ settings, onCurrentLocationPress }, { setDragging, setAllowLocation, onLocationButtonPress }] =
         useSystemStore();
-    const [{ currentLocation, patterns, vehicles }, { openStop, setCurrentLocation }] = useDataStore();
+    const [{ currentLocation, patterns, vehicles }, { openStop, openVehicle, setCurrentLocation }] = useDataStore();
     const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
@@ -147,6 +147,7 @@ export const MapContainer: FunctionComponent = () => {
                     <>
                         {vehicles.map((vehicle) => (
                             <Marker
+                                onClick={() => openVehicle(vehicle)}
                                 icon={VehicleIconMapper[vehicle.heading]}
                                 position={vehicle.position}
                                 key={vehicle.id}

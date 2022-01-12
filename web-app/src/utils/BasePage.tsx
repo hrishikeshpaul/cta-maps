@@ -2,10 +2,10 @@ import { FunctionComponent, ReactNode } from 'react';
 
 import { Box, Container, Flex, Button, useColorModeValue, Text, Avatar, Divider, HStack, Link } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { HiArrowRight as ArrowRight } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
 import { Info } from 'info/Info';
+import { ArrowRightIcon } from 'utils/Icons';
 
 interface Props {
     children: ReactNode;
@@ -41,7 +41,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                     <Info disableAvatarShadow />
                 </Box>
 
-                <Button colorScheme="blue" rightIcon={<ArrowRight />} onClick={() => navigate('/')}>
+                <Button colorScheme="blue" rightIcon={<ArrowRightIcon />} onClick={() => navigate('/')}>
                     {t('START_TRACKING')}
                 </Button>
             </Flex>

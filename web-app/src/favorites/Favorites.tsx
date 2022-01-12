@@ -21,11 +21,10 @@ import {
     TabPanel,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FiChevronRight, FiTrash } from 'react-icons/fi';
-import { IoIosClose } from 'react-icons/io';
 
 import { useSystemStore } from 'store/system/SystemStore';
 import { useDataStore } from 'store/data/DataStore';
+import { CloseIcon, RightIcon, TrashIcon } from 'utils/Icons';
 
 export const Favorites: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -57,7 +56,7 @@ export const Favorites: FunctionComponent = () => {
                                 aria-label="close"
                                 mr="-3"
                                 onClick={closeFavorites}
-                                icon={<IoIosClose />}
+                                icon={<CloseIcon />}
                             />
                         </Flex>
                     </DrawerHeader>
@@ -90,7 +89,7 @@ export const Favorites: FunctionComponent = () => {
                                                         {favorite.name}
                                                     </Text>
                                                     <Box pl="2">
-                                                        <FiChevronRight />
+                                                        <RightIcon />
                                                     </Box>
                                                 </Flex>
                                                 <Divider />
@@ -118,7 +117,7 @@ export const Favorites: FunctionComponent = () => {
                                                     </Flex>
                                                     <IconButton
                                                         aria-label="delete"
-                                                        icon={<FiTrash />}
+                                                        icon={<TrashIcon />}
                                                         onClick={() => unSaveRoute(route)}
                                                     />
                                                 </Flex>

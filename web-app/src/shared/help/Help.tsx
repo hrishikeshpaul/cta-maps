@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, PopoverArrow } from '@chakra-ui/react';
-import { GoInfo as InfoIcon } from 'react-icons/go';
+import { InfoIcon } from 'utils/Icons';
 
 interface Props {
     label: string;

@@ -78,6 +78,7 @@ export interface DataStoreState {
     routes: Route[];
     patterns: Pattern[];
     stop: Stop | null;
+    vehicle: Vehicle | null;
     error?: any;
     vehicles: Vehicle[];
     favoriteStops: Record<string, Stop>;

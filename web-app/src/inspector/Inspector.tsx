@@ -1,13 +1,12 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 
 import { Text, Center, Flex, IconButton } from '@chakra-ui/react';
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
-import { FiChevronDown } from 'react-icons/fi';
 
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useSystemStore } from 'store/system/SystemStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useDataStore } from 'store/data/DataStore';
+import { DownIcon, HeartFillIcon, HeartIcon } from 'utils/Icons';
 
 interface Props {
     data: Route;
@@ -51,16 +50,10 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
                 <Flex>
                     <IconButton
                         aria-label="favorite"
-                        icon={isFav ? <BsHeartFill /> : <BsHeart />}
+                        icon={isFav ? <HeartFillIcon /> : <HeartIcon />}
                         onClick={onFavHandle}
                     />
-                    <IconButton
-                        fontSize="xl"
-                        aria-label="close"
-                        ml="4"
-                        icon={<FiChevronDown />}
-                        onClick={closeInspector}
-                    />
+                    <IconButton fontSize="xl" aria-label="close" ml="4" icon={<DownIcon />} onClick={closeInspector} />
                 </Flex>
             </BottomSheet.Footer>
         </BottomSheet.Wrapper>

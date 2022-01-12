@@ -28,12 +28,17 @@ export enum DataStoreActionType {
     SetRoute,
     SetPattern,
     SetStop,
+    SetVehicle,
     SetCurrentLocation,
     SetVehicles,
     SetFavoriteStops,
     SetFavoriteRoutes,
     RemoveRoute,
     RemoveAllRoutes,
+}
+
+interface PayloadSetVehicle {
+    vehicle: Vehicle | null;
 }
 
 interface PayloadSetFavoriteRoutes {
@@ -78,7 +83,8 @@ interface DataStoreAction {
         | PayloadSetCurrentLocation
         | PayloadSetVehicles
         | PayloadSetFavoriteStops
-        | PayloadSetFavoriteRoutes;
+        | PayloadSetFavoriteRoutes
+        | PayloadSetVehicle;
 }
 
 interface DataStoreProviderProps {
@@ -87,6 +93,7 @@ interface DataStoreProviderProps {
 
 export const initialStoreState: DataStoreState = {
     stop: null,
+    vehicle: null,
     routes: [],
     patterns: [],
     error: undefined,
@@ -158,6 +165,11 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
                 ...state,
                 favoriteRoutes: (action.payload as PayloadSetFavoriteRoutes).favoriteRoutes,
             };
+        case DataStoreActionType.SetVehicle:
+            return {
+                ...state,
+                vehicle: (action.payload as PayloadSetVehicle).vehicle,
+            };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -209,6 +221,8 @@ interface DataStoreActionApis {
     unSaveStop: (id: string) => void;
     saveRoute: (route: Route) => void;
     unSaveRoute: (id: string) => void;
+    openVehicle: (vehicle: Vehicle) => void;
+    closeVehicle: () => void;
 }
 
 export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
@@ -300,6 +314,12 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             delete favoriteRoutes[id];
 
             dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { favoriteRoutes } });
+        },
+        openVehicle: (vehicle: Vehicle) => {
+            dispatch({ type: DataStoreActionType.SetVehicle, payload: { vehicle } });
+        },
+        closeVehicle: () => {
+            dispatch({ type: DataStoreActionType.SetVehicle, payload: { vehicle: null } });
         },
     };
 

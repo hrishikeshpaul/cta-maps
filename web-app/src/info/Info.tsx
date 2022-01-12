@@ -17,12 +17,11 @@ import {
     Badge,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FiChevronRight, FiMenu } from 'react-icons/fi';
-import { IoIosClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 import { useSystemStore } from 'store/system/SystemStore';
 import { getVersion } from 'store/system/SystemService';
+import { CloseIcon, RightIcon, MenuIcon } from 'utils/Icons';
 
 import 'info/Info.scss';
 
@@ -52,11 +51,6 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
 
     const items = useMemo(
         () => [
-            // {
-            //     text: t('USAGE_MANUAL'),
-            //     onClick: () => onNavigate('/manual'),
-            //     comingSoon: true,
-            // },
             {
                 text: t('FAQ'),
                 onClick: () => window.open('https://trackcta.com/faq', '_blank'),
@@ -90,7 +84,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
         <>
             <IconButton
                 aria-label="menu-icon"
-                icon={<FiMenu />}
+                icon={<MenuIcon />}
                 variant="ghost"
                 bg={buttonBg}
                 onClick={openInfoDrawer}
@@ -111,7 +105,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                                 aria-label="close"
                                 mr="-3"
                                 onClick={closeInfoDrawer}
-                                icon={<IoIosClose />}
+                                icon={<CloseIcon />}
                             />
                         </Flex>
                     </DrawerHeader>
@@ -152,7 +146,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                                                 </Badge>
                                             )}
                                         </Text>
-                                        <FiChevronRight />
+                                        <RightIcon />
                                     </Flex>
                                 );
                             })}

@@ -2,12 +2,11 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, Button, Container, IconButton, Flex, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { MdMyLocation } from 'react-icons/md';
-import { BsHeart } from 'react-icons/bs';
 
 import { Info } from 'info/Info';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
+import { HeartIcon, MyLocationIcon } from 'utils/Icons';
 
 export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -59,14 +58,14 @@ export const Nav: FunctionComponent = () => {
                 <VStack spacing="4">
                     <IconButton
                         aria-label="my-favoriteStops"
-                        icon={<BsHeart />}
+                        icon={<HeartIcon />}
                         bg={buttonBg}
                         boxShadow="lg"
                         onClick={openFavorites}
                     />
                     <IconButton
                         aria-label="my-location"
-                        icon={<MdMyLocation />}
+                        icon={<MyLocationIcon />}
                         bg={buttonBg}
                         boxShadow="lg"
                         onClick={() => onLocationButtonPress(true)}

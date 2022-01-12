@@ -2,16 +2,15 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Center, Box, Text, IconButton, Flex, useToast, Spinner, Badge, Button, Divider } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { BsHeartFill, BsHeart } from 'react-icons/bs';
-import { FaLocationArrow } from 'react-icons/fa';
-import { FiChevronDown } from 'react-icons/fi';
 
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions } from 'store/data/DataService';
 import { Juncture, Prediction } from 'store/data/DataStore.Types';
+import { DownIcon, HeartFillIcon, HeartIcon, LocationArrowIcon } from 'utils/Icons';
 
-import 'stop/Stop.scss';
+import 'shared/stop/Stop.scss';
+import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -136,7 +135,7 @@ export const Stop: FunctionComponent = () => {
                         aria-label="close"
                         mr="-3"
                         onClick={closeStop}
-                        icon={<FiChevronDown />}
+                        icon={<DownIcon />}
                     />
                 </Flex>
                 <Flex pt="4" overflowX="auto">
@@ -176,14 +175,10 @@ export const Stop: FunctionComponent = () => {
             </BottomSheet.Body>
             <BottomSheet.Footer>
                 <Flex justifyContent="space-between" w="100%">
-                    <Button rightIcon={<FaLocationArrow />} onClick={getGoogleMapsDir}>
+                    <Button rightIcon={<LocationArrowIcon />} onClick={getGoogleMapsDir}>
                         <Text pr="2">{t('GET_DIR')}</Text>
                     </Button>
-                    <IconButton
-                        aria-label="favorite"
-                        icon={isFav ? <BsHeartFill /> : <BsHeart />}
-                        onClick={onFavHandle}
-                    />
+                    <FavoriteIcon ariaLabel="favorite-stop" isFav={isFav} onClick={onFavHandle} />
                 </Flex>
             </BottomSheet.Footer>
         </BottomSheet.Wrapper>

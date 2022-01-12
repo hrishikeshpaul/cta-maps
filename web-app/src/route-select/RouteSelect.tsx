@@ -15,9 +15,6 @@ import {
     Icon,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { HiCheck as Check } from 'react-icons/hi';
-import { FiChevronDown, FiSearch } from 'react-icons/fi';
-import { IoIosClose } from 'react-icons/io';
 
 import { Inspector } from 'inspector/Inspector';
 import { RouteOption, RouteExtended } from 'route-select/RouteOption';
@@ -26,6 +23,7 @@ import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
+import { CheckIcon, CloseIcon, DownIcon, SearchIcon } from 'utils/Icons';
 
 const LIMIT = 10;
 
@@ -162,17 +160,17 @@ export const RouteSelect: FunctionComponent = () => {
                             aria-label="close"
                             mr="-3"
                             onClick={closeRouteSelect}
-                            icon={<FiChevronDown />}
+                            icon={<DownIcon />}
                         />
                     </Flex>
                     <InputGroup mt="2">
-                        <InputLeftElement pointerEvents="none" children={<FiSearch color="gray.300" />} />
+                        <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
                         {query && (
                             <InputRightElement>
                                 <IconButton
                                     variant="ghost"
                                     aria-label="clear"
-                                    icon={<IoIosClose />}
+                                    icon={<CloseIcon />}
                                     size="sm"
                                     fontSize="3xl"
                                     color="gray.500"
@@ -231,7 +229,7 @@ export const RouteSelect: FunctionComponent = () => {
                             onClick={closeRouteSelect}
                             rightIcon={
                                 <Icon fontSize="18pt">
-                                    <Check />
+                                    <CheckIcon />
                                 </Icon>
                             }
                         >
