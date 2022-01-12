@@ -30,4 +30,4 @@ jobs:
         working-directory: ./client
         run: |
           npm install -g firebase-tools
-          firebase deploy --hosting --token=${{ secrets.CLIENT_FIREBASE_TOKEN }} --non-interactive
+          firebase deploy --only hosting --token=${{ secrets.CLIENT_FIREBASE_TOKEN }} --non-interactive
