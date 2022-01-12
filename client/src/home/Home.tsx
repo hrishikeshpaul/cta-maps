@@ -2,8 +2,9 @@ import { FC } from 'react';
 
 import { Box, Button, Center, Container, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { Features } from './Features';
-import { ComingSoon } from './ComingSoom';
+import { ComingSoon } from 'home/ComingSoom';
+
+import { Features } from 'home/Features';
 import { Footer } from 'shared/Footer';
 
 export const Home: FC = () => {
