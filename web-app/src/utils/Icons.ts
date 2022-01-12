@@ -6,6 +6,7 @@ export {
     FiTrash as TrashIcon,
     FiMenu as MenuIcon,
     FiSearch as SearchIcon,
+    FiSettings as SettingsIcon,
 } from 'react-icons/fi';
 export { GoInfo as InfoIcon } from 'react-icons/go';
 export { HiCheck as CheckIcon, HiArrowRight as ArrowRightIcon } from 'react-icons/hi';

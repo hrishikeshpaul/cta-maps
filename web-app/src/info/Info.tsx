@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 
 import {
     Avatar,
@@ -17,11 +17,10 @@ import {
     Badge,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { useSystemStore } from 'store/system/SystemStore';
 import { getVersion } from 'store/system/SystemService';
-import { CloseIcon, RightIcon, MenuIcon } from 'utils/Icons';
+import { CloseIcon, RightIcon, MenuIcon, SettingsIcon } from 'utils/Icons';
 
 import 'info/Info.scss';
 
@@ -30,9 +29,8 @@ interface Props {
 }
 
 export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) => {
-    const navigate = useNavigate();
     const { t } = useTranslation('common');
-    const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer }] = useSystemStore();
+    const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer, openSettings }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
     const borderBottom = useColorModeValue('#ececec', '#4A5568');
     const buttonBg = useColorModeValue('white', 'gray.600');
@@ -40,14 +38,6 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
     };
-
-    const onNavigate = useCallback(
-        (path: string) => {
-            closeInfoDrawer();
-            navigate(path);
-        },
-        [closeInfoDrawer, navigate],
-    );
 
     const items = useMemo(
         () => [
@@ -61,12 +51,15 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                 onClick: () => window.open('https://trackcta.com/contact', '_blank'),
             },
             {
-                text: t('SETTINGS'),
-                onClick: () => onNavigate('/settings'),
-                comingSoon: false,
+                text: t('TERMS'),
+                onClick: () => window.open('https://trackcta.com/terms', '_blank'),
+            },
+            {
+                text: t('POLICY'),
+                onClick: () => window.open('https://trackcta.com/policy', '_blank'),
             },
         ],
-        [t, onNavigate],
+        [t],
     );
 
     useEffect(() => {
@@ -99,14 +92,24 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                             <Text fontWeight="bold" fontSize="2xl">
                                 trackCTA
                             </Text>
-                            <IconButton
-                                variant="ghost"
-                                fontSize="3xl"
-                                aria-label="close"
-                                mr="-3"
-                                onClick={closeInfoDrawer}
-                                icon={<CloseIcon />}
-                            />
+                            <Flex>
+                                <IconButton
+                                    variant="ghost"
+                                    fontSize="xl"
+                                    aria-label="close"
+                                    mr="1"
+                                    onClick={openSettings}
+                                    icon={<SettingsIcon />}
+                                />
+                                <IconButton
+                                    variant="ghost"
+                                    fontSize="3xl"
+                                    aria-label="close"
+                                    mr="-3"
+                                    onClick={closeInfoDrawer}
+                                    icon={<CloseIcon />}
+                                />
+                            </Flex>
                         </Flex>
                     </DrawerHeader>
 

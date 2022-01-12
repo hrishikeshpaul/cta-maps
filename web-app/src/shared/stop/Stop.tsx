@@ -4,13 +4,13 @@ import { Center, Box, Text, IconButton, Flex, useToast, Spinner, Badge, Button, 
 import { useTranslation } from 'react-i18next';
 
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
+import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions } from 'store/data/DataService';
 import { Juncture, Prediction } from 'store/data/DataStore.Types';
 import { DownIcon, LocationArrowIcon } from 'utils/Icons';
 
 import 'shared/stop/Stop.scss';
-import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();

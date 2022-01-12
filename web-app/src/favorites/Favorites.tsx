@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useSystemStore } from 'store/system/SystemStore';
 import { useDataStore } from 'store/data/DataStore';
-import { CheckIcon, CloseIcon, RightIcon, TrashIcon } from 'utils/Icons';
+import { CheckIcon, CloseIcon, RightIcon } from 'utils/Icons';
 import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
 import { Route } from 'store/data/DataStore.Types';
 

@@ -12,6 +12,7 @@ import { SocketModule } from './SocketModule';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 import { VehicleDrawer } from 'shared/vehicle/Vehicle';
+import { Settings } from 'settings/Settings';
 
 export const AppContent: FunctionComponent = () => {
     const [{ favoriteRoutes }, { setRoute }] = useDataStore();
@@ -35,6 +36,7 @@ export const AppContent: FunctionComponent = () => {
                 <Stop />
                 <Favorites />
                 <RouteSelect />
+                <Settings />
                 <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={100} bottom="2" right="2" />
             </Box>
         </MapLoader>

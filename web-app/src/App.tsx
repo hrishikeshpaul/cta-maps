@@ -2,11 +2,11 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Landing } from 'landing/Landing';
+import { Landing } from 'utils/Landing';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 import { AppContent } from 'utils/Content';
-import { Settings } from 'utils/Settings';
+import { Settings } from 'settings/Settings';
 
 import './App.scss';
 

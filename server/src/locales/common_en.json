@@ -51,5 +51,7 @@
     "ALL_ROUTES": "All Routes",
     "ON_TIME": "On Time",
     "DESTINATION": "Destination",
-    "ROUTE": "Route"
+    "ROUTE": "Route",
+    "TERMS": "Terms",
+    "POLICY": "Policy"
 }
