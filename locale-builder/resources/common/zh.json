@@ -48,5 +48,10 @@
   "STOPS": "停止",
   "SHOW_ACTIVE_ROUTES": "显示活动路线",
   "ACTIVE_ROUTE_INFO": "启用此功能将在您重新加载网站时加载您喜欢的路线",
-  "ALL_ROUTES": "所有路线"
+  "ALL_ROUTES": "所有路线",
+  "ON_TIME": "准时",
+  "DESTINATION": "目的地",
+  "ROUTE": "路线",
+  "TERMS": "条款",
+  "POLICY": "政策"
 }
