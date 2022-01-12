@@ -22,7 +22,7 @@ jobs:
 
       - name: Build
         working-directory: ./client
-        run: yarn build
+        run: REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }} yarn build
         env:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
 
@@ -30,4 +30,4 @@ jobs:
         working-directory: ./client
         run: |
           npm install -g firebase-tools
-          firebase deploy --hosting --token=${{ secrets.CLIENT_FIREBASE_TOKEN }} --non-interactive
+          firebase deploy --only hosting --token=${{ secrets.CLIENT_FIREBASE_TOKEN }} --non-interactive
