@@ -41,7 +41,6 @@ export const App = () => {
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<AppContent />} />
-                            <Route path="/faq" element={<FAQ />} />
                             <Route path="/settings" element={<Settings />} />
                         </Routes>
                     </BrowserRouter>
