@@ -48,5 +48,10 @@
   "STOPS": "Paradas",
   "SHOW_ACTIVE_ROUTES": "Mostrar rutas activas",
   "ACTIVE_ROUTE_INFO": "Habilitar esto cargará tus rutas favoritas cuando vuelvas a cargar el sitio web",
-  "ALL_ROUTES": "Todas las rutas"
+  "ALL_ROUTES": "Todas las rutas",
+  "ON_TIME": "A tiempo",
+  "DESTINATION": "Destino",
+  "ROUTE": "Ruta",
+  "TERMS": "Condiciones",
+  "POLICY": "Política"
 }

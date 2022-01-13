@@ -48,5 +48,10 @@
     "STOPS": "Stops",
     "SHOW_ACTIVE_ROUTES": "Show Active Routes",
     "ACTIVE_ROUTE_INFO": "Enabling this will load your favorite routes when you reload the website",
-    "ALL_ROUTES": "All Routes"
+    "ALL_ROUTES": "All Routes",
+    "ON_TIME": "On Time",
+    "DESTINATION": "Destination",
+    "ROUTE": "Route",
+    "TERMS": "Terms",
+    "POLICY": "Policy"
 }
