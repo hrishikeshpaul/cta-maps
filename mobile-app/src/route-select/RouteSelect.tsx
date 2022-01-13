@@ -17,14 +17,17 @@ import {
     Icon,
     IconButton,
     Divider,
+    PresenceTransition,
 } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useSystemStore } from '../store/system/SystemStore';
 import { useDataStore } from '../store/data/DataStore';
 import { Route } from '../store/data/DataStore.Types';
 import useDebounce from '../utils/Hook';
+import { Overlay } from '../shared/Overlay';
 
 const LIMIT = 10;
 
@@ -71,7 +74,7 @@ export const RouteSelect: FunctionComponent = () => {
                     setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
             }
         } catch (err) {
-            console.log('handlescroll', err);
+            console.log('handle scroll', err);
         }
     };
 
@@ -95,6 +98,7 @@ export const RouteSelect: FunctionComponent = () => {
     useEffect(() => {
         if (routeSelectOpen) {
             refRBSheet!.current!.open();
+
             (async () => {
                 await onOpen();
             })();
@@ -186,7 +190,8 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     return (
-        <View shadow="9" style={{ height: '100%' }}>
+        <View shadow="9" style={{ height: '100%', position: 'absolute', top: 0 }}>
+            {/* <Overlay show={routeSelectOpen} /> */}
             <RBSheet
                 ref={refRBSheet}
                 onOpen={() => {
@@ -201,7 +206,8 @@ export const RouteSelect: FunctionComponent = () => {
                 onClose={() => closeRouteSelect()}
                 customStyles={{
                     wrapper: {
-                        backgroundColor: 'transparent',
+                        backgroundColor: 'black',
+                        opacity: 0.3
                     },
                     draggableIcon: {
                         display: 'none',
@@ -213,6 +219,7 @@ export const RouteSelect: FunctionComponent = () => {
                         borderTopRightRadius: 16,
                         shadowColor: 'black',
                         shadowRadius: 10,
+                        opacity: 1
                     },
                 }}
             >
@@ -290,13 +297,28 @@ export const RouteSelect: FunctionComponent = () => {
                     ) : null}
                 </ScrollView>
 
-                {currentRoutes.length ? (
-                    <Flex bg={bg} p="4" justifyContent="center" direction="row">
-                        <Button onPress={() => removeAllRoutes()} w="50%" colorScheme="blue" borderRadius="xl">
+                <Flex
+                    bg={bg}
+                    p="4"
+                    justifyContent={currentRoutes.length ? 'space-between' : 'flex-end'}
+                    direction="row"
+                >
+                    {currentRoutes.length ? (
+                        <Button variant="link" onPress={() => removeAllRoutes()}>
                             {t('DESELECT_ALL')}
                         </Button>
-                    </Flex>
-                ) : null}
+                    ) : null}
+
+                    <Button
+                        onPress={() => refRBSheet.current?.close()}
+                        colorScheme="blue"
+                        borderRadius="xl"
+                        size="lg"
+                        rightIcon={<MaterialCommunityIcons name="check" size={18} color="white" />}
+                    >
+                        {t('DONE')}
+                    </Button>
+                </Flex>
             </RBSheet>
         </View>
     );

@@ -4,19 +4,11 @@ import { Box, PresenceTransition } from 'native-base';
 import { useDataStore } from '../store/data/DataStore';
 import { useSystemStore } from '../store/system/SystemStore';
 
-export const Overlay: FunctionComponent = () => {
-    const [{ routeSelectOpen }, { closeRouteSelect }] = useSystemStore();
-    const [{ stop }, { closeStop }] = useDataStore();
-    const [show, setShow] = useState<boolean>(false);
+interface Props {
+    show: boolean;
+}
 
-    useEffect(() => {
-        if (routeSelectOpen || !!stop) {
-            setShow(true);
-        } else {
-            setShow(false);
-        }
-    }, [routeSelectOpen, stop]);
-
+export const Overlay: FunctionComponent<Props> = ({ show }) => {
     return (
         <PresenceTransition
             visible={show}
@@ -35,18 +27,10 @@ export const Overlay: FunctionComponent = () => {
                 width: '100%',
                 height: '100%',
                 backgroundColor: 'black',
-                zIndex: show ? 100 : 1,
+                zIndex: show ? 100 : -1,
             }}
         >
-            <Box
-                // ={() => {
-                //     if (routeSelectOpen) closeRouteSelect();
-                //     if (!!stop) closeStop();
-                // }}
-                w="100%"
-                h="100%"
-                bg="gray.900"
-            />
+            <Box w="100%" h="100%" bg="gray.900" />
         </PresenceTransition>
     );
 };

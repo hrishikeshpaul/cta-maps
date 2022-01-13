@@ -22,7 +22,6 @@ export default function App() {
             <Box style={styles.container}>
                 <SocketProvider />
                 <Nav />
-                <Overlay />
                 <Map />
                 <RouteSelect />
             </Box>
