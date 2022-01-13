@@ -50,14 +50,14 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                 text: t('CONTACT'),
                 onClick: () => window.open('https://trackcta.com/contact', '_blank'),
             },
-            {
-                text: t('TERMS'),
-                onClick: () => window.open('https://trackcta.com/terms', '_blank'),
-            },
-            {
-                text: t('POLICY'),
-                onClick: () => window.open('https://trackcta.com/policy', '_blank'),
-            },
+            // {
+            //     text: t('TERMS'),
+            //     onClick: () => window.open('https://trackcta.com/terms', '_blank'),
+            // },
+            // {
+            //     text: t('POLICY'),
+            //     onClick: () => window.open('https://trackcta.com/policy', '_blank'),
+            // },
         ],
         [t],
     );

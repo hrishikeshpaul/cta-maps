@@ -25,7 +25,9 @@ export const SocketModule: FunctionComponent = () => {
                 toast.closeAll();
                 toast({
                     description: t('SERVER_DISCONNECT'),
-                    status: 'error',
+                    status: 'warning',
+                    duration: null,
+                    
                 });
                 removeAllRoutes();
             });

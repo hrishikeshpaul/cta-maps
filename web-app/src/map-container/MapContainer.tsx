@@ -82,7 +82,10 @@ export const MapContainer: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        onGetCurrentLocation();
+        if (settings.allowLocation) {
+            onGetCurrentLocation();
+        }
+
         return () => {
             setMap(null);
         };
