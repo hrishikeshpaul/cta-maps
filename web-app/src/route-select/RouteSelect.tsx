@@ -29,7 +29,7 @@ const LIMIT = 10;
 
 export const RouteSelect: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ routes: currentRoutes, favoriteRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
+    const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
     const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
     const [mounted, setMounted] = useState<boolean>(false);
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
@@ -125,31 +125,6 @@ export const RouteSelect: FunctionComponent = () => {
         })();
     }, [debouncedQuery]); // eslint-disable-line
 
-    const RenderFavorites: FunctionComponent = () => {
-        return Object.values(favoriteRoutes).length ? (
-            <>
-                <Text px="4" fontSize="sm" fontWeight="600" opacity="0.8" pt="2">
-                    {t('FAVORITES')}
-                </Text>
-
-                {Object.values(favoriteRoutes).map((route) => (
-                    <RouteOption
-                        onChange={setRoutes}
-                        routes={routes}
-                        currentRoute={{
-                            ...route,
-                            selected: !!currentRoutes[route.route],
-                        }}
-                        setInspectorData={setInspectorData}
-                        key={route.route}
-                    />
-                ))}
-            </>
-        ) : (
-            <></>
-        );
-    };
-
     return (
         <>
             <Inspector data={inspectorData} onGetData={onOpen} />
@@ -196,24 +171,15 @@ export const RouteSelect: FunctionComponent = () => {
 
                 <BottomSheet.Body>
                     <Box h="60vh" overflow="auto" onScroll={handleScroll} pb="4">
-                        <RenderFavorites />
-
-                        <Text px="4" fontSize="sm" fontWeight="600" opacity="0.8" pt="4">
-                            {t('ALL_ROUTES')}
-                        </Text>
-
-                        {routes.map(
-                            (route) =>
-                                !favoriteRoutes[route.route] && (
-                                    <RouteOption
-                                        onChange={setRoutes}
-                                        setInspectorData={setInspectorData}
-                                        routes={routes}
-                                        currentRoute={route}
-                                        key={route.route}
-                                    />
-                                ),
-                        )}
+                        {routes.map((route) => (
+                            <RouteOption
+                                onChange={setRoutes}
+                                setInspectorData={setInspectorData}
+                                routes={routes}
+                                currentRoute={route}
+                                key={route.route}
+                            />
+                        ))}
 
                         {routesLoading ? (
                             <Center>
