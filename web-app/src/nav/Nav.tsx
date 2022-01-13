@@ -1,17 +1,17 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Button, Container, IconButton, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Container, IconButton, Flex, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { Info } from 'info/Info';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
-import { MdMyLocation } from 'react-icons/md';
+import { HeartIcon, MyLocationIcon } from 'utils/Icons';
 
 export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes }] = useDataStore();
-    const [{ dragging }, { openRouteSelect, onLocationButtonPress }] = useSystemStore();
+    const [{ dragging }, { openRouteSelect, onLocationButtonPress, openFavorites }] = useSystemStore();
     const [selected, setSelected] = useState<boolean>(false);
     const buttonBg = useColorModeValue('white', 'gray.600');
     const buttonColor = useColorModeValue('black', 'white');
@@ -21,7 +21,7 @@ export const Nav: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        setSelected(routes.length > 0);
+        setSelected(Object.keys(routes).length > 0);
     }, [routes]);
 
     return (
@@ -36,7 +36,7 @@ export const Nav: FunctionComponent = () => {
         >
             <Flex
                 justifyContent="space-between"
-                alignItems="center"
+                alignItems="start"
                 w="100%"
                 p="4"
                 opacity={dragging ? '0.25' : '1'}
@@ -49,19 +49,28 @@ export const Nav: FunctionComponent = () => {
                     </Text>
                     {selected && (
                         <Flex flexWrap="wrap" mt="1">
-                            {routes.map((route) => (
+                            {Object.values(routes).map((route) => (
                                 <Box h="12px" w="15px" bg={route.color} mx="1" borderRadius="sm" key={route.route} />
                             ))}
                         </Flex>
                     )}
                 </Button>
-                <IconButton
-                    aria-label="my-location"
-                    icon={<MdMyLocation />}
-                    bg={buttonBg}
-                    boxShadow="lg"
-                    onClick={() => onLocationButtonPress(true)}
-                />
+                <VStack spacing="4">
+                    <IconButton
+                        aria-label="my-favoriteStops"
+                        icon={<HeartIcon />}
+                        bg={buttonBg}
+                        boxShadow="lg"
+                        onClick={openFavorites}
+                    />
+                    <IconButton
+                        aria-label="my-location"
+                        icon={<MyLocationIcon />}
+                        bg={buttonBg}
+                        boxShadow="lg"
+                        onClick={() => onLocationButtonPress(true)}
+                    />
+                </VStack>
             </Flex>
         </Container>
     );

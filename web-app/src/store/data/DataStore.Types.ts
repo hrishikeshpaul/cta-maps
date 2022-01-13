@@ -1,3 +1,6 @@
+export const FavoriteStopsKey = 'track-cta-favorite-stops';
+export const FavoriteRoutesKey = 'track-cta-favorite-routes';
+
 export enum PointType {
     S = 'S', // stop
     W = 'W', // waypoint
@@ -72,9 +75,12 @@ export interface Prediction {
 
 export interface DataStoreState {
     currentLocation: Point;
-    routes: Route[];
+    routes: Record<string, Route>;
     patterns: Pattern[];
     stop: Stop | null;
+    vehicle: Vehicle | null;
     error?: any;
     vehicles: Vehicle[];
+    favoriteStops: Record<string, Stop>;
+    favoriteRoutes: Record<string, Route>;
 }

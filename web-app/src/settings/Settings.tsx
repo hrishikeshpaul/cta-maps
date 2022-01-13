@@ -1,53 +1,20 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent } from 'react';
 
-import {
-    Box,
-    Switch,
-    Drawer,
-    DrawerBody,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    Text,
-    IconButton,
-    Flex,
-    useColorMode,
-    Radio,
-    RadioGroup,
-    Stack,
-    Spinner,
-} from '@chakra-ui/react';
+import { Box, Flex, RadioGroup, useColorMode, Text, Stack, Radio, Switch, IconButton } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { IoIosClose } from 'react-icons/io';
 
 import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
-import { ColorMode, Status } from 'store/system/SystemStore.Types';
-import { getAppStatus } from 'store/system/SystemService';
+import { Help } from 'shared/help/Help';
 import { useSystemStore } from 'store/system/SystemStore';
-
-const StatusMapper = {
-    [Status.Success]: 'green.300',
-    [Status.InProgress]: 'orange.300',
-    [Status.Failure]: 'red.300',
-};
+import { ColorMode } from 'store/system/SystemStore.Types';
+import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
+import { DownIcon } from 'utils/Icons';
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
-    const [{ settingsOpen, settings }, { closeSettings, setColorMode, setLocale }] = useSystemStore();
+    const [{ settings, settingsOpen }, { setColorMode, setLocale, setShowActiveRoutes, closeSettings }] =
+        useSystemStore();
     const { toggleColorMode } = useColorMode();
-    const [status, setStatus] = useState<{ web: string; server: string } | null>(null);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const response = await getAppStatus();
-                setStatus({
-                    web: response.web,
-                    server: response.server,
-                });
-            } catch (err) {}
-        })();
-    }, []);
 
     const onDarkModeToggle = () => {
         toggleColorMode();
@@ -63,26 +30,54 @@ export const Settings: FunctionComponent = () => {
         setLocale(locale as Locale);
     };
 
-    return (
-        <Drawer isOpen={settingsOpen} placement="right" size="md" onClose={closeSettings} autoFocus={false}>
-            <DrawerOverlay />
-            <DrawerContent>
-                <DrawerHeader px="4">
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontWeight="bold">{t('SETTINGS')}</Text>
-                        <IconButton
-                            variant="ghost"
-                            fontSize="3xl"
-                            aria-label="close"
-                            mr="-3"
-                            onClick={closeSettings}
-                            icon={<IoIosClose />}
-                        />
-                    </Flex>
-                </DrawerHeader>
+    const onShowActiveRoutesChange = () => {
+        if (settings.showActiveRoutes) {
+            setShowActiveRoutes(false);
+        } else {
+            setShowActiveRoutes(true);
+        }
+    };
 
-                <DrawerBody px="4" pt="0">
-                    <Box>
+    return (
+        <BottomSheet.Wrapper isOpen={settingsOpen} onClose={closeSettings} zIndex={1600}>
+            <BottomSheet.Header>
+                <Flex justifyContent="space-between" alignItems="center">
+                    <Text fontWeight="bold" fontSize="2xl">
+                        {t('SETTINGS')}
+                    </Text>
+                    <IconButton
+                        variant="ghost"
+                        fontSize="2xl"
+                        aria-label="close"
+                        mr="-3"
+                        onClick={closeSettings}
+                        icon={<DownIcon />}
+                    />
+                </Flex>
+            </BottomSheet.Header>
+            <BottomSheet.Body>
+                <Box px="4" maxH="70vh" pb="8">
+                    {/* ROUTE ACTIVITY */}
+                    <Box mt="4">
+                        <Text fontWeight="bold" color="gray.400" fontSize="sm">
+                            {t('ROUTES')}
+                        </Text>
+                        <Flex justifyContent="space-between" alignItems="center" mt="2">
+                            <Flex alignItems="center">
+                                <Text pr="2">{t('SHOW_ACTIVE_ROUTES')}</Text>
+                                <Help label={t('ACTIVE_ROUTE_INFO')} />
+                            </Flex>
+
+                            <Switch
+                                size="lg"
+                                isChecked={settings.showActiveRoutes}
+                                onChange={onShowActiveRoutesChange}
+                            />
+                        </Flex>
+                    </Box>
+
+                    {/* APPEARANCE */}
+                    <Box mt="8">
                         <Text fontWeight="bold" color="gray.400" fontSize="sm">
                             {t('APPEARANCE')}
                         </Text>
@@ -95,6 +90,8 @@ export const Settings: FunctionComponent = () => {
                             />
                         </Flex>
                     </Box>
+
+                    {/* LANGUAGE */}
                     <Box mt="8">
                         <Text fontWeight="bold" color="gray.400" fontSize="sm">
                             {t('LANGUAGE')}
@@ -111,47 +108,8 @@ export const Settings: FunctionComponent = () => {
                             </RadioGroup>
                         </Flex>
                     </Box>
-                    <Box mt="8">
-                        <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                            {t('STATUS')}
-                        </Text>
-                        {status ? (
-                            <>
-                                <Flex justifyContent="space-between" alignItems="center" mt="2">
-                                    <Text>{t('WEBSITE')}</Text>
-                                    <Flex alignItems="center">
-                                        <Box
-                                            h="10px"
-                                            w="10px"
-                                            bg={StatusMapper[status.web as Status]}
-                                            borderRadius="50%"
-                                        />
-                                        <Text pl="2" color="gray.400">
-                                            {t('LIVE')}
-                                        </Text>
-                                    </Flex>
-                                </Flex>
-                                <Flex justifyContent="space-between" alignItems="center" mt="2">
-                                    <Text>{t('SERVER')}</Text>
-                                    <Flex alignItems="center" borderRadius="50%">
-                                        <Box
-                                            h="10px"
-                                            w="10px"
-                                            bg={StatusMapper[status.server as Status]}
-                                            borderRadius="50%"
-                                        />
-                                        <Text pl="2" color="gray.400">
-                                            {t('LIVE')}
-                                        </Text>
-                                    </Flex>
-                                </Flex>{' '}
-                            </>
-                        ) : (
-                            <Spinner size="sm" color="blue.400" />
-                        )}
-                    </Box>
-                </DrawerBody>
-            </DrawerContent>
-        </Drawer>
+                </Box>
+            </BottomSheet.Body>
+        </BottomSheet.Wrapper>
     );
 };

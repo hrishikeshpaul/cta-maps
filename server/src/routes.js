@@ -4,6 +4,7 @@ const express = require('express');
 const fs = require('fs');
 const Fuse = require('fuse.js');
 
+const { sendMailToGmail } = require('./email/email.js');
 const {
     getPatterns,
     getRoutes,
@@ -11,6 +12,8 @@ const {
     getGitHubWorkflow,
     getLocaleJson,
     getLatestVersion,
+    getRouteDirections,
+    getStops,
 } = require('./util.js');
 
 const convertTimestamp = (timestamp) => {
@@ -146,6 +149,18 @@ router.get('/predictions', async (req, res) => {
     }
 });
 
+router.get('/stops', async (req, res) => {
+    const { route } = req.query;
+    try {
+        const directions = await getRouteDirections(route);
+        const stopPromises = directions.map((dir) => getStops(route, dir));
+        const stops = await Promise.all(stopPromises);
+
+        res.send(stops);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
 router.get('/app-status', async (_, res) => {
     try {
         const data = await getGitHubWorkflow();
@@ -180,6 +195,19 @@ router.get('/locale/:ns/:lng', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.send(fs.readFileSync('src/locales/common_en.json')).status(200);
+    }
+});
+
+router.post('/contact', async (req, res) => {
+    const { email, message } = req.body;
+
+    try {
+        await sendMailToGmail(email, message);
+
+        res.send('Sent!').status(202);
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
     }
 });
 

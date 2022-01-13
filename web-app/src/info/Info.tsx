@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 
 import {
     Avatar,
@@ -14,14 +14,13 @@ import {
     Flex,
     Link,
     useColorModeValue,
+    Badge,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FiChevronRight } from 'react-icons/fi';
-import { IoIosClose } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
 
 import { useSystemStore } from 'store/system/SystemStore';
 import { getVersion } from 'store/system/SystemService';
+import { CloseIcon, RightIcon, MenuIcon, SettingsIcon } from 'utils/Icons';
 
 import 'info/Info.scss';
 
@@ -30,44 +29,37 @@ interface Props {
 }
 
 export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) => {
-    const navigate = useNavigate();
     const { t } = useTranslation('common');
-    const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer }] = useSystemStore();
+    const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer, openSettings }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
     const borderBottom = useColorModeValue('#ececec', '#4A5568');
+    const buttonBg = useColorModeValue('white', 'gray.600');
 
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
     };
 
-    const onNavigate = useCallback(
-        (path: string) => {
-            closeInfoDrawer();
-            navigate(path);
-        },
-        [closeInfoDrawer, navigate],
-    );
-
     const items = useMemo(
         () => [
             {
-                text: t('USAGE_MANUAL'),
-                onClick: () => onNavigate('/manual'),
-            },
-            {
                 text: t('FAQ'),
-                onClick: () => onNavigate('/faq'),
+                onClick: () => window.open('https://trackcta.com/faq', '_blank'),
+                comingSoon: false,
             },
             {
                 text: t('CONTACT'),
-                onClick: () => onNavigate('/contact'),
+                onClick: () => window.open('https://trackcta.com/contact', '_blank'),
             },
-            {
-                text: t('SETTINGS'),
-                onClick: () => onNavigate('/settings'),
-            },
+            // {
+            //     text: t('TERMS'),
+            //     onClick: () => window.open('https://trackcta.com/terms', '_blank'),
+            // },
+            // {
+            //     text: t('POLICY'),
+            //     onClick: () => window.open('https://trackcta.com/policy', '_blank'),
+            // },
         ],
-        [t, onNavigate],
+        [t],
     );
 
     useEffect(() => {
@@ -83,29 +75,41 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
 
     return (
         <>
-            <Avatar
-                src="/logo.svg"
-                size="sm"
-                boxShadow={disableAvatarShadow ? 'none' : 'lg'}
+            <IconButton
+                aria-label="menu-icon"
+                icon={<MenuIcon />}
+                variant="ghost"
+                bg={buttonBg}
                 onClick={openInfoDrawer}
-                h="40px"
-                w="40px"
-                cursor="pointer"
+                fontSize={disableAvatarShadow ? 'xl' : 'md'}
+                boxShadow={disableAvatarShadow ? 'none' : 'lg'}
             />
             <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
-                <DrawerOverlay />
+                <DrawerOverlay onClick={closeInfoDrawer} />
                 <DrawerContent>
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">
-                            <Text fontWeight="bold">trackCTA</Text>
-                            <IconButton
-                                variant="ghost"
-                                fontSize="3xl"
-                                aria-label="close"
-                                mr="-3"
-                                onClick={closeInfoDrawer}
-                                icon={<IoIosClose />}
-                            />
+                            <Text fontWeight="bold" fontSize="2xl">
+                                trackCTA
+                            </Text>
+                            <Flex>
+                                <IconButton
+                                    variant="ghost"
+                                    fontSize="xl"
+                                    aria-label="close"
+                                    mr="1"
+                                    onClick={openSettings}
+                                    icon={<SettingsIcon />}
+                                />
+                                <IconButton
+                                    variant="ghost"
+                                    fontSize="3xl"
+                                    aria-label="close"
+                                    mr="-3"
+                                    onClick={closeInfoDrawer}
+                                    icon={<CloseIcon />}
+                                />
+                            </Flex>
                         </Flex>
                     </DrawerHeader>
 
@@ -137,8 +141,15 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                                         key={item.text}
                                         _hover={{ bg: borderBottom }}
                                     >
-                                        <Text className="item-text">{item.text}</Text>
-                                        <FiChevronRight />
+                                        <Text className="item-text">
+                                            {item.text}
+                                            {item.comingSoon && (
+                                                <Badge ml="2" variant="subtle" colorScheme="orange">
+                                                    Coming soon
+                                                </Badge>
+                                            )}
+                                        </Text>
+                                        <RightIcon />
                                     </Flex>
                                 );
                             })}

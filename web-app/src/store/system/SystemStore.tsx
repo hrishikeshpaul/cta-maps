@@ -1,7 +1,14 @@
 import { createContext, FunctionComponent, ReactNode, useReducer, useContext, Dispatch } from 'react';
 
 import { Locale } from 'i18n/LocaleProvider';
-import { SystemStoreState, ColorMode, ColorModeKey, LocaleKey, AllowLocationKey } from 'store/system/SystemStore.Types';
+import {
+    SystemStoreState,
+    ColorMode,
+    ColorModeKey,
+    LocaleKey,
+    AllowLocationKey,
+    ShowActiveRoutesKey,
+} from 'store/system/SystemStore.Types';
 
 export enum SystemStoreActionType {
     SetRouteSelectDrawer,
@@ -16,7 +23,22 @@ export enum SystemStoreActionType {
     SetSettings,
     SetRoutesLoading,
     SetAllowLocation,
+    SetFavoritesDrawer,
+    SetInspectorDrawer,
+    SetShowActiveRoutes,
     ToggleLocationButtonPress,
+}
+
+interface PayloadSetShowActiveRoutes {
+    show: boolean;
+}
+
+interface PayloadSetInspectorDrawer {
+    open: boolean;
+}
+
+interface PayloadSetFavoritesDrawer {
+    open: boolean;
 }
 interface PayloadToggleLocationButtonPress {
     value: boolean;
@@ -79,7 +101,10 @@ interface SystemStoreAction {
         | PayloadSetIdleAlert
         | PayloadSetSystemLoading
         | PayloadSetAllowLocation
-        | PayloadToggleLocationButtonPress;
+        | PayloadToggleLocationButtonPress
+        | PayloadSetFavoritesDrawer
+        | PayloadSetInspectorDrawer
+        | PayloadSetShowActiveRoutes;
 }
 
 interface SystemStoreProviderProps {
@@ -87,6 +112,8 @@ interface SystemStoreProviderProps {
 }
 
 export const initialStoreState: SystemStoreState = {
+    inspectorOpen: false,
+    favoritesOpen: false,
     systemLoading: true,
     routeSelectOpen: false,
     idleAlertOpen: false,
@@ -100,6 +127,7 @@ export const initialStoreState: SystemStoreState = {
         colorMode: (localStorage.getItem(ColorModeKey) as ColorMode) || ColorMode.Light,
         locale: (localStorage.getItem(LocaleKey) as Locale) || Locale.EN,
         allowLocation: JSON.parse(localStorage.getItem(AllowLocationKey) || '{}') === true,
+        showActiveRoutes: JSON.parse(localStorage.getItem(ShowActiveRoutesKey) || '{}') === true,
     },
 };
 
@@ -169,6 +197,24 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 onCurrentLocationPress: (action.payload as PayloadToggleLocationButtonPress).value,
             };
         }
+        case SystemStoreActionType.SetFavoritesDrawer: {
+            return {
+                ...state,
+                favoritesOpen: (action.payload as PayloadSetFavoritesDrawer).open,
+            };
+        }
+        case SystemStoreActionType.SetInspectorDrawer: {
+            return {
+                ...state,
+                inspectorOpen: (action.payload as PayloadSetInspectorDrawer).open,
+            };
+        }
+        case SystemStoreActionType.SetShowActiveRoutes: {
+            return {
+                ...state,
+                settings: { ...state.settings, showActiveRoutes: (action.payload as PayloadSetShowActiveRoutes).show },
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -220,6 +266,11 @@ interface SystemStoreActionApis {
     setSystemLoading: (loading: boolean) => void;
     setAllowLocation: (allow: boolean) => void;
     onLocationButtonPress: (value: boolean) => void;
+    openFavorites: () => void;
+    closeFavorites: () => void;
+    openInspector: () => void;
+    closeInspector: () => void;
+    setShowActiveRoutes: (show: boolean) => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -269,6 +320,22 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         },
         onLocationButtonPress: (value: boolean) => {
             dispatch({ type: SystemStoreActionType.ToggleLocationButtonPress, payload: { value } });
+        },
+        openFavorites: () => {
+            dispatch({ type: SystemStoreActionType.SetFavoritesDrawer, payload: { open: true } });
+        },
+        closeFavorites: () => {
+            dispatch({ type: SystemStoreActionType.SetFavoritesDrawer, payload: { open: false } });
+        },
+        openInspector: () => {
+            dispatch({ type: SystemStoreActionType.SetInspectorDrawer, payload: { open: true } });
+        },
+        closeInspector: () => {
+            dispatch({ type: SystemStoreActionType.SetInspectorDrawer, payload: { open: false } });
+        },
+        setShowActiveRoutes: (show: boolean) => {
+            localStorage.setItem(ShowActiveRoutesKey, JSON.stringify(show));
+            dispatch({ type: SystemStoreActionType.SetShowActiveRoutes, payload: { show } });
         },
     };
 

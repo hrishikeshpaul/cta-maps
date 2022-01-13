@@ -1,8 +1,9 @@
 import { Locale } from 'i18n/LocaleProvider';
 
 export const ColorModeKey = 'chakra-ui-color-mode';
-export const LocaleKey = 'cta-maps-locale';
-export const AllowLocationKey = 'cta-maps-allow-location';
+export const LocaleKey = 'track-cta-locale';
+export const AllowLocationKey = 'track-cta-allow-location';
+export const ShowActiveRoutesKey = 'track-cta-show-active-routes';
 
 export enum ColorMode {
     Light = 'light',
@@ -13,6 +14,7 @@ export interface Setting {
     colorMode: ColorMode;
     locale: Locale;
     allowLocation: boolean;
+    showActiveRoutes: boolean;
 }
 
 export enum Status {
@@ -27,6 +29,8 @@ export interface AppStatus {
 }
 
 export interface SystemStoreState {
+    inspectorOpen: boolean;
+    favoritesOpen: boolean;
     onCurrentLocationPress: boolean;
     systemLoading: boolean;
     routeSelectOpen: boolean;

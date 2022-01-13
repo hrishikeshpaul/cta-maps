@@ -26,8 +26,6 @@
     "ESPANOL": "Espanol",
     "CHINESE": "Chinese",
     "SECONDS": "seconds",
-    "STILL_HERE": "Still here",
-    "I_BACK": "I'm back",
     "DELAYED": "Delayed",
     "STATUS": "Status",
     "SERVER": "Server",
@@ -43,5 +41,17 @@
     "SERVER_CONNECT": "Server connected!",
     "SERVER_ERROR": "Server error. Please re-select routes",
     "GENERIC_ERROR": "No data found",
-    "START_TRACKING": "Start Tracking"
+    "START_TRACKING": "Start Tracking",
+    "FAVORITES": "Favorites",
+    "DONE": "Done",
+    "ADD_FAVORITES": "There's nothing here.",
+    "STOPS": "Stops",
+    "SHOW_ACTIVE_ROUTES": "Show Active Routes",
+    "ACTIVE_ROUTE_INFO": "Enabling this will load your favorite routes when you reload the website",
+    "ALL_ROUTES": "All Routes",
+    "ON_TIME": "On Time",
+    "DESTINATION": "Destination",
+    "ROUTE": "Route",
+    "TERMS": "Terms",
+    "POLICY": "Policy"
 }

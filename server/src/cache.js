@@ -6,6 +6,8 @@ const cacheKeys = {
     locale: (ns, lng) => `locale-${ns}-${lng}-cache`,
     routes: 'routes-cache',
     pattern: (route) => `pattern-${route}-cache`,
+    direction: (route) => `dir-${route}-cache`,
+    stops: (route, dir) => `stops-${route}-${dir}-cache`,
 };
 
 const ttl = 60 * 60 * 24; // one day

@@ -9,12 +9,10 @@
     "A4": "Yes. If the bus is delayed, there will be an indication in the arrival info when you tap on a stop.",
     "Q5": "'No data found for the parameter'. What does that mean?",
     "A5": "If you get this error, it means that the CTA servers did not have any data for what you requested for.",
-    "Q6": "Is there a way to save my stops to view them later?",
-    "A6": "As of now there is not, but we're working on it.",
-    "Q7": "Is this available in different languages?",
-    "A7": "Yes. Currently supported in English, Espanol and Chinese",
-    "Q8": "Can't find your bus?",
-    "A8": "We're sorry that you can't find you bus, as its probably not available from the CTA server.",
-    "Q9": "Can't find what you're looking for?",
-    "A9": "No worries! You can mail us at hrishikeshpaul12@gmail.com about your queries."
+    "Q6": "Is this available in different languages?",
+    "A6": "Yes. Currently supported in English, Espanol and Chinese",
+    "Q7": "Can't find your bus?",
+    "A7": "We're sorry that you can't find you bus, as its probably not available from the CTA server.",
+    "Q8": "Can't find what you're looking for?",
+    "A8": "No worries! You can mail us at info@trackcta.com about your queries."
 }
