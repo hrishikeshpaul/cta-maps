@@ -1,17 +1,6 @@
 import { FC, useRef, useState, useEffect } from 'react';
 
-import {
-    Badge,
-    Box,
-    Container,
-    Flex,
-    IconButton,
-    Image,
-    Text,
-    useColorMode,
-    useColorModeValue,
-    Fade,
-} from '@chakra-ui/react';
+import { Box, Container, Flex, IconButton, Image, Text, useColorMode, useColorModeValue, Fade } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import Slider, { Settings } from 'react-slick';
 
