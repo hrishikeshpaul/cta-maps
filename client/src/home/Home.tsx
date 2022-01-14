@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ComingSoon } from 'home/ComingSoon';
 import { Features } from 'home/Features';
 import { Footer } from 'shared/Footer';
+import { Steps } from './Steps';
 
 export const Home: FC = () => {
     const { t } = useTranslation();
@@ -57,7 +58,7 @@ export const Home: FC = () => {
                     </Button>
                 </Center>
             </Container>
-            {/* <Steps /> */}
+            <Steps />
             <Features />
             <ComingSoon />
             <Footer />

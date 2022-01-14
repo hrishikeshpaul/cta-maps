@@ -1,4 +1,10 @@
-export { FiActivity as ActivityIcon, FiMail as MailIcon, FiMenu as MenuIcon } from 'react-icons/fi';
+export {
+    FiActivity as ActivityIcon,
+    FiMail as MailIcon,
+    FiMenu as MenuIcon,
+    FiChevronRight as RightIcon,
+    FiChevronLeft as LeftIcon,
+} from 'react-icons/fi';
 export { HiArrowRight as ArrowRightIcon } from 'react-icons/hi';
 export {
     IoLanguage as LanguageIcon,

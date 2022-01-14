@@ -83,7 +83,14 @@ export const Drawer: FC = () => {
 
     return (
         <>
-            <IconButton aria-label="icon-button" icon={<MenuIcon />} onClick={onOpen} mr="2" variant="ghost" />
+            <IconButton
+                aria-label="icon-button"
+                icon={<MenuIcon />}
+                onClick={onOpen}
+                mr="2"
+                variant="ghost"
+                fontSize="xl"
+            />
             <Avatar src="logo.svg" h="40px" w="40px" />
 
             <ChakraDrawer isOpen={isOpen} onClose={onClose} placement="left">

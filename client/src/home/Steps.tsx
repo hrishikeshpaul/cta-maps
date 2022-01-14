@@ -1,9 +1,30 @@
-import { FC } from 'react';
+import { FC, useRef, useState, useEffect } from 'react';
 
-import { Box, Container, Image, Stack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import {
+    Badge,
+    Box,
+    Container,
+    Flex,
+    IconButton,
+    Image,
+    Text,
+    useColorMode,
+    useColorModeValue,
+    Fade,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import Slider, { Settings } from 'react-slick';
 
-const steps = [
+import { LeftIcon, RightIcon } from 'utils/Icons';
+
+import 'home/Steps.scss';
+
+interface Step {
+    fileName: string;
+    title: string;
+}
+
+const steps: Step[] = [
     {
         fileName: '1',
         title: 'VISIT_THE_APP',
@@ -25,10 +46,47 @@ const steps = [
 export const Steps: FC = () => {
     const { t } = useTranslation();
     const { colorMode } = useColorMode();
-    const bg = useColorModeValue('gray.100', 'gray.700');
+    const [current, setCurrent] = useState<Step>(steps[0]);
+    const [fade, setFade] = useState<boolean>(true);
+    const slider = useRef<Slider | null>(null);
+    const bg = useColorModeValue('gray.50', 'gray.900');
+    const images = steps.map((step) => `steps/${colorMode}/${step.fileName}.png`);
+    const dotsClass = colorMode === 'light' ? 'light-dots' : 'dark-dots';
+
+    const settings: Settings = {
+        dots: true,
+        arrows: false,
+        fade: true,
+        infinite: true,
+        autoplay: true,
+        speed: 500,
+        autoplaySpeed: 5000,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        beforeChange: (_, nextSlide) => {
+            setFade(false);
+            setTimeout(() => {
+                setFade(true);
+                setCurrent(steps[nextSlide]);
+            }, 200);
+        },
+    };
+
+    useEffect(() => {
+        setFade(true);
+    }, []);
+
+    useEffect(() => {
+        setFade(true);
+
+        if (slider) {
+            slider.current?.slickGoTo(0);
+            setCurrent(steps[0]);
+        }
+    }, [colorMode]);
 
     return (
-        <Box bg={bg} w="100%" py="24">
+        <Box bg={bg} w="100%" py="24" className="trackcta-steps">
             <Container maxW="container.lg" px={{ base: '4', md: '0' }}>
                 <Box textAlign="center">
                     <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="900">
@@ -36,22 +94,36 @@ export const Steps: FC = () => {
                     </Text>
                 </Box>
 
-                <Stack mt="24" spacing="16">
-                    {steps.map((step) => (
-                        <Box>
-                            <Text fontSize="2xl" fontWeight="700" pt="2" lineHeight="1" textAlign="center">
-                                {t(step.title)}
+                <Box mt="20">
+                    <Flex alignItems="center" justifyContent="space-between" transition="all 0.25s ease-in-out">
+                        <IconButton
+                            fontSize="xl"
+                            variant="ghost"
+                            aria-label="prev"
+                            icon={<LeftIcon />}
+                            onClick={() => slider.current?.slickPrev()}
+                        />
+                        <Fade in={fade} transition={{ exit: { duration: 0.1, opacity: 1 }, enter: { duration: 0.1 } }}>
+                            <Text fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" lineHeight="1">
+                                {t(current.title)}
                             </Text>
-                            <Image
-                                boxShadow="xl"
-                                borderRadius="xl"
-                                w="100%"
-                                src={`steps/${colorMode}/${step.fileName}.png`}
-                                mt="8"
-                            />
-                        </Box>
-                    ))}
-                </Stack>
+                        </Fade>
+                        <IconButton
+                            fontSize="xl"
+                            variant="ghost"
+                            aria-label="prev"
+                            icon={<RightIcon />}
+                            onClick={() => slider.current?.slickNext()}
+                        />
+                    </Flex>
+                    <Slider {...settings} ref={slider} dotsClass={`slick-dots ${dotsClass}`}>
+                        {images.map((url) => (
+                            <Box key={url} borderRadius="xl" p="2" mt="2">
+                                <Image boxShadow="lg" bg="transparent" w="100%" src={url} borderRadius="xl" />
+                            </Box>
+                        ))}
+                    </Slider>
+                </Box>
             </Container>
         </Box>
     );
