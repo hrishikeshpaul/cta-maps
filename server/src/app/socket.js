@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 
-const { getVehicles, checkHeading } = require('./util');
+const { getVehicles, checkHeading } = require('./service');
 
 const TIMER = 4000; //ms
 
@@ -64,6 +64,7 @@ class SocketConnection {
 
     async get_vehicles(route) {
         let data = await getVehicles(route);
+
         data = data.map((item) => ({
             id: item.vid,
             timestamp: item.tmstmp,
@@ -72,6 +73,7 @@ class SocketConnection {
             destination: item.des,
             delayed: item.dly,
             heading: checkHeading(parseInt(item.hdg, 10)),
+            headingNum: parseInt(item.hdg, 10),
         }));
 
         return data;

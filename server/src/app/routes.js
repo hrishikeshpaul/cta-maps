@@ -4,7 +4,7 @@ const express = require('express');
 const fs = require('fs');
 const Fuse = require('fuse.js');
 
-const { sendMailToGmail } = require('./email/email.js');
+const { sendMailToGmail } = require('../email/email.js');
 const {
     getPatterns,
     getRoutes,
@@ -14,22 +14,11 @@ const {
     getLatestVersion,
     getRouteDirections,
     getStops,
-} = require('./util.js');
+} = require('./service.js');
 
 const convertTimestamp = (timestamp) => {
     const [date, time] = timestamp.split(' ');
     return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)} ${time}`;
-};
-
-const checkStatus = (status) => {
-    if (status.conclusion && status.status === 'completed') {
-        if (status.conclusion === 'failure') {
-            return 'failure';
-        } else if (status.conclusion === 'success') {
-            return 'success';
-        }
-    }
-    return 'in_progress';
 };
 
 const paginate = (array, limit, index) => {

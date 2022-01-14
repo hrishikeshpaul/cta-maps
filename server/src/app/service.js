@@ -4,8 +4,8 @@ const axios = require('axios');
 const dotenv = require('dotenv');
 const fs = require('fs');
 
-const { Cache, cacheKeys } = require('./cache');
-const { Http } = require('./http');
+const { Cache, cacheKeys } = require('../utils/cache');
+const { Http } = require('../utils/http');
 
 dotenv.config();
 

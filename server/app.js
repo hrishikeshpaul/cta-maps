@@ -7,8 +7,8 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 
-const router = require('./src/routes');
-const { onConnection } = require('./src/socket');
+const router = require('./src/app/routes');
+const { onConnection } = require('./src/app/socket');
 
 dotenv.config();
 const app = express();
