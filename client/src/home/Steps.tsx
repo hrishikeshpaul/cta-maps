@@ -59,7 +59,7 @@ export const Steps: FC = () => {
         fade: true,
         infinite: true,
         autoplay: true,
-        speed: 500,
+        speed: 1000,
         autoplaySpeed: 5000,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -68,7 +68,7 @@ export const Steps: FC = () => {
             setTimeout(() => {
                 setFade(true);
                 setCurrent(steps[nextSlide]);
-            }, 200);
+            }, 300);
         },
     };
 
@@ -103,7 +103,7 @@ export const Steps: FC = () => {
                             icon={<LeftIcon />}
                             onClick={() => slider.current?.slickPrev()}
                         />
-                        <Fade in={fade} transition={{ exit: { duration: 0.1, opacity: 1 }, enter: { duration: 0.1 } }}>
+                        <Fade in={fade} transition={{ exit: { duration: 0.1, opacity: 1 }, enter: { duration: 0.2 } }}>
                             <Text fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" lineHeight="1">
                                 {t(current.title)}
                             </Text>
