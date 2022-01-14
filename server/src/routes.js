@@ -159,13 +159,14 @@ router.get('/stops', async (req, res) => {
         res.status(400).send(err);
     }
 });
+
 router.get('/app-status', async (_, res) => {
     try {
         const data = await getGitHubWorkflow();
 
         const response = {
-            web: checkStatus(data.web.workflow_runs[0]),
-            server: checkStatus(data.server.workflow_runs[0]),
+            web: data.web.workflow_runs,
+            server: data.server.workflow_runs,
         };
         res.send(response);
     } catch (err) {

@@ -29,7 +29,7 @@ export const Footer: FC = () => {
             </Text>
         );
     };
-    
+
     return (
         <Box>
             <Container maxW="container.lg">
@@ -69,7 +69,6 @@ export const Footer: FC = () => {
                             <SectionTitle label="HELP" />
                             <SectionLink label="CONTACT" route="/contact" />
                             <SectionLink label="CONTRIBUTE" />
-                            <SectionLink label="STATUS" route="/status" />
                         </Flex>
                     </Flex>
                     <Rights pt="6" display={{ base: 'flex', md: 'none' }} />
