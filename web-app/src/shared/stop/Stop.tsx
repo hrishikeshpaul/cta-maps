@@ -35,9 +35,9 @@ export const Stop: FunctionComponent = () => {
     }, [favoriteStops, stop]); // eslint-disable-line
 
     useEffect(() => {
-        (async () => {
-            try {
-                if (stop) {
+        if (stop) {
+            (async () => {
+                try {
                     setLoading(true);
                     const response = await getPredictions(stop.id);
                     const responseRoutes: Set<string> = new Set();
@@ -49,15 +49,18 @@ export const Stop: FunctionComponent = () => {
                     setRoutes(Array.from(responseRoutes));
                     setPredictions(response);
                     setLoading(false);
+                } catch (err: any) {
+                    setLoading(false);
+                    toast({
+                        description: err.response.data,
+                        status: 'warning',
+                    });
                 }
-            } catch (err: any) {
-                setLoading(false);
-                toast({
-                    description: err.response.data,
-                    status: 'error',
-                });
-            }
-        })();
+            })();
+        } else {
+            setPredictions([]);
+            setRoutes([]);
+        }
     }, [stop, toast]);
 
     const getGoogleMapsDir = () => {
