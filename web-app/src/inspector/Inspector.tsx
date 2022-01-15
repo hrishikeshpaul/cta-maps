@@ -50,6 +50,7 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
                 <Flex>
                     <IconButton
                         aria-label="favorite"
+                        fontSize="lg"
                         icon={isFav ? <HeartFillIcon /> : <HeartIcon />}
                         onClick={onFavHandle}
                     />

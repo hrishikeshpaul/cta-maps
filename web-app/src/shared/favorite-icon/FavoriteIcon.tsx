@@ -11,5 +11,12 @@ interface Props {
 }
 
 export const FavoriteIcon: FC<Props> = ({ isFav, ariaLabel, onClick }) => {
-    return <IconButton aria-label={ariaLabel} icon={isFav ? <HeartFillIcon /> : <HeartIcon />} onClick={onClick} />;
+    return (
+        <IconButton
+            fontSize="lg"
+            aria-label={ariaLabel}
+            icon={isFav ? <HeartFillIcon /> : <HeartIcon />}
+            onClick={onClick}
+        />
+    );
 };

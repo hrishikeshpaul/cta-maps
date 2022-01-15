@@ -60,6 +60,7 @@ export const Nav: FunctionComponent = () => {
                         aria-label="my-favoriteStops"
                         icon={<HeartIcon />}
                         bg={buttonBg}
+                        fontSize="xl"
                         boxShadow="lg"
                         onClick={openFavorites}
                     />

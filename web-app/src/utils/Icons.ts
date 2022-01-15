@@ -1,4 +1,4 @@
-export { BsHeart as HeartIcon, BsHeartFill as HeartFillIcon } from 'react-icons/bs';
+// export { BsHeart as HeartIcon, BsHeartFill as HeartFillIcon } from 'react-icons/bs';
 export {
     FiChevronRight as RightIcon,
     FiChevronDown as DownIcon,
@@ -11,4 +11,5 @@ export { GoInfo as InfoIcon } from 'react-icons/go';
 export { HiCheck as CheckIcon, HiArrowRight as ArrowRightIcon } from 'react-icons/hi';
 export { IoIosClose as CloseIcon } from 'react-icons/io';
 export { MdMyLocation as MyLocationIcon } from 'react-icons/md';
-export {TiLocationArrowOutline as LocationArrowIcon} from 'react-icons/ti'
+export { RiHeart3Fill as HeartFillIcon, RiHeart3Line as HeartIcon } from 'react-icons/ri';
+export { TiLocationArrowOutline as LocationArrowIcon } from 'react-icons/ti';
