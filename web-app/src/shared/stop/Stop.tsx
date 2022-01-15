@@ -185,7 +185,7 @@ export const Stop: FunctionComponent = () => {
             </BottomSheet.Body>
             <BottomSheet.Footer>
                 <Flex justifyContent="space-between" w="100%">
-                    <Button rightIcon={<LocationArrowIcon fontSize='22px' />} onClick={getGoogleMapsDir}>
+                    <Button rightIcon={<LocationArrowIcon fontSize="22px" />} onClick={getGoogleMapsDir}>
                         <Text>{t('GET_DIR')}</Text>
                     </Button>
                     <FavoriteIcon ariaLabel="favorite-stop" isFav={isFav} onClick={onFavHandle} />
