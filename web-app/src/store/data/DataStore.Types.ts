@@ -71,6 +71,8 @@ export interface Prediction {
     time: number;
     timestamp: string;
     delayed: boolean;
+    vehicleId: string;
+    destination: string;
 }
 
 export interface DataStoreState {

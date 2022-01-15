@@ -24,6 +24,7 @@ class SocketConnection {
 
                 that.socket.emit('update-vehicles', data);
             } catch (err) {
+                console.log(err)
                 that.socket.emit('server-error');
             }
         }, TIMER);

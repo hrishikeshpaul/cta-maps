@@ -120,6 +120,8 @@ router.get('/predictions', async (req, res) => {
                 id: item.vid,
                 route: item.rt,
                 direction: item.rtdir,
+                vehicleId: item.vid,
+                destination: item.des,
                 time: diff,
                 timestamp: new Date(predTime).toLocaleString('en-US', {
                     hour: 'numeric',

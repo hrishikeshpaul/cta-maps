@@ -85,7 +85,15 @@ export const Stop: FunctionComponent = () => {
         }
     };
 
-    const RenderPred: FunctionComponent<Prediction> = ({ route, type, time, delayed, timestamp, direction }) => {
+    const RenderPred: FunctionComponent<Prediction> = ({
+        route,
+        type,
+        time,
+        delayed,
+        timestamp,
+        vehicleId,
+        destination,
+    }) => {
         const PredictionCard: FunctionComponent = () => (
             <>
                 <Flex justifyContent="space-between" alignItems="center" py="4">
@@ -104,7 +112,9 @@ export const Stop: FunctionComponent = () => {
                                     </Badge>
                                 )}
                             </Text>
-                            <Text fontSize="xs">{t(direction)}</Text>
+                            <Text fontSize="sm">
+                                {vehicleId} - {destination}
+                            </Text>
                         </Box>
                     </Flex>
                     <Text fontWeight={500}>{timestamp}</Text>
