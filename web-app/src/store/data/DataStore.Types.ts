@@ -45,7 +45,7 @@ export interface Stop extends Point {
 export interface Pattern {
     fillColor: string;
     strokeColor: string;
-    pid: number;
+    id: number;
     route: string;
     paths: Point[];
     stops: Stop[];

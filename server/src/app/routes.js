@@ -91,7 +91,7 @@ router.get('/patterns', async (req, res) => {
                 fillColor: color,
                 strokeColor: color,
                 dir: item.dir,
-                pid: item.pid,
+                id: item.pid,
                 route,
                 paths,
                 stops,

@@ -106,7 +106,7 @@ export const MapContainer: FunctionComponent = () => {
                 ...basePolylineOptions,
                 paths: pattern.paths,
                 strokeColor: pattern.strokeColor,
-                id: pattern.pid,
+                id: pattern.id,
                 stops: pattern.stops,
             };
 
