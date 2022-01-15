@@ -13,6 +13,7 @@ import {
     Center,
     Button,
     Icon,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -37,6 +38,7 @@ export const RouteSelect: FunctionComponent = () => {
     const [index, setIndex] = useState<number>(1);
     const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
     const debouncedQuery = useDebounce(query);
+    const inputBg = useColorModeValue('gray.100', 'gray.600');
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -159,6 +161,8 @@ export const RouteSelect: FunctionComponent = () => {
                             </InputRightElement>
                         )}
                         <Input
+                            border="0"
+                            bg={inputBg}
                             name="query"
                             value={query}
                             placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
