@@ -189,8 +189,8 @@ export const RouteSelect: FunctionComponent = () => {
                     </Box>
                 </BottomSheet.Body>
                 <BottomSheet.Footer>
-                    <Flex w="100%" justifyContent={currentRoutes.length ? 'space-between' : 'flex-end'}>
-                        {currentRoutes.length ? (
+                    <Flex w="100%" justifyContent={Object.keys(currentRoutes).length ? 'space-between' : 'flex-end'}>
+                        {Object.keys(currentRoutes).length ? (
                             <Button onClick={removeAllRoutes} variant="link">
                                 {t('DESELECT_ALL')}
                             </Button>
