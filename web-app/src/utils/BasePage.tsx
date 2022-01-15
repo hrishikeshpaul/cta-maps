@@ -28,7 +28,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
                 backgroundColor={useColorModeValue('white', 'gray.800')}
             >
                 <HStack alignItems="center" spacing={8} display={{ base: 'none', md: 'flex' }}>
-                    <Avatar src="/logo.svg" h="40px" w="40px" />
+                    <Avatar src="/logo.svg" h="40px" w="40px" ignoreFallback />
                     <Link fontWeight="bold" pl="4">
                         Usage
                     </Link>
@@ -49,7 +49,7 @@ export const BasePage: FunctionComponent<Props> = ({ children }) => {
             <Divider mt="12" />
             <Flex justifyContent="space-between" alignItems="center" p="4" flexDir={{ base: 'column', md: 'row' }}>
                 <Flex alignItems="center">
-                    <Avatar src="/logo.svg" size="sm" />
+                    <Avatar src="/logo.svg" size="sm" ignoreFallback />
                     <Text pl="2" fontWeight={800}>
                         trackCTA
                     </Text>

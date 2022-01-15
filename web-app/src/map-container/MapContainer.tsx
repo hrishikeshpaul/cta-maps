@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useToast, Avatar } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
 
@@ -177,8 +177,6 @@ export const MapContainer: FunctionComponent = () => {
                     </div>
                 ))}
             </Map>
-
-            <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={1000} bottom="2" right="2" />
         </div>
     );
 };

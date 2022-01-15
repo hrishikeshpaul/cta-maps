@@ -7,7 +7,7 @@ export const Landing: FunctionComponent = () => {
         <>
             <Center h="100%" w="100%" flexDirection="column" textAlign="center">
                 <Fade in={true}>
-                    <Avatar src="/logo.svg" size="xl" />
+                    <Avatar src="/logo.svg" size="xl" ignoreFallback />
                     <Text fontSize="xl" pt="2" fontWeight="bold">
                         trackCTA
                     </Text>

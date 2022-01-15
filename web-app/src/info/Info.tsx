@@ -115,7 +115,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
 
                     <DrawerBody px="0" pt="0" className="info">
                         <Flex flexDir="column" alignItems="center" px="4">
-                            <Avatar src="/logo.svg" size="xl" />
+                            <Avatar src="/logo.svg" size="xl" ignoreFallback />
                             <Text color="gray.400" pt="2" textAlign="center" fontSize="xs">
                                 {version}
                             </Text>

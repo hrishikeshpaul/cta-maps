@@ -37,7 +37,7 @@ export const AppContent: FunctionComponent = () => {
                 <Favorites />
                 <RouteSelect />
                 <Settings />
-                <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={100} bottom="2" right="2" />
+                <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={100} bottom="2" right="2" ignoreFallback />
             </Box>
         </MapLoader>
     );
