@@ -1,13 +1,25 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Center, Box, Text, IconButton, Flex, useToast, Spinner, Badge, Button, Divider } from '@chakra-ui/react';
+import {
+    Center,
+    Box,
+    Text,
+    IconButton,
+    Flex,
+    useToast,
+    Spinner,
+    Badge,
+    Button,
+    Divider,
+    Avatar,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
 import { useDataStore } from 'store/data/DataStore';
-import { getPredictions } from 'store/data/DataService';
-import { Juncture, Prediction } from 'store/data/DataStore.Types';
+import { getPredictions, getRouteColor } from 'store/data/DataService';
+import { Juncture, Prediction, RouteColor } from 'store/data/DataStore.Types';
 import { DownIcon, LocationArrowIcon } from 'utils/Icons';
 
 import 'shared/stop/Stop.scss';
@@ -16,6 +28,7 @@ export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ stop, favoriteStops }, { closeStop, saveStop, unSaveStop }] = useDataStore();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
+    const [colors, setColors] = useState<RouteColor>({});
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);
     const [filter, setFilter] = useState<Record<string, boolean>>({});
@@ -46,9 +59,14 @@ export const Stop: FunctionComponent = () => {
                         responseRoutes.add(res.route);
                     });
 
-                    setRoutes(Array.from(responseRoutes));
-                    setPredictions(response);
-                    setLoading(false);
+                    const routeColors = await getRouteColor(Array.from(responseRoutes).join(','));
+
+                    setTimeout(() => {
+                        setColors(routeColors);
+                        setRoutes(Array.from(responseRoutes));
+                        setPredictions(response);
+                        setLoading(false);
+                    }, 500);
                 } catch (err: any) {
                     setLoading(false);
                     toast({
@@ -93,34 +111,51 @@ export const Stop: FunctionComponent = () => {
         type,
         time,
         delayed,
+        direction,
         timestamp,
         vehicleId,
         destination,
     }) => {
         const PredictionCard: FunctionComponent = () => (
             <>
-                <Flex justifyContent="space-between" alignItems="center" py="4">
-                    <Flex alignItems="center">
-                        <Center h="30px" w="30px">
-                            <Text fontWeight="bold">{route}</Text>
-                        </Center>
-                        <Box pl="4">
-                            <Text>
-                                <Text as="span" fontWeight={500}>
+                <Flex justifyContent="space-between" alignItems="center" py="4" overflow="hidden">
+                    <Flex alignItems="center" overflow="hidden">
+                        <Avatar
+                            name={route}
+                            getInitials={(str) => str}
+                            color="white"
+                            fontSize="sm"
+                            fontWeight="500"
+                            p="4"
+                            h="40px"
+                            w="40px"
+                            borderRadius="lg"
+                            bg={colors[route]}
+                            ignoreFallback
+                        />
+                        <Box overflow="hidden" px="3">
+                            <Flex overflow="hidden" alignItems="center">
+                                <Text fontWeight={500} isTruncated>
                                     {JunctureMapper[type](time)}
                                 </Text>
                                 {delayed && (
-                                    <Badge size="xs" colorScheme="orange" ml="2">
+                                    <Badge size="xs" fontSize="10px" mt="1" ml="2" colorScheme="orange">
                                         {t('DELAYED')}
                                     </Badge>
                                 )}
-                            </Text>
-                            <Text fontSize="sm">
-                                {vehicleId} - {destination}
-                            </Text>
+                            </Flex>
+                            <Flex fontSize="sm" alignItems="center" overflow="hidden" maxW="100%">
+                                <Badge>{vehicleId}</Badge>
+                                <Text isTruncated pl="1">
+                                    {destination}
+                                </Text>
+                            </Flex>
                         </Box>
                     </Flex>
-                    <Text fontWeight={500}>{timestamp}</Text>
+
+                    <Text textAlign="right" fontWeight={500} flexShrink={0}>
+                        {timestamp}
+                    </Text>
                 </Flex>
                 <Divider />
             </>

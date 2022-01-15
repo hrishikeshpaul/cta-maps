@@ -31,6 +31,10 @@ export interface Route {
     color: string;
 }
 
+export interface RouteColor {
+    [key: string] : string;
+}
+
 export interface Point {
     lat: number;
     lng: number;

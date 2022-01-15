@@ -62,6 +62,29 @@ router.get('/routes', async (req, res) => {
     }
 });
 
+router.get('/route-color', async (req, res) => {
+    try {
+        const { ids } = req.query;
+
+        const data = await getRoutes();
+
+        const routeToColors = {};
+
+        ids.split(',').forEach((id) => {
+            const foundRoute = data.find((r) => r.rt === id.toString());
+
+            if (foundRoute) {
+                routeToColors[id] = foundRoute.rtclr;
+            }
+        });
+
+        res.send(routeToColors);
+    } catch (err) {
+        console.log(err);
+        res.send(err).status(400);
+    }
+});
+
 router.get('/patterns', async (req, res) => {
     const { route, color } = req.query;
     try {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Pattern, Prediction, Route } from 'store/data/DataStore.Types';
+import { Pattern, Prediction, Route, RouteColor } from 'store/data/DataStore.Types';
 import { Http } from 'utils/Http';
 import { socket } from 'utils/Socket';
 
@@ -10,6 +10,14 @@ let cancelGetPatternSource = CancelToken.source();
 export const getRoutes = async (search?: string, filter?: string, limit?: number, index?: number): Promise<Route[]> => {
     const { data } = await Http.get<Route[]>('/routes', {
         params: { search, filter, limit, index },
+    });
+
+    return data;
+};
+
+export const getRouteColor = async (ids: string): Promise<RouteColor> => {
+    const { data } = await Http.get<RouteColor>('/route-color', {
+        params: { ids },
     });
 
     return data;
