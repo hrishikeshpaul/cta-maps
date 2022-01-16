@@ -15,6 +15,7 @@ import {
     Link,
     useColorModeValue,
     Badge,
+    useToast,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +33,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
     const { t } = useTranslation('common');
     const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer, openSettings }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
+    const toast = useToast();
     const borderBottom = useColorModeValue('#ececec', '#4A5568');
     const buttonBg = useColorModeValue('white', 'gray.600');
 
@@ -49,6 +51,14 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
             {
                 text: t('CONTACT'),
                 onClick: () => window.open('https://trackcta.com/contact', '_blank'),
+            },
+            {
+                text: t('SHARE'),
+                onClick: () => {
+                    navigator.clipboard.writeText('https://app.trackcta.com/');
+                    toast.close('clipboard');
+                    toast({ description: t('COPIED_TO_CLP'), id: 'clipboard', status: 'success' });
+                },
             },
             // {
             //     text: t('TERMS'),
