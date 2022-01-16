@@ -65,9 +65,7 @@ router.get('/routes', async (req, res) => {
 router.get('/route-color', async (req, res) => {
     try {
         const { ids } = req.query;
-
         const data = await getRoutes();
-
         const routeToColors = {};
 
         ids.split(',').forEach((id) => {

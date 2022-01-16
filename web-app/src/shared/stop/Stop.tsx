@@ -111,7 +111,6 @@ export const Stop: FunctionComponent = () => {
         type,
         time,
         delayed,
-        direction,
         timestamp,
         vehicleId,
         destination,
