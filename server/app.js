@@ -9,6 +9,7 @@ const { Server } = require('socket.io');
 
 const router = require('./src/app/routes');
 const { onConnection } = require('./src/app/socket');
+const { logger } = require('./src/utils/logger');
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ const io = new Server(httpServer, { cors: '*', transports: ['websocket'], allowU
 
 app.use(cors());
 app.use(express.json());
+app.use(logger);
 
 app.use('/v1/api', router);
 

@@ -69,7 +69,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
             //     onClick: () => window.open('https://trackcta.com/policy', '_blank'),
             // },
         ],
-        [t],
+        [t, toast],
     );
 
     useEffect(() => {
