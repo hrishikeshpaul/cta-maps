@@ -1,10 +1,24 @@
 'use strict';
 
 const _ = require('lodash');
+const { socketLogger: log } = require('../utils/logger');
 
 const { getVehicles, checkHeading } = require('./service');
 
-const TIMER = 4000; //ms
+const TIMER = 3000; //ms
+
+const Events = {
+    Connection: 'connection',
+    RouteAdd: 'route-add',
+    RouteRemove: 'route-remove',
+    RouteRemoveAll: 'route-remove-all',
+    Idle: 'idle',
+    Active: 'active',
+    Disconnect: 'disconnect',
+    UpdateVehicles: 'update-vehicles',
+    ServerError: 'server-error',
+    Error: 'error',
+};
 
 class SocketConnection {
     constructor(socket) {
@@ -22,10 +36,11 @@ class SocketConnection {
                 const routeStr = Object.keys(this.routes).join(',');
                 const data = await this.get_vehicles(routeStr);
 
-                that.socket.emit('update-vehicles', data);
+                that.socket.emit(Events.UpdateVehicles, data);
             } catch (err) {
-                console.log(err)
-                that.socket.emit('server-error');
+                console.log(err);
+                that.socket.emit(Events.ServerError);
+                log(Events.ServerError, that.socket.id, JSON.stringify(err));
             }
         }, TIMER);
     }
@@ -44,9 +59,10 @@ class SocketConnection {
                 this.start_timer();
             }
 
-            this.socket.emit('update-vehicles', data);
+            this.socket.emit(Events.UpdateVehicles, data);
         } catch (err) {
-            this.socket.emit('error', err);
+            this.socket.emit(Events.Error, err);
+            log(Events.ServerError, this.socket.id, JSON.stringify(err));
         }
     }
 
@@ -92,7 +108,7 @@ const onRouteDeselect = (socket, route) => {
 };
 
 const onDisconnect = (socket) => {
-    console.info(`Socket[${socket.id}] disconnected..`);
+    log(Events.Disconnect, socket.id);
 
     connectedSockets[socket.id].stop_timer();
     delete connectedSockets[socket.id];
@@ -103,13 +119,13 @@ const onRemoveAll = (socket) => {
 };
 
 const onIdle = (socket) => {
-    console.log(`Socket[${socket.id}] idle. Stopping vehicle data..`);
+    log(Events.Idle, socket.id);
 
     connectedSockets[socket.id].stop_timer();
 };
 
 const onActive = (socket) => {
-    console.log(`Socket[${socket.id}] active. Fetching vehicle data..`);
+    log(Events.Active, socket.id);
 
     const connection = connectedSockets[socket.id];
 
@@ -119,16 +135,16 @@ const onActive = (socket) => {
 };
 
 const onConnection = (socket) => {
+    log(Events.Connection, socket.id);
+
     connectedSockets[socket.id] = new SocketConnection(socket);
 
-    console.info(`Socket[${socket.id}] connected`);
-
-    socket.on('route-add', _.partial(onRouteSelect, socket));
-    socket.on('route-remove', _.partial(onRouteDeselect, socket));
-    socket.on('route-remove-all', _.partial(onRemoveAll, socket));
-    socket.on('idle', _.partial(onIdle, socket));
-    socket.on('active', _.partial(onActive, socket));
-    socket.on('disconnect', _.partial(onDisconnect, socket));
+    socket.on(Events.RouteAdd, _.partial(onRouteSelect, socket));
+    socket.on(Events.RouteRemove, _.partial(onRouteDeselect, socket));
+    socket.on(Events.RouteRemoveAll, _.partial(onRemoveAll, socket));
+    socket.on(Events.Idle, _.partial(onIdle, socket));
+    socket.on(Events.Active, _.partial(onActive, socket));
+    socket.on(Events.Disconnect, _.partial(onDisconnect, socket));
 };
 
 module.exports = {

@@ -138,7 +138,7 @@ export const Stop: FunctionComponent = () => {
                                     {JunctureMapper[type](time)}
                                 </Text>
                                 {delayed && (
-                                    <Badge size="xs" fontSize="10px" mt="1" ml="2" colorScheme="orange">
+                                    <Badge size="xs" fontSize="10px" ml="2" colorScheme="orange">
                                         {t('DELAYED')}
                                     </Badge>
                                 )}

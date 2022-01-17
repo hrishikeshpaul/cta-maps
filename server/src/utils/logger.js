@@ -4,6 +4,8 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const fs = require('fs');
 
+const log = console.log;
+
 const mapStatusToColor = (status) => {
     switch (status) {
         case 200:
@@ -12,8 +14,6 @@ const mapStatusToColor = (status) => {
             return chalk.red(status);
     }
 };
-
-const log = console.log;
 
 const fileLog = (log) => {
     fs.appendFile('_logs.txt', log + '\n', (err) => {
@@ -46,6 +46,13 @@ const logger = async (req, res, next) => {
     next();
 };
 
+const socketLogger = async (eventName, id, data) => {
+    const formattedDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
+    log(`[${chalk.blue(`${formattedDateTime}`)}] SOCK ${chalk.yellow(eventName)} ${id} ${data || ''}`);
+    fileLog(`${formattedDateTime} SOCK ${eventName} ${id} ${data || ''}`);
+};
+
 module.exports = {
     logger,
+    socketLogger,
 };
