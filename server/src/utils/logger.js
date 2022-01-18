@@ -46,10 +46,10 @@ const logger = async (req, res, next) => {
     next();
 };
 
-const socketLogger = async (eventName, id, data) => {
+const socketLogger = async (eventName, data) => {
     const formattedDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
-    log(`[${chalk.blue(`${formattedDateTime}`)}] SOCK ${chalk.yellow(eventName)} ${id} ${data || ''}`);
-    fileLog(`${formattedDateTime} SOCK ${eventName} ${id} ${data || ''}`);
+    log(`[${chalk.blue(`${formattedDateTime}`)}] SOCK ${chalk.yellow(eventName)} ${data || ''}`);
+    fileLog(`${formattedDateTime} SOCK ${eventName} ${data || ''}`);
 };
 
 module.exports = {

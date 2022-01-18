@@ -40,7 +40,7 @@ class SocketConnection {
             } catch (err) {
                 console.log(err);
                 that.socket.emit(Events.ServerError);
-                log(Events.ServerError, that.socket.id, JSON.stringify(err));
+                log(Events.ServerError, JSON.stringify(err));
             }
         }, TIMER);
     }
@@ -62,7 +62,7 @@ class SocketConnection {
             this.socket.emit(Events.UpdateVehicles, data);
         } catch (err) {
             this.socket.emit(Events.Error, err);
-            log(Events.ServerError, this.socket.id, JSON.stringify(err));
+            log(Events.ServerError, JSON.stringify(err));
         }
     }
 
@@ -100,10 +100,14 @@ class SocketConnection {
 const connectedSockets = {};
 
 const onRouteSelect = async (socket, route) => {
+    log(Events.RouteAdd, route);
+
     connectedSockets[socket.id].add(route);
 };
 
 const onRouteDeselect = (socket, route) => {
+    log(Events.RouteRemove, route);
+
     connectedSockets[socket.id].remove(route);
 };
 
@@ -115,6 +119,8 @@ const onDisconnect = (socket) => {
 };
 
 const onRemoveAll = (socket) => {
+    log(Events.RouteRemoveAll, socket.id);
+
     connectedSockets[socket.id].remove_all();
 };
 
