@@ -53,5 +53,7 @@
     "DESTINATION": "Destination",
     "ROUTE": "Route",
     "TERMS": "Terms",
-    "POLICY": "Policy"
+    "POLICY": "Policy",
+    "SHARE": "Share",
+    "COPIED_TO_CLP": "Share link copied to clipboard"
 }
