@@ -3,6 +3,7 @@
 const axios = require('axios');
 const chalk = require('chalk');
 const dotenv = require('dotenv');
+const { mapStatusToColor } = require('./logger');
 
 dotenv.config();
 
@@ -15,18 +16,24 @@ const Http = axios.create({
 });
 
 Http.interceptors.request.use((config) => {
-    const { baseURL, params, url } = config;
-    const paramsStr = Object.keys(params)
-        .map((key) => key + '=' + params[key])
-        .join('&');
-
-    console.log(chalk.blue(`[GET] ${baseURL}${url}?${paramsStr}`));
-
+    config.metadata = { startTime: new Date().getTime() };
+    
     return config;
 });
 
 Http.interceptors.response.use((response) => {
-    const { data } = response;
+    const {
+        status,
+        request: {
+            res: { responseUrl },
+        },
+        data,
+        config: {
+            metadata: { startTime },
+        },
+    } = response;
+    const responseTime = new Date().getTime() - startTime;
+    const formattedDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
     const busResponse = data['bustime-response'];
     const error = busResponse['error'];
 
@@ -35,6 +42,12 @@ Http.interceptors.response.use((response) => {
 
         return { error: error[0].msg };
     }
+
+    console.log(
+        `[${chalk.blue(formattedDateTime)}] GET ${responseUrl} ${mapStatusToColor(status)} ${chalk.yellow(
+            `${responseTime}ms`,
+        )}`,
+    );
 
     return { data: busResponse };
 });

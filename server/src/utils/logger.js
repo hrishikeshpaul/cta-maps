@@ -34,7 +34,7 @@ const logger = async (req, res, next) => {
     const { statusCode } = res;
     const start = process.hrtime();
     const durationInMilliseconds = getActualRequestDurationInMilliseconds(start);
-    const timeInMs = `${durationInMilliseconds.toLocaleString()} ms`;
+    const timeInMs = `${durationInMilliseconds.toLocaleString()}ms`;
 
     log(
         `[${chalk.blue(`${formattedDateTime}`)}] ${method} ${url} ${mapStatusToColor(statusCode)} ${chalk.yellow(
@@ -55,4 +55,5 @@ const socketLogger = async (eventName, data) => {
 module.exports = {
     logger,
     socketLogger,
+    mapStatusToColor,
 };
