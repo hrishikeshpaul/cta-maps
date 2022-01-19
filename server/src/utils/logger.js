@@ -37,7 +37,7 @@ const logger = async (req, res, next) => {
     const timeInMs = `${durationInMilliseconds.toLocaleString()}ms`;
 
     log(
-        `[${chalk.blue(`${formattedDateTime}`)}] ${method} ${url} ${mapStatusToColor(statusCode)} ${chalk.yellow(
+        `${chalk.blue(`${formattedDateTime}`)} ${method} ${url} ${mapStatusToColor(statusCode)} ${chalk.yellow(
             timeInMs,
         )}`,
     );
@@ -48,7 +48,7 @@ const logger = async (req, res, next) => {
 
 const socketLogger = async (eventName, data) => {
     const formattedDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
-    log(`[${chalk.blue(`${formattedDateTime}`)}] SOCK ${chalk.yellow(eventName)} ${data || ''}`);
+    log(`${chalk.blue(`${formattedDateTime}`)} SOCK ${chalk.yellow(eventName)} ${data || ''}`);
     fileLog(`${formattedDateTime} SOCK ${eventName} ${data || ''}`);
 };
 

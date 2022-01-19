@@ -17,7 +17,7 @@ const Http = axios.create({
 
 Http.interceptors.request.use((config) => {
     config.metadata = { startTime: new Date().getTime() };
-    
+
     return config;
 });
 
@@ -44,7 +44,7 @@ Http.interceptors.response.use((response) => {
     }
 
     console.log(
-        `[${chalk.blue(formattedDateTime)}] GET ${responseUrl} ${mapStatusToColor(status)} ${chalk.yellow(
+        `${chalk.blue(formattedDateTime)} GET ${responseUrl} ${mapStatusToColor(status)} ${chalk.yellow(
             `${responseTime}ms`,
         )}`,
     );
