@@ -24,17 +24,6 @@ const basePolylineOptions = {
     zIndex: 1,
 };
 
-const VehicleIconMapper = {
-    N: 'bus/n.svg',
-    NE: 'bus/ne.svg',
-    NW: 'bus/nw.svg',
-    S: 'bus/s.svg',
-    SE: 'bus/se.svg',
-    SW: 'bus/sw.svg',
-    W: 'bus/w.svg',
-    E: 'bus/e.svg',
-};
-
 interface Line extends PolylineProps {
     paths: Point[];
     stops: Stop[];
