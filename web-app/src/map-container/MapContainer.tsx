@@ -132,7 +132,9 @@ export const MapContainer: FunctionComponent = () => {
             <Map
                 defaultZoom={defaultZoom}
                 onLoad={(map) => {
-                    if (map) setMap(map);
+                    if (map) {
+                        setMap(map);
+                    }
                 }}
                 center={currentLocation}
                 onDragStart={() => setDragging(true)}

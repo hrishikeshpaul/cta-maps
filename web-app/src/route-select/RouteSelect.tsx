@@ -38,7 +38,7 @@ export const RouteSelect: FunctionComponent = () => {
     const [index, setIndex] = useState<number>(1);
     const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
     const debouncedQuery = useDebounce(query);
-    const inputBg = useColorModeValue('gray.100', 'gray.600');
+    const inputBg = useColorModeValue('gray.50', 'gray.600');
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -114,7 +114,7 @@ export const RouteSelect: FunctionComponent = () => {
         (async () => {
             if (debouncedQuery) {
                 const filter = getFilter();
-                const response = await getRoutes(debouncedQuery, filter, LIMIT, index);
+                const response = await getRoutes(debouncedQuery, filter, LIMIT, 1);
 
                 if (response) {
                     setRoutes(response.map((route) => ({ ...route, selected: false })));

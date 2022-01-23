@@ -18,6 +18,23 @@ export const lightStyle = [
         ],
     },
     {
+        featureType: 'poi.attraction',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.attraction',
+        elementType: 'geometry',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
         featureType: 'poi.business',
         stylers: [
             {
@@ -26,8 +43,48 @@ export const lightStyle = [
         ],
     },
     {
-        featureType: 'poi.park',
-        elementType: 'labels.text',
+        featureType: 'poi.government',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.medical',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.place_of_worship',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.school',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.sports_complex',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'road',
+        elementType: 'labels.icon',
         stylers: [
             {
                 visibility: 'off',
@@ -40,6 +97,52 @@ export const lightStyle = [
         stylers: [
             {
                 visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'transit',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        stylers: [
+            {
+                visibility: 'on',
+            },
+            {
+                weight: 4.5,
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        elementType: 'geometry',
+        stylers: [
+            {
+                visibility: 'on',
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        elementType: 'labels',
+        stylers: [
+            {
+                visibility: 'on',
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        elementType: 'labels.icon',
+        stylers: [
+            {
+                visibility: 'on',
             },
         ],
     },
