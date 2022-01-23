@@ -46,7 +46,7 @@
     "DONE": "Done",
     "ADD_FAVORITES": "There's nothing here.",
     "STOPS": "Stops",
-    "SHOW_ACTIVE_ROUTES": "Show Active Routes",
+    "SHOW_ACTIVE_ROUTES": "Load Saved Routes",
     "ACTIVE_ROUTE_INFO": "Enabling this will load your favorite routes when you reload the website",
     "ALL_ROUTES": "All Routes",
     "ON_TIME": "On Time",
