@@ -8,6 +8,8 @@ import {
     LocaleKey,
     AllowLocationKey,
     ShowActiveRoutesKey,
+    BusIconType,
+    BusIconKey,
 } from 'store/system/SystemStore.Types';
 
 export enum SystemStoreActionType {
@@ -26,7 +28,12 @@ export enum SystemStoreActionType {
     SetFavoritesDrawer,
     SetInspectorDrawer,
     SetShowActiveRoutes,
+    SetBusIcon,
     ToggleLocationButtonPress,
+}
+
+interface PayloadSetBusIcon {
+    icon: BusIconType;
 }
 
 interface PayloadSetShowActiveRoutes {
@@ -104,7 +111,8 @@ interface SystemStoreAction {
         | PayloadToggleLocationButtonPress
         | PayloadSetFavoritesDrawer
         | PayloadSetInspectorDrawer
-        | PayloadSetShowActiveRoutes;
+        | PayloadSetShowActiveRoutes
+        | PayloadSetBusIcon;
 }
 
 interface SystemStoreProviderProps {
@@ -128,6 +136,7 @@ export const initialStoreState: SystemStoreState = {
         locale: (localStorage.getItem(LocaleKey) as Locale) || Locale.EN,
         allowLocation: JSON.parse(localStorage.getItem(AllowLocationKey) || '{}') === true,
         showActiveRoutes: JSON.parse(localStorage.getItem(ShowActiveRoutesKey) || '{}') === true,
+        busIcon: (localStorage.getItem(BusIconKey) || BusIconType.Circle) as BusIconType,
     },
 };
 
@@ -215,6 +224,12 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 settings: { ...state.settings, showActiveRoutes: (action.payload as PayloadSetShowActiveRoutes).show },
             };
         }
+        case SystemStoreActionType.SetBusIcon: {
+            return {
+                ...state,
+                settings: { ...state.settings, busIcon: (action.payload as PayloadSetBusIcon).icon },
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -271,6 +286,7 @@ interface SystemStoreActionApis {
     openInspector: () => void;
     closeInspector: () => void;
     setShowActiveRoutes: (show: boolean) => void;
+    setBusIcon: (icon: BusIconType) => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -336,6 +352,10 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         setShowActiveRoutes: (show: boolean) => {
             localStorage.setItem(ShowActiveRoutesKey, JSON.stringify(show));
             dispatch({ type: SystemStoreActionType.SetShowActiveRoutes, payload: { show } });
+        },
+        setBusIcon: (icon: BusIconType) => {
+            localStorage.setItem(BusIconKey, icon);
+            dispatch({ type: SystemStoreActionType.SetBusIcon, payload: { icon } });
         },
     };
 

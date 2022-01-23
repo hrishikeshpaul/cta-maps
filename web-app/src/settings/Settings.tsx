@@ -9,6 +9,7 @@ import { useSystemStore } from 'store/system/SystemStore';
 import { ColorMode } from 'store/system/SystemStore.Types';
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { DownIcon } from 'utils/Icons';
+import { BusIcon } from './BusIcon';
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
@@ -88,6 +89,11 @@ export const Settings: FunctionComponent = () => {
                                 isChecked={settings.colorMode !== ColorMode.Light}
                                 onChange={onDarkModeToggle}
                             />
+                        </Flex>
+
+                        <Flex justifyContent="space-between" alignItems="center" mt="2">
+                            <Text>{t('BUS_ICON')}</Text>
+                            <BusIcon />
                         </Flex>
                     </Box>
 

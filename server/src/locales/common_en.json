@@ -55,5 +55,8 @@
     "TERMS": "Terms",
     "POLICY": "Policy",
     "SHARE": "Share",
-    "COPIED_TO_CLP": "Share link copied to clipboard"
+    "COPIED_TO_CLP": "Share link copied to clipboard",
+    "BUS_ICON": "Bus Icon",
+    "CIRCLE": "Circle",
+    "ARROW":" ARROW"
 }

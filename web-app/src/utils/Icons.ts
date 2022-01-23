@@ -1,4 +1,4 @@
-// export { BsHeart as HeartIcon, BsHeartFill as HeartFillIcon } from 'react-icons/bs';
+export { BiRadioCircle as CircleIcon } from 'react-icons/bi';
 export {
     FiChevronRight as RightIcon,
     FiChevronDown as DownIcon,
