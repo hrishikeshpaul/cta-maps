@@ -3,6 +3,7 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { Polyline, PolylineProps, Marker } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
+import tinycolor from 'tinycolor2';
 
 import { Map } from 'shared/map/Map';
 import { useDataStore } from 'store/data/DataStore';
@@ -153,7 +154,27 @@ export const MapContainer: FunctionComponent = () => {
                         {vehicles.map((vehicle) => (
                             <Marker
                                 onClick={() => openVehicle(vehicle)}
-                                icon={VehicleIconMapper[vehicle.heading]}
+                                label={{
+                                    text: vehicle.route,
+                                    fontWeight: 'bold',
+                                    fontSize: '11px',
+                                    fontFamily: 'Inter',
+                                    color: 'white',
+                                }}
+                                icon={{
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    strokeColor:
+                                        settings.colorMode === 'light'
+                                            ? tinycolor(vehicle.color).darken(12).toString()
+                                            : tinycolor(vehicle.color).lighten(20).toString(),
+                                    strokeWeight: 1,
+                                    fillColor: vehicle.color,
+                                    fillOpacity: 1,
+                                    scale: 12,
+                                    rotation: vehicle.headingNum,
+                                    anchor: new google.maps.Point(0, 0),
+                                    labelOrigin: new google.maps.Point(0, 0),
+                                }}
                                 position={vehicle.position}
                                 key={vehicle.id}
                                 visible={map?.getBounds()?.contains(vehicle.position)}

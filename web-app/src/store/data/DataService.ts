@@ -50,8 +50,8 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     return data;
 };
 
-export const onRouteSelect = (route: string): void => {
-    socket.emit('route-add', route);
+export const onRouteSelect = (route: string, color: string): void => {
+    socket.emit('route-add', { route, color });
 };
 
 export const onRouteDeselect = (route: string): void => {

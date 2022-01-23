@@ -33,8 +33,8 @@ class SocketConnection {
 
         this.timer = setInterval(async () => {
             try {
-                const routeStr = Object.keys(this.routes).join(',');
-                const data = await this.get_vehicles(routeStr);
+                const routeStr = Object.keys(that.routes).join(',');
+                const data = await that.get_vehicles(routeStr, null);
 
                 that.socket.emit(Events.UpdateVehicles, data);
             } catch (err) {
@@ -50,10 +50,10 @@ class SocketConnection {
         this.timer = null;
     }
 
-    async add(route) {
+    async add(routeObj) {
         try {
-            const data = await this.get_vehicles(route);
-            this.routes[route] = true;
+            const data = await this.get_vehicles(routeObj.route, routeObj.color);
+            this.routes[routeObj.route] = routeObj;
 
             if (this.timer === null) {
                 this.start_timer();
@@ -79,8 +79,8 @@ class SocketConnection {
         this.routes = {};
     }
 
-    async get_vehicles(route) {
-        let data = await getVehicles(route);
+    async get_vehicles(routes, color) {
+        let data = await getVehicles(routes);
 
         data = data.map((item) => ({
             id: item.vid,
@@ -91,6 +91,7 @@ class SocketConnection {
             delayed: item.dly,
             heading: checkHeading(parseInt(item.hdg, 10)),
             headingNum: parseInt(item.hdg, 10),
+            color: color || this.routes[item.rt].color,
         }));
 
         return data;
@@ -100,7 +101,7 @@ class SocketConnection {
 const connectedSockets = {};
 
 const onRouteSelect = async (socket, route) => {
-    log(Events.RouteAdd, route);
+    log(Events.RouteAdd, JSON.stringify(route));
 
     connectedSockets[socket.id].add(route);
 };

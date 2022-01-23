@@ -256,7 +256,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             try {
                 const response = await getPattern(route.route, route.color);
 
-                onRouteSelect(route.route);
+                onRouteSelect(route.route, route.color);
                 systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
                 dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
             } catch (err: any) {
