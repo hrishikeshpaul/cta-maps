@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Button, Container, IconButton, Flex, Text, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Button, Container, IconButton, Flex, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { Info } from 'info/Info';
@@ -14,7 +14,6 @@ export const Nav: FunctionComponent = () => {
     const [{ dragging }, { openRouteSelect, onLocationButtonPress, openFavorites }] = useSystemStore();
     const [selected, setSelected] = useState<boolean>(false);
     const buttonBg = useColorModeValue('white', 'gray.600');
-    const buttonColor = useColorModeValue('black', 'white');
 
     const onRouteSelect = () => {
         openRouteSelect();
@@ -43,17 +42,10 @@ export const Nav: FunctionComponent = () => {
                 transition="0.25s opacity ease-in-out"
             >
                 <Info />
-                <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} flexDir="column" px="12">
-                    <Text fontSize={selected ? 'xs' : 'sm'} color={selected ? 'gray.400' : buttonColor}>
-                        {t('ROUTES')}
+                <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} px="12">
+                    <Text fontSize="sm">
+                        {t('ROUTES')} {selected && <>({Object.keys(routes).length})</>}
                     </Text>
-                    {selected && (
-                        <Flex flexWrap="wrap" mt="1">
-                            {Object.values(routes).map((route) => (
-                                <Box h="12px" w="15px" bg={route.color} mx="1" borderRadius="sm" key={route.route} />
-                            ))}
-                        </Flex>
-                    )}
                 </Button>
                 <VStack spacing="4">
                     <IconButton
