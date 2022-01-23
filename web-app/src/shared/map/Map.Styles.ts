@@ -210,7 +210,40 @@ export const darkStyle = [
         ],
     },
     {
+        featureType: 'poi.attraction',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.attraction',
+        elementType: 'geometry',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
         featureType: 'poi.business',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.government',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.medical',
         stylers: [
             {
                 visibility: 'off',
@@ -232,6 +265,30 @@ export const darkStyle = [
         stylers: [
             {
                 color: '#6b9a76',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.place_of_worship',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.school',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi.sports_complex',
+        stylers: [
+            {
+                visibility: 'off',
             },
         ],
     },
@@ -330,6 +387,44 @@ export const darkStyle = [
         stylers: [
             {
                 color: '#d59563',
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        stylers: [
+            {
+                visibility: 'on',
+            },
+            {
+                weight: 4.5,
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        elementType: 'geometry',
+        stylers: [
+            {
+                visibility: 'on',
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        elementType: 'labels',
+        stylers: [
+            {
+                visibility: 'on',
+            },
+        ],
+    },
+    {
+        featureType: 'transit.station.bus',
+        elementType: 'labels.icon',
+        stylers: [
+            {
+                visibility: 'on',
             },
         ],
     },
