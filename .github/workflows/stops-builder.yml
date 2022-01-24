@@ -1,0 +1,24 @@
+name: Stops Builder
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Get all-stops.json
+        run: |
+          curl -o data.zip https://www.transitchicago.com/downloads/sch_data/google_transit.zip
+          unzip data.zip -d data
+          ls
+          cd data
+          ls
