@@ -12,6 +12,7 @@ export const BusIcon: FC = () => {
     const [{ settings }, { setBusIcon }] = useSystemStore();
     const selectedBg = useColorModeValue('blue.100', 'blue.400');
     const bg = useColorModeValue('gray.50', 'gray.600');
+
     const setBg = (icon: BusIconType): string => (settings.busIcon === icon ? selectedBg : 'inherit');
 
     return (

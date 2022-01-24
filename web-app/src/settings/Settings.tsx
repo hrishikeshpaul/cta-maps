@@ -82,6 +82,7 @@ export const Settings: FunctionComponent = () => {
                         <Text fontWeight="bold" color="gray.400" fontSize="sm">
                             {t('APPEARANCE')}
                         </Text>
+                        
                         <Flex justifyContent="space-between" alignItems="center" mt="2">
                             <Text>{t('DARK_MODE')}</Text>
                             <Switch
