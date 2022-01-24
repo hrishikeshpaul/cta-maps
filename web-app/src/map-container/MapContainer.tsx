@@ -51,11 +51,11 @@ export const MapContainer: FunctionComponent = () => {
             },
             [BusIconType.Arrow]: {
                 path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                scale: 8,
+                scale: 9,
                 labelOrigin: new google.maps.Point(0, 2.5),
             },
         }),
-        [settings.busIcon],
+        [],
     );
 
     const onGetCurrentLocation = () => {
@@ -134,6 +134,17 @@ export const MapContainer: FunctionComponent = () => {
         }
     }, [paths]); // eslint-disable-line
 
+    const getMarkerLabelSize = (label: string) => {
+        switch (label.length) {
+            case 1:
+                return '12px';
+            case 2:
+                return '11px';
+            default:
+                return '10px';
+        }
+    };
+
     return (
         <div className="map-container">
             <Map
@@ -163,7 +174,7 @@ export const MapContainer: FunctionComponent = () => {
                                 label={{
                                     text: vehicle.route,
                                     fontWeight: 'bold',
-                                    fontSize: '11px',
+                                    fontSize: getMarkerLabelSize(vehicle.route),
                                     fontFamily: 'Inter',
                                     color: 'white',
                                 }}
@@ -172,7 +183,7 @@ export const MapContainer: FunctionComponent = () => {
                                     strokeColor:
                                         settings.colorMode === 'light'
                                             ? tinycolor(vehicle.color).darken(20).toString()
-                                            : tinycolor(vehicle.color).lighten(30).toString(),
+                                            : tinycolor(vehicle.color).lighten(26).toString(),
                                     strokeWeight: 2,
                                     fillColor: vehicle.color,
                                     fillOpacity: 1,
