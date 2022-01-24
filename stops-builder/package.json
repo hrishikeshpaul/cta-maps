@@ -1,0 +1,18 @@
+{
+  "name": "stop-builder",
+  "description": "Script that add stops to database",
+  "license": "MIT",
+  "main": "./dist/main",
+  "types": "./dist/main",
+  "scripts": {
+    "clean": "rimraf dist",
+    "dev": "ts-node-dev --respawn -- main.ts",
+    "build": "npm run clean && tsc",
+    "start": "node dist/main.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.5"
+  }
+}
