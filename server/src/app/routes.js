@@ -4,7 +4,6 @@ const express = require('express');
 const fs = require('fs');
 const Fuse = require('fuse.js');
 
-const { sendMailToGmail } = require('../email/email.js');
 const {
     getPatterns,
     getRoutes,
@@ -14,7 +13,7 @@ const {
     getLatestVersion,
     getRouteDirections,
     getStops,
-} = require('./service.js');
+} = require('./service');
 
 const convertTimestamp = (timestamp) => {
     const [date, time] = timestamp.split(' ');
@@ -206,19 +205,6 @@ router.get('/locale/:ns/:lng', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.send(fs.readFileSync('src/locales/common_en.json')).status(200);
-    }
-});
-
-router.post('/contact', async (req, res) => {
-    const { email, message } = req.body;
-
-    try {
-        await sendMailToGmail(email, message);
-
-        res.send('Sent!').status(202);
-    } catch (err) {
-        console.log(err);
-        res.status(400).send(err);
     }
 });
 
