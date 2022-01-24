@@ -89,7 +89,7 @@ class SocketConnection {
             route: item.rt,
             destination: item.des,
             delayed: item.dly,
-            headingNum: parseInt(item.hdg, 10),
+            heading: parseInt(item.hdg, 10),
             color: color || this.routes[item.rt].color,
         }));
 

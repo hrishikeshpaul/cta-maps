@@ -188,7 +188,7 @@ export const MapContainer: FunctionComponent = () => {
                                     fillColor: vehicle.color,
                                     fillOpacity: 1,
                                     scale: busIcon[settings.busIcon].scale,
-                                    rotation: vehicle.headingNum,
+                                    rotation: vehicle.heading,
                                     anchor: new google.maps.Point(0, 0),
                                     labelOrigin: busIcon[settings.busIcon].labelOrigin,
                                 }}

@@ -56,7 +56,7 @@ export interface Vehicle {
     destination: string;
     delayed: boolean;
     color: string;
-    headingNum: number;
+    heading: number;
 }
 
 export interface Prediction {
