@@ -13,13 +13,6 @@ export enum Direction {
     Westbound = 'Westbound',
 }
 
-export enum Heading {
-    N = 'N',
-    S = 'S',
-    E = 'E',
-    W = 'W',
-}
-
 export enum Juncture {
     A = 'A', // arrival
     D = 'D', // departure
@@ -32,7 +25,7 @@ export interface Route {
 }
 
 export interface RouteColor {
-    [key: string] : string;
+    [key: string]: string;
 }
 
 export interface Point {
@@ -59,7 +52,6 @@ export interface Vehicle {
     id: string;
     timestamp: string;
     position: Point;
-    heading: Heading;
     route: string;
     destination: string;
     delayed: boolean;

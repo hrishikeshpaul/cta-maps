@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const { socketLogger: log } = require('../utils/logger');
 
-const { getVehicles, checkHeading } = require('./service');
+const { getVehicles } = require('./service');
 
 const TIMER = 3000; //ms
 
@@ -89,7 +89,6 @@ class SocketConnection {
             route: item.rt,
             destination: item.des,
             delayed: item.dly,
-            heading: checkHeading(parseInt(item.hdg, 10)),
             headingNum: parseInt(item.hdg, 10),
             color: color || this.routes[item.rt].color,
         }));
