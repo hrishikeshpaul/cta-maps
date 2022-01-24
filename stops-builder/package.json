@@ -1,18 +1,20 @@
 {
-  "name": "stop-builder",
-  "description": "Script that add stops to database",
-  "license": "MIT",
-  "main": "./dist/main",
-  "types": "./dist/main",
-  "scripts": {
-    "clean": "rimraf dist",
-    "dev": "ts-node-dev --respawn -- main.ts",
-    "build": "npm run clean && tsc",
-    "start": "node dist/main.js"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.5"
-  }
+    "name": "stops-builder",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "dev": "nodemon app.js",
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    },
+    "dependencies": {
+        "dotenv": "^14.3.0",
+        "mongoose": "^6.1.8"
+    }
 }
