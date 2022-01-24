@@ -3,6 +3,7 @@
 const axios = require('axios');
 const chalk = require('chalk');
 const dotenv = require('dotenv');
+
 const { mapStatusToColor } = require('./logger');
 
 dotenv.config();

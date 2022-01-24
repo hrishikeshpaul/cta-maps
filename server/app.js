@@ -12,7 +12,7 @@ const clientRouter = require('./src/tc-client/router');
 const localeRouter = require('./src/tc-locale/router');
 const { onConnection } = require('./src/utils/socket');
 const { logger } = require('./src/utils/logger');
-const { Db } = require('./src/utils/db');
+const { Db } = require('./src/utils/db/db');
 
 dotenv.config();
 new Db();
