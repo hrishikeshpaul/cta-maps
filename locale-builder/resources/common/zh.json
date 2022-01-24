@@ -46,7 +46,7 @@
   "DONE": "完毕",
   "ADD_FAVORITES": "这里什么都没有。",
   "STOPS": "停止",
-  "SHOW_ACTIVE_ROUTES": "显示活动路线",
+  "SHOW_ACTIVE_ROUTES": "加载保存的路线",
   "ACTIVE_ROUTE_INFO": "启用此功能将在您重新加载网站时加载您喜欢的路线",
   "ALL_ROUTES": "所有路线",
   "ON_TIME": "准时",
@@ -55,5 +55,8 @@
   "TERMS": "条款",
   "POLICY": "政策",
   "SHARE": "分享",
-  "COPIED_TO_CLP": "共享链接已复制到剪贴板"
+  "COPIED_TO_CLP": "共享链接已复制到剪贴板",
+  "BUS_ICON": "巴士图标",
+  "CIRCLE": "圆圈",
+  "ARROW": " 箭"
 }

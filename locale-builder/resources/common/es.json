@@ -46,7 +46,7 @@
   "DONE": "Hecho",
   "ADD_FAVORITES": "No hay nada aquí.",
   "STOPS": "Paradas",
-  "SHOW_ACTIVE_ROUTES": "Mostrar rutas activas",
+  "SHOW_ACTIVE_ROUTES": "Cargar rutas guardadas",
   "ACTIVE_ROUTE_INFO": "Habilitar esto cargará tus rutas favoritas cuando vuelvas a cargar el sitio web",
   "ALL_ROUTES": "Todas las rutas",
   "ON_TIME": "A tiempo",
@@ -55,5 +55,8 @@
   "TERMS": "Condiciones",
   "POLICY": "Política",
   "SHARE": "Cuota",
-  "COPIED_TO_CLP": "Compartir enlace copiado al portapapeles"
+  "COPIED_TO_CLP": "Compartir enlace copiado al portapapeles",
+  "BUS_ICON": "Icono de autobús",
+  "CIRCLE": "Circulo",
+  "ARROW": " FLECHA"
 }
