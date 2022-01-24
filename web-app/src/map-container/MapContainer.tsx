@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState, useMemo } from 'react';
 
 import { useToast } from '@chakra-ui/react';
 import { Polyline, PolylineProps, Marker } from '@react-google-maps/api';
@@ -9,6 +9,7 @@ import { Map } from 'shared/map/Map';
 import { useDataStore } from 'store/data/DataStore';
 import { Point, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
+import { BusIconType } from 'store/system/SystemStore.Types';
 
 import 'map-container/MapContainer.scss';
 
@@ -40,6 +41,22 @@ export const MapContainer: FunctionComponent = () => {
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
     const [paths, setPaths] = useState<Point[]>([]);
+
+    const busIcon = useMemo(
+        () => ({
+            [BusIconType.Circle]: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 12,
+                labelOrigin: new google.maps.Point(0, 0),
+            },
+            [BusIconType.Arrow]: {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 8,
+                labelOrigin: new google.maps.Point(0, 2.5),
+            },
+        }),
+        [settings.busIcon],
+    );
 
     const onGetCurrentLocation = () => {
         toast.closeAll();
@@ -151,18 +168,18 @@ export const MapContainer: FunctionComponent = () => {
                                     color: 'white',
                                 }}
                                 icon={{
-                                    path: google.maps.SymbolPath.CIRCLE,
+                                    path: busIcon[settings.busIcon].path,
                                     strokeColor:
                                         settings.colorMode === 'light'
-                                            ? tinycolor(vehicle.color).darken(12).toString()
-                                            : tinycolor(vehicle.color).lighten(20).toString(),
-                                    strokeWeight: 1,
+                                            ? tinycolor(vehicle.color).darken(20).toString()
+                                            : tinycolor(vehicle.color).lighten(30).toString(),
+                                    strokeWeight: 2,
                                     fillColor: vehicle.color,
                                     fillOpacity: 1,
-                                    scale: 12,
+                                    scale: busIcon[settings.busIcon].scale,
                                     rotation: vehicle.headingNum,
                                     anchor: new google.maps.Point(0, 0),
-                                    labelOrigin: new google.maps.Point(0, 0),
+                                    labelOrigin: busIcon[settings.busIcon].labelOrigin,
                                 }}
                                 position={vehicle.position}
                                 key={vehicle.id}
