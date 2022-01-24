@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const fs = require('fs');
 const Fuse = require('fuse.js');
 
 const {
@@ -9,11 +8,10 @@ const {
     getRoutes,
     getPredictions,
     getGitHubWorkflow,
-    getLocaleJson,
     getLatestVersion,
     getRouteDirections,
     getStops,
-} = require('./service');
+} = require('./bus-service');
 
 const convertTimestamp = (timestamp) => {
     const [date, time] = timestamp.split(' ');
@@ -194,18 +192,5 @@ router.get('/version', async (_, res) => {
         res.status(400).send('Failed to get version');
     }
 });
-
-// router.get('/locale/:ns/:lng', async (req, res) => {
-//     const { ns, lng } = req.params;
-
-//     try {
-//         const { data } = await getLocaleJson(ns, lng);
-
-//         res.send(data).status(200);
-//     } catch (err) {
-//         console.log(err);
-//         res.send(fs.readFileSync('src/locales/common_en.json')).status(200);
-//     }
-// });
 
 module.exports = router;
