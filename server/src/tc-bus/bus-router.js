@@ -1,20 +1,17 @@
 'use strict';
 
 const express = require('express');
-const fs = require('fs');
 const Fuse = require('fuse.js');
 
-const { sendMailToGmail } = require('../email/email.js');
 const {
     getPatterns,
     getRoutes,
     getPredictions,
     getGitHubWorkflow,
-    getLocaleJson,
     getLatestVersion,
     getRouteDirections,
     getStops,
-} = require('./service.js');
+} = require('./bus-service');
 
 const convertTimestamp = (timestamp) => {
     const [date, time] = timestamp.split(' ');
@@ -193,32 +190,6 @@ router.get('/version', async (_, res) => {
         res.send(data);
     } catch (err) {
         res.status(400).send('Failed to get version');
-    }
-});
-
-router.get('/locale/:ns/:lng', async (req, res) => {
-    const { ns, lng } = req.params;
-
-    try {
-        const { data } = await getLocaleJson(ns, lng);
-
-        res.send(data).status(200);
-    } catch (err) {
-        console.log(err);
-        res.send(fs.readFileSync('src/locales/common_en.json')).status(200);
-    }
-});
-
-router.post('/contact', async (req, res) => {
-    const { email, message } = req.body;
-
-    try {
-        await sendMailToGmail(email, message);
-
-        res.send('Sent!').status(202);
-    } catch (err) {
-        console.log(err);
-        res.status(400).send(err);
     }
 });
 

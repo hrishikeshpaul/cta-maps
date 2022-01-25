@@ -7,11 +7,15 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 
-const router = require('./src/app/routes');
-const { onConnection } = require('./src/app/socket');
+const busRouter = require('./src/tc-bus/bus-router');
+const clientRouter = require('./src/tc-client/router');
+const localeRouter = require('./src/tc-locale/router');
+const { onConnection } = require('./src/utils/socket');
 const { logger } = require('./src/utils/logger');
+const { Db } = require('./src/utils/db/db');
 
 dotenv.config();
+new Db();
 const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, { cors: '*', transports: ['websocket'], allowUpgrades: false });
@@ -20,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 app.use(logger);
 
-app.use('/v1/api', router);
+app.use('/v1/api', [busRouter, clientRouter, localeRouter]);
 
 io.on('connection', onConnection);
 

@@ -1,6 +1,8 @@
 name: Stops Builder
 
 on:
+  schedule:
+    - cron: "0 14 * * 1" # Every Monday at 2PM UTC (9am CST)
   workflow_dispatch:
 
 jobs:
@@ -10,15 +12,28 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-        
+
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: "14"
 
-      - name: Get all-stops.json
+      - name: Install dependencies
+        working-directory: ./stops-builder
+        run: npm install
+
+      - name: Insert into database
+        working-directory: ./stops-builder
         run: |
+          echo ">>> Downloading all stops from https://www.transitchicago.com/downloads/sch_data/ <<<"
           curl -o data.zip https://www.transitchicago.com/downloads/sch_data/google_transit.zip
           unzip data.zip -d data
-          ls
           cd data
-          ls
+          find . \! -name 'stops.txt' -delete
+          mv stops.txt stops.csv
+          cd ..
+          rm -rf data.zip
+
+          echo ">>> Downloading train stops from https://data.cityofchicago.org/Transportation/CTA-System-Information-List-of-L-Stops/8pix-ypme <<<"
+          curl -o data/train-stops.json https://data.cityofchicago.org/resource/8pix-ypme.json
+
+          npm start

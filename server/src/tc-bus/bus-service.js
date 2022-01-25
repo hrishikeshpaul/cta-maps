@@ -2,13 +2,13 @@
 
 const axios = require('axios');
 const dotenv = require('dotenv');
-const fs = require('fs');
 
 const { Cache, cacheKeys } = require('../utils/cache');
-const { Http } = require('../utils/http');
+const { Http: HttpConnection } = require('../utils/http');
 
 dotenv.config();
 
+const Http = new HttpConnection(process.env.CTA_BASE_URL, process.env.CTA_KEY).get_bus_http();
 const cache = new Cache();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
@@ -146,39 +146,9 @@ const getLatestVersion = async () => {
     return data.tag_name;
 };
 
-const getLocaleJson = async (ns, lng) => {
-    if (process.env.NODE_ENV === 'development' && ns === 'common' && lng === 'en') {
-        return { data: fs.readFileSync('./src/locales/common_en.json'), status: 200 };
-    }
-
-    if (process.env.NODE_ENV === 'development' && ns === 'faq' && lng === 'en') {
-        return { data: fs.readFileSync('./src/locales/faq_en.json'), status: 200 };
-    }
-
-    if (process.env.NODE_ENV === 'development' && ns === 'client' && lng === 'en') {
-        return { data: fs.readFileSync('./src/locales/client_en.json'), status: 200 };
-    }
-
-    const key = cacheKeys.locale(ns, lng);
-    const value = cache.get(key);
-
-    if (value) {
-        cache.log_hit(key);
-        return Promise.resolve(value);
-    }
-
-    const { data, status } = await axios.get(`${process.env.LOCALE_URL}/${ns}/${lng}.json`);
-
-    cache.log_miss(key);
-    cache.set(key, { data, status });
-
-    return { data, status };
-};
-
 module.exports = {
     getGitHubWorkflow,
     getLatestVersion,
-    getLocaleJson,
     getPatterns,
     getPredictions,
     getRoutes,
