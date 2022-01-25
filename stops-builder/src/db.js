@@ -2,17 +2,22 @@
 
 const mongoose = require('mongoose');
 
-const BusStop = require('./schemas/bus');
+const Stop = require('./schema');
 
 const initializeDatabase = async () => {
     try {
         const conn = await mongoose.connect(process.env.DATABASE_URL);
+
         console.log('MongoAtlas connected...');
+
         const collections = await conn.connection.db.listCollections().toArray();
+
         if (collections.length) {
-            conn.connection.dropCollection('bus-stops', (err) => {
-                if (err) console.log(err);
-                else console.log('Collection "bus-stops" dropped...');
+            collections.forEach((collection) => {
+                conn.connection.dropCollection(collection.name, (err) => {
+                    if (err) console.log(err);
+                    else console.log(`Collection "${collection.name}" dropped...`);
+                });
             });
         }
     } catch (err) {
@@ -20,33 +25,60 @@ const initializeDatabase = async () => {
     }
 };
 
-const createBusStops = async (allStops) => {
-    const stopsDocs = [];
+const insertStops = async (allStops, trainStops) => {
+    const busStops = [];
+    const dbTrainStops = [];
 
     try {
         allStops.forEach((stop) => {
-            if (parseInt(stop.stop_id, 10) >= 1 && parseInt(stop.stop_id, 10) <= 18615 && stop.parent_station === '') {
-                const newStop = {
-                    id: stop.stop_id.toString(),
-                    code: stop.stop_code,
-                    name: stop.stop_name,
-                    description: stop.stop_desc,
-                    lat: stop.stop_lat,
-                    lng: stop.stop_lon,
-                    wheelchairBoarding: stop.wheelchair_boarding,
-                };
+            const baseStop = {
+                id: stop.stop_id,
+                code: stop.stop_code,
+                name: stop.stop_name,
+                description: stop.stop_desc,
+                lat: stop.stop_lat,
+                lng: stop.stop_lon,
+                wheelchairBoarding: stop.wheelchair_boarding,
+            };
 
-                stopsDocs.push(newStop);
+            if (parseInt(stop.stop_id, 10) >= 1 && parseInt(stop.stop_id, 10) <= 29999 && stop.parent_station === '') {
+                busStops.push({
+                    ...baseStop,
+                    type: 'B',
+                });
+            }
+
+            if (
+                parseInt(stop.stop_id, 10) >= 40000 &&
+                parseInt(stop.stop_id, 10) <= 49999 &&
+                stop.parent_station === ''
+            ) {
+                const foundTrainStops = trainStops.filter((s) => s.map_id === stop.stop_id);
+
+                if (foundTrainStops.length) {
+                    dbTrainStops.push({
+                        ...baseStop,
+                        description: foundTrainStops[0].station_descriptive_name,
+                        type: 'T',
+                        red: foundTrainStops.some((t) => t.red === true),
+                        blue: foundTrainStops.some((t) => t.blue === true),
+                        green: foundTrainStops.some((t) => t.g === true),
+                        brown: foundTrainStops.some((t) => t.brn === true),
+                        purple: foundTrainStops.some((t) => t.p === true),
+                        pexp: foundTrainStops.some((t) => t.pexp === true),
+                        yellow: foundTrainStops.some((t) => t.y === true),
+                        pink: foundTrainStops.some((t) => t.pnk === true),
+                        orange: foundTrainStops.some((t) => t.o === true),
+                    });
+                }
             }
         });
 
-        console.log(stopsDocs);
-
-        await BusStop.collection.insertMany(stopsDocs);
-        console.log('Bus stops inserted....');
+        await Stop.collection.insertMany([...busStops, ...dbTrainStops]);
+        console.log('Bus stops inserted...');
     } catch (err) {
         console.log(err);
     }
 };
 
-module.exports = { initializeDatabase, createBusStops };
+module.exports = { initializeDatabase, insertStops };
