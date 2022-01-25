@@ -21,7 +21,7 @@ const initializeDatabase = async () => {
             });
         }
     } catch (err) {
-        console.log(err);
+       throw err;
     }
 };
 
@@ -77,7 +77,7 @@ const insertStops = async (allStops, trainStops) => {
         await Stop.collection.insertMany([...busStops, ...dbTrainStops]);
         console.log('Bus stops inserted...');
     } catch (err) {
-        console.log(err);
+        throw err;
     }
 };
 

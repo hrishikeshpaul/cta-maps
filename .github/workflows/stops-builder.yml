@@ -23,6 +23,8 @@ jobs:
 
       - name: Insert into database
         working-directory: ./stops-builder
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           echo ">>> Downloading all stops from https://www.transitchicago.com/downloads/sch_data/ <<<"
           curl -o data.zip https://www.transitchicago.com/downloads/sch_data/google_transit.zip
