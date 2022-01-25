@@ -37,6 +37,7 @@ const insertStops = async (allStops, trainStops) => {
                 name: stop.stop_name,
                 description: stop.stop_desc,
                 location: {
+                    type: 'Point',
                     coordinates: [parseFloat(stop.stop_lat), parseFloat(stop.stop_lon)],
                 },
                 wheelchairBoarding: stop.wheelchair_boarding,
