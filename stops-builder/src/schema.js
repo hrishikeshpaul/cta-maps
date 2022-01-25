@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const Stop = new Schema({
+const StopSchema = new Schema({
     id: {
         type: String,
         unique: true,
@@ -22,13 +22,9 @@ const Stop = new Schema({
         type: String,
         required: true,
     },
-    lat: {
-        type: Number,
-        required: true,
-    },
-    lon: {
-        type: Number,
-        required: true,
+    location: {
+        type: { type: String, enum: ['Point'], default: 'Point' },
+        coordinates: [Number],
     },
     wheelchairBoarding: {
         type: Number,
@@ -83,4 +79,6 @@ const Stop = new Schema({
     },
 });
 
-module.exports = mongoose.model('Stop', Stop, 'stops');
+StopSchema.index({ location: '2dsphere' });
+
+module.exports = mongoose.model('Stop', StopSchema, 'stops');

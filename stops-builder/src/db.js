@@ -21,7 +21,7 @@ const initializeDatabase = async () => {
             });
         }
     } catch (err) {
-       throw err;
+        throw err;
     }
 };
 
@@ -36,8 +36,9 @@ const insertStops = async (allStops, trainStops) => {
                 code: stop.stop_code,
                 name: stop.stop_name,
                 description: stop.stop_desc,
-                lat: stop.stop_lat,
-                lng: stop.stop_lon,
+                location: {
+                    coordinates: [parseFloat(stop.stop_lat), parseFloat(stop.stop_lon)],
+                },
                 wheelchairBoarding: stop.wheelchair_boarding,
             };
 
