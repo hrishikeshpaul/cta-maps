@@ -22,13 +22,9 @@ const Stop = new Schema({
         type: String,
         required: true,
     },
-    lat: {
-        type: Number,
-        required: true,
-    },
-    lon: {
-        type: Number,
-        required: true,
+    location: {
+        type: { type: String, enum: ['Point'], default: 'Point' },
+        coordinates: [Number],
     },
     wheelchairBoarding: {
         type: Number,

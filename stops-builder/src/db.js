@@ -60,7 +60,6 @@ const insertStops = async (allStops, trainStops) => {
                 if (foundTrainStops.length) {
                     dbTrainStops.push({
                         ...baseStop,
-                        description: foundTrainStops[0].station_descriptive_name,
                         type: 'T',
                         red: foundTrainStops.some((t) => t.red === true),
                         blue: foundTrainStops.some((t) => t.blue === true),

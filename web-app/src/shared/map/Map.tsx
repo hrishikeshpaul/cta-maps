@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { useColorMode, Center, Spinner, Box } from '@chakra-ui/react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
@@ -22,8 +22,11 @@ interface Props {
 }
 
 export const MapLoader: FunctionComponent = ({ children }) => {
+    const [libraries] = useState<any[]>(['places']);
+
     return (
         <LoadScript
+            libraries={libraries}
             googleMapsApiKey={process.env.REACT_APP_MAPS_API_KEY!}
             loadingElement={
                 <Center h="100%">

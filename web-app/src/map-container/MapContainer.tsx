@@ -72,6 +72,22 @@ export const MapContainer: FunctionComponent = () => {
                 if (map) {
                     map.panTo(latLng);
                     map.setZoom(defaultZoom);
+
+                    const service = new google.maps.places.PlacesService(map);
+                    service.nearbySearch(
+                        {
+                            location: latLng,
+                            rankBy: google.maps.places.RankBy.DISTANCE,
+                            type: 'transit_station',
+                            // radius: 1000,
+                        },
+                        (result) => {
+                            if (result) {
+                                console.log(result[0]);
+                                console.log(result.map((r) => r.name));
+                            }
+                        },
+                    );
                 }
 
                 toast.closeAll();

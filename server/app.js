@@ -10,6 +10,7 @@ const { Server } = require('socket.io');
 const busRouter = require('./src/tc-app/bus-router');
 const clientRouter = require('./src/tc-client/router');
 const localeRouter = require('./src/tc-locale/router');
+const stopsRouter = require('./src/tc-app/stops/stops-router');
 const { onConnection } = require('./src/utils/socket');
 const { logger } = require('./src/utils/logger');
 const { Db } = require('./src/utils/db/db');
@@ -24,7 +25,7 @@ app.use(cors());
 app.use(express.json());
 app.use(logger);
 
-app.use('/v1/api', [busRouter, clientRouter, localeRouter]);
+app.use('/v1/api', [busRouter, clientRouter, localeRouter, stopsRouter]);
 
 io.on('connection', onConnection);
 
