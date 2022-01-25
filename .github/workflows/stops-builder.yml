@@ -1,4 +1,4 @@
-name: Stops
+name: Stops Builder
 
 on:
   schedule:
