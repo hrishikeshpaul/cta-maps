@@ -3,7 +3,7 @@ name: Build Common Locales
 "on":
   push:
     paths:
-      - server/src/locales/common_en.json
+      - server/src/tc-locales/locales/common_en.json
     branches:
       - main
 jobs:

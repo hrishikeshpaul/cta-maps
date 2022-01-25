@@ -3,13 +3,13 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
 
-const { Cache, cacheKeys } = require('../utils/cache');
+const { cache, cacheKeys } = require('../utils/cache');
 const { Http: HttpConnection } = require('../utils/http');
 
 dotenv.config();
 
 const Http = new HttpConnection(process.env.CTA_BASE_URL, process.env.CTA_KEY).get_bus_http();
-const cache = new Cache();
+
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const getRoutes = async () => {

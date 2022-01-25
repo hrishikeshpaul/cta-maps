@@ -4,7 +4,7 @@ const axios = require('axios');
 const dotenv = require('dotenv');
 const fs = require('fs');
 
-const { cacheKeys } = require('../utils/cache');
+const { cache, cacheKeys } = require('../utils/cache');
 
 dotenv.config();
 

@@ -40,7 +40,10 @@ class Cache {
     }
 }
 
+const cache = new Cache();
+
 module.exports = {
+    cache,
     Cache,
     cacheKeys,
 };
