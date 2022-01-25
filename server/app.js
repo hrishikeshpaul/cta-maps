@@ -7,7 +7,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 
-const busRouter = require('./src/tc-bus/bus-router');
+const busRouter = require('./src/tc-app/bus-router');
 const clientRouter = require('./src/tc-client/router');
 const localeRouter = require('./src/tc-locale/router');
 const { onConnection } = require('./src/utils/socket');
