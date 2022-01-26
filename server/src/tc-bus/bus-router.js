@@ -93,11 +93,13 @@ router.get('/patterns', async (req, res) => {
 
             item.pt.forEach((p) => {
                 if (p.typ === 'W') {
-                    paths.push({ lat: p.lat, lng: p.lon });
+                    paths.push({ lat: p.lat, lng: p.lon, latitude: p.lat, longitude: p.lon });
                 } else if (p.typ === 'S') {
                     stops.push({
                         lat: p.lat,
                         lng: p.lon,
+                        latitude: p.lat,
+                        longitude: p.lon,
                         name: p.stpnm,
                         id: p.stpid,
                         route,
