@@ -85,7 +85,7 @@ class SocketConnection {
         data = data.map((item) => ({
             id: item.vid,
             timestamp: item.tmstmp,
-            position: { lat: parseFloat(item.lat), lng: parseFloat(item.lon) },
+            position: { lat: parseFloat(item.lat), lng: parseFloat(item.lon), latitude: parseFloat(item.lat), longitude: parseFloat(item.lon) },
             route: item.rt,
             destination: item.des,
             delayed: item.dly,
