@@ -51,10 +51,10 @@ export const MapContainer: FunctionComponent = () => {
                 anchor: new google.maps.Point(0, 0),
             },
             [BusIconType.Arrow]: {
-                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                scale: 9,
-                labelOrigin: new google.maps.Point(0, 2.5),
-                anchor: new google.maps.Point(0, 0),
+                path: 'M3,11.262a3,3,0,0,1-3-3V5.442a3,3,0,0,1,2.982-3l1-2.2a.49.49,0,0,1,.851,0l.916,2.2h.068a3,3,0,0,1,3,3v2.82a3,3,0,0,1-3,3Z',
+                scale: 3,
+                labelOrigin: new google.maps.Point(4.2, 7),
+                anchor: new google.maps.Point(4.2, 7),
             },
             [BusIconType.Teardrop]: {
                 path: 'M1.935-4.926S3.871-3.5,3.871-2.43A1.935,1.935,0,0,1,1.935-.494,1.935,1.935,0,0,1,0-2.43C0-3.5,1.935-4.926,1.935-4.926Z',

@@ -54,7 +54,7 @@ export const BusIcon: FC = () => {
                     bg={setBg(BusIconType.Teardrop)}
                     onClick={() => setBusIcon(BusIconType.Teardrop)}
                 >
-                    Drop
+                    Teardrop
                     <Icon borderColor="white" mr="2px">
                         <TeardropIcon />
                     </Icon>
