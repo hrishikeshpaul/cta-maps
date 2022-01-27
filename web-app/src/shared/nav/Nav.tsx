@@ -40,13 +40,10 @@ interface navItemProps {
 export const Nav: FunctionComponent = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const [{ routes }] = useDataStore();
-    const [selected, setSelected] = useState<boolean>(false);
     const bg = useColorModeValue('gray.50', 'gray.900');
-
-    useEffect(() => {
-        setSelected(Object.keys(routes).length > 0);
-    }, [routes]);
+    const navItemActiveColor = useColorModeValue('gray.700', 'gray.50');
+    const navItemInactiveColor = useColorModeValue('gray.500', 'gray.400');
+    const navItemActiveBorderColor = useColorModeValue('blue.400', 'blue.200');
 
     const onRoute = (route: string) => {
         navigate(route);
@@ -56,8 +53,8 @@ export const Nav: FunctionComponent = () => {
         return (
             <Stack
                 borderTop="2px solid"
-                color={window.location.pathname === route ? 'gray.50' : 'gray.400'}
-                borderColor={window.location.pathname === route ? 'blue.200' : 'transparent'}
+                color={window.location.pathname === route ? navItemActiveColor : navItemInactiveColor}
+                borderColor={window.location.pathname === route ? navItemActiveBorderColor : 'transparent'}
                 width="100%"
                 alignItems="center"
                 p="2"

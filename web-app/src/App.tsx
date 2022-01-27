@@ -8,7 +8,7 @@ import { useSystemStore } from 'store/system/SystemStore';
 import { AppContent } from 'utils/Content';
 
 import './App.scss';
-import { Nav } from 'nav/Nav';
+import { Nav } from 'shared/nav/Nav';
 import { Saved } from 'saved/Saved';
 import { VehicleDrawer } from 'shared/vehicle/Vehicle';
 import { Stop } from 'shared/stop/Stop';
