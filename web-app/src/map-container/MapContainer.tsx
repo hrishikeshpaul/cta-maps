@@ -214,7 +214,14 @@ export const MapContainer: FunctionComponent = () => {
                         {showStops &&
                             line.stops.map((stop) => (
                                 <Marker
-                                    icon="/stop.svg"
+                                    icon={{
+                                        path: google.maps.SymbolPath.CIRCLE,
+                                        strokeColor: 'gray',
+                                        strokeWeight: 3,
+                                        fillColor: 'black',
+                                        scale: 6,
+                                        fillOpacity: 1,
+                                    }}
                                     position={{ lat: stop.lat, lng: stop.lng }}
                                     key={`stop-${stop.id}`}
                                     onClick={() => openStop(stop)}
