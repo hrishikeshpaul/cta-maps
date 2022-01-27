@@ -13,6 +13,7 @@ import { Saved } from 'saved/Saved';
 import { VehicleDrawer } from 'shared/vehicle/Vehicle';
 import { Stop } from 'shared/stop/Stop';
 import { MapLoader } from 'shared/map/Map';
+import { Search } from 'search/Search';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -48,7 +49,7 @@ export const App = () => {
                             <Stop />
                             <Routes>
                                 <Route path="/" element={<AppContent />} />
-                                <Route path="/search" element={<Box>Search</Box>} />
+                                <Route path="/search" element={<Search />} />
                                 <Route path="/saved" element={<Saved />} />
                                 <Route path="/settings" element={<Box>Settings</Box>} />
                                 <Route path="*" element={<Navigate to="/" />} />

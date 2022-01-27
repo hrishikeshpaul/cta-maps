@@ -18,17 +18,17 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { Inspector } from 'inspector/Inspector';
-import { RouteOption, RouteExtended } from 'route-select/RouteOption';
+import { RouteOption, RouteExtended } from 'search/RouteOption';
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
-import { CheckIcon, CloseIcon, DownIcon, SearchIcon } from 'utils/Icons';
+import { BasePage } from 'utils/BasePage';
 
-const LIMIT = 10;
+const LIMIT = 16;
 
-export const RouteSelect: FunctionComponent = () => {
+export const Search: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
     const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
@@ -85,16 +85,16 @@ export const RouteSelect: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        if (routeSelectOpen) {
-            (async () => {
-                await onOpen();
-            })();
-        } else {
+        (async () => {
+            await onOpen();
+        })();
+
+        return () => {
             setQuery('');
             setIndex(1);
             closeRouteSelect();
-        }
-    }, [routeSelectOpen]); // eslint-disable-line
+        };
+    }, []); // eslint-disable-line
 
     useEffect(() => {
         if (Object.keys(currentRoutes).length === 0) {
@@ -130,7 +130,26 @@ export const RouteSelect: FunctionComponent = () => {
     return (
         <>
             <Inspector data={inspectorData} onGetData={onOpen} />
-            <BottomSheet.Wrapper isOpen={routeSelectOpen} zIndex={1500} onClose={closeRouteSelect}>
+            <BasePage title={t('SEARCH')}>
+                <Box overflow="auto" onScroll={handleScroll} pb="4">
+                    {routes.map((route) => (
+                        <RouteOption
+                            onChange={setRoutes}
+                            setInspectorData={setInspectorData}
+                            routes={routes}
+                            currentRoute={route}
+                            key={route.route}
+                        />
+                    ))}
+
+                    {routesLoading ? (
+                        <Center>
+                            <Spinner color="blue.500" />
+                        </Center>
+                    ) : null}
+                </Box>
+            </BasePage>
+            {/* <BottomSheet.Wrapper isOpen={routeSelectOpen} zIndex={1500} onClose={closeRouteSelect}>
                 <BottomSheet.Header>
                     <Flex justifyContent="space-between" alignItems="center">
                         <Text fontSize="2xl" fontWeight="bold">
@@ -212,7 +231,7 @@ export const RouteSelect: FunctionComponent = () => {
                         </Button>
                     </Flex>
                 </BottomSheet.Footer>
-            </BottomSheet.Wrapper>
+            </BottomSheet.Wrapper> */}
         </>
     );
 };
