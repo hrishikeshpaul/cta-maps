@@ -35,8 +35,11 @@ export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ settings, onCurrentLocationPress }, { setDragging, setAllowLocation, onLocationButtonPress }] =
         useSystemStore();
-    const [{ currentLocation, patterns, vehicles }, { openStop, openVehicle, setCurrentLocation }] = useDataStore();
-    const toast = useToast({ position: 'top' });
+    const [
+        { routes: currentRoutes, currentLocation, patterns, vehicles },
+        { openStop, openVehicle, setCurrentLocation },
+    ] = useDataStore();
+    const toast = useToast({ position: 'top', variant: 'solid' });
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
@@ -97,7 +100,7 @@ export const MapContainer: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        if (settings.allowLocation) {
+        if (settings.allowLocation && !Object.keys(currentRoutes).length) {
             onGetCurrentLocation();
         }
 

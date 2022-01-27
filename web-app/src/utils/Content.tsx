@@ -6,9 +6,10 @@ import { MapContainer } from 'map-container/MapContainer';
 import { SocketModule } from './SocketModule';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
+import { ActiveBar } from 'shared/active-bar/ActiveBar';
 
 export const AppContent: FunctionComponent = () => {
-    const [{ favoriteRoutes }, { setRoute }] = useDataStore();
+    const [{ routes, favoriteRoutes }, { setRoute }] = useDataStore();
     const [{ settings }] = useSystemStore();
 
     useEffect(() => {
@@ -20,8 +21,10 @@ export const AppContent: FunctionComponent = () => {
     }, [settings.showActiveRoutes]); // eslint-disable-line
 
     return (
-        <Box h="100%">
+        <Box h="100%" position="relative">
             <SocketModule />
+            {Object.keys(routes).length ? <ActiveBar /> : <></>}
+
             <MapContainer />
         </Box>
     );

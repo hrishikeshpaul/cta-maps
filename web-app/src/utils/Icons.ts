@@ -1,6 +1,7 @@
 import { createIcon } from '@chakra-ui/icons';
 
 export { BiRadioCircle as CircleIcon } from 'react-icons/bi';
+export { FaBus as BusIcon } from 'react-icons/fa';
 export {
     FiChevronRight as RightIcon,
     FiChevronDown as DownIcon,

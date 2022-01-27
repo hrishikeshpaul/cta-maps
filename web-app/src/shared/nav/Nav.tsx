@@ -1,11 +1,9 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent } from 'react';
 
 import { Container, Flex, Text, useColorModeValue, Stack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { useDataStore } from 'store/data/DataStore';
-import { useSystemStore } from 'store/system/SystemStore';
 import { HeartIcon, MapPinIcon, SearchIcon, SettingsIcon } from 'utils/Icons';
 
 const navItems = [
