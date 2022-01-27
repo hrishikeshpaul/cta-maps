@@ -31,13 +31,12 @@ export const AppContent: FunctionComponent = () => {
             <Box h="100%">
                 <SocketModule />
                 <MapContainer />
-                <Nav />
                 <VehicleDrawer />
                 <Stop />
                 <Favorites />
                 <RouteSelect />
                 <Settings />
-                <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={100} bottom="2" right="2" ignoreFallback />
+                {/* <Avatar src="/logo.svg" size="xs" position="fixed" zIndex={100} bottom="2" right="2" ignoreFallback /> */}
             </Box>
         </MapLoader>
     );

@@ -1,69 +1,93 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Button, Container, IconButton, Flex, Text, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Container, Flex, Text, useColorModeValue, Stack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
-import { Info } from 'info/Info';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
-import { HeartIcon, MyLocationIcon } from 'utils/Icons';
+import { HeartIcon, MapPinIcon, SearchIcon, SettingsIcon } from 'utils/Icons';
+
+const navItems = [
+    {
+        icon: <MapPinIcon />,
+        label: 'MAP',
+        route: '/',
+    },
+    {
+        icon: <SearchIcon />,
+        label: 'SEARCH',
+        route: '/search',
+    },
+    {
+        icon: <HeartIcon />,
+        label: 'SAVED',
+        route: '/saved',
+    },
+    {
+        icon: <SettingsIcon />,
+        label: 'SETTINGS',
+        route: '/settings',
+    },
+];
+
+interface navItemProps {
+    icon: JSX.Element;
+    label: string;
+    route: string;
+}
 
 export const Nav: FunctionComponent = () => {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [{ routes }] = useDataStore();
-    const [{ dragging }, { openRouteSelect, onLocationButtonPress, openFavorites }] = useSystemStore();
     const [selected, setSelected] = useState<boolean>(false);
-    const buttonBg = useColorModeValue('white', 'gray.600');
-
-    const onRouteSelect = () => {
-        openRouteSelect();
-    };
+    const bg = useColorModeValue('gray.50', 'gray.900');
 
     useEffect(() => {
         setSelected(Object.keys(routes).length > 0);
     }, [routes]);
 
+    const onRoute = (route: string) => {
+        navigate(route);
+    };
+
+    const NavItem: FunctionComponent<navItemProps> = ({ icon, label, route }) => {
+        return (
+            <Stack
+                borderTop="2px solid"
+                color={window.location.pathname === route ? 'gray.50' : 'gray.400'}
+                borderColor={window.location.pathname === route ? 'blue.200' : 'transparent'}
+                width="100%"
+                alignItems="center"
+                p="2"
+                spacing={1}
+                cursor="pointer"
+                transition="all 0.25s ease-in-out"
+                onClick={() => onRoute(route)}
+            >
+                {icon}
+                <Text fontSize="xs">{t(label)}</Text>
+            </Stack>
+        );
+    };
+
     return (
         <Container
-            maxW="container.lg"
+            maxW="container.sm"
             p="0"
             position="fixed"
-            top="0"
+            bottom="0"
             left="50%"
             transform="translate(-50%)"
             zIndex={100}
+            bg={bg}
+            boxShadow="xl"
         >
-            <Flex
-                justifyContent="space-between"
-                alignItems="start"
-                w="100%"
-                p="4"
-                opacity={dragging ? '0.25' : '1'}
-                transition="0.25s opacity ease-in-out"
-            >
-                <Info />
-                <Button bg={buttonBg} boxShadow="lg" onClick={onRouteSelect} px="12">
-                    <Text fontSize="sm">
-                        {t('ROUTES')} {selected && <>({Object.keys(routes).length})</>}
-                    </Text>
-                </Button>
-                <VStack spacing="4">
-                    <IconButton
-                        aria-label="my-favoriteStops"
-                        icon={<HeartIcon />}
-                        bg={buttonBg}
-                        fontSize="xl"
-                        boxShadow="lg"
-                        onClick={openFavorites}
-                    />
-                    <IconButton
-                        aria-label="my-location"
-                        icon={<MyLocationIcon />}
-                        bg={buttonBg}
-                        boxShadow="lg"
-                        onClick={() => onLocationButtonPress(true)}
-                    />
-                </VStack>
+            <Flex justifyContent="space-between" alignItems="start" w="100%" transition="0.25s opacity ease-in-out">
+                {navItems.map((item) => (
+                    <NavItem {...item} key={item.route} />
+                ))}
             </Flex>
         </Container>
     );

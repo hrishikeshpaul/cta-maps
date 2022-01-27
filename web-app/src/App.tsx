@@ -8,6 +8,7 @@ import { useSystemStore } from 'store/system/SystemStore';
 import { AppContent } from 'utils/Content';
 
 import './App.scss';
+import { Nav } from 'nav/Nav';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -37,8 +38,12 @@ export const App = () => {
             ) : (
                 <Box color={color} h="100%" w="100%">
                     <BrowserRouter>
+                        <Nav />
                         <Routes>
                             <Route path="/" element={<AppContent />} />
+                            <Route path="/search" element={<Box>Search</Box>} />
+                            <Route path="/saved" element={<Box>Saved</Box>} />
+                            <Route path="/settings" element={<Box>Settings</Box>} />
                             <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
                     </BrowserRouter>

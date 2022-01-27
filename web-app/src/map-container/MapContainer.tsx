@@ -36,7 +36,7 @@ export const MapContainer: FunctionComponent = () => {
     const [{ settings, onCurrentLocationPress }, { setDragging, setAllowLocation, onLocationButtonPress }] =
         useSystemStore();
     const [{ currentLocation, patterns, vehicles }, { openStop, openVehicle, setCurrentLocation }] = useDataStore();
-    const toast = useToast();
+    const toast = useToast({ position: 'top' });
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);
