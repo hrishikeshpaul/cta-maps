@@ -14,6 +14,7 @@ export enum ColorMode {
 export enum BusIconType {
     Circle = 'circle',
     Arrow = 'arrow',
+    Teardrop = 'teardrop',
 }
 
 export interface Setting {

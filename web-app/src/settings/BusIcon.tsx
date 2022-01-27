@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { Button, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue } from '@chakra-ui/react';
 
-import { CircleIcon, DownIcon, LocationArrowIcon } from 'utils/Icons';
+import { CircleIcon, DownIcon, LocationArrowIcon, TeardropIcon } from 'utils/Icons';
 import { useSystemStore } from 'store/system/SystemStore';
 import { BusIconType } from 'store/system/SystemStore.Types';
 
@@ -34,6 +34,7 @@ export const BusIcon: FC = () => {
             <MenuList>
                 <MenuItem
                     {...menuItemClass}
+                    _hover={{ bg: selectedBg }}
                     bg={setBg(BusIconType.Circle)}
                     onClick={() => setBusIcon(BusIconType.Circle)}
                 >
@@ -41,10 +42,22 @@ export const BusIcon: FC = () => {
                 </MenuItem>
                 <MenuItem
                     {...menuItemClass}
+                    _hover={{ bg: selectedBg }}
                     bg={setBg(BusIconType.Arrow)}
                     onClick={() => setBusIcon(BusIconType.Arrow)}
                 >
                     Pointer <LocationArrowIcon size="16pt" />
+                </MenuItem>
+                <MenuItem
+                    {...menuItemClass}
+                    _hover={{ bg: selectedBg }}
+                    bg={setBg(BusIconType.Teardrop)}
+                    onClick={() => setBusIcon(BusIconType.Teardrop)}
+                >
+                    Drop
+                    <Icon borderColor="white" mr="2px">
+                        <TeardropIcon />
+                    </Icon>
                 </MenuItem>
             </MenuList>
         </Menu>
