@@ -1,28 +1,11 @@
 import { FunctionComponent, useEffect, useState, ChangeEvent, UIEvent } from 'react';
 
-import {
-    Box,
-    Text,
-    IconButton,
-    Flex,
-    InputGroup,
-    Input,
-    InputLeftElement,
-    InputRightElement,
-    Spinner,
-    Center,
-    Button,
-    Icon,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, IconButton } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { Inspector } from 'inspector/Inspector';
 import { RouteOption, RouteExtended } from 'search/RouteOption';
-import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
-import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
 import { CheckIcon, CloseIcon, DownIcon, SearchIcon } from 'utils/Icons';
@@ -34,43 +17,18 @@ const LIMIT = 16;
 export const Search: FunctionComponent = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
-    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
-    const [mounted, setMounted] = useState<boolean>(false);
+    const [{ routes: currentRoutes }, { getRoutes }] = useDataStore();
+    const [, { closeRouteSelect }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(1);
-    const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
     const debouncedQuery = useDebounce(query);
-    const inputBg = useColorModeValue('gray.50', 'gray.600');
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
             .map((route) => route)
             .join(',');
     };
-
-    // const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
-    //     const bottom =
-    //         e.currentTarget.scrollHeight - Math.ceil(e.currentTarget.scrollTop) <= e.currentTarget.clientHeight;
-    //     const filter = getFilter();
-
-    //     if (bottom) {
-    //         setIndex(index + 1);
-    //         const response = await getRoutes(query, filter, LIMIT, index + 1);
-
-    //         if (response)
-    //             setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     setMounted(true);
-
-    //     return () => {
-    //         setMounted(false);
-    //     };
-    // }, []);
 
     const onOpen = async () => {
         const filter = getFilter();
@@ -123,16 +81,12 @@ export const Search: FunctionComponent = () => {
                 if (response) {
                     setRoutes(response.map((route) => ({ ...route, selected: false })));
                 }
-            } else {
-                if (mounted) {
-                    await onOpen();
-                }
             }
         })();
     }, [debouncedQuery]); // eslint-disable-line
 
     return (
-        <>
+        <Box onScroll={() => console.log('scroll')}>
             <BasePage
                 title={t('SEARCH')}
                 headerIcon={
@@ -247,6 +201,6 @@ export const Search: FunctionComponent = () => {
                     </Flex>
                 </BottomSheet.Footer>
             </BottomSheet.Wrapper> */}
-        </>
+        </Box>
     );
 };

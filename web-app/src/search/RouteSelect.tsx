@@ -1,40 +1,20 @@
 import { FunctionComponent, useEffect, useState, ChangeEvent, UIEvent } from 'react';
 
-import {
-    Box,
-    Text,
-    IconButton,
-    Flex,
-    InputGroup,
-    Input,
-    InputLeftElement,
-    InputRightElement,
-    Spinner,
-    Center,
-    Button,
-    Icon,
-    useColorModeValue,
-} from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Box, Spinner, Center } from '@chakra-ui/react';
 
 import { Inspector } from 'inspector/Inspector';
 import { RouteOption, RouteExtended } from 'search/RouteOption';
-import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
-import useDebounce from 'utils/Hook';
-import { CheckIcon, CloseIcon, DownIcon, SearchIcon } from 'utils/Icons';
-import { BasePage } from 'utils/BasePage';
-
-const LIMIT = 16;
 
 interface Props {
     routes: RouteExtended[];
     query: string;
     getData: (search?: string, filter?: string, limit?: number, index?: number) => void;
 }
+
+const LIMIT = 16;
 
 export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, query }) => {
     const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
@@ -64,20 +44,15 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
     };
 
     useEffect(() => {
-        setRoutes(routesAsProps);
-    }, [routesAsProps]);
-
-    useEffect(() => {
-        // (async () => {
-        //     await onOpen();
-        // })();
-
         return () => {
-            // setQuery('');
             setIndex(1);
             closeRouteSelect();
         };
     }, []); // eslint-disable-line
+
+    useEffect(() => {
+        setRoutes(routesAsProps);
+    }, [routesAsProps]);
 
     useEffect(() => {
         if (Object.keys(currentRoutes).length === 0) {
@@ -92,23 +67,6 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
             });
         }
     }, [currentRoutes]);
-
-    // useEffect(() => {
-    //     (async () => {
-    //         if (debouncedQuery) {
-    //             const filter = getFilter();
-    //             const response = await getRoutes(debouncedQuery, filter, LIMIT, 1);
-
-    //             if (response) {
-    //                 setRoutes(response.map((route) => ({ ...route, selected: false })));
-    //             }
-    //         } else {
-    //             if (mounted) {
-    //                 await onOpen();
-    //             }
-    //         }
-    //     })();
-    // }, [debouncedQuery]); // eslint-disable-line
 
     return (
         <>
@@ -130,89 +88,6 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
                     </Center>
                 ) : null}
             </Box>
-            {/* <BottomSheet.Wrapper isOpen={routeSelectOpen} zIndex={1500} onClose={closeRouteSelect}>
-                <BottomSheet.Header>
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontSize="2xl" fontWeight="bold">
-                            {t('SELECT_ROUTES')}
-                        </Text>
-                        <IconButton
-                            variant="ghost"
-                            fontSize="2xl"
-                            aria-label="close"
-                            mr="-3"
-                            onClick={closeRouteSelect}
-                            icon={<DownIcon />}
-                        />
-                    </Flex>
-                    <InputGroup mt="2">
-                        <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-                        {query && (
-                            <InputRightElement>
-                                <IconButton
-                                    variant="ghost"
-                                    aria-label="clear"
-                                    icon={<CloseIcon />}
-                                    size="sm"
-                                    fontSize="3xl"
-                                    color="gray.500"
-                                    onClick={() => setQuery('')}
-                                />
-                            </InputRightElement>
-                        )}
-                        <Input
-                            border="0"
-                            bg={inputBg}
-                            name="query"
-                            value={query}
-                            placeholder={t('ROUTE_SEARCH_PLACEHOLDER')}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                setQuery(e.target.value);
-                            }}
-                        />
-                    </InputGroup>
-                </BottomSheet.Header>
-
-                <BottomSheet.Body>
-                    <Box h="60vh" overflow="auto" onScroll={handleScroll} pb="4">
-                        {routes.map((route) => (
-                            <RouteOption
-                                onChange={setRoutes}
-                                setInspectorData={setInspectorData}
-                                routes={routes}
-                                currentRoute={route}
-                                key={route.route}
-                            />
-                        ))}
-
-                        {routesLoading ? (
-                            <Center>
-                                <Spinner color="blue.500" />
-                            </Center>
-                        ) : null}
-                    </Box>
-                </BottomSheet.Body>
-                <BottomSheet.Footer>
-                    <Flex w="100%" justifyContent={Object.keys(currentRoutes).length ? 'space-between' : 'flex-end'}>
-                        {Object.keys(currentRoutes).length ? (
-                            <Button onClick={removeAllRoutes} variant="link">
-                                {t('DESELECT_ALL')}
-                            </Button>
-                        ) : null}
-                        <Button
-                            colorScheme="blue"
-                            onClick={closeRouteSelect}
-                            rightIcon={
-                                <Icon fontSize="18pt">
-                                    <CheckIcon />
-                                </Icon>
-                            }
-                        >
-                            {t('DONE')}
-                        </Button>
-                    </Flex>
-                </BottomSheet.Footer>
-            </BottomSheet.Wrapper> */}
         </>
     );
 };

@@ -14,6 +14,7 @@ import { VehicleDrawer } from 'shared/vehicle/Vehicle';
 import { Stop } from 'shared/stop/Stop';
 import { MapLoader } from 'shared/map/Map';
 import { Search } from 'search/Search';
+import { RouteQuery } from 'search/RouteQuery';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -41,7 +42,7 @@ export const App = () => {
             {systemLoading ? (
                 <Landing />
             ) : (
-                <Box color={color} h="100%" w="100%">
+                <Box color={color} h="100%" w="100%" id="main">
                     <MapLoader>
                         <BrowserRouter>
                             <Nav />
@@ -51,7 +52,7 @@ export const App = () => {
                                 <Route path="/" element={<AppContent />} />
                                 <Route path="/search">
                                     <Route index={true} element={<Search />} />
-                                    <Route path="query" element={<Box>query</Box>} />
+                                    <Route path="query" element={<RouteQuery />} />
                                 </Route>
                                 <Route path="/saved" element={<Saved />} />
                                 <Route path="/settings" element={<Box>Settings</Box>} />
