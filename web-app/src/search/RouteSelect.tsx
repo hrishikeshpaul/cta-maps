@@ -27,22 +27,21 @@ import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
 import { CheckIcon, CloseIcon, DownIcon, SearchIcon } from 'utils/Icons';
 import { BasePage } from 'utils/BasePage';
-import { RouteSelect } from './RouteSelect';
 
 const LIMIT = 16;
 
-export const Search: FunctionComponent = () => {
-    const navigate = useNavigate();
-    const { t } = useTranslation();
+interface Props {
+    routes: RouteExtended[];
+    query: string;
+    getData: (search?: string, filter?: string, limit?: number, index?: number) => void;
+}
+
+export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, query }) => {
     const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
-    const [{ routeSelectOpen, routesLoading }, { closeRouteSelect }] = useSystemStore();
-    const [mounted, setMounted] = useState<boolean>(false);
-    const [routes, setRoutes] = useState<RouteExtended[]>([]);
-    const [query, setQuery] = useState<string>('');
+    const [{ routesLoading }, { closeRouteSelect }] = useSystemStore();
+    const [routes, setRoutes] = useState<RouteExtended[]>(routesAsProps);
     const [index, setIndex] = useState<number>(1);
     const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
-    const debouncedQuery = useDebounce(query);
-    const inputBg = useColorModeValue('gray.50', 'gray.600');
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -50,51 +49,31 @@ export const Search: FunctionComponent = () => {
             .join(',');
     };
 
-    // const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
-    //     const bottom =
-    //         e.currentTarget.scrollHeight - Math.ceil(e.currentTarget.scrollTop) <= e.currentTarget.clientHeight;
-    //     const filter = getFilter();
-
-    //     if (bottom) {
-    //         setIndex(index + 1);
-    //         const response = await getRoutes(query, filter, LIMIT, index + 1);
-
-    //         if (response)
-    //             setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     setMounted(true);
-
-    //     return () => {
-    //         setMounted(false);
-    //     };
-    // }, []);
-
-    const onOpen = async () => {
+    const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
+        const bottom =
+            e.currentTarget.scrollHeight - Math.ceil(e.currentTarget.scrollTop) <= e.currentTarget.clientHeight;
         const filter = getFilter();
-        const response = await getRoutes(query, filter, LIMIT, index);
-        const selectedRoutes: RouteExtended[] = Object.values(currentRoutes).map((route) => ({
-            ...route,
-            selected: true,
-        }));
-        let unselectedRoutes: RouteExtended[] = [];
 
-        if (response) {
-            unselectedRoutes = response.map((route) => ({ ...route, selected: false }));
+        if (bottom) {
+            setIndex(index + 1);
+            const response = await getRoutes(query, filter, LIMIT, index + 1);
+
+            if (response)
+                setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
         }
-
-        setRoutes([...selectedRoutes, ...unselectedRoutes]);
     };
 
     useEffect(() => {
-        (async () => {
-            await onOpen();
-        })();
+        setRoutes(routesAsProps);
+    }, [routesAsProps]);
+
+    useEffect(() => {
+        // (async () => {
+        //     await onOpen();
+        // })();
 
         return () => {
-            setQuery('');
+            // setQuery('');
             setIndex(1);
             closeRouteSelect();
         };
@@ -114,56 +93,43 @@ export const Search: FunctionComponent = () => {
         }
     }, [currentRoutes]);
 
-    useEffect(() => {
-        (async () => {
-            if (debouncedQuery) {
-                const filter = getFilter();
-                const response = await getRoutes(debouncedQuery, filter, LIMIT, 1);
+    // useEffect(() => {
+    //     (async () => {
+    //         if (debouncedQuery) {
+    //             const filter = getFilter();
+    //             const response = await getRoutes(debouncedQuery, filter, LIMIT, 1);
 
-                if (response) {
-                    setRoutes(response.map((route) => ({ ...route, selected: false })));
-                }
-            } else {
-                if (mounted) {
-                    await onOpen();
-                }
-            }
-        })();
-    }, [debouncedQuery]); // eslint-disable-line
+    //             if (response) {
+    //                 setRoutes(response.map((route) => ({ ...route, selected: false })));
+    //             }
+    //         } else {
+    //             if (mounted) {
+    //                 await onOpen();
+    //             }
+    //         }
+    //     })();
+    // }, [debouncedQuery]); // eslint-disable-line
 
     return (
         <>
-            <BasePage
-                title={t('SEARCH')}
-                headerIcon={
-                    <IconButton
-                        aria-label="search"
-                        variant="ghost"
-                        fontSize="xl"
-                        icon={<SearchIcon />}
-                        onClick={() => navigate('/search/query')}
+            <Inspector data={inspectorData} />
+            <Box overflow="auto" onScroll={handleScroll} pb="4">
+                {routes.map((route) => (
+                    <RouteOption
+                        onChange={setRoutes}
+                        setInspectorData={setInspectorData}
+                        routes={routes}
+                        currentRoute={route}
+                        key={route.route}
                     />
-                }
-            >
-                {/* <Box overflow="auto" onScroll={handleScroll} pb="4">
-                    {routes.map((route) => (
-                        <RouteOption
-                            onChange={setRoutes}
-                            setInspectorData={setInspectorData}
-                            routes={routes}
-                            currentRoute={route}
-                            key={route.route}
-                        />
-                    ))}
+                ))}
 
-                    {routesLoading ? (
-                        <Center>
-                            <Spinner color="blue.500" />
-                        </Center>
-                    ) : null}
-                </Box> */}
-                <RouteSelect routes={routes} query="" getData={getRoutes} />
-            </BasePage>
+                {routesLoading ? (
+                    <Center>
+                        <Spinner color="blue.500" />
+                    </Center>
+                ) : null}
+            </Box>
             {/* <BottomSheet.Wrapper isOpen={routeSelectOpen} zIndex={1500} onClose={closeRouteSelect}>
                 <BottomSheet.Header>
                     <Flex justifyContent="space-between" alignItems="center">

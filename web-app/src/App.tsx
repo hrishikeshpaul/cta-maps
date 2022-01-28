@@ -49,7 +49,10 @@ export const App = () => {
                             <Stop />
                             <Routes>
                                 <Route path="/" element={<AppContent />} />
-                                <Route path="/search" element={<Search />} />
+                                <Route path="/search">
+                                    <Route index={true} element={<Search />} />
+                                    <Route path="query" element={<Box>query</Box>} />
+                                </Route>
                                 <Route path="/saved" element={<Saved />} />
                                 <Route path="/settings" element={<Box>Settings</Box>} />
                                 <Route path="*" element={<Navigate to="/" />} />

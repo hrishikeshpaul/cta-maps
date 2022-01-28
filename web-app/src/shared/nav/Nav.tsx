@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import { Container, Flex, Text, useColorModeValue, Stack } from '@chakra-ui/react';
+import { Container, Flex, Text, useColorModeValue, Stack, Box } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -68,22 +68,14 @@ export const Nav: FunctionComponent = () => {
     };
 
     return (
-        <Container
-            maxW="container.sm"
-            p="0"
-            position="fixed"
-            bottom="0"
-            left="50%"
-            transform="translate(-50%)"
-            zIndex={100}
-            bg={bg}
-            boxShadow="xl"
-        >
-            <Flex justifyContent="space-between" alignItems="start" w="100%" transition="0.25s opacity ease-in-out">
-                {navItems.map((item) => (
-                    <NavItem {...item} key={item.route} />
-                ))}
-            </Flex>
-        </Container>
+        <Box zIndex={100} bg={bg} position="fixed" w="100%" bottom="0">
+            <Container maxW="container.sm" p="0" w="100%" bg={bg}>
+                <Flex justifyContent="space-between" alignItems="start" w="100%" transition="0.25s opacity ease-in-out">
+                    {navItems.map((item) => (
+                        <NavItem {...item} key={item.route} />
+                    ))}
+                </Flex>
+            </Container>
+        </Box>
     );
 };
