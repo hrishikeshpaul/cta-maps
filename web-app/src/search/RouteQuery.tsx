@@ -2,6 +2,7 @@ import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, Flex, IconButton, Input, InputGroup, InputRightElement, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import { RouteExtended } from 'search/RouteOption';
 import { RouteSelect } from 'search/RouteSelect';
@@ -13,6 +14,7 @@ import { BackArrowIcon, CloseIcon } from 'utils/Icons';
 const LIMIT = 5;
 
 export const RouteQuery: FunctionComponent = () => {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [
         { routes: currentRoutes, searchHistory },
@@ -22,6 +24,7 @@ export const RouteQuery: FunctionComponent = () => {
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const debouncedQuery = useDebounce(query.trim());
     const inputBg = useColorModeValue('gray.100', 'gray.600');
+    const bg = useColorModeValue('gray.100', 'gray.500');
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -31,7 +34,7 @@ export const RouteQuery: FunctionComponent = () => {
 
     useEffect(() => {
         setSearchHistoryArray();
-    }, []);
+    }, [setSearchHistoryArray]);
 
     useEffect(() => {
         (async () => {
@@ -63,6 +66,7 @@ export const RouteQuery: FunctionComponent = () => {
                         fontSize="xl"
                         aria-label="back-button"
                         variant="ghost"
+                        onClick={() => navigate(-1)}
                         icon={<BackArrowIcon />}
                     />
                     {query && (
@@ -74,7 +78,6 @@ export const RouteQuery: FunctionComponent = () => {
                                 size="sm"
                                 fontSize="3xl"
                                 color="gray.500"
-                                mr="-3"
                                 onClick={() => setQuery('')}
                             />
                         </InputRightElement>
@@ -101,8 +104,8 @@ export const RouteQuery: FunctionComponent = () => {
                         Previous Searches
                     </Text>
                     {searchHistory.map((history) => (
-                        <Flex key={history} w="100%" mt="4" alignItems="center">
-                            <Text w="100%" onClick={() => setQuery(history)}>
+                        <Flex key={history} w="100%" alignItems="center">
+                            <Text w="100%" onClick={() => setQuery(history)} _active={{ bg }} _hover={{ bg }} p="4">
                                 {history}
                             </Text>
                             <IconButton

@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState, ChangeEvent, UIEvent } from 'react';
+import { FunctionComponent, useEffect, useState, UIEvent } from 'react';
 
 import { Box, Spinner, Center } from '@chakra-ui/react';
 

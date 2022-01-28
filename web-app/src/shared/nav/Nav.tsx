@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { Container, Flex, Text, useColorModeValue, Stack, Box } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -8,22 +8,22 @@ import { HeartIcon, MapPinIcon, SearchIcon, SettingsIcon } from 'utils/Icons';
 
 const navItems = [
     {
-        icon: <MapPinIcon />,
+        icon: <MapPinIcon fontSize="14pt" />,
         label: 'MAP',
         route: '/',
     },
     {
-        icon: <SearchIcon />,
+        icon: <SearchIcon fontSize="14pt" />,
         label: 'SEARCH',
         route: '/search',
     },
     {
-        icon: <HeartIcon />,
+        icon: <HeartIcon fontSize="14pt" />,
         label: 'SAVED',
         route: '/saved',
     },
     {
-        icon: <SettingsIcon />,
+        icon: <SettingsIcon fontSize="14pt" />,
         label: 'SETTINGS',
         route: '/settings',
     },
@@ -38,7 +38,7 @@ interface navItemProps {
 export const Nav: FunctionComponent = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const bg = useColorModeValue('gray.50', 'gray.900');
+    const bg = useColorModeValue('white', 'gray.900');
     const navItemActiveColor = useColorModeValue('gray.700', 'gray.50');
     const navItemInactiveColor = useColorModeValue('gray.500', 'gray.400');
     const navItemActiveBorderColor = useColorModeValue('blue.400', 'blue.200');
@@ -47,12 +47,18 @@ export const Nav: FunctionComponent = () => {
         navigate(route);
     };
 
+    const getActive = (route: string) => {
+        const [, parentRoute] = window.location.pathname.split('/');
+
+        return `/${parentRoute}` === route;
+    };
+
     const NavItem: FunctionComponent<navItemProps> = ({ icon, label, route }) => {
         return (
             <Stack
                 borderTop="2px solid"
-                color={window.location.pathname === route ? navItemActiveColor : navItemInactiveColor}
-                borderColor={window.location.pathname === route ? navItemActiveBorderColor : 'transparent'}
+                color={getActive(route) ? navItemActiveColor : navItemInactiveColor}
+                borderColor={getActive(route) ? navItemActiveBorderColor : 'transparent'}
                 width="100%"
                 alignItems="center"
                 p="2"
@@ -62,7 +68,9 @@ export const Nav: FunctionComponent = () => {
                 onClick={() => onRoute(route)}
             >
                 {icon}
-                <Text fontSize="xs">{t(label)}</Text>
+                <Text fontSize="xs" fontWeight="500">
+                    {t(label)}
+                </Text>
             </Stack>
         );
     };
