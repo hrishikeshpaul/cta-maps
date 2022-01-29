@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon, header, constantPadding }) => {
-    const bg = useColorModeValue('white', 'gray.900');
+    const bg = useColorModeValue('white', 'gray.800');
     const [scroll, setScroll] = useState<number>(0);
     const [headerSize, setHeaderSize] = useState<number>(1);
 

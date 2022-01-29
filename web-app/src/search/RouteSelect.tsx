@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useState, UIEvent } from 'react';
 
-import { Box, Spinner, Center } from '@chakra-ui/react';
+import { Box, Button, Flex, Spinner, Center, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { Inspector } from 'inspector/Inspector';
 import { RouteOption, RouteExtended } from 'search/RouteOption';
@@ -17,6 +18,7 @@ interface Props {
 const LIMIT = 16;
 
 export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, query }) => {
+    const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
     const [{ routesLoading }, { closeRouteSelect }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>(routesAsProps);
@@ -72,6 +74,17 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
         <>
             <Inspector data={inspectorData} />
             <Box overflow="auto" onScroll={handleScroll} pb="4">
+                <Flex justifyContent="space-between" px="4" pb="2">
+                    <Text fontSize="sm" fontWeight="600" opacity="0.7">
+                        {t('ALL_ROUTES')}
+                    </Text>
+                    {Object.keys(currentRoutes).length > 0 && (
+                        <Button variant="link" size="sm" color="blue.400" onClick={removeAllRoutes}>
+                            {t('DESELECT_ALL')} {Object.keys(currentRoutes).length}
+                        </Button>
+                    )}
+                </Flex>
+
                 {routes.map((route) => (
                     <RouteOption
                         onChange={setRoutes}
