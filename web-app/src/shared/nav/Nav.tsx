@@ -43,7 +43,7 @@ export const Nav: FunctionComponent = () => {
     const bg = useColorModeValue('white', 'gray.800');
     const navItemActiveColor = useColorModeValue('gray.700', 'gray.50');
     const navItemInactiveColor = useColorModeValue('gray.400', 'gray.500');
-    const navItemActiveBorderColor = useColorModeValue('blue.400', 'blue.200');
+    const navItemActiveBg = useColorModeValue('blue.100', 'blue.800');
 
     const onRoute = (route: string) => {
         navigate(route);
@@ -58,9 +58,8 @@ export const Nav: FunctionComponent = () => {
     const NavItem: FunctionComponent<navItemProps> = ({ icon, label, route }) => {
         return (
             <Stack
-                borderBottom="2px solid"
+                bg={getActive(route) ? navItemActiveBg : 'transparent'}
                 color={getActive(route) ? navItemActiveColor : navItemInactiveColor}
-                borderColor={getActive(route) ? navItemActiveBorderColor : 'transparent'}
                 width="100%"
                 alignItems="center"
                 p="2"
