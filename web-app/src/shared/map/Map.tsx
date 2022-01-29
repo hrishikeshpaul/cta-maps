@@ -50,8 +50,12 @@ export const Map: FunctionComponent<Props> = ({
     onZoomChanged,
     children,
 }) => {
-    const [, { onLocationButtonPress }] = useSystemStore();
-    const { colorMode } = useColorMode();
+    const [
+        {
+            settings: { colorMode },
+        },
+        { onLocationButtonPress },
+    ] = useSystemStore();
     const buttonBg = useColorModeValue('white', 'gray.600');
 
     const mapOptions = {

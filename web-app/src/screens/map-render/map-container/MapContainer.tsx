@@ -9,7 +9,7 @@ import { Map } from 'shared/map/Map';
 import { useDataStore } from 'store/data/DataStore';
 import { Point, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
-import { BusIconType } from 'store/system/SystemStore.Types';
+import { BusIconType, ColorMode } from 'store/system/SystemStore.Types';
 
 import './MapContainer.scss';
 
@@ -192,7 +192,7 @@ export const MapContainer: FunctionComponent = () => {
                                 icon={{
                                     path: busIcon[settings.busIcon].path,
                                     strokeColor:
-                                        settings.colorMode === 'light'
+                                        settings.colorMode === ColorMode.Light
                                             ? tinycolor(vehicle.color).darken(20).toString()
                                             : tinycolor(vehicle.color).lighten(26).toString(),
                                     strokeWeight: 2,

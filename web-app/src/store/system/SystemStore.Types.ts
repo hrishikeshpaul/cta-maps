@@ -18,8 +18,8 @@ export enum BusIconType {
 }
 
 export enum SettingsMode {
-    On = 'On',
-    Off = 'Off',
+    On = 'on',
+    Off = 'off',
 }
 
 export interface Setting {

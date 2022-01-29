@@ -33,7 +33,11 @@ export const SettingsView: FunctionComponent = () => {
                         key: 'settings-load-active-route',
                         Component: (
                             <SettingsListItem
-                                value={settings.showActiveRoutes ? SettingsMode.On : SettingsMode.Off}
+                                value={
+                                    settings.showActiveRoutes
+                                        ? t(SettingsMode.On.toUpperCase())
+                                        : t(SettingsMode.Off.toUpperCase())
+                                }
                                 label={t('SHOW_ACTIVE_ROUTES')}
                                 route="/settings/routes"
                             />
@@ -57,7 +61,11 @@ export const SettingsView: FunctionComponent = () => {
                     {
                         key: 'settings-theme',
                         Component: (
-                            <SettingsListItem route="/settings/theme" value={settings.colorMode} label={t('THEME')} />
+                            <SettingsListItem
+                                route="/settings/theme"
+                                value={t(settings.colorMode.toUpperCase())}
+                                label={t('THEME')}
+                            />
                         ),
                     },
                 ],
