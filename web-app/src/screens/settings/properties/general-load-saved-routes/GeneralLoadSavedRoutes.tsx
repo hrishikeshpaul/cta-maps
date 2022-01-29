@@ -29,7 +29,7 @@ export const GeneralLoadSavedRoutes: FC = () => {
                         <Text pr="2">{t('SHOW_ACTIVE_ROUTES')}</Text>
                     </Flex>
 
-                    <Switch isChecked={settings.showActiveRoutes} onChange={onShowActiveRoutesChange} />
+                    <Switch size="lg" isChecked={settings.showActiveRoutes} onChange={onShowActiveRoutesChange} />
                 </Flex>
             </Box>
         </BasePage>

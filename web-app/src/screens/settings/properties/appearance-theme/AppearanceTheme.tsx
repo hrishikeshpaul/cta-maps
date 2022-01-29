@@ -30,7 +30,7 @@ export const AppearanceTheme: FC = () => {
         <BasePage header={<SettingsHeader title="THEME" />} constantPadding>
             <Flex justifyContent="space-between" alignItems="center" px="4">
                 <Text>{t('DARK_MODE')}</Text>
-                <Switch isChecked={colorMode !== ColorMode.Light} onChange={onDarkModeToggle} />
+                <Switch size="lg" isChecked={colorMode !== ColorMode.Light} onChange={onDarkModeToggle} />
             </Flex>
         </BasePage>
     );

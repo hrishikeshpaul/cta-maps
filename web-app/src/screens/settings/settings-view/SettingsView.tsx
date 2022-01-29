@@ -78,7 +78,7 @@ export const SettingsView: FunctionComponent = () => {
                         </Text>
                         <Box mt="2">
                             {sItem.properties.map((prop) => (
-                                <Box key={prop.key} py="3" px="4" _active={{ bg: activeBg }}>
+                                <Box key={prop.key} py="2" px="4" _active={{ bg: activeBg }}>
                                     {prop.Component}
                                 </Box>
                             ))}

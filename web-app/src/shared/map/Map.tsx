@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 
-import { useColorMode, Center, Spinner, Box, IconButton, useColorModeValue, Container } from '@chakra-ui/react';
+import { Center, Spinner, Box, IconButton, useColorModeValue, Container } from '@chakra-ui/react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 import { darkStyle, lightStyle } from 'shared/map/Map.Styles';
