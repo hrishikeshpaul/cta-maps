@@ -21,7 +21,7 @@ export const MapRender: FunctionComponent = () => {
 
     return (
         <Box h="100%" position="relative">
-            {Object.keys(routes).length ? <ActiveBar /> : <></>}
+            {/* {Object.keys(routes).length ? <ActiveBar /> : <></>} */}
             <MapContainer />
         </Box>
     );
