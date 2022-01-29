@@ -1,5 +1,3 @@
-import { Fragment, FunctionComponent, ReactFragment } from 'react';
-
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RouteQuery } from 'screens/search/route-query/RouteQuery';

@@ -4,6 +4,7 @@ export { BiRadioCircle as CircleIcon } from 'react-icons/bi';
 export { FaBus as BusIcon } from 'react-icons/fa';
 export {
     FiChevronRight as RightIcon,
+    FiChevronLeft as BackIcon,
     FiChevronDown as DownIcon,
     FiTrash as TrashIcon,
     FiMenu as MenuIcon,

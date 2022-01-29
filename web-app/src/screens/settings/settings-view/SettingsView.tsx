@@ -1,19 +1,22 @@
 import { FunctionComponent, useMemo } from 'react';
 
-import { Box, Flex, RadioGroup, useColorMode, Text, Stack, Radio, Switch, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text, Stack, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
+import { SettingsListItem } from 'screens/settings/settings-list-item/SettingsListItem';
 import { useSystemStore } from 'store/system/SystemStore';
-import { ColorMode, SettingsMode } from 'store/system/SystemStore.Types';
+import { SettingsMode } from 'store/system/SystemStore.Types';
 import { BasePage } from 'utils/BasePage';
-import { SettingsListItem, SettingsListItemType } from '../settings-list-item/SettingsListItem';
 
 export const SettingsView: FunctionComponent = () => {
-    const { i18n, t } = useTranslation();
-    const [{ settings }, { setColorMode, setLocale, setShowActiveRoutes }] = useSystemStore();
-    const { toggleColorMode } = useColorMode();
+    const { t } = useTranslation();
     const activeBg = useColorModeValue('gray.100', 'gray.700');
+    const [
+        {
+            settings: { locale, colorMode, showActiveRoutes },
+        },
+    ] = useSystemStore();
 
     const settingItems = useMemo(
         () => [
@@ -25,7 +28,7 @@ export const SettingsView: FunctionComponent = () => {
                         Component: (
                             <SettingsListItem
                                 value={
-                                    settings.showActiveRoutes
+                                    showActiveRoutes
                                         ? t(SettingsMode.On.toUpperCase())
                                         : t(SettingsMode.Off.toUpperCase())
                                 }
@@ -39,7 +42,7 @@ export const SettingsView: FunctionComponent = () => {
                         Component: (
                             <SettingsListItem
                                 label={t('LANGUAGE')}
-                                value={t(LocaleLabels[settings.locale as Locale])}
+                                value={t(LocaleLabels[locale as Locale])}
                                 route="/settings/language"
                             />
                         ),
@@ -54,7 +57,7 @@ export const SettingsView: FunctionComponent = () => {
                         Component: (
                             <SettingsListItem
                                 route="/settings/theme"
-                                value={t(settings.colorMode.toUpperCase())}
+                                value={t(colorMode.toUpperCase())}
                                 label={t('THEME')}
                             />
                         ),
@@ -62,7 +65,7 @@ export const SettingsView: FunctionComponent = () => {
                 ],
             },
         ],
-        [],
+        [colorMode, locale, showActiveRoutes, t],
     );
 
     return (
@@ -73,7 +76,7 @@ export const SettingsView: FunctionComponent = () => {
                         <Text fontWeight="bold" color="gray.400" fontSize="sm" px="4">
                             {t(sItem.header)}
                         </Text>
-                        <Box mt="3">
+                        <Box mt="2">
                             {sItem.properties.map((prop) => (
                                 <Box key={prop.key} py="3" px="4" _active={{ bg: activeBg }}>
                                     {prop.Component}
@@ -82,56 +85,6 @@ export const SettingsView: FunctionComponent = () => {
                         </Box>
                     </Box>
                 ))}
-                {/* <Box mt="4">
-                    <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                        {t('ROUTES')}
-                    </Text>
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <Flex alignItems="center">
-                            <Text pr="2">{t('SHOW_ACTIVE_ROUTES')}</Text>
-                            <Help label={t('ACTIVE_ROUTE_INFO')} />
-                        </Flex>
-
-                        <Switch size="lg" isChecked={settings.showActiveRoutes} onChange={onShowActiveRoutesChange} />
-                    </Flex>
-                </Box>
-
-                <Box mt="8">
-                    <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                        {t('APPEARANCE')}
-                    </Text>
-
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <Text>{t('DARK_MODE')}</Text>
-                        <Switch
-                            size="lg"
-                            isChecked={settings.colorMode !== ColorMode.Light}
-                            onChange={onDarkModeToggle}
-                        />
-                    </Flex>
-
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <Text>{t('BUS_ICON')}</Text>
-                        <BusIcon />
-                    </Flex>
-                </Box>
-
-                <Box mt="8">
-                    <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                        {t('LANGUAGE')}
-                    </Text>
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <RadioGroup onChange={onLocaleChange} value={settings.locale}>
-                            <Stack>
-                                {Object.keys(LocaleLabels).map((key: string) => (
-                                    <Radio key={key} value={key}>
-                                        <Text fontSize="md">{t(LocaleLabels[key as Locale])}</Text>
-                                    </Radio>
-                                ))}
-                            </Stack>
-                        </RadioGroup>
-                    </Flex>
-                </Box> */}
             </Stack>
         </BasePage>
     );

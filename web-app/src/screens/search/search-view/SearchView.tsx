@@ -1,7 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, IconButton } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
@@ -15,7 +14,6 @@ const LIMIT = 16;
 
 export const SearchView: FunctionComponent = () => {
     const navigate = useNavigate();
-    const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes }] = useDataStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');

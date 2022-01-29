@@ -2,20 +2,18 @@ import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, Flex, IconButton, Input, InputGroup, InputRightElement, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { RouteSelect } from 'screens/search/route-select/RouteSelect';
 import { useDataStore } from 'store/data/DataStore';
 import { BasePage } from 'utils/BasePage';
 import useDebounce from 'utils/Hook';
-import { BackArrowIcon, CloseIcon } from 'utils/Icons';
+import { CloseIcon } from 'utils/Icons';
 import { BackButton } from 'shared/back-button/BackButton';
 
 const LIMIT = 5;
 
 export const RouteQuery: FunctionComponent = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const [
         { routes: currentRoutes, searchHistory },
@@ -94,8 +92,8 @@ export const RouteQuery: FunctionComponent = () => {
             {query ? (
                 <RouteSelect routes={routes} query={query} getData={getRoutes} />
             ) : (
-                <Box px="4">
-                    <Text fontSize="sm" fontWeight="600" opacity="0.6">
+                <Box>
+                    <Text fontSize="sm" fontWeight="600" opacity="0.6" px="4">
                         Previous Searches
                     </Text>
                     {searchHistory.map((history) => (
@@ -108,7 +106,7 @@ export const RouteQuery: FunctionComponent = () => {
                                 aria-label="delete-history"
                                 variant="ghost"
                                 fontSize="2xl"
-                                mr="-2"
+                                mr="2"
                                 onClick={() => removeSearchHistoryItem(history)}
                                 icon={<CloseIcon />}
                             />
