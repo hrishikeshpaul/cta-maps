@@ -14,7 +14,6 @@ import { VehicleDrawer } from 'shared/vehicle/Vehicle';
 import { Stop } from 'shared/stop/Stop';
 import { MapLoader } from 'shared/map/Map';
 import { Search } from 'screens/search/Search';
-import { RouteQuery } from 'screens/search/route-query/RouteQuery';
 import { Settings } from 'screens/settings/Settings';
 import { SocketModule } from 'utils/SocketModule';
 
@@ -56,7 +55,7 @@ export const App = () => {
                                 <Route path="/" element={<MapRender />} />
                                 <Route path="/search/*" element={<Search />} />
                                 <Route path="/saved" element={<Saved />} />
-                                <Route path="/settings" element={<Settings />} />
+                                <Route path="/settings/*" element={<Settings />} />
                                 <Route path="*" element={<Navigate to="/" />} />
                             </Routes>
                         </BrowserRouter>

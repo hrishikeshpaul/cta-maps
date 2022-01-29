@@ -9,11 +9,19 @@ interface Props {
     headerIcon?: JSX.Element;
     constantPadding?: boolean;
     handleScroll?: (e: UIEvent<HTMLDivElement>) => void;
+    px?: string;
     title: string;
     children: ReactNode;
 }
 
-export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon, header, constantPadding }) => {
+export const BasePage: FunctionComponent<Props> = ({
+    children,
+    title,
+    headerIcon,
+    header,
+    constantPadding,
+    px = '0',
+}) => {
     const bg = useColorModeValue('white', 'gray.800');
     const [scroll, setScroll] = useState<number>(0);
     const [headerSize, setHeaderSize] = useState<number>(1);
@@ -63,7 +71,9 @@ export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon
                     </>
                 )}
             </Flex>
-            <Box pt={constantPadding ? '72px' : '96px'}>{children}</Box>
+            <Box pt={constantPadding ? '72px' : '96px'} px={px}>
+                {children}
+            </Box>
         </Container>
     );
 };

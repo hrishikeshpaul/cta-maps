@@ -3,12 +3,14 @@ import { FunctionComponent } from 'react';
 import { Box, Flex, RadioGroup, useColorMode, Text, Stack, Radio, Switch } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
-import { Help } from 'shared/help/Help';
+import { Locale } from 'i18n/LocaleProvider';
 import { useSystemStore } from 'store/system/SystemStore';
 import { ColorMode } from 'store/system/SystemStore.Types';
-import { BusIcon } from './BusIcon';
 import { BasePage } from 'utils/BasePage';
+import { GeneralLoadSavedRoutes } from 'screens/settings/properties/general-load-saved-routes/GeneralLoadSavedRoutes';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { SettingsView } from './settings-view/SettingsView';
+import { GeneralLanguage } from './properties/general-language/GeneralLanguage';
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
@@ -24,76 +26,11 @@ export const Settings: FunctionComponent = () => {
         }
     };
 
-    const onLocaleChange = (locale: string) => {
-        i18n.changeLanguage(locale);
-        setLocale(locale as Locale);
-    };
-
-    const onShowActiveRoutesChange = () => {
-        if (settings.showActiveRoutes) {
-            setShowActiveRoutes(false);
-        } else {
-            setShowActiveRoutes(true);
-        }
-    };
-
     return (
-        <BasePage title={t('SETTINGS')}>
-            <Stack px="4" spacing={8}>
-                {/* ACTIVITY */}
-                <Box mt="4">
-                    <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                        {t('ROUTES')}
-                    </Text>
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <Flex alignItems="center">
-                            <Text pr="2">{t('SHOW_ACTIVE_ROUTES')}</Text>
-                            <Help label={t('ACTIVE_ROUTE_INFO')} />
-                        </Flex>
-
-                        <Switch size="lg" isChecked={settings.showActiveRoutes} onChange={onShowActiveRoutesChange} />
-                    </Flex>
-                </Box>
-
-                {/* APPEARANCE */}
-                <Box mt="8">
-                    <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                        {t('APPEARANCE')}
-                    </Text>
-
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <Text>{t('DARK_MODE')}</Text>
-                        <Switch
-                            size="lg"
-                            isChecked={settings.colorMode !== ColorMode.Light}
-                            onChange={onDarkModeToggle}
-                        />
-                    </Flex>
-
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <Text>{t('BUS_ICON')}</Text>
-                        <BusIcon />
-                    </Flex>
-                </Box>
-
-                {/* LANGUAGE */}
-                <Box mt="8">
-                    <Text fontWeight="bold" color="gray.400" fontSize="sm">
-                        {t('LANGUAGE')}
-                    </Text>
-                    <Flex justifyContent="space-between" alignItems="center" mt="2">
-                        <RadioGroup onChange={onLocaleChange} value={settings.locale}>
-                            <Stack>
-                                {Object.keys(LocaleLabels).map((key: string) => (
-                                    <Radio key={key} value={key}>
-                                        <Text fontSize="md">{t(LocaleLabels[key as Locale])}</Text>
-                                    </Radio>
-                                ))}
-                            </Stack>
-                        </RadioGroup>
-                    </Flex>
-                </Box>
-            </Stack>
-        </BasePage>
+        <Routes>
+            <Route index={true} element={<SettingsView />} />
+            <Route path="language" element={<GeneralLanguage />} />
+            <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
     );
 };

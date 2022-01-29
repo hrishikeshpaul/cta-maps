@@ -10,6 +10,7 @@ import {
     ShowActiveRoutesKey,
     BusIconType,
     BusIconKey,
+    Setting,
 } from 'store/system/SystemStore.Types';
 
 export enum SystemStoreActionType {
@@ -288,3 +289,5 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
 
     return [useSystemStoreState(), actionApis];
 };
+
+export interface SettingsProps extends SystemStoreActionApis, Setting {}
