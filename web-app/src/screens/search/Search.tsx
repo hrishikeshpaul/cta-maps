@@ -4,12 +4,12 @@ import { Box, IconButton } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { RouteExtended } from 'search/RouteOption';
+import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { useDataStore } from 'store/data/DataStore';
 import useDebounce from 'utils/Hook';
 import { SearchIcon } from 'utils/Icons';
 import { BasePage } from 'utils/BasePage';
-import { RouteSelect } from './RouteSelect';
+import { RouteSelect } from './route-select/RouteSelect';
 
 const LIMIT = 16;
 

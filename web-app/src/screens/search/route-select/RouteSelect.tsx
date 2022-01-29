@@ -3,8 +3,8 @@ import { FunctionComponent, useEffect, useState, UIEvent } from 'react';
 import { Box, Button, Flex, Spinner, Center, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { Inspector } from 'inspector/Inspector';
-import { RouteOption, RouteExtended } from 'search/RouteOption';
+import { Inspector } from 'shared/inspector/Inspector';
+import { RouteOption, RouteExtended } from 'screens/search/route-select/RouteOption';
 import { useDataStore } from 'store/data/DataStore';
 import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';

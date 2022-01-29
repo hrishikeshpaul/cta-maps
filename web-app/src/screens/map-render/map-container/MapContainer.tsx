@@ -11,7 +11,7 @@ import { Point, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 import { BusIconType } from 'store/system/SystemStore.Types';
 
-import 'map-container/MapContainer.scss';
+import './MapContainer.scss';
 
 const defaultZoom = 13;
 

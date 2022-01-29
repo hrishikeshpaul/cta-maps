@@ -9,7 +9,6 @@ export const ActiveBar: FC = () => {
     const [{ routes }] = useDataStore();
     const [{ dragging }] = useSystemStore();
     const bg = useColorModeValue('gray.50', 'gray.900');
-    const borderColor = useColorModeValue('gray.200', 'gray.600');
 
     return (
         <Container
