@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 
 import { Container, Flex, Text, useColorModeValue, Stack, Box } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -68,7 +68,7 @@ export const Nav: FunctionComponent = () => {
                 onClick={() => onRoute(route)}
             >
                 {icon}
-                <Text fontSize="xs" fontWeight="500">
+                <Text fontSize="xs" fontWeight="600">
                     {t(label)}
                 </Text>
             </Stack>

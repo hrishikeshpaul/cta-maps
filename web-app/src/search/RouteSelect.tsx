@@ -20,7 +20,7 @@ const LIMIT = 16;
 export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, query }) => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
-    const [{ routesLoading }, { closeRouteSelect }] = useSystemStore();
+    const [{ routesLoading }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>(routesAsProps);
     const [index, setIndex] = useState<number>(1);
     const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
@@ -49,7 +49,6 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
     useEffect(() => {
         return () => {
             setIndex(1);
-            closeRouteSelect();
         };
     }, []); // eslint-disable-line
 

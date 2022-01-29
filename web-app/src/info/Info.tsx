@@ -31,7 +31,6 @@ interface Props {
 
 export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) => {
     const { t } = useTranslation('common');
-    const [{ infoOpen }, { closeInfoDrawer, openInfoDrawer, openSettings }] = useSystemStore();
     const [version, setVersion] = useState<string>('');
     const toast = useToast();
     const borderBottom = useColorModeValue('#ececec', '#4A5568');
@@ -85,7 +84,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
 
     return (
         <>
-            <IconButton
+            {/* <IconButton
                 aria-label="menu-icon"
                 icon={<MenuIcon />}
                 variant="ghost"
@@ -182,7 +181,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                         </Text>
                     </DrawerFooter>
                 </DrawerContent>
-            </Drawer>
+            </Drawer> */}
         </>
     );
 };

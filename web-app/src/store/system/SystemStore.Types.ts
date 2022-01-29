@@ -38,13 +38,8 @@ export interface AppStatus {
 
 export interface SystemStoreState {
     inspectorOpen: boolean;
-    favoritesOpen: boolean;
     onCurrentLocationPress: boolean;
     systemLoading: boolean;
-    routeSelectOpen: boolean;
-    infoOpen: boolean;
-    settingsOpen: boolean;
-    idleAlertOpen: boolean;
     dragging: boolean;
     routesLoading: boolean;
     patternLoading: boolean;

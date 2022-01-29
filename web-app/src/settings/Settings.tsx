@@ -12,7 +12,7 @@ import { BasePage } from 'utils/BasePage';
 
 export const Settings: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
-    const [{ settings }, { setColorMode, setLocale, setShowActiveRoutes, closeSettings }] = useSystemStore();
+    const [{ settings }, { setColorMode, setLocale, setShowActiveRoutes }] = useSystemStore();
     const { toggleColorMode } = useColorMode();
 
     const onDarkModeToggle = () => {

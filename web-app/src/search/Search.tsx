@@ -1,14 +1,13 @@
-import { FunctionComponent, useEffect, useState, ChangeEvent, UIEvent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, IconButton } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { RouteOption, RouteExtended } from 'search/RouteOption';
+import { RouteExtended } from 'search/RouteOption';
 import { useDataStore } from 'store/data/DataStore';
-import { useSystemStore } from 'store/system/SystemStore';
 import useDebounce from 'utils/Hook';
-import { CheckIcon, CloseIcon, DownIcon, SearchIcon } from 'utils/Icons';
+import { SearchIcon } from 'utils/Icons';
 import { BasePage } from 'utils/BasePage';
 import { RouteSelect } from './RouteSelect';
 
@@ -18,7 +17,6 @@ export const Search: FunctionComponent = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes }] = useDataStore();
-    const [, { closeRouteSelect }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(1);
@@ -54,7 +52,6 @@ export const Search: FunctionComponent = () => {
         return () => {
             setQuery('');
             setIndex(1);
-            closeRouteSelect();
         };
     }, []); // eslint-disable-line
 
