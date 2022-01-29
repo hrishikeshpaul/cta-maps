@@ -15,15 +15,6 @@ export const SettingsView: FunctionComponent = () => {
     const { toggleColorMode } = useColorMode();
     const activeBg = useColorModeValue('gray.100', 'gray.700');
 
-    const onDarkModeToggle = () => {
-        toggleColorMode();
-        if (settings.colorMode === ColorMode.Light) {
-            setColorMode(ColorMode.Dark);
-        } else {
-            setColorMode(ColorMode.Light);
-        }
-    };
-
     const settingItems = useMemo(
         () => [
             {
