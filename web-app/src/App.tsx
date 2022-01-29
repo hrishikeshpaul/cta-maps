@@ -51,12 +51,10 @@ export const App = () => {
                             <Stop />
                             <SocketModule />
                             <VehicleDrawer />
+
                             <Routes>
                                 <Route path="/" element={<MapRender />} />
-                                <Route path="/search">
-                                    <Route index={true} element={<Search />} />
-                                    <Route path="query" element={<RouteQuery />} />
-                                </Route>
+                                <Route path="/search/*" element={<Search />} />
                                 <Route path="/saved" element={<Saved />} />
                                 <Route path="/settings" element={<Settings />} />
                                 <Route path="*" element={<Navigate to="/" />} />

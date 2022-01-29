@@ -2,6 +2,8 @@ import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'reac
 
 import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 
+import { NAVBAR_HEIGHT } from './Constants';
+
 interface Props {
     header?: JSX.Element;
     headerIcon?: JSX.Element;
@@ -11,15 +13,13 @@ interface Props {
     children: ReactNode;
 }
 
-const navbarHeight = '54px';
-
 export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon, header, constantPadding }) => {
     const bg = useColorModeValue('white', 'gray.800');
     const [scroll, setScroll] = useState<number>(0);
     const [headerSize, setHeaderSize] = useState<number>(1);
 
     useEffect(() => {
-        document.addEventListener('scroll', (e) => {
+        document.addEventListener('scroll', () => {
             const scrolled = document.scrollingElement?.scrollTop;
             if (scrolled) {
                 setScroll(scrolled);
@@ -29,10 +29,10 @@ export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon
     }, []);
 
     return (
-        <Container maxW="container.sm" p="0" pt={navbarHeight} position="relative">
+        <Container maxW="container.sm" p="0" pt={NAVBAR_HEIGHT} position="relative">
             <Flex
                 className="nav-bar"
-                top={navbarHeight}
+                top={NAVBAR_HEIGHT}
                 maxW="inherit"
                 w="100%"
                 justifyContent="space-between"

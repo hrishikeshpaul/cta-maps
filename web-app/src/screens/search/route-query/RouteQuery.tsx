@@ -10,6 +10,7 @@ import { useDataStore } from 'store/data/DataStore';
 import { BasePage } from 'utils/BasePage';
 import useDebounce from 'utils/Hook';
 import { BackArrowIcon, CloseIcon } from 'utils/Icons';
+import { BackButton } from 'shared/back-button/BackButton';
 
 const LIMIT = 5;
 
@@ -61,15 +62,7 @@ export const RouteQuery: FunctionComponent = () => {
             constantPadding
             header={
                 <InputGroup mt="2">
-                    <IconButton
-                        ml="-3"
-                        mr="2"
-                        fontSize="xl"
-                        aria-label="back-button"
-                        variant="ghost"
-                        onClick={() => navigate(-1)}
-                        icon={<BackArrowIcon />}
-                    />
+                    <BackButton parentRoute="/search" />
                     {query && (
                         <InputRightElement>
                             <IconButton
