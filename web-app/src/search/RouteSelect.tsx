@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState, UIEvent } from 'react';
 
-import { Box, Button, Flex, Spinner, Center, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Spinner, Center, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { Inspector } from 'inspector/Inspector';
@@ -24,6 +24,7 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
     const [routes, setRoutes] = useState<RouteExtended[]>(routesAsProps);
     const [index, setIndex] = useState<number>(1);
     const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
+    const deselectFontColor = useColorModeValue('blue.500', 'blue.200');
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -79,8 +80,8 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
                         {t('ALL_ROUTES')}
                     </Text>
                     {Object.keys(currentRoutes).length > 0 && (
-                        <Button variant="link" size="sm" color="blue.400" onClick={removeAllRoutes}>
-                            {t('DESELECT_ALL')} {Object.keys(currentRoutes).length}
+                        <Button variant="link" size="sm" color={deselectFontColor} onClick={removeAllRoutes}>
+                            {t('DESELECT_ALL')} ({Object.keys(currentRoutes).length})
                         </Button>
                     )}
                 </Flex>
