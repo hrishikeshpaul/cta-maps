@@ -41,9 +41,9 @@ export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ dragging }] = useSystemStore();
     const bg = useColorModeValue('white', 'gray.800');
-    const navItemActiveColor = useColorModeValue('gray.700', 'gray.50');
+    const navItemActiveColor = useColorModeValue('blue.600', 'gray.50');
     const navItemInactiveColor = useColorModeValue('gray.400', 'gray.500');
-    const navItemActiveBg = useColorModeValue('blue.100', 'blue.800');
+    const navItemActiveBg = useColorModeValue('gray.50', 'blue.800');
 
     const onRoute = (route: string) => {
         navigate(route);
@@ -69,7 +69,7 @@ export const Nav: FunctionComponent = () => {
                 onClick={() => onRoute(route)}
             >
                 {icon}
-                <Text fontSize="xs" fontWeight="600">
+                <Text fontSize="xs" fontWeight="700">
                     {t(label)}
                 </Text>
             </Stack>

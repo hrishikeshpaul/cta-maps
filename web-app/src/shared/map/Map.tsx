@@ -82,8 +82,8 @@ export const Map: FunctionComponent<Props> = ({
                     bg={buttonBg}
                     boxShadow="lg"
                     position="absolute"
-                    bottom="16px"
-                    right="16px"
+                    bottom="8px"
+                    right="8px"
                     onClick={() => onLocationButtonPress(true)}
                 />
             </Container>

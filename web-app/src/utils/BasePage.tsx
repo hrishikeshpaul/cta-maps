@@ -11,6 +11,8 @@ interface Props {
     children: ReactNode;
 }
 
+const navbarHeight = '54px';
+
 export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon, header, constantPadding }) => {
     const bg = useColorModeValue('white', 'gray.800');
     const [scroll, setScroll] = useState<number>(0);
@@ -27,10 +29,10 @@ export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon
     }, []);
 
     return (
-        <Container maxW="container.sm" p="0" pt="56px" position="relative">
+        <Container maxW="container.sm" p="0" pt={navbarHeight} position="relative">
             <Flex
                 className="nav-bar"
-                top="56px"
+                top={navbarHeight}
                 maxW="inherit"
                 w="100%"
                 justifyContent="space-between"
