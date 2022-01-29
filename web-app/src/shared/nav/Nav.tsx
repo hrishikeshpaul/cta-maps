@@ -8,22 +8,22 @@ import { HeartIcon, MapPinIcon, SearchIcon, SettingsIcon } from 'utils/Icons';
 
 const navItems = [
     {
-        icon: <MapPinIcon fontSize="14pt" />,
+        icon: <MapPinIcon />,
         label: 'MAP',
         route: '/',
     },
     {
-        icon: <SearchIcon fontSize="14pt" />,
+        icon: <SearchIcon />,
         label: 'SEARCH',
         route: '/search',
     },
     {
-        icon: <HeartIcon fontSize="14pt" />,
+        icon: <HeartIcon />,
         label: 'SAVED',
         route: '/saved',
     },
     {
-        icon: <SettingsIcon fontSize="14pt" />,
+        icon: <SettingsIcon />,
         label: 'SETTINGS',
         route: '/settings',
     },
@@ -38,7 +38,7 @@ interface navItemProps {
 export const Nav: FunctionComponent = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const bg = useColorModeValue('white', 'gray.900');
+    const bg = useColorModeValue('white', 'gray.800');
     const navItemActiveColor = useColorModeValue('gray.700', 'gray.50');
     const navItemInactiveColor = useColorModeValue('gray.400', 'gray.500');
     const navItemActiveBorderColor = useColorModeValue('blue.400', 'blue.200');

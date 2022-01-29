@@ -15,6 +15,7 @@ import { Stop } from 'shared/stop/Stop';
 import { MapLoader } from 'shared/map/Map';
 import { Search } from 'search/Search';
 import { RouteQuery } from 'search/RouteQuery';
+import { Settings } from 'settings/Settings';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -55,7 +56,7 @@ export const App = () => {
                                     <Route path="query" element={<RouteQuery />} />
                                 </Route>
                                 <Route path="/saved" element={<Saved />} />
-                                <Route path="/settings" element={<Box>Settings</Box>} />
+                                <Route path="/settings" element={<Settings />} />
                                 <Route path="*" element={<Navigate to="/" />} />
                             </Routes>
                         </BrowserRouter>
