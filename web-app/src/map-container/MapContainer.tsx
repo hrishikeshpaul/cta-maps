@@ -39,7 +39,7 @@ export const MapContainer: FunctionComponent = () => {
         { routes: currentRoutes, currentLocation, patterns, vehicles },
         { openStop, openVehicle, setCurrentLocation },
     ] = useDataStore();
-    const toast = useToast({ position: 'top', variant: 'solid' });
+    const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
     const [showStops, setShowStops] = useState<boolean>(false);

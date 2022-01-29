@@ -21,7 +21,7 @@ export const AppContent: FunctionComponent = () => {
     }, [settings.showActiveRoutes]); // eslint-disable-line
 
     return (
-        <Box h="100%" position="relative">
+        <Box h="100%" position="relative" paddingTop="56px">
             <SocketModule />
             {Object.keys(routes).length ? <ActiveBar /> : <></>}
 

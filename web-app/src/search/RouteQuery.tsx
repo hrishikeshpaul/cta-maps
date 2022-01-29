@@ -34,7 +34,7 @@ export const RouteQuery: FunctionComponent = () => {
 
     useEffect(() => {
         setSearchHistoryArray();
-    }, [setSearchHistoryArray]);
+    }, []); // eslint-disable-line
 
     useEffect(() => {
         (async () => {

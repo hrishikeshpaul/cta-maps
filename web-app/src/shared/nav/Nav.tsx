@@ -40,7 +40,7 @@ export const Nav: FunctionComponent = () => {
     const { t } = useTranslation();
     const bg = useColorModeValue('white', 'gray.900');
     const navItemActiveColor = useColorModeValue('gray.700', 'gray.50');
-    const navItemInactiveColor = useColorModeValue('gray.500', 'gray.400');
+    const navItemInactiveColor = useColorModeValue('gray.400', 'gray.500');
     const navItemActiveBorderColor = useColorModeValue('blue.400', 'blue.200');
 
     const onRoute = (route: string) => {
@@ -56,7 +56,7 @@ export const Nav: FunctionComponent = () => {
     const NavItem: FunctionComponent<navItemProps> = ({ icon, label, route }) => {
         return (
             <Stack
-                borderTop="2px solid"
+                borderBottom="2px solid"
                 color={getActive(route) ? navItemActiveColor : navItemInactiveColor}
                 borderColor={getActive(route) ? navItemActiveBorderColor : 'transparent'}
                 width="100%"
@@ -76,7 +76,7 @@ export const Nav: FunctionComponent = () => {
     };
 
     return (
-        <Box zIndex={100} bg={bg} position="fixed" w="100%" bottom="0">
+        <Box zIndex={1000} bg={bg} position="fixed" w="100%" top="0" boxShadow="sm">
             <Container maxW="container.sm" p="0" w="100%" bg={bg}>
                 <Flex justifyContent="space-between" alignItems="start" w="100%" transition="0.25s opacity ease-in-out">
                     {navItems.map((item) => (

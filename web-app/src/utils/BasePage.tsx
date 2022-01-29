@@ -27,16 +27,10 @@ export const BasePage: FunctionComponent<Props> = ({ children, title, headerIcon
     }, []);
 
     return (
-        <Container
-            maxW="container.sm"
-            p="0"
-            pb="56px"
-            position="relative"
-            onScroll={() => console.log('now')}
-        >
+        <Container maxW="container.sm" p="0" pt="56px" position="relative">
             <Flex
                 className="nav-bar"
-                top="0"
+                top="56px"
                 maxW="inherit"
                 w="100%"
                 justifyContent="space-between"
