@@ -58,7 +58,6 @@ export const RouteQuery: FunctionComponent = () => {
 
     return (
         <BasePage
-            title=""
             constantPadding
             header={
                 <InputGroup mt="2">

@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next';
 
 import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
 import { useSystemStore } from 'store/system/SystemStore';
-import { ColorMode } from 'store/system/SystemStore.Types';
+import { ColorMode, SettingsMode } from 'store/system/SystemStore.Types';
 import { BasePage } from 'utils/BasePage';
-import { GeneralLoadSavedRoutes } from 'screens/settings/properties/general-load-saved-routes/GeneralLoadSavedRoutes';
-import { SettingsListItem } from '../settings-list-item/SettingsListItem';
+import { SettingsListItem, SettingsListItemType } from '../settings-list-item/SettingsListItem';
 
 export const SettingsView: FunctionComponent = () => {
     const { i18n, t } = useTranslation();
@@ -25,44 +24,60 @@ export const SettingsView: FunctionComponent = () => {
         }
     };
 
-    const onLocaleChange = (locale: string) => {
-        i18n.changeLanguage(locale);
-        setLocale(locale as Locale);
-    };
-
     const settingItems = useMemo(
         () => [
             {
                 header: 'GENERAL',
                 properties: [
-                    <GeneralLoadSavedRoutes />,
-                    <SettingsListItem
-                        label={t('LANGUAGE')}
-                        value={t(LocaleLabels[settings.locale as Locale])}
-                        route="/settings/language"
-                    />,
+                    {
+                        key: 'settings-load-active-route',
+                        Component: (
+                            <SettingsListItem
+                                value={settings.showActiveRoutes ? SettingsMode.On : SettingsMode.Off}
+                                label={t('SHOW_ACTIVE_ROUTES')}
+                                route="/settings/routes"
+                            />
+                        ),
+                    },
+                    {
+                        key: 'settings-language',
+                        Component: (
+                            <SettingsListItem
+                                label={t('LANGUAGE')}
+                                value={t(LocaleLabels[settings.locale as Locale])}
+                                route="/settings/language"
+                            />
+                        ),
+                    },
                 ],
             },
             {
                 header: 'APPEARANCE',
-                properties: [],
+                properties: [
+                    {
+                        key: 'settings-theme',
+                        Component: (
+                            <SettingsListItem route="/settings/theme" value={settings.colorMode} label={t('THEME')} />
+                        ),
+                    },
+                ],
             },
         ],
         [],
     );
 
     return (
-        <BasePage title={t('SETTINGS')}>
+        <BasePage title="SETTINGS">
             <Stack spacing={8}>
                 {settingItems.map((sItem) => (
-                    <Box>
+                    <Box key={sItem.header}>
                         <Text fontWeight="bold" color="gray.400" fontSize="sm" px="4">
                             {t(sItem.header)}
                         </Text>
                         <Box mt="3">
-                            {sItem.properties.map((prop: JSX.Element) => (
-                                <Box py="3" px="4" _active={{ bg: activeBg }}>
-                                    {prop}
+                            {sItem.properties.map((prop) => (
+                                <Box key={prop.key} py="3" px="4" _active={{ bg: activeBg }}>
+                                    {prop.Component}
                                 </Box>
                             ))}
                         </Box>

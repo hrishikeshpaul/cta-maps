@@ -85,7 +85,7 @@ export const SearchView: FunctionComponent = () => {
     return (
         <Box>
             <BasePage
-                title={t('SEARCH')}
+                title="SEARCH"
                 headerIcon={
                     <IconButton
                         aria-label="search"

@@ -3,6 +3,7 @@ import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'reac
 import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 
 import { NAVBAR_HEIGHT } from './Constants';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     header?: JSX.Element;
@@ -10,7 +11,7 @@ interface Props {
     constantPadding?: boolean;
     handleScroll?: (e: UIEvent<HTMLDivElement>) => void;
     px?: string;
-    title: string;
+    title?: string;
     children: ReactNode;
 }
 
@@ -22,6 +23,7 @@ export const BasePage: FunctionComponent<Props> = ({
     constantPadding,
     px = '0',
 }) => {
+    const { t } = useTranslation();
     const bg = useColorModeValue('white', 'gray.800');
     const [scroll, setScroll] = useState<number>(0);
     const [headerSize, setHeaderSize] = useState<number>(1);
@@ -65,7 +67,7 @@ export const BasePage: FunctionComponent<Props> = ({
                             transform={`scale(${headerSize})`}
                             transformOrigin="left"
                         >
-                            {title}
+                            {title && t(title)}
                         </Text>
                         {headerIcon}
                     </>

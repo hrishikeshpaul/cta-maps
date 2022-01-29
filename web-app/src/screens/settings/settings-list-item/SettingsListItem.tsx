@@ -4,21 +4,30 @@ import { Flex, Text } from '@chakra-ui/react';
 import { RightIcon } from 'utils/Icons';
 import { useNavigate } from 'react-router-dom';
 
-interface Props {
-    label: string;
-    value: string;
-    route: string;
+export enum SettingsListItemType {
+    NoRoute,
+    Route,
 }
 
-export const SettingsListItem: FC<Props> = ({ label, value, route }) => {
+interface Props {
+    label: string;
+    route: string;
+    value: string;
+}
+
+export const SettingsListItem: FC<Props> = (props) => {
     const navigate = useNavigate();
 
+    const onNavigate = () => {
+        navigate(props.route);
+    };
+
     return (
-        <Flex justifyContent="space-between" alignItems="center" onClick={() => navigate(route)}>
-            <Text>{label}</Text>
+        <Flex justifyContent="space-between" alignItems="center" onClick={onNavigate}>
+            <Text>{props.label}</Text>
             <Flex alignItems="center">
                 <Text opacity="0.6" pr="2">
-                    {value}
+                    {props.value}
                 </Text>
                 <RightIcon fontSize="22px" />
             </Flex>

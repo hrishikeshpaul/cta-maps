@@ -37,7 +37,7 @@ export const Saved: FunctionComponent = () => {
     };
 
     return (
-        <BasePage title={t('SAVED')}>
+        <BasePage title="SAVED">
             <Tabs isFitted my="4" mt="-4">
                 <TabList mx="4">
                     <Tab fontWeight="600">{t('STOPS')}</Tab>

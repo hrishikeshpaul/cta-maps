@@ -18,7 +18,7 @@ export const GeneralLanguage: FC = () => {
     };
 
     return (
-        <BasePage constantPadding title="" header={<SettingsHeader title={t('LANGUAGE')} />} px="4">
+        <BasePage constantPadding header={<SettingsHeader title="LANGUAGE" />} px="4">
             <Flex justifyContent="space-between" alignItems="center" mt="2">
                 <RadioGroup onChange={onLocaleChange} value={settings.locale}>
                     <Stack>

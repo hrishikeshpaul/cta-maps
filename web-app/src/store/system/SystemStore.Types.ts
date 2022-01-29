@@ -17,6 +17,11 @@ export enum BusIconType {
     Teardrop = 'teardrop',
 }
 
+export enum SettingsMode {
+    On = 'On',
+    Off = 'Off',
+}
+
 export interface Setting {
     colorMode: ColorMode;
     locale: Locale;
