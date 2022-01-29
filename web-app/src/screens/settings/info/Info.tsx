@@ -16,25 +16,21 @@ import {
     useColorModeValue,
     Badge,
     useToast,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { useSystemStore } from 'store/system/SystemStore';
 import { getVersion } from 'store/system/SystemService';
-import { CloseIcon, RightIcon, MenuIcon, SettingsIcon } from 'utils/Icons';
+import { CloseIcon, RightIcon, MenuIcon } from 'utils/Icons';
 
-import 'info/Info.scss';
+import './Info.scss';
 
-interface Props {
-    disableAvatarShadow?: boolean;
-}
-
-export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) => {
+export const Info: FunctionComponent = () => {
     const { t } = useTranslation('common');
     const [version, setVersion] = useState<string>('');
     const toast = useToast();
     const borderBottom = useColorModeValue('#ececec', '#4A5568');
-    const buttonBg = useColorModeValue('white', 'gray.600');
+    const { isOpen, onClose, onOpen } = useDisclosure();
 
     const onContribute = () => {
         window.open('https://github.com/hrishikeshpaul/cta-maps/', '_blank');
@@ -84,41 +80,31 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
 
     return (
         <>
-            {/* <IconButton
+            <IconButton
                 aria-label="menu-icon"
                 icon={<MenuIcon />}
                 variant="ghost"
-                bg={buttonBg}
-                onClick={openInfoDrawer}
-                fontSize={disableAvatarShadow ? 'xl' : 'md'}
-                boxShadow={disableAvatarShadow ? 'none' : 'lg'}
+                // bg={buttonBg}
+                onClick={onOpen}
+                fontSize="xl"
             />
-            <Drawer isOpen={infoOpen} placement="left" size="md" onClose={closeInfoDrawer} autoFocus={false}>
-                <DrawerOverlay onClick={closeInfoDrawer} />
+            <Drawer isOpen={isOpen} placement="right" size="md" onClose={onClose} autoFocus={false}>
+                <DrawerOverlay onClick={onClose} />
                 <DrawerContent>
                     <DrawerHeader px="4">
                         <Flex justifyContent="space-between" alignItems="center">
                             <Text fontWeight="bold" fontSize="2xl">
                                 trackCTA
                             </Text>
-                            <Flex>
-                                <IconButton
-                                    variant="ghost"
-                                    fontSize="xl"
-                                    aria-label="close"
-                                    mr="1"
-                                    onClick={openSettings}
-                                    icon={<SettingsIcon />}
-                                />
-                                <IconButton
-                                    variant="ghost"
-                                    fontSize="3xl"
-                                    aria-label="close"
-                                    mr="-3"
-                                    onClick={closeInfoDrawer}
-                                    icon={<CloseIcon />}
-                                />
-                            </Flex>
+
+                            <IconButton
+                                variant="ghost"
+                                fontSize="3xl"
+                                aria-label="close"
+                                mr="-3"
+                                onClick={onClose}
+                                icon={<CloseIcon />}
+                            />
                         </Flex>
                     </DrawerHeader>
 
@@ -181,7 +167,7 @@ export const Info: FunctionComponent<Props> = ({ disableAvatarShadow = false }) 
                         </Text>
                     </DrawerFooter>
                 </DrawerContent>
-            </Drawer> */}
+            </Drawer>
         </>
     );
 };

@@ -4,6 +4,7 @@ import { Box, Text, Stack, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
+import { Info } from 'screens/settings/info/Info';
 import { SettingsListItem } from 'screens/settings/settings-list-item/SettingsListItem';
 import { useSystemStore } from 'store/system/SystemStore';
 import { SettingsMode } from 'store/system/SystemStore.Types';
@@ -68,8 +69,26 @@ export const SettingsView: FunctionComponent = () => {
         [colorMode, locale, showActiveRoutes, t],
     );
 
+    // const infoPages = useMemo(
+    //     () => [
+    //         {
+    //             label: 'ABOUT',
+    //         },
+    //         {
+    //             label: 'FAQ',
+    //         },
+    //         {
+    //             label: 'CONTACT',
+    //         },
+    //         {
+    //             label: 'SHARE',
+    //         },
+    //     ],
+    //     [],
+    // );
+
     return (
-        <BasePage title="SETTINGS">
+        <BasePage title="SETTINGS" headerIcon={<Info />}>
             <Stack spacing={8}>
                 {settingItems.map((sItem) => (
                     <Box key={sItem.header}>
