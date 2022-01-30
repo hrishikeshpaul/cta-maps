@@ -1,8 +1,15 @@
 'use strict';
 
 const Stop = require('../models/stops');
+const Db = require('../utils/db');
 const Logger = require('../utils/logger');
 
+/**
+ *
+ * @param {Array} allStops
+ * @param {Array} trainStops
+ * @param {Db} db
+ */
 const insertStops = async (allStops, trainStops, db) => {
     const logger = new Logger('insertStops');
     const busStops = [];
@@ -58,7 +65,10 @@ const insertStops = async (allStops, trainStops, db) => {
             }
         });
 
-        await Stop.collection.insertMany([...busStops, ...dbTrainStops]);
+        const stopsPayload = [...busStops, ...dbTrainStops];
+        
+        db.watchCollection('stops', stopsPayload.length);
+        await Stop.collection.insertMany(stopsPayload);
 
         logger.success();
     } catch (err) {

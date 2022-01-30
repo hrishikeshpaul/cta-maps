@@ -24,8 +24,9 @@ const insertTrips = async (tripData, db) => {
                 scheduleTripId: trip.schd_trip_id || 'N/A',
             });
         });
-
-        await Trip.insertMany([...trips]);
+        
+        db.watchCollection('trips', trips.length);
+        await Trip.insertMany(trips);
 
         logger.success();
     } catch (err) {

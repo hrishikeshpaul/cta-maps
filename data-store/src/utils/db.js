@@ -1,24 +1,72 @@
 'use strict';
 
+const cliProgress = require('cli-progress');
 const mongoose = require('mongoose');
 
 const Logger = require('./logger');
 
+const multiBar = new cliProgress.MultiBar(
+    {
+        clearOnComplete: false,
+        hideCursor: true,
+        format: '{bar} | {name} | {value}/{total} ({percentage}%) ',
+    },
+    cliProgress.Presets.shades_grey,
+);
+
 class Db {
-    constructor() {
+    constructor(processes) {
+        this.client = {};
         this.connection = {};
+        this.processes = processes.reduce(
+            (acc, item) => ({
+                ...acc,
+                [item]: {
+                    complete: false,
+                    progress: null,
+                },
+            }),
+            {},
+        );
+
+        console.log(this.processes);
     }
 
     async init() {
         try {
-            const conn = await mongoose.connect(process.env.DATABASE_URL);
+            this.client = await mongoose.connect(process.env.DATABASE_URL);
 
             console.log('>>> MongoAtlas connected...');
 
-            this.connection = conn.connection;
+            this.connection = this.client.connection;
         } catch (err) {
             throw err;
         }
+    }
+
+    closeConnection() {
+        if (Object.values(this.processes).every((p) => p.complete === true)) {
+            multiBar.stop();
+            process.exit();
+        }
+    }
+
+    watchCollection(name, total) {
+        this.processes[name].progress = multiBar.create(total, 0, {
+            name,
+        });
+
+        this.connection
+            .collection(name)
+            .watch()
+            .on('change', () => {
+                this.processes[name].progress.increment();
+
+                if (count === total) {
+                    this.processes[name].complete = true;
+                    this.closeConnection();
+                }
+            });
     }
 
     async dropCollection(collectionName) {
@@ -39,6 +87,5 @@ class Db {
         });
     }
 }
-
 
 module.exports = Db;

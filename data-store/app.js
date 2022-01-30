@@ -1,7 +1,6 @@
 'use strict';
 
 require('dotenv').config();
-const { exit } = require('process');
 
 const Db = require('./src/utils/db');
 const { insertStops } = require('./src/services/stops-service');
@@ -27,11 +26,11 @@ const Functions = {
 };
 
 const start = async () => {
-    const db = new Db();
-    await db.init();
-
     const args = process.argv.slice(2);
     const promises = [];
+
+    const db = new Db(args);
+    await db.init();
 
     if (args.length) {
         args.forEach((arg) => {
@@ -48,7 +47,6 @@ const start = async () => {
     }
 
     await Promise.all(promises);
-    exit();
 };
 
 start();

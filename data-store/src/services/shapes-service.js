@@ -4,11 +4,12 @@ const Shape = require('../models/shapes');
 const Logger = require('../utils/logger');
 
 const insertShapes = async (shapesData, db) => {
+    const collectionName = 'shapes';
     const logger = new Logger('insertShapes');
     logger.begin();
 
     try {
-        await db.dropCollection('shapes');
+        await db.dropCollection(collectionName);
 
         const groupByShapeId = shapesData.reduce((acc, shape) => {
             if (!acc[shape.shape_id]) {
@@ -28,7 +29,9 @@ const insertShapes = async (shapesData, db) => {
             return acc;
         }, {});
 
-        const shapes = Object.values(groupByShapeId).map((shape) => shape);
+        const shapes = Object.values(groupByShapeId);
+
+        db.watchCollection(collectionName, shapes.length);
 
         await Shape.insertMany(shapes);
 

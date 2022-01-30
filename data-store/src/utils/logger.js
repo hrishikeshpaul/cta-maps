@@ -10,11 +10,11 @@ class Logger {
     }
 
     success() {
-        console.log(`>>> SUCCESS ${this.msg}`);
+        // console.log(`>>> SUCCESS ${this.msg}`);
     }
 
     fail() {
-        console.log(`>>> FAIL ${this.msg}`);
+        // console.log(`>>> FAIL ${this.msg}`);
     }
 }
 
