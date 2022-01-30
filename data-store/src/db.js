@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const Stop = require('./schema');
+const Stop = require('./schemas/stops');
 
 const initializeDatabase = async () => {
     try {
