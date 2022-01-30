@@ -1,11 +1,13 @@
 import { FunctionComponent, useState } from 'react';
 
-import { useColorMode, Center, Spinner, Box } from '@chakra-ui/react';
+import { Center, Spinner, Box, IconButton, useColorModeValue, Container } from '@chakra-ui/react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 import { darkStyle, lightStyle } from 'shared/map/Map.Styles';
 import { Point } from 'store/data/DataStore.Types';
 import { ColorMode } from 'store/system/SystemStore.Types';
+import { MyLocationIcon } from 'utils/Icons';
+import { useSystemStore } from 'store/system/SystemStore';
 
 const containerStyle = {
     width: '100%',
@@ -48,7 +50,13 @@ export const Map: FunctionComponent<Props> = ({
     onZoomChanged,
     children,
 }) => {
-    const { colorMode } = useColorMode();
+    const [
+        {
+            settings: { colorMode },
+        },
+        { onLocationButtonPress },
+    ] = useSystemStore();
+    const buttonBg = useColorModeValue('white', 'gray.600');
 
     const mapOptions = {
         disableDefaultUI: true,
@@ -71,6 +79,18 @@ export const Map: FunctionComponent<Props> = ({
             >
                 {children}
             </GoogleMap>
+            <Container maxW="container.sm" position="relative">
+                <IconButton
+                    aria-label="my-location"
+                    icon={<MyLocationIcon />}
+                    bg={buttonBg}
+                    boxShadow="lg"
+                    position="absolute"
+                    bottom="8px"
+                    right="8px"
+                    onClick={() => onLocationButtonPress(true)}
+                />
+            </Container>
         </Box>
     );
 };

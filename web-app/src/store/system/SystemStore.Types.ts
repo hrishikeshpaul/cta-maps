@@ -17,6 +17,11 @@ export enum BusIconType {
     Teardrop = 'teardrop',
 }
 
+export enum SettingsMode {
+    On = 'on',
+    Off = 'off',
+}
+
 export interface Setting {
     colorMode: ColorMode;
     locale: Locale;
@@ -38,13 +43,8 @@ export interface AppStatus {
 
 export interface SystemStoreState {
     inspectorOpen: boolean;
-    favoritesOpen: boolean;
     onCurrentLocationPress: boolean;
     systemLoading: boolean;
-    routeSelectOpen: boolean;
-    infoOpen: boolean;
-    settingsOpen: boolean;
-    idleAlertOpen: boolean;
     dragging: boolean;
     routesLoading: boolean;
     patternLoading: boolean;

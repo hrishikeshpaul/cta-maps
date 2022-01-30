@@ -52,7 +52,7 @@ const BottomSheetWrapper: FunctionComponent<Props> = ({ isOpen, onClose, zIndex,
                     borderTopRightRadius="2xl"
                     borderTopLeftRadius="2xl"
                     boxShadow="2xl"
-                    maxW="container.lg"
+                    maxW="container.sm"
                     px={{ base: '0', md: '2' }}
                 >
                     {children}

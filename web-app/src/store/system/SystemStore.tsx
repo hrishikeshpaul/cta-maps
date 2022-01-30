@@ -13,7 +13,6 @@ import {
 } from 'store/system/SystemStore.Types';
 
 export enum SystemStoreActionType {
-    SetRouteSelectDrawer,
     SetDragging,
     SetPatternLoading,
     SetInfoDrawer,
@@ -53,10 +52,6 @@ interface PayloadToggleLocationButtonPress {
 
 interface PayloadSetRoutesLoading {
     loading: boolean;
-}
-
-interface PayloadSetRouteSelectDrawer {
-    open: boolean;
 }
 
 interface PayloadSetDragging {
@@ -99,7 +94,6 @@ interface SystemStoreAction {
     type: SystemStoreActionType;
     payload?:
         | PayloadSetDragging
-        | PayloadSetRouteSelectDrawer
         | PayloadPatternLoading
         | PayloadSetInfoDrawer
         | PayloadSetSettingsDrawer
@@ -121,15 +115,10 @@ interface SystemStoreProviderProps {
 
 export const initialStoreState: SystemStoreState = {
     inspectorOpen: false,
-    favoritesOpen: false,
     systemLoading: true,
-    routeSelectOpen: false,
-    idleAlertOpen: false,
     dragging: false,
     routesLoading: false,
     patternLoading: false,
-    infoOpen: false,
-    settingsOpen: false,
     onCurrentLocationPress: false,
     settings: {
         colorMode: (localStorage.getItem(ColorModeKey) as ColorMode) || ColorMode.Light,
@@ -150,24 +139,12 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 ...state,
                 routesLoading: (action.payload as PayloadSetRoutesLoading).loading,
             };
-        case SystemStoreActionType.SetRouteSelectDrawer:
-            return { ...state, routeSelectOpen: (action.payload as PayloadSetRouteSelectDrawer).open };
         case SystemStoreActionType.SetDragging:
             return { ...state, dragging: (action.payload as PayloadSetDragging).dragging };
         case SystemStoreActionType.SetPatternLoading:
             return {
                 ...state,
                 patternLoading: (action.payload as PayloadPatternLoading).loading,
-            };
-        case SystemStoreActionType.SetInfoDrawer:
-            return {
-                ...state,
-                infoOpen: (action.payload as PayloadSetInfoDrawer).open,
-            };
-        case SystemStoreActionType.SetSettingsDrawer:
-            return {
-                ...state,
-                settingsOpen: (action.payload as PayloadSetSettingsDrawer).open,
             };
         case SystemStoreActionType.SetColorMode:
             return {
@@ -185,11 +162,6 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                     locale: (action.payload as PayloadSetLocale).locale,
                 },
             };
-        case SystemStoreActionType.SetIdleAlert:
-            return {
-                ...state,
-                idleAlertOpen: (action.payload as PayloadSetIdleAlert).open,
-            };
         case SystemStoreActionType.SetSystemLoading:
             return {
                 ...state,
@@ -204,12 +176,6 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
             return {
                 ...state,
                 onCurrentLocationPress: (action.payload as PayloadToggleLocationButtonPress).value,
-            };
-        }
-        case SystemStoreActionType.SetFavoritesDrawer: {
-            return {
-                ...state,
-                favoritesOpen: (action.payload as PayloadSetFavoritesDrawer).open,
             };
         }
         case SystemStoreActionType.SetInspectorDrawer: {
@@ -267,22 +233,12 @@ export const useSystemStoreDispatch = (): Dispatch<SystemStoreAction> => {
 };
 
 interface SystemStoreActionApis {
-    openRouteSelect: () => void;
-    closeRouteSelect: () => void;
     setDragging: (value: boolean) => void;
-    openInfoDrawer: () => void;
-    closeInfoDrawer: () => void;
-    openSettings: () => void;
-    closeSettings: () => void;
     setColorMode: (mode: ColorMode) => void;
     setLocale: (locale: Locale) => void;
-    openIdleAlert: () => void;
-    closeIdleAlert: () => void;
     setSystemLoading: (loading: boolean) => void;
     setAllowLocation: (allow: boolean) => void;
     onLocationButtonPress: (value: boolean) => void;
-    openFavorites: () => void;
-    closeFavorites: () => void;
     openInspector: () => void;
     closeInspector: () => void;
     setShowActiveRoutes: (show: boolean) => void;
@@ -293,39 +249,16 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
     const dispatch = useSystemStoreDispatch();
 
     const actionApis: SystemStoreActionApis = {
-        openRouteSelect: () => {
-            dispatch({ type: SystemStoreActionType.SetRouteSelectDrawer, payload: { open: true } });
-        },
-        closeRouteSelect: async () => {
-            dispatch({ type: SystemStoreActionType.SetRouteSelectDrawer, payload: { open: false } });
-        },
-        openInfoDrawer: () => {
-            dispatch({ type: SystemStoreActionType.SetInfoDrawer, payload: { open: true } });
-        },
-        closeInfoDrawer: async () => {
-            dispatch({ type: SystemStoreActionType.SetInfoDrawer, payload: { open: false } });
-        },
         setDragging: (dragging: boolean) => {
             dispatch({ type: SystemStoreActionType.SetDragging, payload: { dragging } });
         },
-        openSettings: () => {
-            dispatch({ type: SystemStoreActionType.SetSettingsDrawer, payload: { open: true } });
-        },
-        closeSettings: () => {
-            dispatch({ type: SystemStoreActionType.SetSettingsDrawer, payload: { open: false } });
-        },
+
         setColorMode: (mode: ColorMode) => {
             dispatch({ type: SystemStoreActionType.SetColorMode, payload: { mode } });
         },
         setLocale: (locale: Locale) => {
             localStorage.setItem(LocaleKey, locale);
             dispatch({ type: SystemStoreActionType.SetLocale, payload: { locale } });
-        },
-        openIdleAlert: () => {
-            dispatch({ type: SystemStoreActionType.SetIdleAlert, payload: { open: true } });
-        },
-        closeIdleAlert: () => {
-            dispatch({ type: SystemStoreActionType.SetIdleAlert, payload: { open: false } });
         },
         setSystemLoading: (loading: boolean) => {
             dispatch({ type: SystemStoreActionType.SetSystemLoading, payload: { loading } });
@@ -336,12 +269,6 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         },
         onLocationButtonPress: (value: boolean) => {
             dispatch({ type: SystemStoreActionType.ToggleLocationButtonPress, payload: { value } });
-        },
-        openFavorites: () => {
-            dispatch({ type: SystemStoreActionType.SetFavoritesDrawer, payload: { open: true } });
-        },
-        closeFavorites: () => {
-            dispatch({ type: SystemStoreActionType.SetFavoritesDrawer, payload: { open: false } });
         },
         openInspector: () => {
             dispatch({ type: SystemStoreActionType.SetInspectorDrawer, payload: { open: true } });

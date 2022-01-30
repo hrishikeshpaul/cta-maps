@@ -10,10 +10,9 @@ import { DownIcon, HeartFillIcon, HeartIcon } from 'utils/Icons';
 
 interface Props {
     data: Route;
-    onGetData: () => void;
 }
 
-export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color }, onGetData }) => {
+export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color } }) => {
     const [{ favoriteRoutes }, { saveRoute, unSaveRoute }] = useDataStore();
     const [{ inspectorOpen }, { closeInspector }] = useSystemStore();
     const [isFav, setIsFav] = useState<boolean>(false);

@@ -21,6 +21,7 @@ import {
     Vehicle,
     FavoriteStopsKey,
     FavoriteRoutesKey,
+    SearchHistoryKey,
 } from 'store/data/DataStore.Types';
 import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
@@ -33,8 +34,13 @@ export enum DataStoreActionType {
     SetVehicles,
     SetFavoriteStops,
     SetFavoriteRoutes,
+    SetSearchHistory,
     RemoveRoute,
     RemoveAllRoutes,
+}
+
+interface PayloadSetSearchHistory {
+    history: Array<string>;
 }
 
 interface PayloadSetVehicle {
@@ -84,7 +90,8 @@ interface DataStoreAction {
         | PayloadSetVehicles
         | PayloadSetFavoriteStops
         | PayloadSetFavoriteRoutes
-        | PayloadSetVehicle;
+        | PayloadSetVehicle
+        | PayloadSetSearchHistory;
 }
 
 interface DataStoreProviderProps {
@@ -101,6 +108,7 @@ export const initialStoreState: DataStoreState = {
     vehicles: [],
     favoriteStops: JSON.parse(localStorage.getItem(FavoriteStopsKey) || '{}'),
     favoriteRoutes: JSON.parse(localStorage.getItem(FavoriteRoutesKey) || '{}'),
+    searchHistory: [],
 };
 
 const DataStoreStateContext = createContext<DataStoreState | undefined>(undefined);
@@ -172,6 +180,11 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
                 ...state,
                 vehicle: (action.payload as PayloadSetVehicle).vehicle,
             };
+        case DataStoreActionType.SetSearchHistory:
+            return {
+                ...state,
+                searchHistory: (action.payload as PayloadSetSearchHistory).history,
+            };
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -225,6 +238,9 @@ interface DataStoreActionApis {
     unSaveRoute: (id: string) => void;
     openVehicle: (vehicle: Vehicle) => void;
     closeVehicle: () => void;
+    setSearchHistoryArray: () => void;
+    setSearchHistoryItem: (item: string) => void;
+    removeSearchHistoryItem: (item: string) => void;
 }
 
 export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
@@ -322,6 +338,36 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         closeVehicle: () => {
             dispatch({ type: DataStoreActionType.SetVehicle, payload: { vehicle: null } });
+        },
+        setSearchHistoryArray: () => {
+            const history = JSON.parse(localStorage.getItem(SearchHistoryKey) || '[]');
+            dispatch({ type: DataStoreActionType.SetSearchHistory, payload: { history } });
+        },
+        setSearchHistoryItem: (item: string) => {
+            const history: Array<string> = JSON.parse(localStorage.getItem(SearchHistoryKey) || '[]');
+            const itemIdx = history.findIndex((i) => i === item);
+
+            if (itemIdx !== -1) {
+                history.splice(itemIdx, 1);
+            }
+
+            if (history.length >= 5) {
+                history.pop();
+            }
+
+            history.unshift(item);
+            localStorage.setItem(SearchHistoryKey, JSON.stringify(history));
+            dispatch({ type: DataStoreActionType.SetSearchHistory, payload: { history } });
+        },
+        removeSearchHistoryItem: (item: string) => {
+            const history: Array<string> = JSON.parse(localStorage.getItem(SearchHistoryKey) || '[]');
+            const itemIdx = history.findIndex((i) => i === item);
+
+            if (itemIdx !== -1) {
+                history.splice(itemIdx, 1);
+            }
+            localStorage.setItem(SearchHistoryKey, JSON.stringify(history));
+            dispatch({ type: DataStoreActionType.SetSearchHistory, payload: { history } });
         },
     };
 

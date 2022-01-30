@@ -1,63 +1,81 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'react';
 
-import { Box, Container, Flex, Button, useColorModeValue, Text, Avatar, Divider, HStack, Link } from '@chakra-ui/react';
+import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+
+import { NAVBAR_HEIGHT } from './Constants';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-
-import { Info } from 'info/Info';
-import { ArrowRightIcon } from 'utils/Icons';
 
 interface Props {
+    header?: JSX.Element;
+    headerIcon?: JSX.Element;
+    constantPadding?: boolean;
+    handleScroll?: (e: UIEvent<HTMLDivElement>) => void;
+    px?: string;
+    title?: string;
     children: ReactNode;
 }
 
-export const BasePage: FunctionComponent<Props> = ({ children }) => {
+export const BasePage: FunctionComponent<Props> = ({
+    children,
+    title,
+    headerIcon,
+    header,
+    constantPadding,
+    px = '0',
+}) => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
+    const bg = useColorModeValue('white', 'gray.800');
+    const [scroll, setScroll] = useState<number>(0);
+    const [headerSize, setHeaderSize] = useState<number>(36);
+
+    useEffect(() => {
+        document.addEventListener('scroll', () => {
+            const scrolled = document.scrollingElement?.scrollTop;
+            if (scrolled) {
+                setScroll(scrolled);
+
+                if (scrolled > 20) {
+                    setHeaderSize(16);
+                } else {
+                    setHeaderSize(36);
+                }
+            }
+        });
+    }, []);
 
     return (
-        <Container maxW="container.lg" p="0">
+        <Container maxW="container.sm" p="0" pt={NAVBAR_HEIGHT} position="relative">
             <Flex
-                zIndex={100}
-                position="sticky"
-                top="0"
+                className="nav-bar"
+                top={NAVBAR_HEIGHT}
+                maxW="inherit"
+                w="100%"
                 justifyContent="space-between"
                 alignItems="center"
-                mb="6"
-                p="4"
-                backgroundColor={useColorModeValue('white', 'gray.800')}
+                px="4"
+                py={constantPadding ? '2' : scroll > 20 ? '2' : '6'}
+                position="fixed"
+                bg={scroll > 20 ? bg : 'transparent'}
+                left="50%"
+                transform="translate(-50%)"
+                zIndex={100}
+                transition="all 0.25s ease-in-out"
+                boxShadow={scroll > 20 ? 'sm' : 'none'}
             >
-                <HStack alignItems="center" spacing={8} display={{ base: 'none', md: 'flex' }}>
-                    <Avatar src="/logo.svg" h="40px" w="40px" ignoreFallback />
-                    <Link fontWeight="bold" pl="4">
-                        Usage
-                    </Link>
-                    <Link fontWeight="bold">Contact</Link>
-                    <Link fontWeight="bold">Legal</Link>
-                    <Link fontWeight="bold">Settings</Link>
-                </HStack>
-
-                <Box display={{ base: 'block', md: 'none' }}>
-                    <Info disableAvatarShadow />
-                </Box>
-
-                <Button colorScheme="blue" rightIcon={<ArrowRightIcon />} onClick={() => navigate('/')}>
-                    {t('START_TRACKING')}
-                </Button>
+                {header ? (
+                    <>{header}</>
+                ) : (
+                    <>
+                        <Text fontWeight="bold" fontSize={`${headerSize}px`} transition="all 0.25s ease-in-out">
+                            {title && t(title)}
+                        </Text>
+                        {headerIcon}
+                    </>
+                )}
             </Flex>
-            <Container maxW="container.lg">{children}</Container>
-            <Divider mt="12" />
-            <Flex justifyContent="space-between" alignItems="center" p="4" flexDir={{ base: 'column', md: 'row' }}>
-                <Flex alignItems="center">
-                    <Avatar src="/logo.svg" size="sm" ignoreFallback />
-                    <Text pl="2" fontWeight={800}>
-                        trackCTA
-                    </Text>
-                </Flex>
-                <Text fontSize="xs" pt={{ base: '4', md: '0' }}>
-                    © {new Date().getFullYear()} trackCTA. All rights reserved.
-                </Text>
-            </Flex>
+            <Box pt={constantPadding ? '72px' : '96px'} px={px}>
+                {children}
+            </Box>
         </Container>
     );
 };

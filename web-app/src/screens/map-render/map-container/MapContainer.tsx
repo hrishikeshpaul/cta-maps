@@ -9,9 +9,9 @@ import { Map } from 'shared/map/Map';
 import { useDataStore } from 'store/data/DataStore';
 import { Point, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
-import { BusIconType } from 'store/system/SystemStore.Types';
+import { BusIconType, ColorMode } from 'store/system/SystemStore.Types';
 
-import 'map-container/MapContainer.scss';
+import './MapContainer.scss';
 
 const defaultZoom = 13;
 
@@ -35,7 +35,10 @@ export const MapContainer: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ settings, onCurrentLocationPress }, { setDragging, setAllowLocation, onLocationButtonPress }] =
         useSystemStore();
-    const [{ currentLocation, patterns, vehicles }, { openStop, openVehicle, setCurrentLocation }] = useDataStore();
+    const [
+        { routes: currentRoutes, currentLocation, patterns, vehicles },
+        { openStop, openVehicle, setCurrentLocation },
+    ] = useDataStore();
     const toast = useToast();
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lines, setLines] = useState<Line[]>([]);
@@ -97,7 +100,7 @@ export const MapContainer: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        if (settings.allowLocation) {
+        if (settings.allowLocation && !Object.keys(currentRoutes).length) {
             onGetCurrentLocation();
         }
 
@@ -189,7 +192,7 @@ export const MapContainer: FunctionComponent = () => {
                                 icon={{
                                     path: busIcon[settings.busIcon].path,
                                     strokeColor:
-                                        settings.colorMode === 'light'
+                                        settings.colorMode === ColorMode.Light
                                             ? tinycolor(vehicle.color).darken(20).toString()
                                             : tinycolor(vehicle.color).lighten(26).toString(),
                                     strokeWeight: 2,
