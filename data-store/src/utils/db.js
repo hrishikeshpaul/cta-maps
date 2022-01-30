@@ -52,6 +52,7 @@ class Db {
     }
 
     watchCollection(name, total) {
+        let count = 0;
         this.processes[name].progress = multiBar.create(total, 0, {
             name,
         });
@@ -61,7 +62,8 @@ class Db {
             .watch()
             .on('change', () => {
                 this.processes[name].progress.increment();
-
+                count += 1;
+                
                 if (count === total) {
                     this.processes[name].complete = true;
                     this.closeConnection();

@@ -30,7 +30,7 @@ const insertShapes = async (shapesData, db) => {
         }, {});
 
         const shapes = Object.values(groupByShapeId);
-
+        console.log(shapes.length);
         db.watchCollection(collectionName, shapes.length);
 
         await Shape.insertMany(shapes);

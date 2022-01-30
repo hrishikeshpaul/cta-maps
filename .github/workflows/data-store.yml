@@ -1,0 +1,32 @@
+name: Stops Builder
+
+on:
+  schedule:
+    - cron: "0 14 * * 1" # Every Monday at 2PM UTC (9am CST)
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        working-directory: ./data-store
+        run: npm install
+
+      - name: Insert into database
+        working-directory: ./data-store
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          chmod +x start.sh
+          ./start.sh
+
+          npm start
