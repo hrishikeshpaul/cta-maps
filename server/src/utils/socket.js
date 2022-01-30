@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const { socketLogger: log } = require('../utils/logger');
 
-const { getVehicles } = require('../tc-app/bus-service');
+const { getVehicles } = require('../tc-app/bus/bus-service');
 
 const TIMER = 3000; //ms
 

@@ -8,6 +8,9 @@ const { mapStatusToColor } = require('./logger');
 
 dotenv.config();
 
+const busResponseKey = 'bustime-response';
+const trainResponseKey = 'ctatt';
+
 class Http {
     constructor(baseURL, key) {
         this.http = axios.create({
@@ -25,7 +28,7 @@ class Http {
         });
     }
 
-    get_bus_http() {
+    assign_response_interceptor(key) {
         this.http.interceptors.response.use((response) => {
             const {
                 status,
@@ -39,7 +42,7 @@ class Http {
             } = response;
             const responseTime = new Date().getTime() - startTime;
             const formattedDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
-            const busResponse = data['bustime-response'];
+            const busResponse = data[key];
             const error = busResponse['error'];
 
             if (error) {
@@ -56,11 +59,23 @@ class Http {
 
             return { data: busResponse };
         });
+    }
 
+    get_bus_http() {
+        this.assign_response_interceptor(busResponseKey);
+        return this.http;
+    }
+
+    get_train_http() {
+        this.assign_response_interceptor(trainResponseKey);
         return this.http;
     }
 }
 
+const BusHttp = new Http(process.env.CTA_BASE_URL, process.env.CTA_KEY).get_bus_http();
+const TrainHttp = new Http(process.env.CTA_TRAIN_BASE_URL, process.env.CTA_TRAIN_KEY).get_train_http();
+
 module.exports = {
-    Http,
+    BusHttp,
+    TrainHttp
 };
