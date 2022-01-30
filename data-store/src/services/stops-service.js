@@ -1,33 +1,21 @@
 'use strict';
 
-const mongoose = require('mongoose');
+const { dropCollection } = require('../utils/db');
+const Stop = require('../models/stops');
+const Logger = require('../utils/logger');
 
-const Stop = require('./schemas/stops');
+const insertStops = async (allStops, trainStops, db) => {
+    const logger = new Logger('insertStops');
+    const busStops = [];
+    const dbTrainStops = [];
 
-const initializeDatabase = async () => {
     try {
-        const conn = await mongoose.connect(process.env.DATABASE_URL);
-
-        console.log('MongoAtlas connected...');
-
-        const collections = await conn.connection.db.listCollections().toArray();
-
-        if (collections.length) {
-            collections.forEach((collection) => {
-                conn.connection.dropCollection(collection.name, (err) => {
-                    if (err) console.log(err);
-                    else console.log(`Collection "${collection.name}" dropped...`);
-                });
-            });
-        }
+        await dropCollection('stops', db);
     } catch (err) {
         throw err;
     }
-};
 
-const insertStops = async (allStops, trainStops) => {
-    const busStops = [];
-    const dbTrainStops = [];
+    logger.begin();
 
     try {
         allStops.forEach((stop) => {
@@ -76,10 +64,12 @@ const insertStops = async (allStops, trainStops) => {
         });
 
         await Stop.collection.insertMany([...busStops, ...dbTrainStops]);
-        console.log('Bus stops inserted...');
+
+        logger.success();
     } catch (err) {
+        logger.fail();
         throw err;
     }
 };
 
-module.exports = { initializeDatabase, insertStops };
+module.exports = { insertStops };
