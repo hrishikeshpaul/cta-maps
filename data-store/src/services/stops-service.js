@@ -1,6 +1,5 @@
 'use strict';
 
-const { dropCollection } = require('../utils/db');
 const Stop = require('../models/stops');
 const Logger = require('../utils/logger');
 
@@ -9,15 +8,11 @@ const insertStops = async (allStops, trainStops, db) => {
     const busStops = [];
     const dbTrainStops = [];
 
-    try {
-        await dropCollection('stops', db);
-    } catch (err) {
-        throw err;
-    }
-
     logger.begin();
 
     try {
+        await db.dropCollection('stops');
+
         allStops.forEach((stop) => {
             const baseStop = {
                 id: stop.stop_id,

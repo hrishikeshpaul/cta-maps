@@ -18,7 +18,7 @@ const TripSchema = new Schema({
         type: String,
         required: true,
     },
-    tripId: {
+    scheduleTripId: {
         type: String,
         required: true,
     },
@@ -36,61 +36,11 @@ const TripSchema = new Schema({
     },
     direction: {
         type: String,
-        enum: ['North', 'South', 'East', 'West'],
+        enum: ['North', 'South', 'East', 'West', '0', '1'],
     },
     wheelchairBoarding: {
         type: String,
     },
-    type: {
-        type: String,
-        enum: ['B', 'T'],
-        required: true,
-    },
-    childStops: {
-        type: [Object],
-    },
-    ada: {
-        type: Boolean,
-        default: false,
-    },
-    red: {
-        type: Boolean,
-        default: false,
-    },
-    blue: {
-        type: Boolean,
-        default: false,
-    },
-    green: {
-        type: Boolean,
-        default: false,
-    },
-    brown: {
-        type: Boolean,
-        default: false,
-    },
-    purple: {
-        type: Boolean,
-        default: false,
-    },
-    pexp: {
-        type: Boolean,
-        default: false,
-    },
-    yellow: {
-        type: Boolean,
-        default: false,
-    },
-    pink: {
-        type: Boolean,
-        default: false,
-    },
-    orange: {
-        type: Boolean,
-        default: false,
-    },
 });
-
-TripSchema.index({ location: '2dsphere' });
 
 module.exports = mongoose.model('Trip', TripSchema, 'trips');

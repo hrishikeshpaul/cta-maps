@@ -6,7 +6,7 @@ class Logger {
     }
 
     begin() {
-        console.log(`\n>>> BEGIN ${this.msg}`);
+        console.log(`>>> BEGIN ${this.msg}`);
     }
 
     success() {

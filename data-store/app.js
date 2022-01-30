@@ -3,7 +3,7 @@
 require('dotenv').config();
 const { exit } = require('process');
 
-const { initializeDatabase } = require('./src/utils/db');
+const Db = require('./src/utils/db');
 const { insertStops } = require('./src/services/stops-service');
 const { insertTrips } = require('./src/services/trips-service');
 const { readStopsFile, readTripsFile, readShapesFile } = require('./src/services/file-service');
@@ -22,7 +22,8 @@ const Functions = {
 };
 
 const start = async () => {
-    const db = await initializeDatabase();
+    const db = new Db();
+    await db.init();
 
     const args = process.argv.slice(2);
     const promises = [];
