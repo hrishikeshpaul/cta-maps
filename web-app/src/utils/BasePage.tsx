@@ -26,14 +26,19 @@ export const BasePage: FunctionComponent<Props> = ({
     const { t } = useTranslation();
     const bg = useColorModeValue('white', 'gray.800');
     const [scroll, setScroll] = useState<number>(0);
-    const [headerSize, setHeaderSize] = useState<number>(1);
+    const [headerSize, setHeaderSize] = useState<number>(36);
 
     useEffect(() => {
         document.addEventListener('scroll', () => {
             const scrolled = document.scrollingElement?.scrollTop;
             if (scrolled) {
                 setScroll(scrolled);
-                setHeaderSize(Math.max(0.6, 1 - 0.005 * scrolled));
+
+                if (scrolled > 20) {
+                    setHeaderSize(16);
+                } else {
+                    setHeaderSize(36);
+                }
             }
         });
     }, []);
@@ -61,12 +66,7 @@ export const BasePage: FunctionComponent<Props> = ({
                     <>{header}</>
                 ) : (
                     <>
-                        <Text
-                            fontWeight="bold"
-                            fontSize="3xl"
-                            transform={`scale(${headerSize})`}
-                            transformOrigin="left"
-                        >
+                        <Text fontWeight="bold" fontSize={`${headerSize}px`} transition="all 0.25s ease-in-out">
                             {title && t(title)}
                         </Text>
                         {headerIcon}
