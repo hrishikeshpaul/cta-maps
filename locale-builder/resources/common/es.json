@@ -35,7 +35,7 @@
   "LOCATION": "Ubicación",
   "ALLOW_LOCATION": "Permitir ubicación",
   "NORTHBOUND": "Dirección norte",
-  "SOUTHBOUND": "hacia el sur",
+  "SOUTHBOUND": "Hacia el sur",
   "WESTBOUND": "Hacia el oeste",
   "EASTBOUND": "en dirección este",
   "SERVER_DISCONNECT": "Reconectando al servidor..",
@@ -62,5 +62,6 @@
   "MAP": "Mapa",
   "SEARCH": "Búsqueda",
   "SAVED": "Salvado",
-  "GENERAL": "General"
+  "GENERAL": "General",
+  "PREVIOUS_SEARCHES": "Búsquedas anteriores"
 }
