@@ -95,7 +95,7 @@ export const RouteQuery: FunctionComponent = () => {
                 <Box>
                     {searchHistory.length > 0 && (
                         <Text fontSize="sm" fontWeight="600" opacity="0.6" px="4">
-                            Previous Searches
+                            {t('PREVIOUS_SEARCHES')}
                         </Text>
                     )}
                     {searchHistory.map((history) => (

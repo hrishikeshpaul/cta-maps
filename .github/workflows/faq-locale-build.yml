@@ -3,7 +3,7 @@ name: Build FAQ Locales
 "on":
   push:
     paths:
-      - server/src/locales/faq_en.json
+      - server/src/tc-locale/locales/faq_en.json
     branches:
       - main
 jobs:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Translate using Node script
         run: |
-          cp server/src/locales/faq_en.json locale-builder/resources/faq/en.json
+          cp server/src/tc-locale/locales/faq_en.json locale-builder/resources/faq/en.json
           cd locale-builder
           node app.js faq
         env:
