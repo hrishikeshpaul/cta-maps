@@ -69,24 +69,6 @@ export const SettingsView: FunctionComponent = () => {
         [colorMode, locale, showActiveRoutes, t],
     );
 
-    // const infoPages = useMemo(
-    //     () => [
-    //         {
-    //             label: 'ABOUT',
-    //         },
-    //         {
-    //             label: 'FAQ',
-    //         },
-    //         {
-    //             label: 'CONTACT',
-    //         },
-    //         {
-    //             label: 'SHARE',
-    //         },
-    //     ],
-    //     [],
-    // );
-
     return (
         <BasePage title="SETTINGS" headerIcon={<Info />}>
             <Stack spacing={8}>
