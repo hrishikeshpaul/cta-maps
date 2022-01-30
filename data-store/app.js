@@ -6,6 +6,7 @@ const { exit } = require('process');
 const Db = require('./src/utils/db');
 const { insertStops } = require('./src/services/stops-service');
 const { insertTrips } = require('./src/services/trips-service');
+const { insertShapes } = require('./src/services/shapes-service');
 const { readStopsFile, readTripsFile, readShapesFile } = require('./src/services/file-service');
 
 const Arguments = ['stops', 'trips', 'shapes'];
@@ -18,6 +19,10 @@ const Functions = {
     trips: async (db) => {
         const { trips } = await readTripsFile();
         await insertTrips(trips, db);
+    },
+    shapes: async (db) => {
+        const { shapes } = await readShapesFile();
+        await insertShapes(shapes, db);
     },
 };
 
@@ -39,8 +44,7 @@ const start = async () => {
     } else {
         promises.push(Functions.stops(db));
         promises.push(Functions.trips(db));
-
-        // await FunctionMapper.shapes();
+        promises.push(Functions.shapes(db));
     }
 
     await Promise.all(promises);
