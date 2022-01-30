@@ -62,5 +62,6 @@
     "MAP": "Map",
     "SEARCH": "Search",
     "SAVED": "Saved",
-    "GENERAL": "General"
+    "GENERAL": "General",
+    "PREVIOUS_SEARCHES": "Previous Searches"
 }
