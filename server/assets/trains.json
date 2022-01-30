@@ -1,0 +1,116 @@
+[
+    {
+        "name": "Red Line (Howard-95th/Dan Ryan)",
+        "id": "red",
+        "routes": [
+            {
+                "direction": "1",
+                "destination": "Howard"
+            },
+            {
+                "direction": "5",
+                "destination": "95th/Dan Ryan"
+            }
+        ]
+    },
+    {
+        "name": "Blue Line (O'Hare-Forest Park)",
+        "id": "blue",
+        "routes": [
+            {
+                "direction": "1",
+                "destination": "O'Hare"
+            },
+            {
+                "direction": "5",
+                "destination": "Forest Park"
+            }
+        ]
+    },
+    {
+        "name": "Brown Line (Kimball-Loop)",
+        "id": "brwn",
+        "routes": [
+            {
+                "direction": "1",
+                "destination": "Kimball"
+            },
+            {
+                "direction": "5",
+                "destination": "Loop"
+            }
+        ]
+    },
+    {
+        "name": "Green Line (Harlem/Lake-Ashland/63rd-Cottage Grove)",
+        "id": "g",
+        "routes": [
+            {
+                
+                "direction": "1",
+                "destination": "Harlem/Lake"
+            },
+            {
+  
+                "direction": "5",
+                "destination": "Ashland/63rd-Cottage"
+            }
+        ]
+    },
+    {
+        "name": "Orange Line (Midway-Loop)",
+        "id": "org",
+        "routes": [
+            {
+                "direction": "1",
+                "destination": "Loop"
+            },
+            {
+                "direction": "5",
+                "destination": "Midway"
+            }
+        ]
+    },
+    {
+        "name": "Purple Line (Linden-Howard)",
+        "id": "p",
+        "routes": [
+            {
+                "direction": "1",
+                "destination": "Linden"
+            },
+            {
+                "direction": "5",
+                "destination": "Howard"
+            }
+        ]
+    },
+    {
+        "name": "Pink Line (54th/Cermak-Loop)",
+        "id": "pink",
+        "routes": [
+            {
+                "direction": "1",
+                "destination": "Loop"
+            },
+            {
+                "direction": "5",
+                "destination": "54th/Cermak"
+            }
+        ]
+    },
+    {
+        "name": "Yellow Line (Skokie-Howard)",
+        "id": "y",
+        "routes": [
+            {
+                "direction": "1",
+                "destination": "Skokie"
+            },
+            {
+                "direction": "5",
+                "destination": "Howard"
+            }
+        ]
+    }
+]
