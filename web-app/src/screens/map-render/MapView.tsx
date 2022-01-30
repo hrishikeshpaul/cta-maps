@@ -5,10 +5,9 @@ import { Box } from '@chakra-ui/react';
 import { MapContainer } from 'screens/map-render/map-container/MapContainer';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
-import { ActiveBar } from 'screens/map-render/active-bar/ActiveBar';
 
 export const MapRender: FunctionComponent = () => {
-    const [{ routes, favoriteRoutes }, { setRoute }] = useDataStore();
+    const [{ favoriteRoutes }, { setRoute }] = useDataStore();
     const [{ settings }] = useSystemStore();
 
     useEffect(() => {
@@ -21,7 +20,6 @@ export const MapRender: FunctionComponent = () => {
 
     return (
         <Box h="100%" position="relative">
-            {/* {Object.keys(routes).length ? <ActiveBar /> : <></>} */}
             <MapContainer />
         </Box>
     );
