@@ -5,26 +5,29 @@ const Logger = require('../utils/logger');
 
 const insertTrips = async (tripData, db) => {
     const logger = new Logger('insertTrips');
-    const trips = [];
     logger.begin();
 
     try {
         await db.dropCollection('trips');
 
-        tripData.forEach((trip) => {
-            trips.push({
-                id: trip.trip_id,
-                routeId: trip.route_id,
-                serviceId: trip.service_id || 'N/A',
-                directionId: trip.direction_id,
-                blockId: trip.block_id || 'N/A',
-                shapeId: trip.shape_id,
-                direction: trip.direction,
-                wheelchairBoarding: trip.wheelchair_accessible,
-                scheduleTripId: trip.schd_trip_id || 'N/A',
-            });
-        });
-        
+        const groupByRouteShape = tripData.reduce((acc, trip) => {
+            const routeShapeId = `${trip.route_id}-${trip.shape_id}`;
+            if (!acc[routeShapeId]) {
+                acc[routeShapeId] = {
+                    id: routeShapeId,
+                    tripId: trip.trip_id,
+                    shapeId: trip.shape_id,
+                    routeId: trip.route_id,
+                    directionId: trip.direction_id,
+                    direction: trip.direction,
+                    wheelchairBoarding: trip.wheelchair_accessible,
+                };
+            }
+
+            return acc;
+        }, {});
+
+        const trips = Object.values(groupByRouteShape);
         db.watchCollection('trips', trips.length);
         await Trip.insertMany(trips);
 
