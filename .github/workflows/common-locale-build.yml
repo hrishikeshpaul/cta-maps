@@ -25,7 +25,7 @@ jobs:
 
       - name: Translate using Node script
         run: |
-          cp server/src/locales/common_en.json locale-builder/resources/common/en.json
+          cp server/src/tc-locales/locales/common_en.json locale-builder/resources/common/en.json
           cd locale-builder
           node app.js common
         env:
