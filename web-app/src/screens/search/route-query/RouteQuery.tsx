@@ -93,9 +93,11 @@ export const RouteQuery: FunctionComponent = () => {
                 <RouteSelect routes={routes} query={query} getData={getRoutes} />
             ) : (
                 <Box>
-                    <Text fontSize="sm" fontWeight="600" opacity="0.6" px="4">
-                        Previous Searches
-                    </Text>
+                    {searchHistory.length > 0 && (
+                        <Text fontSize="sm" fontWeight="600" opacity="0.6" px="4">
+                            Previous Searches
+                        </Text>
+                    )}
                     {searchHistory.map((history) => (
                         <Flex key={history} w="100%" alignItems="center">
                             <Text w="100%" onClick={() => setQuery(history)} _active={{ bg }} _hover={{ bg }} p="4">
