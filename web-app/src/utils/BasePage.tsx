@@ -1,9 +1,9 @@
 import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'react';
 
 import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { NAVBAR_HEIGHT } from './Constants';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
     header?: JSX.Element;
