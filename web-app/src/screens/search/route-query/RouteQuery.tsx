@@ -22,7 +22,7 @@ export const RouteQuery: FunctionComponent = () => {
     const [query, setQuery] = useState<string>('');
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const debouncedQuery = useDebounce(query.trim());
-    const inputBg = useColorModeValue('gray.100', 'gray.700');
+    const inputBg = useColorModeValue('gray.50', 'gray.700');
     const inputPlaceholderColor = useColorModeValue('gray.400', 'gray.500');
     const bg = useColorModeValue('gray.100', 'gray.600');
 

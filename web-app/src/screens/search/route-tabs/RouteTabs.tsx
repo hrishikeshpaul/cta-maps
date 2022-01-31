@@ -66,8 +66,10 @@ export const Tabs: FC<RouteTabsProps> = ({ children, ...props }) => {
                 transform="translate(-50%)"
                 maxW="container.sm"
             >
-                {tabs.map((tab) => (
-                    <ChakraTab key={`tab-${tab.props.name}`}>{t(tab.props.name)}</ChakraTab>
+                {tabs.map(({ props: { name } }) => (
+                    <ChakraTab fontSize="sm" fontWeight="600" key={`tab-${name}`}>
+                        {t(name)}
+                    </ChakraTab>
                 ))}
             </TabList>
 

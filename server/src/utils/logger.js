@@ -48,7 +48,7 @@ const logger = async (req, res, next) => {
 
 const socketLogger = async (eventName, data) => {
     const formattedDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
-    log(`${chalk.blue(`${formattedDateTime}`)} SOCK ${chalk.yellow(eventName)} ${data || ''}`);
+    log(`${chalk.blue(`${formattedDateTime}`)} SOCK ${chalk.yellow(eventName)} ${JSON.stringify(data) || ''}`);
     fileLog(`${formattedDateTime} SOCK ${eventName} ${data || ''}`);
 };
 

@@ -20,6 +20,11 @@ const Events = {
     Error: 'error',
 };
 
+const TypeMapper = {
+    B: 'bus',
+    T: 'train',
+};
+
 class SocketConnection {
     constructor(socket) {
         this.routes = {
@@ -78,10 +83,10 @@ class SocketConnection {
         }
     }
 
-    remove(route) {
-        delete this.routes[route];
+    remove(route, type) {
+        if (this.routes[TypeMapper[type]][route]) delete this.routes[TypeMapper[type]][route];
 
-        if (Object.keys(this.routes).length === 0) {
+        if (Object.keys(this.routes.bus).length === 0 && Object.keys(this.routes.train).length === 0) {
             this.stop_timer();
         }
     }
@@ -124,9 +129,9 @@ const onRouteSelect = async (socket, route) => {
 };
 
 const onRouteDeselect = (socket, route) => {
-    log(Events.RouteRemove, route);
+    log(Events.RouteRemove, route.route);
 
-    connectedSockets[socket.id].remove(route);
+    connectedSockets[socket.id].remove(route.route, route.type);
 };
 
 const onDisconnect = (socket) => {
