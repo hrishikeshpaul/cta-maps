@@ -56,11 +56,14 @@ export const Tabs: FC<RouteTabsProps> = ({ children }) => {
         <ChakraTabs isFitted position="relative">
             <TabList
                 position="fixed"
-                top={!scrolled ? '144px' : '110px'}
+                top={!scrolled ? '140px' : '110px'}
                 w="100%"
                 zIndex={1}
                 backgroundColor={bg}
-                transition="all 0.25s ease-in-out"
+                transition="top 0.2s ease-in-out"
+                left="50%"
+                transform="translate(-50%)"
+                maxW="container.sm"
             >
                 {tabs.map((tab) => (
                     <ChakraTab key={`tab-${tab.props.name}`}>{t(tab.props.name)}</ChakraTab>

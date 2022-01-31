@@ -12,6 +12,7 @@ interface Props {
     constantPadding?: boolean;
     handleScroll?: (e: UIEvent<HTMLDivElement>) => void;
     px?: string;
+    pb?: string;
     title?: string;
     children: ReactNode;
 }
@@ -23,6 +24,7 @@ export const Screen: FunctionComponent<Props> = ({
     header,
     constantPadding,
     px = '0',
+    pb,
 }) => {
     const { t } = useTranslation();
     const bg = useColorModeValue('white', 'gray.800');
@@ -55,12 +57,14 @@ export const Screen: FunctionComponent<Props> = ({
                 alignItems="center"
                 px="4"
                 py={constantPadding ? '2' : scroll > SCROLL_THRESHOLD ? '2' : '6'}
+                pb={pb}
                 position="fixed"
                 bg={bg}
                 left="50%"
                 transform="translate(-50%)"
                 zIndex={100}
                 transition="all 0.25s ease-in-out"
+                boxShadow={scroll > SCROLL_THRESHOLD ? 'xs' : 'none'}
             >
                 {header ? (
                     <>{header}</>

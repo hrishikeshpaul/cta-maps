@@ -84,6 +84,7 @@ export const SearchView: FunctionComponent = () => {
     return (
         <Box>
             <Screen
+                pb="2"
                 title="SEARCH"
                 headerIcon={
                     <IconButton

@@ -1,3 +1,4 @@
+import { UIEvent } from 'react';
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
@@ -16,14 +17,13 @@ import { MapLoader } from 'shared/map/Map';
 import { Search } from 'screens/search/Search';
 import { Settings } from 'screens/settings/Settings';
 import { SocketModule } from 'utils/SocketModule';
-import { ScrollTop } from 'utils/ScrollTop';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
     const [, { onIdle, onActive }] = useDataStore();
-    const [{ systemLoading }] = useSystemStore();
+    const [{ systemLoading }, { setUIScrollTop }] = useSystemStore();
     const color = useColorModeValue('gray.700', 'gray.200');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
@@ -44,14 +44,20 @@ export const App = () => {
             {systemLoading ? (
                 <Landing />
             ) : (
-                <Box color={color} h="100%" w="100%" id="main">
+                <Box
+                    color={color}
+                    h="100%"
+                    w="100%"
+                    id="main"
+                    overflow="auto"
+                    onScroll={(e: UIEvent<HTMLElement>) => setUIScrollTop(e.currentTarget.scrollTop)}
+                >
                     <MapLoader>
                         <BrowserRouter>
                             <Nav />
                             <Stop />
                             <SocketModule />
                             <VehicleDrawer />
-                            <ScrollTop />
                             <Routes>
                                 <Route path="/" element={<MapRender />} />
                                 <Route path="/search/*" element={<Search />} />
