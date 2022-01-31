@@ -1,6 +1,6 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, IconButton } from '@chakra-ui/react';
+import { Box, IconButton, Tab, TabList, Tabs, useColorModeValue } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
@@ -8,7 +8,11 @@ import { RouteSelect } from 'screens/search/route-select/RouteSelect';
 import { useDataStore } from 'store/data/DataStore';
 import { SearchIcon } from 'utils/Icons';
 import { Screen } from 'shared/screen/Screen';
-import { RouteTabs } from '../route-tabs/RouteTabs';
+import { Inspector } from 'shared/inspector/Inspector';
+import { Route } from 'store/data/DataStore.Types';
+import { useTranslation } from 'react-i18next';
+import { useSystemStore } from 'store/system/SystemStore';
+import { SCROLL_THRESHOLD } from 'utils/Constants';
 
 const LIMIT = 16;
 
@@ -17,12 +21,30 @@ enum TabIndex {
     Train,
 }
 
-export const SearchView: FunctionComponent = () => {
+export const SearchViewR: FunctionComponent = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [{ routes: currentRoutes }, { getRoutes, getTrainRoutes }] = useDataStore();
+    const [
+        {
+            ui: { scrollTop },
+        },
+    ] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(0);
+    const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '', type: 'B' });
+
+    const [scrolled, setScrolled] = useState<boolean>(false);
+    const bg = useColorModeValue('white', 'gray.800');
+
+    useEffect(() => {
+        if (scrollTop > SCROLL_THRESHOLD) {
+            setScrolled(true);
+        } else {
+            setScrolled(false);
+        }
+    }, [scrollTop]);
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -93,6 +115,7 @@ export const SearchView: FunctionComponent = () => {
 
     return (
         <Box>
+            <Inspector data={inspectorData} />
             <Screen
                 pb="2"
                 title="SEARCH"
@@ -106,15 +129,33 @@ export const SearchView: FunctionComponent = () => {
                     />
                 }
             >
-                <RouteTabs.Tabs isLazy onChange={setIndex}>
-                    <RouteTabs.Tab name="BUS">
-                        <RouteSelect routes={routes} query="" />
-                    </RouteTabs.Tab>
-                    <RouteTabs.Tab name="TRAIN">
-                        <RouteSelect routes={routes} query="" />
-                    </RouteTabs.Tab>
-                </RouteTabs.Tabs>
+                <Tabs isFitted onChange={setIndex}>
+                    <TabList
+                        position="fixed"
+                        top={!scrolled ? '140px' : '110px'}
+                        w="100%"
+                        zIndex={1}
+                        backgroundColor={bg}
+                        transition="top 0.2s ease-in-out"
+                        left="50%"
+                        transform="translate(-50%)"
+                        maxW="container.sm"
+                    >
+                        <Tab fontSize="sm" fontWeight={500}>
+                            {t('BUS')}
+                        </Tab>
+                        <Tab fontSize="sm" fontWeight={500}>
+                            {t('TRAIN')}
+                        </Tab>
+                    </TabList>
+                </Tabs>
+
+                <Box pt="48px">
+                    <RouteSelect onInspectorData={setInspectorData} routes={routes} query="" />
+                </Box>
             </Screen>
         </Box>
     );
 };
+
+export const SearchView = React.memo(SearchViewR);

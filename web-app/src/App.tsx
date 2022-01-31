@@ -49,11 +49,10 @@ export const App = () => {
                     h="100%"
                     w="100%"
                     id="main"
-                    // overflow="auto"
-                    // onScroll={(e: UIEvent<HTMLElement>) => {
-                    //     console.log('scrooled', e.currentTarget.scrollTop);
-                    //     setUIScrollTop(e.currentTarget.scrollTop);
-                    // }}
+                    overflow="auto"
+                    onScroll={(e: UIEvent<HTMLElement>) => {
+                        setUIScrollTop(e.currentTarget.scrollTop);
+                    }}
                 >
                     <MapLoader>
                         <BrowserRouter>

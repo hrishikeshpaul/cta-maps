@@ -304,6 +304,7 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
             dispatch({ type: SystemStoreActionType.SetBusIcon, payload: { icon } });
         },
         setUIScrollTop: (scroll: number | undefined) => {
+            console.log('settings')
             dispatch({ type: SystemStoreActionType.SetUIScrollTop, payload: { scroll } });
         },
     };

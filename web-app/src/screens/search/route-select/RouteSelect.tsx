@@ -21,12 +21,13 @@ import { useSystemStore } from 'store/system/SystemStore';
 
 interface Props {
     routes: RouteExtended[];
+    onInspectorData?: (data: Route) => void;
     query: string;
 }
 
 const LIMIT = 16;
 
-export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, query }) => {
+export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, query, onInspectorData }) => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
     const [{ routesLoading }] = useSystemStore();
@@ -70,7 +71,7 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
             setRoutes((prevRoutes) => {
                 const updatedRoutes: RouteExtended[] = [...prevRoutes];
 
-                prevRoutes.forEach((route, i) => {
+                prevRoutes.forEach((route) => {
                     route.selected = false;
                 });
 
@@ -81,7 +82,6 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
 
     return (
         <>
-            <Inspector data={inspectorData} />
             <Box overflow="auto" onScroll={handleScroll} pb="4">
                 <Flex justifyContent="space-between" px="4" pb="2">
                     <Text fontSize="sm" fontWeight="600" opacity="0.7">
@@ -111,7 +111,7 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
                 {routes.map((route) => (
                     <RouteOption
                         onChange={setRoutes}
-                        setInspectorData={setInspectorData}
+                        setInspectorData={onInspectorData ? onInspectorData : () => {}}
                         routes={routes}
                         currentRoute={route}
                         key={route.route}
