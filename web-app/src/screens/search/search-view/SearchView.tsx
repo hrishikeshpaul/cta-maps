@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { RouteSelect } from 'screens/search/route-select/RouteSelect';
 import { useDataStore } from 'store/data/DataStore';
-import useDebounce from 'utils/Hook';
+import { useDebounce } from 'utils/Hook';
 import { SearchIcon } from 'utils/Icons';
-import { BasePage } from 'utils/BasePage';
+import { Screen } from 'shared/screen/Screen';
+import { RouteTabs } from '../route-tabs/RouteTabs';
 
 const LIMIT = 16;
 
@@ -82,7 +83,7 @@ export const SearchView: FunctionComponent = () => {
 
     return (
         <Box>
-            <BasePage
+            <Screen
                 title="SEARCH"
                 headerIcon={
                     <IconButton
@@ -94,8 +95,15 @@ export const SearchView: FunctionComponent = () => {
                     />
                 }
             >
-                <RouteSelect routes={routes} query="" getData={getRoutes} />
-            </BasePage>
+                <RouteTabs.Tabs>
+                    <RouteTabs.Tab name="BUS">
+                        <RouteSelect routes={routes} query="" getData={getRoutes} />
+                    </RouteTabs.Tab>
+                    <RouteTabs.Tab name="TRAIN">
+                        <RouteSelect routes={routes} query="" getData={getRoutes} />
+                    </RouteTabs.Tab>
+                </RouteTabs.Tabs>
+            </Screen>
         </Box>
     );
 };

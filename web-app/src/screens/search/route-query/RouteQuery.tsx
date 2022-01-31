@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { RouteSelect } from 'screens/search/route-select/RouteSelect';
 import { useDataStore } from 'store/data/DataStore';
-import { BasePage } from 'utils/BasePage';
-import useDebounce from 'utils/Hook';
+import { Screen } from 'shared/screen/Screen';
+import { useDebounce } from 'utils/Hook';
 import { CloseIcon } from 'utils/Icons';
 import { BackButton } from 'shared/back-button/BackButton';
 
@@ -55,7 +55,7 @@ export const RouteQuery: FunctionComponent = () => {
     }, [debouncedQuery]); // eslint-disable-line
 
     return (
-        <BasePage
+        <Screen
             constantPadding
             header={
                 <InputGroup mt="2">
@@ -116,6 +116,6 @@ export const RouteQuery: FunctionComponent = () => {
                     ))}
                 </Box>
             )}
-        </BasePage>
+        </Screen>
     );
 };

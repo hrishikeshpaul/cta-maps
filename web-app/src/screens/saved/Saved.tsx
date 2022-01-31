@@ -20,7 +20,7 @@ import { useDataStore } from 'store/data/DataStore';
 import { CheckIcon, RightIcon } from 'utils/Icons';
 import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
 import { Route, RouteType } from 'store/data/DataStore.Types';
-import { BasePage } from 'utils/BasePage';
+import { Screen } from 'shared/screen/Screen';
 
 export const Saved: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -37,7 +37,7 @@ export const Saved: FunctionComponent = () => {
     };
 
     return (
-        <BasePage title="SAVED">
+        <Screen title="SAVED">
             <Tabs isFitted my="4">
                 <TabList mx="4">
                     <Tab fontWeight="600">{t('STOPS')}</Tab>
@@ -108,6 +108,6 @@ export const Saved: FunctionComponent = () => {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-        </BasePage>
+        </Screen>
     );
 };

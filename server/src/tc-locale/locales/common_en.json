@@ -63,5 +63,7 @@
     "SEARCH": "Search",
     "SAVED": "Saved",
     "GENERAL": "General",
-    "PREVIOUS_SEARCHES": "Previous Searches"
+    "PREVIOUS_SEARCHES": "Previous Searches",
+    "BUS": "Bus",
+    "TRAIN": "Train"
 }

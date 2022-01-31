@@ -3,7 +3,7 @@ import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'reac
 import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { NAVBAR_HEIGHT } from './Constants';
+import { NAVBAR_HEIGHT } from '../../utils/Constants';
 
 interface Props {
     header?: JSX.Element;
@@ -15,7 +15,7 @@ interface Props {
     children: ReactNode;
 }
 
-export const BasePage: FunctionComponent<Props> = ({
+export const Screen: FunctionComponent<Props> = ({
     children,
     title,
     headerIcon,
@@ -29,13 +29,15 @@ export const BasePage: FunctionComponent<Props> = ({
     const [headerSize, setHeaderSize] = useState<number>(36);
 
     useEffect(() => {
-        document.addEventListener('scroll', () => {
+        window.addEventListener('scroll', () => {
             const scrolled = document.scrollingElement?.scrollTop;
-            if (scrolled) {
+
+            console.log(scrolled);
+            if (scrolled !== undefined) {
                 setScroll(scrolled);
 
                 if (scrolled > 20) {
-                    setHeaderSize(16);
+                    setHeaderSize(18);
                 } else {
                     setHeaderSize(36);
                 }
@@ -55,12 +57,11 @@ export const BasePage: FunctionComponent<Props> = ({
                 px="4"
                 py={constantPadding ? '2' : scroll > 20 ? '2' : '6'}
                 position="fixed"
-                bg={scroll > 20 ? bg : 'transparent'}
+                bg={bg}
                 left="50%"
                 transform="translate(-50%)"
                 zIndex={100}
                 transition="all 0.25s ease-in-out"
-                boxShadow={scroll > 20 ? 'sm' : 'none'}
             >
                 {header ? (
                     <>{header}</>
