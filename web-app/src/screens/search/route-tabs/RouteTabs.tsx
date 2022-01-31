@@ -9,6 +9,8 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { useSystemStore } from 'store/system/SystemStore';
+import { SCROLL_THRESHOLD } from 'utils/Constants';
 
 interface RouteTabProps {
     name: string;
@@ -25,22 +27,22 @@ interface RouteTabsProps {
 
 export const Tabs: FC<RouteTabsProps> = ({ children }) => {
     const { t } = useTranslation();
+    const [
+        {
+            ui: { scrollTop },
+        },
+    ] = useSystemStore();
     const [scrolled, setScrolled] = useState<boolean>(false);
     const [tabs, setTabs] = useState<Array<ReactElement<typeof Tab>>>([]);
     const bg = useColorModeValue('white', 'gray.800');
 
     useEffect(() => {
-        window.addEventListener('scroll', () => {
-            const scrolled = document.scrollingElement?.scrollTop;
-            if (scrolled) {
-                if (scrolled > 20) {
-                    setScrolled(true);
-                } else {
-                    setScrolled(false);
-                }
-            }
-        });
-    }, []);
+        if (scrollTop > SCROLL_THRESHOLD) {
+            setScrolled(true);
+        } else {
+            setScrolled(false);
+        }
+    }, [scrollTop]);
 
     useEffect(() => {
         if (Array.isArray(children)) {

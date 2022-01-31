@@ -28,6 +28,7 @@ export enum SystemStoreActionType {
     SetInspectorDrawer,
     SetShowActiveRoutes,
     SetBusIcon,
+    SetUIScrollTop,
     ToggleLocationButtonPress,
 }
 
@@ -90,6 +91,10 @@ interface PayloadSetAllowLocation {
     allow: boolean;
 }
 
+interface PayloadSetUIScrollTop {
+    scroll: number | undefined;
+}
+
 interface SystemStoreAction {
     type: SystemStoreActionType;
     payload?:
@@ -106,7 +111,8 @@ interface SystemStoreAction {
         | PayloadSetFavoritesDrawer
         | PayloadSetInspectorDrawer
         | PayloadSetShowActiveRoutes
-        | PayloadSetBusIcon;
+        | PayloadSetBusIcon
+        | PayloadSetUIScrollTop;
 }
 
 interface SystemStoreProviderProps {
@@ -126,6 +132,9 @@ export const initialStoreState: SystemStoreState = {
         allowLocation: JSON.parse(localStorage.getItem(AllowLocationKey) || '{}') === true,
         showActiveRoutes: JSON.parse(localStorage.getItem(ShowActiveRoutesKey) || '{}') === true,
         busIcon: (localStorage.getItem(BusIconKey) || BusIconType.Circle) as BusIconType,
+    },
+    ui: {
+        scrollTop: 0,
     },
 };
 
@@ -196,6 +205,15 @@ const storeReducer = (state: SystemStoreState, action: SystemStoreAction): Syste
                 settings: { ...state.settings, busIcon: (action.payload as PayloadSetBusIcon).icon },
             };
         }
+        case SystemStoreActionType.SetUIScrollTop: {
+            return {
+                ...state,
+                ui: {
+                    ...state.ui,
+                    scrollTop: (action.payload as PayloadSetUIScrollTop).scroll || 0,
+                },
+            };
+        }
         default: {
             throw new Error(`Invalid action -- ${action.type}`);
         }
@@ -243,6 +261,7 @@ interface SystemStoreActionApis {
     closeInspector: () => void;
     setShowActiveRoutes: (show: boolean) => void;
     setBusIcon: (icon: BusIconType) => void;
+    setUIScrollTop: (scroll: number | undefined) => void;
 }
 
 export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
@@ -283,6 +302,9 @@ export const useSystemStore = (): [SystemStoreState, SystemStoreActionApis] => {
         setBusIcon: (icon: BusIconType) => {
             localStorage.setItem(BusIconKey, icon);
             dispatch({ type: SystemStoreActionType.SetBusIcon, payload: { icon } });
+        },
+        setUIScrollTop: (scroll: number | undefined) => {
+            dispatch({ type: SystemStoreActionType.SetUIScrollTop, payload: { scroll } });
         },
     };
 

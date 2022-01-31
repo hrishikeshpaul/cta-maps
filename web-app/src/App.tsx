@@ -16,6 +16,7 @@ import { MapLoader } from 'shared/map/Map';
 import { Search } from 'screens/search/Search';
 import { Settings } from 'screens/settings/Settings';
 import { SocketModule } from 'utils/SocketModule';
+import { ScrollTop } from 'utils/ScrollTop';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
@@ -50,7 +51,7 @@ export const App = () => {
                             <Stop />
                             <SocketModule />
                             <VehicleDrawer />
-
+                            <ScrollTop />
                             <Routes>
                                 <Route path="/" element={<MapRender />} />
                                 <Route path="/search/*" element={<Search />} />

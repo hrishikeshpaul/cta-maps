@@ -49,4 +49,7 @@ export interface SystemStoreState {
     routesLoading: boolean;
     patternLoading: boolean;
     settings: Setting;
+    ui: {
+        scrollTop: number;
+    };
 }

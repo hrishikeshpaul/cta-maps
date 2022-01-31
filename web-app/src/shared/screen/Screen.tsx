@@ -3,7 +3,8 @@ import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'reac
 import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { NAVBAR_HEIGHT } from '../../utils/Constants';
+import { NAVBAR_HEIGHT, SCROLL_THRESHOLD } from '../../utils/Constants';
+import { useSystemStore } from 'store/system/SystemStore';
 
 interface Props {
     header?: JSX.Element;
@@ -25,25 +26,23 @@ export const Screen: FunctionComponent<Props> = ({
 }) => {
     const { t } = useTranslation();
     const bg = useColorModeValue('white', 'gray.800');
+    const [
+        {
+            ui: { scrollTop },
+        },
+    ] = useSystemStore();
     const [scroll, setScroll] = useState<number>(0);
     const [headerSize, setHeaderSize] = useState<number>(36);
 
     useEffect(() => {
-        window.addEventListener('scroll', () => {
-            const scrolled = document.scrollingElement?.scrollTop;
+        setScroll(scrollTop);
 
-            console.log(scrolled);
-            if (scrolled !== undefined) {
-                setScroll(scrolled);
-
-                if (scrolled > 20) {
-                    setHeaderSize(18);
-                } else {
-                    setHeaderSize(36);
-                }
-            }
-        });
-    }, []);
+        if (scrollTop > SCROLL_THRESHOLD) {
+            setHeaderSize(18);
+        } else {
+            setHeaderSize(36);
+        }
+    }, [scrollTop]);
 
     return (
         <Container maxW="container.sm" p="0" pt={NAVBAR_HEIGHT} position="relative">
@@ -55,7 +54,7 @@ export const Screen: FunctionComponent<Props> = ({
                 justifyContent="space-between"
                 alignItems="center"
                 px="4"
-                py={constantPadding ? '2' : scroll > 20 ? '2' : '6'}
+                py={constantPadding ? '2' : scroll > SCROLL_THRESHOLD ? '2' : '6'}
                 position="fixed"
                 bg={bg}
                 left="50%"
