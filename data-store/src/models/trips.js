@@ -9,19 +9,13 @@ const TripSchema = new Schema({
         type: String,
         unique: true,
     },
+    tripId: {
+        type: String,
+    },
     routeId: {
         type: String,
     },
-    serviceId: {
-        type: String,
-    },
-    scheduleTripId: {
-        type: String,
-    },
     directionId: {
-        type: String,
-    },
-    blockId: {
         type: String,
     },
     shapeId: {

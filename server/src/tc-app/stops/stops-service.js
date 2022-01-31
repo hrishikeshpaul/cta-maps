@@ -34,23 +34,6 @@ const getClosestStops = () => {
             },
         },
     ]);
-
-    // return Stops.find({
-    //     location: {
-    //         $geoWithin: {
-    //             $centerSphere: [currentLocation, milesToRadian(0.05)],
-    //         },
-    //     },
-    //     // location: {
-    //     //     $nearSphere: {
-    //     //         $geometry: {
-    //     //             type: 'Point',
-    //     //             coordinates: currentLocation,
-    //     //         },
-    //     //         $maxDistance: 0.06 * 1609.34, // in meters. 0.2 miles
-    //     //     },
-    //     // },
-    // });
 };
 
 module.exports = {

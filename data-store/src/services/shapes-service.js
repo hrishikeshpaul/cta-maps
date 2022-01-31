@@ -15,22 +15,20 @@ const insertShapes = async (shapesData, db) => {
             if (!acc[shape.shape_id]) {
                 acc[shape.shape_id] = {
                     id: shape.shape_id,
-                    seq: [],
+                    paths: [],
                 };
             }
 
-            acc[shape.shape_id].seq.push({
-                id: `${shape.shape_id}-${shape.shape_pt_sequence}`,
+            acc[shape.shape_id].paths.push({
                 lat: parseFloat(shape.shape_pt_lat),
                 lng: parseFloat(shape.shape_pt_lon),
-                distanceTravelled: parseFloat(shape.shape_dist_traveled),
             });
 
             return acc;
         }, {});
 
         const shapes = Object.values(groupByShapeId);
-        
+
         db.watchCollection(collectionName, shapes.length);
 
         await Shape.insertMany(shapes);

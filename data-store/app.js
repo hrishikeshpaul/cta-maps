@@ -29,7 +29,7 @@ const start = async () => {
     const args = process.argv.slice(2);
     const promises = [];
 
-    const db = new Db(args);
+    const db = new Db(args.length ? args : Arguments);
     await db.init();
 
     if (args.length) {

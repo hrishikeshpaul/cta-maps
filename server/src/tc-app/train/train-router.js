@@ -6,7 +6,7 @@ const { getRoutes, getPatterns } = require('./train-service');
 
 const router = express.Router();
 
-router.get('/routes', async (req, res, next) => {
+router.get('/routes', async (req, res) => {
     try {
         const data = await getRoutes();
         res.send(data);
@@ -15,13 +15,17 @@ router.get('/routes', async (req, res, next) => {
     }
 });
 
-router.get('/patterns', async (req, res, next) => {
+router.get('/patterns', async (req, res) => {
     const { route, color } = req.query;
-    try {
-        const data = await getPatterns(route);
 
-        // console.log(data[0].seq.length);
-        // console.log(data[1].seq.length);
+    try {
+        let data = await getPatterns(route);
+
+        data.forEach((item) => ({
+            ...item,
+            color,
+        }));
+
         res.send(data);
     } catch (err) {
         res.send(err).status(400);

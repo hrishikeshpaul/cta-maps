@@ -10,21 +10,13 @@ const ShapeSchema = new Schema({
         unique: true,
         required: true,
     },
-    seq: [
+    paths: [
         {
-            id: {
-                type: String,
-                required: true,
-            },
             lat: {
                 type: Number,
                 required: true,
             },
             lng: {
-                type: Number,
-                required: true,
-            },
-            distanceTravelled: {
                 type: Number,
                 required: true,
             },
