@@ -19,10 +19,16 @@ export enum Juncture {
     D = 'D', // departure
 }
 
+export enum RouteType {
+    Bus = 'B',
+    Train = 'T',
+}
+
 export interface Route {
     route: string;
     name: string;
     color: string;
+    type: string;
 }
 
 export interface RouteColor {

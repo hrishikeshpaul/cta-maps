@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Pattern, Prediction, Route, RouteColor } from 'store/data/DataStore.Types';
+import { Pattern, Prediction, Route, RouteColor, RouteType } from 'store/data/DataStore.Types';
 import { Http } from 'utils/Http';
 import { socket } from 'utils/Socket';
 
@@ -50,12 +50,12 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     return data;
 };
 
-export const onRouteSelect = (route: string, color: string): void => {
-    socket.emit('route-add', { route, color });
+export const onRouteSelect = (route: string, color: string, type: RouteType): void => {
+    socket.emit('route-add', { route, color, type });
 };
 
-export const onRouteDeselect = (route: string): void => {
-    socket.emit('route-remove', route);
+export const onRouteDeselect = (route: string, type: RouteType): void => {
+    socket.emit('route-remove', {route, type});
 };
 
 export const onRouteRemoveAll = (): void => {

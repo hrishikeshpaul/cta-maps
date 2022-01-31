@@ -22,6 +22,7 @@ import {
     FavoriteStopsKey,
     FavoriteRoutesKey,
     SearchHistoryKey,
+    RouteType,
 } from 'store/data/DataStore.Types';
 import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
@@ -224,7 +225,7 @@ const useDataStoreDispatch = (): Dispatch<DataStoreAction> => {
 interface DataStoreActionApis {
     getRoutes: (search?: string, filter?: string, limit?: number, index?: number) => Promise<Route[] | null>;
     setRoute: (route: Route) => void;
-    removeRoute: (id: string) => void;
+    removeRoute: (id: string, type: RouteType) => void;
     removeAllRoutes: () => void;
     openStop: (stop: Stop) => void;
     closeStop: () => void;
@@ -272,7 +273,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             try {
                 const response = await getPattern(route.route, route.color);
 
-                onRouteSelect(route.route, route.color);
+                onRouteSelect(route.route, route.color, route.type as RouteType);
                 systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
                 dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
             } catch (err: any) {
@@ -282,9 +283,9 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
                 }
             }
         },
-        removeRoute: (id: string) => {
+        removeRoute: (id: string, type: RouteType) => {
             cancelGetPattern();
-            onRouteDeselect(id);
+            onRouteDeselect(id, type);
             dispatch({ type: DataStoreActionType.RemoveRoute, payload: { id } });
         },
         removeAllRoutes: () => {

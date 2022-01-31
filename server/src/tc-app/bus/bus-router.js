@@ -34,6 +34,7 @@ router.get('/routes', async (req, res) => {
             route: item.rt,
             name: item.rtnm,
             color: item.rtclr,
+            type: 'B',
         }));
 
         if (filter) {

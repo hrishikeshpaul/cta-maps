@@ -8,7 +8,8 @@ const router = express.Router();
 
 router.get('/routes', async (req, res) => {
     try {
-        const data = await getRoutes();
+        let data = await getRoutes();
+        data = data.map((item) => ({ ...item, type: 'T' }));
         res.send(data);
     } catch (err) {
         res.send(err).status(400);

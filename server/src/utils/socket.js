@@ -22,7 +22,10 @@ const Events = {
 
 class SocketConnection {
     constructor(socket) {
-        this.routes = {};
+        this.routes = {
+            bus: {},
+            train: {},
+        };
         this.timer = null;
         this.socket = socket;
         this.idleTimer = null;
@@ -33,7 +36,7 @@ class SocketConnection {
 
         this.timer = setInterval(async () => {
             try {
-                const routeStr = Object.keys(that.routes).join(',');
+                const routeStr = Object.keys(that.routes.bus).join(',');
                 const data = await that.get_vehicles(routeStr, null);
 
                 that.socket.emit(Events.UpdateVehicles, data);
@@ -52,14 +55,23 @@ class SocketConnection {
 
     async add(routeObj) {
         try {
-            const data = await this.get_vehicles(routeObj.route, routeObj.color);
-            this.routes[routeObj.route] = routeObj;
+            switch (routeObj.type) {
+                case 'B':
+                    const data = await this.get_vehicles(routeObj.route, routeObj.color);
+                    this.routes.bus[routeObj.route] = routeObj;
 
-            if (this.timer === null) {
-                this.start_timer();
+                    if (this.timer === null) {
+                        this.start_timer();
+                    }
+
+                    this.socket.emit(Events.UpdateVehicles, data);
+                    break;
+                case 'T':
+                    console.log(routeObj);
+                    break;
+                default:
+                    throw Error(`Invalid type - ${routeObj.type}`);
             }
-
-            this.socket.emit(Events.UpdateVehicles, data);
         } catch (err) {
             this.socket.emit(Events.Error, err);
             log(Events.ServerError, JSON.stringify(err));
@@ -85,12 +97,18 @@ class SocketConnection {
         data = data.map((item) => ({
             id: item.vid,
             timestamp: item.tmstmp,
-            position: { lat: parseFloat(item.lat), lng: parseFloat(item.lon), latitude: parseFloat(item.lat), longitude: parseFloat(item.lon) },
+            position: {
+                lat: parseFloat(item.lat),
+                lng: parseFloat(item.lon),
+                latitude: parseFloat(item.lat),
+                longitude: parseFloat(item.lon),
+            },
             route: item.rt,
             destination: item.des,
             delayed: item.dly,
             heading: parseInt(item.hdg, 10),
-            color: color || this.routes[item.rt].color,
+            color: color || this.routes.bus[item.rt].color,
+            type: 'B',
         }));
 
         return data;

@@ -12,8 +12,8 @@ export const MapRender: FunctionComponent = () => {
 
     useEffect(() => {
         if (settings.showActiveRoutes) {
-            Object.values(favoriteRoutes).forEach(({ route, name, color }) => {
-                setRoute({ route, name, color });
+            Object.values(favoriteRoutes).forEach((route) => {
+                setRoute(route);
             });
         }
     }, [settings.showActiveRoutes]); // eslint-disable-line

@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useDataStore } from 'store/data/DataStore';
 import { CheckIcon, RightIcon } from 'utils/Icons';
 import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
-import { Route } from 'store/data/DataStore.Types';
+import { Route, RouteType } from 'store/data/DataStore.Types';
 import { BasePage } from 'utils/BasePage';
 
 export const Saved: FunctionComponent = () => {
@@ -30,7 +30,7 @@ export const Saved: FunctionComponent = () => {
 
     const onToggleRoute = (route: Route) => {
         if (routes[route.route]) {
-            removeRoute(route.route);
+            removeRoute(route.route, route.type as RouteType);
         } else {
             setRoute(route);
         }
@@ -68,7 +68,7 @@ export const Saved: FunctionComponent = () => {
                     </TabPanel>
                     <TabPanel px="0">
                         {Object.values(favoriteRoutes).length === 0 && <Text px="4">{t('ADD_FAVORITES')}</Text>}
-                        {Object.values(favoriteRoutes).map(({ route, color, name }) => {
+                        {Object.values(favoriteRoutes).map(({ route, color, name, type }) => {
                             return (
                                 <Box key={`fav-route-${route}`} _active={{ bg }}>
                                     <Flex justifyContent="center" alignItems="center" p="4">
@@ -76,7 +76,7 @@ export const Saved: FunctionComponent = () => {
                                             alignItems="center"
                                             overflow="hidden"
                                             w="100%"
-                                            onClick={() => onToggleRoute({ route, color, name })}
+                                            onClick={() => onToggleRoute({ route, color, name, type })}
                                         >
                                             <Center h="40px" w="40px" bg={color} borderRadius="md">
                                                 <Text color="white" fontWeight="bold">

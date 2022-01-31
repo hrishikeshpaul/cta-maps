@@ -1,7 +1,7 @@
 import { Box, Center, Divider, Flex, Switch, Text, useColorModeValue } from '@chakra-ui/react';
 import { ChangeEvent, FunctionComponent } from 'react';
 import { useDataStore } from 'store/data/DataStore';
-import { Route } from 'store/data/DataStore.Types';
+import { Route, RouteType } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
 
 export interface RouteExtended extends Route {
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const RouteOption: FunctionComponent<Props> = ({
-    currentRoute: { route, name, color, selected },
+    currentRoute: { route, name, color, selected, type },
     routes,
     onChange,
     setInspectorData,
@@ -30,7 +30,7 @@ export const RouteOption: FunctionComponent<Props> = ({
         const computedRouteIdx = routes.findIndex((r) => r.route === route);
 
         if (!selected) {
-            setRoute({ route, name, color });
+            setRoute({ route, name, color, type });
             if (computedRouteIdx !== -1) {
                 const old = [...routes];
 
@@ -38,7 +38,7 @@ export const RouteOption: FunctionComponent<Props> = ({
                 onChange([...old]);
             }
         } else {
-            removeRoute(route);
+            removeRoute(route, (type as RouteType));
             if (computedRouteIdx !== -1) {
                 const old = [...routes];
 
@@ -56,7 +56,7 @@ export const RouteOption: FunctionComponent<Props> = ({
                     overflow="hidden"
                     w="100%"
                     onClick={() => {
-                        setInspectorData({ route, color, name });
+                        setInspectorData({ route, color, name, type});
                         openInspector();
                     }}
                 >

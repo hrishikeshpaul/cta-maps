@@ -12,7 +12,7 @@ interface Props {
     data: Route;
 }
 
-export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color } }) => {
+export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color, type } }) => {
     const [{ favoriteRoutes }, { saveRoute, unSaveRoute }] = useDataStore();
     const [{ inspectorOpen }, { closeInspector }] = useSystemStore();
     const [isFav, setIsFav] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export const Inspector: FunctionComponent<Props> = ({ data: { route, name, color
         if (favoriteRoutes[route]) {
             unSaveRoute(route);
         } else {
-            saveRoute({ route, name, color });
+            saveRoute({ route, name, color, type });
         }
     };
 

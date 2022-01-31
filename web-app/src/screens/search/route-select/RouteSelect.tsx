@@ -23,7 +23,7 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
     const [{ routesLoading }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>(routesAsProps);
     const [index, setIndex] = useState<number>(1);
-    const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
+    const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '', type: 'B' });
     const deselectFontColor = useColorModeValue('blue.500', 'blue.200');
 
     const getFilter = () => {
