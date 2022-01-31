@@ -29,6 +29,7 @@ export interface Route {
     name: string;
     color: string;
     type: string;
+    routes?: Array<{ direction: string; destination: string }>;
 }
 
 export interface RouteColor {

@@ -12,7 +12,6 @@ import { useSystemStore } from 'store/system/SystemStore';
 interface Props {
     routes: RouteExtended[];
     query: string;
-    getData: (search?: string, filter?: string, limit?: number, index?: number) => void;
 }
 
 const LIMIT = 16;

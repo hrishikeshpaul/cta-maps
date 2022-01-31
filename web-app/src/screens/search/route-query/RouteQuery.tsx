@@ -90,7 +90,7 @@ export const RouteQuery: FunctionComponent = () => {
             }
         >
             {query ? (
-                <RouteSelect routes={routes} query={query} getData={getRoutes} />
+                <RouteSelect routes={routes} query={query} />
             ) : (
                 <Box>
                     {searchHistory.length > 0 && (

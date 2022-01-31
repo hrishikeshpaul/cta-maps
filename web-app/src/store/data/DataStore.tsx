@@ -6,6 +6,7 @@ import {
     cancelGetPattern,
     getPattern,
     getRoutes,
+    getTrainRoutes,
     onActive,
     onIdle,
     onRouteDeselect,
@@ -224,6 +225,7 @@ const useDataStoreDispatch = (): Dispatch<DataStoreAction> => {
 
 interface DataStoreActionApis {
     getRoutes: (search?: string, filter?: string, limit?: number, index?: number) => Promise<Route[] | null>;
+    getTrainRoutes: () => Promise<Route[] | null>;
     setRoute: (route: Route) => void;
     removeRoute: (id: string, type: RouteType) => void;
     removeAllRoutes: () => void;
@@ -255,6 +257,21 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             try {
                 systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: true } });
                 const response = await getRoutes(search, filter, limit, index);
+
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
+
+                return response;
+            } catch (err: any) {
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
+                toast({ description: err.response.data, status: 'error' });
+
+                return null;
+            }
+        },
+        getTrainRoutes: async () => {
+            try {
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: true } });
+                const response = await getTrainRoutes();
 
                 systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
 

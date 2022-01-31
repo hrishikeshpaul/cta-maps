@@ -50,12 +50,18 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     return data;
 };
 
+export const getTrainRoutes = async (): Promise<Route[]> => {
+    const { data } = await Http.get<Route[]>('/train/routes');
+
+    return data;
+};
+
 export const onRouteSelect = (route: string, color: string, type: RouteType): void => {
     socket.emit('route-add', { route, color, type });
 };
 
 export const onRouteDeselect = (route: string, type: RouteType): void => {
-    socket.emit('route-remove', {route, type});
+    socket.emit('route-remove', { route, type });
 };
 
 export const onRouteRemoveAll = (): void => {

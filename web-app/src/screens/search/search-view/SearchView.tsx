@@ -6,20 +6,23 @@ import { useNavigate } from 'react-router-dom';
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { RouteSelect } from 'screens/search/route-select/RouteSelect';
 import { useDataStore } from 'store/data/DataStore';
-import { useDebounce } from 'utils/Hook';
 import { SearchIcon } from 'utils/Icons';
 import { Screen } from 'shared/screen/Screen';
 import { RouteTabs } from '../route-tabs/RouteTabs';
 
 const LIMIT = 16;
 
+enum TabIndex {
+    Bus,
+    Train,
+}
+
 export const SearchView: FunctionComponent = () => {
     const navigate = useNavigate();
-    const [{ routes: currentRoutes }, { getRoutes }] = useDataStore();
+    const [{ routes: currentRoutes }, { getRoutes, getTrainRoutes }] = useDataStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
-    const [index, setIndex] = useState<number>(1);
-    const debouncedQuery = useDebounce(query);
+    const [index, setIndex] = useState<number>(0);
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -27,9 +30,9 @@ export const SearchView: FunctionComponent = () => {
             .join(',');
     };
 
-    const onOpen = async () => {
+    const getBusRoutes = async () => {
         const filter = getFilter();
-        const response = await getRoutes(query, filter, LIMIT, index);
+        const response = await getRoutes(query, filter, LIMIT, 1);
         const selectedRoutes: RouteExtended[] = Object.values(currentRoutes).map((route) => ({
             ...route,
             selected: true,
@@ -45,14 +48,20 @@ export const SearchView: FunctionComponent = () => {
 
     useEffect(() => {
         (async () => {
-            await onOpen();
+            setRoutes([]);
+
+            if (index === TabIndex.Bus) {
+                await getBusRoutes();
+            } else {
+                const res = await getTrainRoutes();
+                console.log(res);
+            }
         })();
 
         return () => {
             setQuery('');
-            setIndex(1);
         };
-    }, []); // eslint-disable-line
+    }, [index]); // eslint-disable-line
 
     useEffect(() => {
         if (Object.keys(currentRoutes).length === 0) {
@@ -67,19 +76,6 @@ export const SearchView: FunctionComponent = () => {
             });
         }
     }, [currentRoutes]);
-
-    useEffect(() => {
-        (async () => {
-            if (debouncedQuery) {
-                const filter = getFilter();
-                const response = await getRoutes(debouncedQuery, filter, LIMIT, 1);
-
-                if (response) {
-                    setRoutes(response.map((route) => ({ ...route, selected: false })));
-                }
-            }
-        })();
-    }, [debouncedQuery]); // eslint-disable-line
 
     return (
         <Box>
@@ -96,12 +92,12 @@ export const SearchView: FunctionComponent = () => {
                     />
                 }
             >
-                <RouteTabs.Tabs>
+                <RouteTabs.Tabs isLazy onChange={setIndex}>
                     <RouteTabs.Tab name="BUS">
-                        <RouteSelect routes={routes} query="" getData={getRoutes} />
+                        <RouteSelect routes={routes} query="" />
                     </RouteTabs.Tab>
                     <RouteTabs.Tab name="TRAIN">
-                        <RouteSelect routes={routes} query="" getData={getRoutes} />
+                        <RouteSelect routes={routes} query="" />
                     </RouteTabs.Tab>
                 </RouteTabs.Tabs>
             </Screen>

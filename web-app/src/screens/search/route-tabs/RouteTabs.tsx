@@ -3,6 +3,7 @@ import React, { FC, ReactElement, ReactNode, useEffect, useState } from 'react';
 import {
     Tabs as ChakraTabs,
     TabList,
+    TabsProps,
     TabPanels,
     Tab as ChakraTab,
     TabPanel,
@@ -21,11 +22,11 @@ export const Tab: FC<RouteTabProps> = ({ children }) => {
     return <>{children}</>;
 };
 
-interface RouteTabsProps {
+interface RouteTabsProps extends TabsProps {
     children: ReactElement<typeof Tab> | Array<ReactElement<typeof Tab>>;
 }
 
-export const Tabs: FC<RouteTabsProps> = ({ children }) => {
+export const Tabs: FC<RouteTabsProps> = ({ children, ...props }) => {
     const { t } = useTranslation();
     const [
         {
@@ -53,7 +54,7 @@ export const Tabs: FC<RouteTabsProps> = ({ children }) => {
     }, [children]);
 
     return (
-        <ChakraTabs isFitted position="relative">
+        <ChakraTabs isFitted position="relative" {...props}>
             <TabList
                 position="fixed"
                 top={!scrolled ? '140px' : '110px'}
