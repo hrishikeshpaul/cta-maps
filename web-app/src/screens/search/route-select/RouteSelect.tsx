@@ -1,6 +1,16 @@
 import { FunctionComponent, useEffect, useState, UIEvent } from 'react';
 
-import { Box, Button, Flex, Spinner, Center, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Flex,
+    Spinner,
+    Center,
+    Text,
+    useColorModeValue,
+    Accordion,
+    AccordionItem,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { Inspector } from 'shared/inspector/Inspector';
@@ -83,6 +93,20 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
                         </Button>
                     )}
                 </Flex>
+
+                {/* <Accordion>
+                    {routes.map((route) => (
+                        <AccordionItem>
+                            <RouteOption
+                                onChange={setRoutes}
+                                setInspectorData={setInspectorData}
+                                routes={routes}
+                                currentRoute={route}
+                                key={route.route}
+                            />
+                        </AccordionItem>
+                    ))}
+                </Accordion> */}
 
                 {routes.map((route) => (
                     <RouteOption

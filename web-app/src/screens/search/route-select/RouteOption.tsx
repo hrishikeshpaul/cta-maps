@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const RouteOption: FunctionComponent<Props> = ({
-    currentRoute: { route, name, color, selected, type },
+    currentRoute: { route, name, color, selected, type, routes: routeDirections },
     routes,
     onChange,
     setInspectorData,
@@ -38,7 +38,7 @@ export const RouteOption: FunctionComponent<Props> = ({
                 onChange([...old]);
             }
         } else {
-            removeRoute(route, (type as RouteType));
+            removeRoute(route, type as RouteType);
             if (computedRouteIdx !== -1) {
                 const old = [...routes];
 
@@ -56,14 +56,16 @@ export const RouteOption: FunctionComponent<Props> = ({
                     overflow="hidden"
                     w="100%"
                     onClick={() => {
-                        setInspectorData({ route, color, name, type});
+                        setInspectorData({ route, color, name, type });
                         openInspector();
                     }}
                 >
                     <Center h="40px" w="40px" bg={color} borderRadius="md">
-                        <Text color="white" fontWeight="bold">
-                            {route}
-                        </Text>
+                        {type === RouteType.Bus && (
+                            <Text color="white" fontWeight="bold">
+                                {route}
+                            </Text>
+                        )}
                     </Center>
                     <Text px="4" isTruncated fontWeight={500}>
                         {name}
@@ -71,7 +73,7 @@ export const RouteOption: FunctionComponent<Props> = ({
                 </Flex>
                 <Switch name="switch" size="lg" isChecked={selected} onChange={onToggle} />
             </Flex>
-            <Divider />
+            {/* <Divider /> */}
         </Box>
     );
 };

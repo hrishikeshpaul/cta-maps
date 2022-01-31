@@ -1,21 +1,21 @@
-::-webkit-scrollbar {
-    width: 0px;
-    height: 3px;
-}
+// ::-webkit-scrollbar {
+//     width: 0px;
+//     height: 3px;
+// }
 
-::-webkit-scrollbar:hover {
-    width: 0px;
-}
+// ::-webkit-scrollbar:hover {
+//     width: 0px;
+// }
 
-::-webkit-scrollbar-thumb {
-    background: rgb(142, 142, 143);
-    border-radius: 8px;
-    width: 0 !important;
-}
+// ::-webkit-scrollbar-thumb {
+//     background: rgb(142, 142, 143);
+//     border-radius: 8px;
+//     width: 0 !important;
+// }
 
-::-webkit-scrollbar-track {
-    background: transparent;
-}
+// ::-webkit-scrollbar-track {
+//     background: transparent;
+// }
 
 .gmnoprint,
 .gm-style-cc {
@@ -31,4 +31,8 @@
 .chakra-avatar__initials {
     font-size: 14px !important;
     font-weight: 700 !important;
+}
+
+.chakra-portal {
+    overflow: hidden !important;
 }

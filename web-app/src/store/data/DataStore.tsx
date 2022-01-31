@@ -301,6 +301,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             }
         },
         removeRoute: (id: string, type: RouteType) => {
+            console.log({ id, type });
             cancelGetPattern();
             onRouteDeselect(id, type);
             dispatch({ type: DataStoreActionType.RemoveRoute, payload: { id } });

@@ -46,6 +46,21 @@ export const SearchView: FunctionComponent = () => {
         setRoutes([...selectedRoutes, ...unselectedRoutes]);
     };
 
+    const computeTrainRoutes = async () => {
+        const response = await getTrainRoutes();
+        const selectedRoutes: RouteExtended[] = Object.values(currentRoutes).map((route) => ({
+            ...route,
+            selected: true,
+        }));
+        let unselectedRoutes: RouteExtended[] = [];
+
+        if (response) {
+            unselectedRoutes = response.map((route) => ({ ...route, selected: false }));
+        }
+
+        setRoutes([...selectedRoutes, ...unselectedRoutes]);
+    };
+
     useEffect(() => {
         (async () => {
             setRoutes([]);
@@ -53,8 +68,7 @@ export const SearchView: FunctionComponent = () => {
             if (index === TabIndex.Bus) {
                 await getBusRoutes();
             } else {
-                const res = await getTrainRoutes();
-                console.log(res);
+                await computeTrainRoutes();
             }
         })();
 

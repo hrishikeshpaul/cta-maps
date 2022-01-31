@@ -10,6 +10,7 @@ import {
     DrawerOverlay,
     DrawerContent,
 } from '@chakra-ui/react';
+import { useSystemStore } from 'store/system/SystemStore';
 
 const BottomSheetHeader: FunctionComponent = ({ children }) => {
     return (
@@ -46,7 +47,7 @@ const BottomSheetWrapper: FunctionComponent<Props> = ({ isOpen, onClose, zIndex,
     return (
         <Drawer isOpen={isOpen} placement="bottom" size="sm" onClose={onClose} autoFocus={false} closeOnOverlayClick>
             <DrawerOverlay zIndex={zIndex} onClick={onClose} />
-            <DrawerContent position="absolute" zIndex={zIndex + 1} bg="transparent">
+            <DrawerContent zIndex={zIndex + 1} bg="transparent">
                 <Container
                     bg={bg}
                     borderTopRightRadius="2xl"
