@@ -81,8 +81,6 @@ export const SearchView: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        console.log('index');
-
         (async () => {
             setRoutes([]);
 

@@ -57,11 +57,23 @@ export const getTrainRoutes = async (): Promise<Route[]> => {
 };
 
 export const onRouteSelect = (route: string, color: string, type: RouteType): void => {
-    socket.emit('route-add', { route, color, type });
+    /**
+     * For devices that have saved busses before
+     */
+    let savedType = type;
+    if (!type) {
+        savedType = RouteType.Bus;
+    }
+
+    socket.emit('route-add', { route, color, type: savedType });
 };
 
 export const onRouteDeselect = (route: string, type: RouteType): void => {
-    socket.emit('route-remove', { route, type });
+    let savedType = type;
+    if (!type) {
+        savedType = RouteType.Bus;
+    }
+    socket.emit('route-remove', { route, type: savedType });
 };
 
 export const onRouteRemoveAll = (): void => {

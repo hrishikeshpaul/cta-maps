@@ -16,6 +16,7 @@ import {
 
 import { useDataStore } from 'store/data/DataStore';
 import { Route, RouteType } from 'store/data/DataStore.Types';
+import { SaveIcon } from 'shared/save-icon/SaveIcon';
 
 export interface RouteExtended extends Route {
     selected: boolean;
@@ -75,19 +76,14 @@ export const RouteOption: FunctionComponent<Props> = ({
                                 {name}
                             </Text>
                         </Flex>
-                        <Switch
-                            flexShrink="0"
-                            colorScheme="red"
-                            name="switch"
-                            size="lg"
-                            isChecked={selected}
-                            onChange={onToggle}
-                        />
-                        <AccordionIcon opacity="0.75" ml="2" flexShrink="0" />
+                        <Switch size="lg" name="switch" isChecked={selected} onChange={onToggle} />
+                        <AccordionIcon opacity="0.75" ml="2" />
                     </Flex>
                 </Box>
             </AccordionButton>
-            <AccordionPanel>Hello</AccordionPanel>
+            <AccordionPanel>
+                {/* <SaveIcon /> */}
+            </AccordionPanel>
             <Divider opacity="0.1" />
         </AccordionItem>
     );

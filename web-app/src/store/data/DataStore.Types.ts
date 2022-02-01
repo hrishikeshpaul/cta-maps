@@ -89,7 +89,7 @@ export interface DataStoreState {
     vehicle: Vehicle | null;
     error?: any;
     vehicles: Vehicle[];
-    favoriteStops: Record<string, Stop>;
-    favoriteRoutes: Record<string, Route>;
+    savedStops: Record<string, Stop>;
+    savedRoutes: Record<string, Route>;
     searchHistory: Array<string>;
 }

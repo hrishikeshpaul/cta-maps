@@ -16,17 +16,18 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
-import { FavoriteIcon } from 'shared/favorite-icon/FavoriteIcon';
+import { SaveIcon } from 'shared/save-icon/SaveIcon';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions, getRouteColor } from 'store/data/DataService';
 import { Juncture, Prediction, RouteColor } from 'store/data/DataStore.Types';
 import { DownIcon, LocationArrowIcon } from 'utils/Icons';
 
 import 'shared/stop/Stop.scss';
+import { SaveStopIcon } from 'shared/save-icon/save-stop-icon/SaveStopIcon';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ stop, favoriteStops }, { closeStop, saveStop, unSaveStop }] = useDataStore();
+    const [{ stop, savedStops }, { closeStop, saveStop, unSaveStop }] = useDataStore();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [colors, setColors] = useState<RouteColor>({});
     const [loading, setLoading] = useState<boolean>(false);
@@ -40,12 +41,12 @@ export const Stop: FunctionComponent = () => {
     };
 
     useEffect(() => {
-        if (stop && favoriteStops[stop.id]) {
+        if (stop && savedStops[stop.id]) {
             setIsFav(true);
         } else {
             setIsFav(false);
         }
-    }, [favoriteStops, stop]); // eslint-disable-line
+    }, [savedStops, stop]); // eslint-disable-line
 
     useEffect(() => {
         if (stop) {
@@ -99,7 +100,7 @@ export const Stop: FunctionComponent = () => {
     };
 
     const onFavHandle = () => {
-        if (stop && favoriteStops[stop.id]) {
+        if (stop && savedStops[stop.id]) {
             unSaveStop(stop!.id);
         } else {
             saveStop(stop!);
@@ -225,7 +226,7 @@ export const Stop: FunctionComponent = () => {
                     <Button rightIcon={<LocationArrowIcon fontSize="22px" />} onClick={getGoogleMapsDir}>
                         <Text>{t('GET_DIR')}</Text>
                     </Button>
-                    <FavoriteIcon ariaLabel="favorite-stop" isFav={isFav} onClick={onFavHandle} />
+                    <SaveStopIcon />
                 </Flex>
             </BottomSheet.Footer>
         </BottomSheet.Wrapper>

@@ -7,12 +7,12 @@ import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 
 export const MapRender: FunctionComponent = () => {
-    const [{ favoriteRoutes }, { setRoute }] = useDataStore();
+    const [{ savedRoutes }, { setRoute }] = useDataStore();
     const [{ settings }] = useSystemStore();
 
     useEffect(() => {
         if (settings.showActiveRoutes) {
-            Object.values(favoriteRoutes).forEach((route) => {
+            Object.values(savedRoutes).forEach((route) => {
                 setRoute(route);
             });
         }

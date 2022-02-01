@@ -50,11 +50,11 @@ interface PayloadSetVehicle {
 }
 
 interface PayloadSetFavoriteRoutes {
-    favoriteRoutes: Record<string, Route>;
+    savedRoutes: Record<string, Route>;
 }
 
 interface PayloadSetFavoriteStops {
-    favoriteStops: Record<string, Stop>;
+    savedStops: Record<string, Stop>;
 }
 
 interface PayloadSetRoute {
@@ -108,8 +108,8 @@ export const initialStoreState: DataStoreState = {
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
     vehicles: [],
-    favoriteStops: JSON.parse(localStorage.getItem(FavoriteStopsKey) || '{}'),
-    favoriteRoutes: JSON.parse(localStorage.getItem(FavoriteRoutesKey) || '{}'),
+    savedStops: JSON.parse(localStorage.getItem(FavoriteStopsKey) || '{}'),
+    savedRoutes: JSON.parse(localStorage.getItem(FavoriteRoutesKey) || '{}'),
     searchHistory: [],
 };
 
@@ -160,22 +160,22 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
         case DataStoreActionType.SetFavoriteStops:
             localStorage.setItem(
                 FavoriteStopsKey,
-                JSON.stringify((action.payload as PayloadSetFavoriteStops).favoriteStops),
+                JSON.stringify((action.payload as PayloadSetFavoriteStops).savedStops),
             );
 
             return {
                 ...state,
-                favoriteStops: (action.payload as PayloadSetFavoriteStops).favoriteStops,
+                savedStops: (action.payload as PayloadSetFavoriteStops).savedStops,
             };
         case DataStoreActionType.SetFavoriteRoutes:
             localStorage.setItem(
                 FavoriteRoutesKey,
-                JSON.stringify((action.payload as PayloadSetFavoriteRoutes).favoriteRoutes),
+                JSON.stringify((action.payload as PayloadSetFavoriteRoutes).savedRoutes),
             );
 
             return {
                 ...state,
-                favoriteRoutes: (action.payload as PayloadSetFavoriteRoutes).favoriteRoutes,
+                savedRoutes: (action.payload as PayloadSetFavoriteRoutes).savedRoutes,
             };
         case DataStoreActionType.SetVehicle:
             return {
@@ -329,28 +329,28 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             onActive();
         },
         saveStop: (stop: Stop) => {
-            const favoriteStops = { ...state.favoriteStops };
+            const savedStops = { ...state.savedStops };
 
-            favoriteStops[stop.id] = stop;
-            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { favoriteStops } });
+            savedStops[stop.id] = stop;
+            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { savedStops } });
         },
         unSaveStop: (id: string) => {
-            const favoriteStops = { ...state.favoriteStops };
-            delete favoriteStops[id];
+            const savedStops = { ...state.savedStops };
+            delete savedStops[id];
 
-            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { favoriteStops } });
+            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { savedStops } });
         },
         saveRoute: (route: Route) => {
-            const favoriteRoutes = { ...state.favoriteRoutes };
+            const savedRoutes = { ...state.savedRoutes };
 
-            favoriteRoutes[route.route] = route;
-            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { favoriteRoutes } });
+            savedRoutes[route.route] = route;
+            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { savedRoutes } });
         },
         unSaveRoute: (id: string) => {
-            const favoriteRoutes = { ...state.favoriteRoutes };
-            delete favoriteRoutes[id];
+            const savedRoutes = { ...state.savedRoutes };
+            delete savedRoutes[id];
 
-            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { favoriteRoutes } });
+            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { savedRoutes } });
         },
         openVehicle: (vehicle: Vehicle) => {
             dispatch({ type: DataStoreActionType.SetVehicle, payload: { vehicle } });
