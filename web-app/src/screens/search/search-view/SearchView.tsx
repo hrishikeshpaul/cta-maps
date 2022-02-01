@@ -1,16 +1,15 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, IconButton, Tab, TabList, Tabs, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { RouteSelect } from 'screens/search/route-select/RouteSelect';
-import { useDataStore } from 'store/data/DataStore';
-import { SearchIcon } from 'utils/Icons';
 import { Screen } from 'shared/screen/Screen';
-import { useTranslation } from 'react-i18next';
+import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
-import { SCROLL_THRESHOLD } from 'utils/Constants';
+import { SearchIcon } from 'utils/Icons';
 
 const LIMIT = 16;
 
@@ -25,23 +24,14 @@ export const SearchView: FunctionComponent = () => {
     const [{ routes: currentRoutes }, { getRoutes, getTrainRoutes }] = useDataStore();
     const [
         {
-            ui: { scrollTop },
+            ui: { scrolledFromTop },
         },
     ] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(0);
     const [panelIndex, setPanelIndex] = useState<number[]>([]);
-    const [scrolled, setScrolled] = useState<boolean>(false);
     const bg = useColorModeValue('white', 'gray.800');
-
-    useEffect(() => {
-        if (scrollTop > SCROLL_THRESHOLD) {
-            setScrolled(true);
-        } else {
-            setScrolled(false);
-        }
-    }, [scrollTop]);
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -113,7 +103,7 @@ export const SearchView: FunctionComponent = () => {
     return (
         <Box>
             <Screen
-                pb={!scrolled ? '6' : '2'}
+                pb={!scrolledFromTop ? '6' : '2'}
                 title="SEARCH"
                 headerIcon={
                     <IconButton
@@ -134,7 +124,7 @@ export const SearchView: FunctionComponent = () => {
                 >
                     <TabList
                         position="fixed"
-                        top={!scrolled ? '156px' : '110px'}
+                        top={!scrolledFromTop ? '156px' : '110px'}
                         w="100%"
                         zIndex={1}
                         backgroundColor={bg}

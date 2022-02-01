@@ -17,13 +17,14 @@ import { MapLoader } from 'shared/map/Map';
 import { Search } from 'screens/search/Search';
 import { Settings } from 'screens/settings/Settings';
 import { SocketModule } from 'utils/SocketModule';
+import { SCROLL_THRESHOLD } from 'utils/Constants';
 
 const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
     const [, { onIdle, onActive }] = useDataStore();
-    const [{ systemLoading, ui }, { setUIScrollTop }] = useSystemStore();
+    const [{ systemLoading, ui }, { setUIScrolledFromTop }] = useSystemStore();
     const color = useColorModeValue('gray.700', 'gray.200');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
@@ -53,10 +54,10 @@ export const App = () => {
                     onScroll={(e: UIEvent<HTMLElement>) => {
                         const scroll = e.currentTarget.scrollTop;
 
-                        if (scroll >= 20 && ui.scrollTop === 0) {
-                            setUIScrollTop(21);
-                        } else if (scroll <= 20 && ui.scrollTop === 21) {
-                            setUIScrollTop(0);
+                        if (scroll >= SCROLL_THRESHOLD && !ui.scrolledFromTop) {
+                            setUIScrolledFromTop(true);
+                        } else if (scroll <= SCROLL_THRESHOLD && ui.scrolledFromTop) {
+                            setUIScrolledFromTop(false);
                         }
                     }}
                 >

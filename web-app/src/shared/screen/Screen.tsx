@@ -3,7 +3,7 @@ import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'reac
 import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { NAVBAR_HEIGHT, SCROLL_THRESHOLD } from '../../utils/Constants';
+import { NAVBAR_HEIGHT } from '../../utils/Constants';
 import { useSystemStore } from 'store/system/SystemStore';
 
 interface Props {
@@ -30,21 +30,9 @@ export const Screen: FunctionComponent<Props> = ({
     const bg = useColorModeValue('white', 'gray.800');
     const [
         {
-            ui: { scrollTop },
+            ui: { scrolledFromTop },
         },
     ] = useSystemStore();
-    const [scroll, setScroll] = useState<number>(0);
-    const [headerSize, setHeaderSize] = useState<number>(36);
-
-    useEffect(() => {
-        setScroll(scrollTop);
-
-        if (scrollTop > SCROLL_THRESHOLD) {
-            setHeaderSize(18);
-        } else {
-            setHeaderSize(36);
-        }
-    }, [scrollTop]);
 
     return (
         <Container maxW="container.sm" p="0" pt={NAVBAR_HEIGHT} position="relative">
@@ -56,7 +44,7 @@ export const Screen: FunctionComponent<Props> = ({
                 justifyContent="space-between"
                 alignItems="center"
                 px="4"
-                py={constantPadding ? '2' : scroll > SCROLL_THRESHOLD ? '2' : '6'}
+                py={constantPadding ? '2' : scrolledFromTop ? '2' : '6'}
                 pb={pb}
                 position="fixed"
                 bg={bg}
@@ -64,13 +52,17 @@ export const Screen: FunctionComponent<Props> = ({
                 transform="translate(-50%)"
                 zIndex={100}
                 transition="all 0.25s ease-in-out"
-                boxShadow={scroll > SCROLL_THRESHOLD ? 'xs' : 'none'}
+                boxShadow={scrolledFromTop ? 'xs' : 'none'}
             >
                 {header ? (
                     <>{header}</>
                 ) : (
                     <>
-                        <Text fontWeight="bold" fontSize={`${headerSize}px`} transition="all 0.25s ease-in-out">
+                        <Text
+                            fontWeight="bold"
+                            fontSize={scrolledFromTop ? '18px' : '36px'}
+                            transition="all 0.25s ease-in-out"
+                        >
                             {title && t(title)}
                         </Text>
                         {headerIcon}

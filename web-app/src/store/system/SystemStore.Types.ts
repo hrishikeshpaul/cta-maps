@@ -50,6 +50,6 @@ export interface SystemStoreState {
     patternLoading: boolean;
     settings: Setting;
     ui: {
-        scrollTop: number;
+        scrolledFromTop: boolean;
     };
 }
