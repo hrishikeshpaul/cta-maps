@@ -24,7 +24,7 @@ import { Screen } from 'shared/screen/Screen';
 
 export const Saved: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ savedStops, savedRoutes, routes }, { openStop, unSaveRoute, setRoute, removeRoute }] = useDataStore();
+    const [{ savedStops, savedRoutes, routes }, { openStop, setRoute, removeRoute }] = useDataStore();
     const bg = useColorModeValue('#ececec', '#4A5568');
 
     const onToggleRoute = (route: Route) => {

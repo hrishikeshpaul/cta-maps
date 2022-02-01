@@ -16,37 +16,27 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
-import { SaveIcon } from 'shared/save-icon/SaveIcon';
+import { SaveStopIcon } from 'shared/save-icon/save-stop-icon/SaveStopIcon';
 import { useDataStore } from 'store/data/DataStore';
 import { getPredictions, getRouteColor } from 'store/data/DataService';
 import { Juncture, Prediction, RouteColor } from 'store/data/DataStore.Types';
 import { DownIcon, LocationArrowIcon } from 'utils/Icons';
 
 import 'shared/stop/Stop.scss';
-import { SaveStopIcon } from 'shared/save-icon/save-stop-icon/SaveStopIcon';
 
 export const Stop: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [{ stop, savedStops }, { closeStop, saveStop, unSaveStop }] = useDataStore();
+    const [{ stop }, { closeStop }] = useDataStore();
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [colors, setColors] = useState<RouteColor>({});
     const [loading, setLoading] = useState<boolean>(false);
     const [routes, setRoutes] = useState<string[]>([]);
     const [filter, setFilter] = useState<Record<string, boolean>>({});
-    const [isFav, setIsFav] = useState<boolean>(false);
     const toast = useToast();
     const JunctureMapper = {
         [Juncture.A]: (time: number) => (time < 2 ? t('ARRIVE_SHORTLY') : `${t('ARRIVE')} ${time} mins`),
         [Juncture.D]: (time: number) => (time < 2 ? t('DEPART_SHORTLY') : `${t('DEPART')} ${time} mins`),
     };
-
-    useEffect(() => {
-        if (stop && savedStops[stop.id]) {
-            setIsFav(true);
-        } else {
-            setIsFav(false);
-        }
-    }, [savedStops, stop]); // eslint-disable-line
 
     useEffect(() => {
         if (stop) {
@@ -96,14 +86,6 @@ export const Stop: FunctionComponent = () => {
             setFilter({ ...oldFilter });
         } else {
             setFilter({ ...filter, [route]: true });
-        }
-    };
-
-    const onFavHandle = () => {
-        if (stop && savedStops[stop.id]) {
-            unSaveStop(stop!.id);
-        } else {
-            saveStop(stop!);
         }
     };
 
