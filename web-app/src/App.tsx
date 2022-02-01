@@ -25,7 +25,7 @@ const DEBOUNCE_TIME = 500; // ms
 export const App = () => {
     const [, { onIdle, onActive }] = useDataStore();
     const [{ systemLoading, ui }, { setUIScrolledFromTop }] = useSystemStore();
-    const color = useColorModeValue('gray.700', 'gray.200');
+    const color = useColorModeValue('gray.700', 'gray.50');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
         onIdle: () => {
