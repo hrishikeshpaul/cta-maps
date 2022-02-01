@@ -113,7 +113,7 @@ export const SearchView: FunctionComponent = () => {
     return (
         <Box>
             <Screen
-                pb="2"
+                pb={!scrolled ? '6' : '2'}
                 title="SEARCH"
                 headerIcon={
                     <IconButton
@@ -134,7 +134,7 @@ export const SearchView: FunctionComponent = () => {
                 >
                     <TabList
                         position="fixed"
-                        top={!scrolled ? '140px' : '110px'}
+                        top={!scrolled ? '156px' : '110px'}
                         w="100%"
                         zIndex={1}
                         backgroundColor={bg}
@@ -152,7 +152,7 @@ export const SearchView: FunctionComponent = () => {
                     </TabList>
                 </Tabs>
 
-                <Box pt="48px">
+                <Box pt="64px">
                     <RouteSelect routes={routes} onChange={setPanelIndex} expandedPanelIdx={panelIndex} />
                 </Box>
             </Screen>
