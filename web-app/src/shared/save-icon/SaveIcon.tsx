@@ -5,20 +5,20 @@ import { useTranslation } from 'react-i18next';
 
 import { HeartFillIcon, HeartIcon } from 'utils/Icons';
 
-export enum ButtonMode {
+export enum SaveIconMode {
     Full,
     Icon,
 }
 
 interface Props extends ButtonProps {
-    mode?: ButtonMode;
+    mode?: SaveIconMode;
     isFav: boolean;
 }
 
-export const SaveIcon: FC<Props> = ({ isFav, mode = ButtonMode.Icon, onClick }) => {
+export const SaveIcon: FC<Props> = ({ isFav, mode = SaveIconMode.Icon, onClick }) => {
     const { t } = useTranslation();
 
-    return mode === ButtonMode.Icon ? (
+    return mode === SaveIconMode.Icon ? (
         <IconButton
             fontSize="lg"
             aria-label="save-icon-button"

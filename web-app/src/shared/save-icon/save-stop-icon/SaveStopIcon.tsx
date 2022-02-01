@@ -1,18 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 
 import { useDataStore } from 'store/data/DataStore';
-import { SaveIcon } from 'shared/save-icon/SaveIcon';
-
-export enum ButtonMode {
-    Full,
-    Icon,
-}
+import { SaveIcon, SaveIconMode } from 'shared/save-icon/SaveIcon';
 
 interface Props {
-    mode?: ButtonMode;
+    mode?: SaveIconMode;
 }
 
-export const SaveStopIcon: FC<Props> = ({ mode = ButtonMode.Icon }) => {
+export const SaveStopIcon: FC<Props> = ({ mode = SaveIconMode.Icon }) => {
     const [{ savedStops, stop }, { saveStop, unSaveStop }] = useDataStore();
     const [isFav, setIsFav] = useState<boolean>(false);
 

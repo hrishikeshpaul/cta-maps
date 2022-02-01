@@ -16,6 +16,8 @@ import {
 
 import { useDataStore } from 'store/data/DataStore';
 import { Route, RouteType } from 'store/data/DataStore.Types';
+import { SaveRouteIcon } from 'shared/save-icon/save-route-icon/SaveRouteIcon';
+import { SaveIconMode } from 'shared/save-icon/SaveIcon';
 
 export interface RouteExtended extends Route {
     selected: boolean;
@@ -80,7 +82,9 @@ export const RouteOption: FunctionComponent<Props> = ({
                     </Flex>
                 </Box>
             </AccordionButton>
-            <AccordionPanel>{/* <SaveIcon /> */}</AccordionPanel>
+            <AccordionPanel p="4">
+                <SaveRouteIcon mode={SaveIconMode.Full} data={{ route, name, color, type }} />
+            </AccordionPanel>
             <Divider opacity="0.1" />
         </AccordionItem>
     );

@@ -9,9 +9,11 @@ import { useSystemStore } from 'store/system/SystemStore';
 
 interface Props {
     routes: RouteExtended[];
+    onChange?: (idx: number[]) => void;
+    expandedPanelIdx?: number[];
 }
 
-export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps }) => {
+export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, onChange, expandedPanelIdx }) => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { removeAllRoutes }] = useDataStore();
     const [{ routesLoading }] = useSystemStore();
@@ -50,7 +52,7 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps })
                     )}
                 </Flex>
 
-                <Accordion allowMultiple w="100%">
+                <Accordion index={expandedPanelIdx} allowMultiple w="100%" onChange={onChange}>
                     {routes.map((route) => (
                         <RouteOption onChange={setRoutes} routes={routes} currentRoute={route} key={route.route} />
                     ))}

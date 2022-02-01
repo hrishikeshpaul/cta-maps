@@ -36,7 +36,7 @@ export const Saved: FunctionComponent = () => {
     };
 
     return (
-        <Screen title="SAVED">
+        <Screen title="SAVED" pb="2">
             <Tabs isFitted my="4">
                 <TabList mx="4">
                     <Tab fontWeight="600">{t('STOPS')}</Tab>

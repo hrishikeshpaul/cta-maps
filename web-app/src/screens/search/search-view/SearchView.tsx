@@ -31,7 +31,7 @@ export const SearchView: FunctionComponent = () => {
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(0);
-
+    const [panelIndex, setPanelIndex] = useState<number[]>([]);
     const [scrolled, setScrolled] = useState<boolean>(false);
     const bg = useColorModeValue('white', 'gray.800');
 
@@ -125,7 +125,13 @@ export const SearchView: FunctionComponent = () => {
                     />
                 }
             >
-                <Tabs isFitted onChange={setIndex}>
+                <Tabs
+                    isFitted
+                    onChange={(idx) => {
+                        setIndex(idx);
+                        setPanelIndex([]);
+                    }}
+                >
                     <TabList
                         position="fixed"
                         top={!scrolled ? '140px' : '110px'}
@@ -147,7 +153,7 @@ export const SearchView: FunctionComponent = () => {
                 </Tabs>
 
                 <Box pt="48px">
-                    <RouteSelect routes={routes} />
+                    <RouteSelect routes={routes} onChange={setPanelIndex} expandedPanelIdx={panelIndex} />
                 </Box>
             </Screen>
         </Box>
