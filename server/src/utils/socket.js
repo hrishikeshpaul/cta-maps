@@ -84,7 +84,9 @@ class SocketConnection {
     }
 
     remove(route, type) {
-        if (this.routes[TypeMapper[type]][route]) delete this.routes[TypeMapper[type]][route];
+        if (this.routes[TypeMapper[type]][route]) {
+            delete this.routes[TypeMapper[type]][route];
+        }
 
         if (Object.keys(this.routes.bus).length === 0 && Object.keys(this.routes.train).length === 0) {
             this.stop_timer();
@@ -93,7 +95,10 @@ class SocketConnection {
 
     remove_all() {
         this.stop_timer();
-        this.routes = {};
+        this.routes = {
+            bus: {},
+            train: {},
+        };
     }
 
     async get_vehicles(routes, color) {

@@ -82,7 +82,7 @@ export const RouteOption: FunctionComponent<Props> = ({
                     </Flex>
                 </Box>
             </AccordionButton>
-            <AccordionPanel p="4">
+            <AccordionPanel p="4" display="flex" justifyContent="center">
                 <SaveRouteIcon mode={SaveIconMode.Full} data={{ route, name, color, type }} />
             </AccordionPanel>
             <Divider opacity="0.1" />
