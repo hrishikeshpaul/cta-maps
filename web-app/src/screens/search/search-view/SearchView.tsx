@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { Box, IconButton, Tab, TabList, Tabs, useColorModeValue } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +8,6 @@ import { RouteSelect } from 'screens/search/route-select/RouteSelect';
 import { useDataStore } from 'store/data/DataStore';
 import { SearchIcon } from 'utils/Icons';
 import { Screen } from 'shared/screen/Screen';
-import { Inspector } from 'shared/inspector/Inspector';
-import { Route } from 'store/data/DataStore.Types';
 import { useTranslation } from 'react-i18next';
 import { useSystemStore } from 'store/system/SystemStore';
 import { SCROLL_THRESHOLD } from 'utils/Constants';
@@ -21,7 +19,7 @@ enum TabIndex {
     Train,
 }
 
-export const SearchViewR: FunctionComponent = () => {
+export const SearchView: FunctionComponent = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [{ routes: currentRoutes }, { getRoutes, getTrainRoutes }] = useDataStore();
@@ -33,7 +31,6 @@ export const SearchViewR: FunctionComponent = () => {
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(0);
-    const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '', type: 'B' });
 
     const [scrolled, setScrolled] = useState<boolean>(false);
     const bg = useColorModeValue('white', 'gray.800');
@@ -84,6 +81,8 @@ export const SearchViewR: FunctionComponent = () => {
     };
 
     useEffect(() => {
+        console.log('index');
+
         (async () => {
             setRoutes([]);
 
@@ -115,7 +114,6 @@ export const SearchViewR: FunctionComponent = () => {
 
     return (
         <Box>
-            <Inspector data={inspectorData} />
             <Screen
                 pb="2"
                 title="SEARCH"
@@ -141,21 +139,19 @@ export const SearchViewR: FunctionComponent = () => {
                         transform="translate(-50%)"
                         maxW="container.sm"
                     >
-                        <Tab fontSize="sm" fontWeight={500}>
+                        <Tab fontSize="sm" fontWeight="600">
                             {t('BUS')}
                         </Tab>
-                        <Tab fontSize="sm" fontWeight={500}>
+                        <Tab fontSize="sm" fontWeight="600">
                             {t('TRAIN')}
                         </Tab>
                     </TabList>
                 </Tabs>
 
                 <Box pt="48px">
-                    <RouteSelect onInspectorData={setInspectorData} routes={routes} query="" />
+                    <RouteSelect routes={routes} />
                 </Box>
             </Screen>
         </Box>
     );
 };
-
-export const SearchView = React.memo(SearchViewR);

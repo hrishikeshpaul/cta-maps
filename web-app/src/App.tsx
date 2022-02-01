@@ -23,7 +23,7 @@ const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
     const [, { onIdle, onActive }] = useDataStore();
-    const [{ systemLoading }, { setUIScrollTop }] = useSystemStore();
+    const [{ systemLoading, ui }, { setUIScrollTop }] = useSystemStore();
     const color = useColorModeValue('gray.700', 'gray.200');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
@@ -51,7 +51,13 @@ export const App = () => {
                     id="main"
                     overflow="auto"
                     onScroll={(e: UIEvent<HTMLElement>) => {
-                        setUIScrollTop(e.currentTarget.scrollTop);
+                        const scroll = e.currentTarget.scrollTop;
+
+                        if (scroll >= 20 && ui.scrollTop === 0) {
+                            setUIScrollTop(21);
+                        } else if (scroll <= 20 && ui.scrollTop === 21) {
+                            setUIScrollTop(0);
+                        }
                     }}
                 >
                     <MapLoader>

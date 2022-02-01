@@ -1,6 +1,6 @@
 [
     {
-        "name": "Red Line (Howard-95th/Dan Ryan)",
+        "name": "Red (Howard-95th/Dan Ryan)",
         "route": "red",
         "color": "#c60c30",
         "routes": [
@@ -15,7 +15,7 @@
         ]
     },
     {
-        "name": "Blue Line (O'Hare-Forest Park)",
+        "name": "Blue (O'Hare-Forest Park)",
         "route": "blue",
         "color": "#00a1de",
         "routes": [
@@ -30,7 +30,7 @@
         ]
     },
     {
-        "name": "Brown Line (Kimball-Loop)",
+        "name": "Brown (Kimball-Loop)",
         "route": "brwn",
         "color": "#62361b",
         "routes": [
@@ -45,7 +45,7 @@
         ]
     },
     {
-        "name": "Green Line (Harlem/Lake-Ashland/63rd-Cottage Grove)",
+        "name": "Green (Harlem/Lake-Ashland/63rd-Cottage Grove)",
         "route": "g",
         "color": "#009b3a",
         "routes": [
@@ -62,7 +62,7 @@
         ]
     },
     {
-        "name": "Orange Line (Midway-Loop)",
+        "name": "Orange (Midway-Loop)",
         "route": "org",
         "color": "#f9461c",
         "routes": [
@@ -77,7 +77,7 @@
         ]
     },
     {
-        "name": "Purple Line (Linden-Howard)",
+        "name": "Purple (Linden-Howard)",
         "route": "p",
         "color": "#522398",
         "routes": [
@@ -92,7 +92,7 @@
         ]
     },
     {
-        "name": "Pink Line (54th/Cermak-Loop)",
+        "name": "Pink (54th/Cermak-Loop)",
         "route": "pink",
         "color": "#e27ea6",
         "routes": [
@@ -107,7 +107,7 @@
         ]
     },
     {
-        "name": "Yellow Line (Skokie-Howard)",
+        "name": "Yellow (Skokie-Howard)",
         "route": "y",
         "color": "#f9e300",
         "routes": [
