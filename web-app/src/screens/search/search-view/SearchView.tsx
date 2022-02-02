@@ -10,6 +10,7 @@ import { Screen } from 'shared/screen/Screen';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 import { SearchIcon } from 'utils/Icons';
+import { RouteType } from 'store/data/DataStore.Types';
 
 const LIMIT = 16;
 
@@ -31,6 +32,7 @@ export const SearchView: FunctionComponent = () => {
     const [query, setQuery] = useState<string>('');
     const [index, setIndex] = useState<number>(0);
     const [panelIndex, setPanelIndex] = useState<number[]>([]);
+    const [routeType, setRouteType] = useState<RouteType>(RouteType.Bus);
     const bg = useColorModeValue('white', 'gray.800');
 
     const getFilter = () => {
@@ -75,8 +77,10 @@ export const SearchView: FunctionComponent = () => {
             setRoutes([]);
 
             if (index === TabIndex.Bus) {
+                setRouteType(RouteType.Bus);
                 await getBusRoutes();
             } else {
+                setRouteType(RouteType.Train);
                 await computeTrainRoutes();
             }
         })();
@@ -143,7 +147,12 @@ export const SearchView: FunctionComponent = () => {
                 </Tabs>
 
                 <Box pt="64px">
-                    <RouteSelect routes={routes} onChange={setPanelIndex} expandedPanelIdx={panelIndex} />
+                    <RouteSelect
+                        type={routeType}
+                        routes={routes}
+                        onChange={setPanelIndex}
+                        expandedPanelIdx={panelIndex}
+                    />
                 </Box>
             </Screen>
         </Box>

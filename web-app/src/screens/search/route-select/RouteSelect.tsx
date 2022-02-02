@@ -6,14 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { RouteOption, RouteExtended } from 'screens/search/route-select/RouteOption';
 import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
+import { RouteType } from 'store/data/DataStore.Types';
 
 interface Props {
     routes: RouteExtended[];
     onChange?: (idx: number[]) => void;
     expandedPanelIdx?: number[];
+    type?: RouteType;
 }
 
-export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, onChange, expandedPanelIdx }) => {
+export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, onChange, expandedPanelIdx, type }) => {
     const { t } = useTranslation();
     const [{ routes: currentRoutes }, { removeAllRoutes }] = useDataStore();
     const [{ routesLoading }] = useSystemStore();
@@ -54,7 +56,25 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, o
 
                 <Accordion index={expandedPanelIdx} allowMultiple w="100%" onChange={onChange}>
                     {routes.map((route) => (
-                        <RouteOption onChange={setRoutes} routes={routes} currentRoute={route} key={route.route} />
+                        <>
+                            {type ? (
+                                type === route.type && (
+                                    <RouteOption
+                                        onChange={setRoutes}
+                                        routes={routes}
+                                        currentRoute={route}
+                                        key={route.route}
+                                    />
+                                )
+                            ) : (
+                                <RouteOption
+                                    onChange={setRoutes}
+                                    routes={routes}
+                                    currentRoute={route}
+                                    key={route.route}
+                                />
+                            )}
+                        </>
                     ))}
                 </Accordion>
 

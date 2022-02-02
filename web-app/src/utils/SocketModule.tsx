@@ -29,7 +29,7 @@ export const SocketModule: FunctionComponent = () => {
                     duration: null,
                     
                 });
-                removeAllRoutes();
+                // removeAllRoutes();
             });
 
             socket.on('connect', () => {
@@ -48,7 +48,7 @@ export const SocketModule: FunctionComponent = () => {
                     description: t('SERVER_ERROR'),
                     status: 'error',
                 });
-                removeAllRoutes();
+                // removeAllRoutes();
             });
         }
     }, [socket]); // eslint-disable-line

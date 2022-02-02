@@ -21,13 +21,25 @@ router.get('/patterns', async (req, res) => {
 
     try {
         let data = await getPatterns(route);
+        const patterns = [];
 
-        data.forEach((item) => ({
-            ...item,
-            color,
-        }));
+        data.forEach((item) => {
+            const pattern = {
+                fillColor: color,
+                strokeColor: color,
+                id: item.id,
+                route,
+                paths: []
+            };
 
-        res.send(data);
+            item.shape.forEach((s) => {
+                pattern.paths = s.paths.map(p => ({...p, latitude: p.lat, longitude: p.lng}))
+            }); 
+
+            patterns.push(pattern);
+        });
+
+        res.send(patterns);
     } catch (err) {
         res.send(err).status(400);
     }

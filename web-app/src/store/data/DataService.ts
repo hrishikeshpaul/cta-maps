@@ -56,6 +56,17 @@ export const getTrainRoutes = async (): Promise<Route[]> => {
     return data;
 };
 
+export const getTrainPatterns = async (route: string, color: string): Promise<Pattern[]> => {
+    const { data } = await Http.get<Pattern[]>('/train/patterns', {
+        params: {
+            route,
+            color,
+        },
+    });
+
+    return data;
+};
+
 export const onRouteSelect = (route: string, color: string, type: RouteType): void => {
     /**
      * For devices that have saved busses before

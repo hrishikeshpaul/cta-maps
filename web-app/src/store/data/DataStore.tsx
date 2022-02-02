@@ -6,6 +6,7 @@ import {
     cancelGetPattern,
     getPattern,
     getRoutes,
+    getTrainPatterns,
     getTrainRoutes,
     onActive,
     onIdle,
@@ -288,11 +289,18 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: true } });
 
             try {
-                const response = await getPattern(route.route, route.color);
+                if (route.type === RouteType.Bus) {
+                    const response = await getPattern(route.route, route.color);
 
-                onRouteSelect(route.route, route.color, route.type as RouteType);
-                systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
-                dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
+                    onRouteSelect(route.route, route.color, route.type as RouteType);
+                    systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
+                    dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
+                } else {
+                    const response = await getTrainPatterns(route.route, route.color);
+
+                    systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
+                    dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
+                }
             } catch (err: any) {
                 systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
                 if (err.response) {

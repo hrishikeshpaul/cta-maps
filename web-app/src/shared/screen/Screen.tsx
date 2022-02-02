@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useEffect, useState, UIEvent } from 'react';
+import { FunctionComponent, ReactNode, UIEvent } from 'react';
 
 import { Box, Container, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';

@@ -3,7 +3,6 @@
 const fs = require('fs');
 
 const Trip = require('../../utils/db/schemas/trips-schema');
-const Shape = require('../../utils/db/schemas/shapes-schema');
 const { cache, cacheKeys } = require('../../utils/cache');
 
 const getRoutes = async () => {
@@ -28,7 +27,7 @@ const getRoutes = async () => {
     return data;
 };
 
-const getPatterns = (route) => {
+const getPatterns = async (route) => {
     const key = cacheKeys.pattern(route);
     const pattern = cache.get(key);
 
@@ -39,7 +38,7 @@ const getPatterns = (route) => {
 
     const routeId = route.charAt(0).toUpperCase() + route.slice(1);
 
-    Trip.aggregate([
+    const response = await Trip.aggregate([
         {
             $lookup: {
                 from: 'shapes',
@@ -59,16 +58,21 @@ const getPatterns = (route) => {
                 id: 1,
             },
         },
-    ]).exec((err, res) => {
-        if (err) {
-            console.log(err);
-            throw err;
-        } else {
-            cache.log_miss(key);
-            cache.set(key, res);
-            return res;
-        }
-    });
+    ]);
+    // .exec((err, res) => {
+    //     if (err) {
+    //         console.log(err);
+    //         throw err;
+    //     } else {
+
+    //         return res;
+    //     }
+    // });
+
+    cache.log_miss(key);
+    cache.set(key, response);
+
+    return response;
 };
 
 module.exports = {
