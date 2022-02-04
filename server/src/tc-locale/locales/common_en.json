@@ -67,5 +67,7 @@
     "HISTORY": "HISTORY",
     "BUS": "Bus",
     "TRAIN": "Train",
-    "DELETE_ALL": "Delete All"
+    "DELETE_ALL": "Delete All",
+    "DESELECT_BUSSES": "Deselect Busses",
+    "DESELECT_TRAINS": "Deselect Trains"
 }

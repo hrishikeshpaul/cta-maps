@@ -66,6 +66,10 @@ interface PayloadRemoveRoute {
     id: string;
 }
 
+interface PayloadRemoveAllRoutes {
+    type?: RouteType;
+}
+
 interface PayloadSetPattern {
     pattern: Pattern[];
 }
@@ -87,6 +91,7 @@ interface DataStoreAction {
     payload?:
         | PayloadSetRoute
         | PayloadRemoveRoute
+        | PayloadRemoveAllRoutes
         | PayloadSetPattern
         | PayloadSetStop
         | PayloadSetCurrentLocation
@@ -136,7 +141,23 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
                 vehicles: [...updatedVehicles],
             };
         case DataStoreActionType.RemoveAllRoutes:
-            return { ...state, routes: {}, patterns: [], vehicles: [] };
+            const { type } = action.payload as PayloadRemoveAllRoutes;
+            if (type === RouteType.All) {
+                return { ...state, routes: {}, patterns: [], vehicles: [] };
+            } else {
+                const currentRoutes = { ...state.routes };
+                const updatedPatterns = state.patterns.filter((pattern) => pattern.type !== type);
+                const updatedVehicles = state.vehicles.filter((vehicle) => vehicle.type !== type);
+                const updatedRoutes = Object.values(currentRoutes).reduce((acc: Record<string, Route>, route) => {
+                    if (!acc[route.route] && route.type !== type) {
+                        acc[route.route] = route;
+                    }
+
+                    return acc;
+                }, {});
+
+                return { ...state, routes: updatedRoutes, patterns: updatedPatterns, vehicles: updatedVehicles };
+            }
         case DataStoreActionType.SetPattern:
             return {
                 ...state,
@@ -229,7 +250,7 @@ interface DataStoreActionApis {
     getTrainRoutes: (filter?: string) => Promise<Route[] | null>;
     setRoute: (route: Route) => void;
     removeRoute: (id: string, type: RouteType) => void;
-    removeAllRoutes: () => void;
+    removeAllRoutes: (type?: RouteType) => void;
     openStop: (stop: Stop) => void;
     closeStop: () => void;
     setCurrentLocation: (location: Point) => void;
@@ -309,13 +330,12 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             }
         },
         removeRoute: (id: string, type: RouteType) => {
-            console.log({ id, type });
             cancelGetPattern();
             onRouteDeselect(id, type);
             dispatch({ type: DataStoreActionType.RemoveRoute, payload: { id } });
         },
-        removeAllRoutes: () => {
-            onRouteRemoveAll();
+        removeAllRoutes: (type?: RouteType) => {
+            onRouteRemoveAll(type);
             dispatch({ type: DataStoreActionType.RemoveAllRoutes });
         },
         openStop: (stop: Stop) => {

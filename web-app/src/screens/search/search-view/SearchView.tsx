@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, IconButton, Tab, TabList, Tabs, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ import { useDataStore } from 'store/data/DataStore';
 import { useSystemStore } from 'store/system/SystemStore';
 import { SearchIcon } from 'utils/Icons';
 import { RouteType } from 'store/data/DataStore.Types';
+import { RouteDeselect } from '../route-deselect/RouteDeselect';
 
 const LIMIT = 16;
 
@@ -18,6 +19,11 @@ enum TabIndex {
     Bus,
     Train,
 }
+
+const indexToRouteTypeMap: Record<TabIndex, RouteType> = {
+    [TabIndex.Bus]: RouteType.Bus,
+    [TabIndex.Train]: RouteType.Train,
+};
 
 export const SearchView: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -148,6 +154,12 @@ export const SearchView: FunctionComponent = () => {
                 </Tabs>
 
                 <Box pt="64px">
+                    <Flex justifyContent="space-between" px="4" pb="2">
+                        <Text fontSize="sm" fontWeight="600" opacity="0.7">
+                            {t('ALL_ROUTES')}
+                        </Text>
+                        <RouteDeselect type={indexToRouteTypeMap[index as TabIndex]} />
+                    </Flex>
                     <RouteSelect
                         type={routeType}
                         routes={routes}

@@ -87,7 +87,7 @@ export const onRouteDeselect = (route: string, type: RouteType): void => {
     socket.emit('route-remove', { route, type: savedType });
 };
 
-export const onRouteRemoveAll = (): void => {
+export const onRouteRemoveAll = (type?: RouteType): void => {
     socket.emit('route-remove-all');
 };
 

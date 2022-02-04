@@ -22,6 +22,7 @@ export enum Juncture {
 export enum RouteType {
     Bus = 'B',
     Train = 'T',
+    All = 'A',
 }
 
 export interface Route {
@@ -54,6 +55,7 @@ export interface Pattern {
     route: string;
     paths: Point[];
     stops: Stop[];
+    type: RouteType;
 }
 
 export interface Vehicle {
@@ -65,6 +67,7 @@ export interface Vehicle {
     delayed: boolean;
     color: string;
     heading: number;
+    type: RouteType;
 }
 
 export interface Prediction {

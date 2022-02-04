@@ -1,7 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Button, Flex, Spinner, Center, Text, useColorModeValue, Accordion } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Box, Spinner, Center, Accordion } from '@chakra-ui/react';
 
 import { RouteOption, RouteExtended } from 'screens/search/route-select/RouteOption';
 import { useDataStore } from 'store/data/DataStore';
@@ -16,11 +15,9 @@ interface Props {
 }
 
 export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, onChange, expandedPanelIdx, type }) => {
-    const { t } = useTranslation();
-    const [{ routes: currentRoutes }, { removeAllRoutes }] = useDataStore();
+    const [{ routes: currentRoutes }] = useDataStore();
     const [{ routesLoading }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>(routesAsProps);
-    const deselectFontColor = useColorModeValue('blue.500', 'blue.200');
 
     useEffect(() => {
         setRoutes(routesAsProps);
@@ -43,38 +40,17 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, o
     return (
         <>
             <Box pb="4">
-                <Flex justifyContent="space-between" px="4" pb="2">
-                    <Text fontSize="sm" fontWeight="600" opacity="0.7">
-                        {t('ALL_ROUTES')}
-                    </Text>
-                    {Object.keys(currentRoutes).length > 0 && (
-                        <Button variant="link" size="sm" color={deselectFontColor} onClick={removeAllRoutes}>
-                            {t('DESELECT_ALL')} ({Object.keys(currentRoutes).length})
-                        </Button>
-                    )}
-                </Flex>
-
                 <Accordion index={expandedPanelIdx} allowMultiple w="100%" onChange={onChange}>
                     {routes.map((route) => (
-                        <>
+                        <Box key={route.route}>
                             {type ? (
                                 type === route.type && (
-                                    <RouteOption
-                                        onChange={setRoutes}
-                                        routes={routes}
-                                        currentRoute={route}
-                                        key={route.route}
-                                    />
+                                    <RouteOption onChange={setRoutes} routes={routes} currentRoute={route} />
                                 )
                             ) : (
-                                <RouteOption
-                                    onChange={setRoutes}
-                                    routes={routes}
-                                    currentRoute={route}
-                                    key={route.route}
-                                />
+                                <RouteOption onChange={setRoutes} routes={routes} currentRoute={route} />
                             )}
-                        </>
+                        </Box>
                     ))}
                 </Accordion>
 

@@ -113,6 +113,7 @@ router.get('/patterns', async (req, res) => {
                 strokeColor: color,
                 dir: item.dir,
                 id: item.pid,
+                type: 'B',
                 route,
                 paths,
                 stops,
