@@ -120,6 +120,18 @@ const getStops = async (route) => {
     return response;
 };
 
+const getTrains = async (routes) => {
+    const { data, error } = await Http.get('/getvehicles', {
+        params: { rt: routes },
+    });
+
+    if (error) {
+        throw error;
+    }
+
+    return data['vehicle'];
+};
+
 module.exports = {
     getRoutes,
     getPatterns,

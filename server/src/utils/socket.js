@@ -94,12 +94,24 @@ class SocketConnection {
         }
     }
 
-    remove_all() {
-        this.stop_timer();
-        this.routes = {
-            bus: {},
-            train: {},
-        };
+    remove_all({ type }) {
+        switch (type) {
+            case 'A':
+                this.routes = {
+                    bus: {},
+                    train: {},
+                };
+                break;
+            case 'B':
+                this.routes = { ...this.routes, bus: {} };
+                break;
+            case 'T':
+                this.routes = { ...this.routes, train: {} };
+        }
+
+        if (keys(this.routes.bus).length === 0 && keys(this.routes.train).length === 0) {
+            this.stop_timer();
+        }
     }
 
     async get_vehicles(routes, color) {
@@ -147,10 +159,10 @@ const onDisconnect = (socket) => {
     delete connectedSockets[socket.id];
 };
 
-const onRemoveAll = (socket) => {
-    log(Events.RouteRemoveAll, socket.id);
+const onRemoveAll = (socket, type) => {
+    log(Events.RouteRemoveAll, `${type.type} - ${socket.id}`);
 
-    connectedSockets[socket.id].remove_all();
+    connectedSockets[socket.id].remove_all(type);
 };
 
 const onIdle = (socket) => {

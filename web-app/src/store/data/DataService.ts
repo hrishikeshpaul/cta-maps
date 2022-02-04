@@ -88,7 +88,7 @@ export const onRouteDeselect = (route: string, type: RouteType): void => {
 };
 
 export const onRouteRemoveAll = (type?: RouteType): void => {
-    socket.emit('route-remove-all');
+    socket.emit('route-remove-all', { type });
 };
 
 export const onIdle = (): void => {
