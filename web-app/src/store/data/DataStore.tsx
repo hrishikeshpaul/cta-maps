@@ -336,7 +336,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
         },
         removeAllRoutes: (type?: RouteType) => {
             onRouteRemoveAll(type);
-            dispatch({ type: DataStoreActionType.RemoveAllRoutes });
+            dispatch({ type: DataStoreActionType.RemoveAllRoutes, payload: { type } });
         },
         openStop: (stop: Stop) => {
             dispatch({ type: DataStoreActionType.SetStop, payload: { stop } });

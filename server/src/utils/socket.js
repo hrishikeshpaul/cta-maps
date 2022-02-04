@@ -6,6 +6,7 @@ const { socketLogger: log } = require('../utils/logger');
 const { getVehicles } = require('../tc-app/bus/bus-service');
 
 const TIMER = 3000; //ms
+const keys = Object.keys;
 
 const Events = {
     Connection: 'connection',
@@ -41,7 +42,7 @@ class SocketConnection {
 
         this.timer = setInterval(async () => {
             try {
-                const routeStr = Object.keys(that.routes.bus).join(',');
+                const routeStr = keys(that.routes.bus).join(',');
                 const data = await that.get_vehicles(routeStr, null);
 
                 that.socket.emit(Events.UpdateVehicles, data);
@@ -88,7 +89,7 @@ class SocketConnection {
             delete this.routes[TypeMapper[type]][route];
         }
 
-        if (Object.keys(this.routes.bus).length === 0 && Object.keys(this.routes.train).length === 0) {
+        if (keys(this.routes.bus).length === 0 && keys(this.routes.train).length === 0) {
             this.stop_timer();
         }
     }
@@ -163,7 +164,7 @@ const onActive = (socket) => {
 
     const connection = connectedSockets[socket.id];
 
-    if (connection && Object.keys(connection.routes).length) {
+    if (connection && (keys(connection.routes.bus).length || keys(connection.routes.train).length)) {
         connectedSockets[socket.id].start_timer();
     }
 };

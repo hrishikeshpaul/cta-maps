@@ -19,7 +19,8 @@ import { Settings } from 'screens/settings/Settings';
 import { SocketModule } from 'utils/SocketModule';
 import { SCROLL_THRESHOLD } from 'utils/Constants';
 
-const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
+// const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
+const IDLE_TIME = 5000;
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
