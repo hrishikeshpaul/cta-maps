@@ -179,36 +179,39 @@ export const MapContainer: FunctionComponent = () => {
                 {settings.allowLocation && <Marker icon="/location.svg" position={currentLocation} />}
                 {vehicles && (
                     <>
-                        {vehicles.map((vehicle) => (
-                            <Marker
-                                onClick={() => openVehicle(vehicle)}
-                                label={{
-                                    text: vehicle.route,
-                                    fontWeight: 'bold',
-                                    fontSize: getMarkerLabelSize(vehicle.route),
-                                    fontFamily: 'Inter',
-                                    color: 'white',
-                                }}
-                                icon={{
-                                    path: busIcon[settings.busIcon].path,
-                                    strokeColor:
-                                        settings.colorMode === ColorMode.Light
-                                            ? tinycolor(vehicle.color).darken(20).toString()
-                                            : tinycolor(vehicle.color).lighten(26).toString(),
-                                    strokeWeight: 2,
-                                    fillColor: vehicle.color,
-                                    fillOpacity: 1,
-                                    scale: busIcon[settings.busIcon].scale,
-                                    rotation: vehicle.heading,
-                                    anchor: busIcon[settings.busIcon].anchor,
-                                    labelOrigin: busIcon[settings.busIcon].labelOrigin,
-                                }}
-                                position={vehicle.position}
-                                key={vehicle.id}
-                                visible={map?.getBounds()?.contains(vehicle.position)}
-                                zIndex={5}
-                            />
-                        ))}
+                        {vehicles.map((vehicle) => {
+                            console.log(vehicle);
+                            return (
+                                <Marker
+                                    onClick={() => openVehicle(vehicle)}
+                                    label={{
+                                        text: vehicle.route,
+                                        fontWeight: 'bold',
+                                        fontSize: getMarkerLabelSize(vehicle.route),
+                                        fontFamily: 'Inter',
+                                        color: 'white',
+                                    }}
+                                    icon={{
+                                        path: busIcon[settings.busIcon].path,
+                                        strokeColor:
+                                            settings.colorMode === ColorMode.Light
+                                                ? tinycolor(vehicle.color).darken(20).toString()
+                                                : tinycolor(vehicle.color).lighten(26).toString(),
+                                        strokeWeight: 2,
+                                        fillColor: vehicle.color,
+                                        fillOpacity: 1,
+                                        scale: busIcon[settings.busIcon].scale,
+                                        rotation: vehicle.heading,
+                                        anchor: busIcon[settings.busIcon].anchor,
+                                        labelOrigin: busIcon[settings.busIcon].labelOrigin,
+                                    }}
+                                    position={vehicle.position}
+                                    key={vehicle.id}
+                                    visible={map?.getBounds()?.contains(vehicle.position)}
+                                    zIndex={5}
+                                />
+                            );
+                        })}
                     </>
                 )}
                 {lines.map((line: Line) => (

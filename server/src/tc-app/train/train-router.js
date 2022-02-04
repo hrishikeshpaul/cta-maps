@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const { getRoutes, getPatterns, getStops } = require('./train-service');
+const { getRoutes, getPatterns, getStops, getTrains } = require('./train-service');
 
 const router = express.Router();
 
@@ -72,6 +72,14 @@ router.get('/stops', async (req, res) => {
     } catch (err) {
         res.send(err).status(400);
     }
+});
+
+router.get('/trains', async (req, res) => {
+    const { route } = req.query;
+
+    const data = await getTrains(route);
+
+    res.send(data);
 });
 
 module.exports = router;

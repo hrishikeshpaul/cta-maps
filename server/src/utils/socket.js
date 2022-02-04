@@ -4,6 +4,7 @@ const _ = require('lodash');
 const { socketLogger: log } = require('../utils/logger');
 
 const { getVehicles } = require('../tc-app/bus/bus-service');
+const { getTrains } = require('../tc-app/train/train-service');
 
 const TIMER = 3000; //ms
 const keys = Object.keys;
@@ -42,10 +43,18 @@ class SocketConnection {
 
         this.timer = setInterval(async () => {
             try {
-                const routeStr = keys(that.routes.bus).join(',');
-                const data = await that.get_vehicles(routeStr, null);
+                const trainRouteStr = keys(that.routes.train).join(',');
+                const busRouteStr = keys(that.routes.bus).join(',');
 
-                that.socket.emit(Events.UpdateVehicles, data);
+                if (busRouteStr) {
+                    const busData = await that.get_vehicles(busRouteStr, null);
+                    that.socket.emit(Events.UpdateVehicles, busData);
+                }
+
+                if (trainRouteStr) {
+                    const trainData = await that.get_trains(trainRouteStr, null);
+                    that.socket.emit(Events.UpdateVehicles, trainData);
+                }
             } catch (err) {
                 console.log(err);
                 that.socket.emit(Events.ServerError);
@@ -64,6 +73,7 @@ class SocketConnection {
             switch (routeObj.type) {
                 case 'B':
                     const data = await this.get_vehicles(routeObj.route, routeObj.color);
+
                     this.routes.bus[routeObj.route] = routeObj;
 
                     if (this.timer === null) {
@@ -73,12 +83,21 @@ class SocketConnection {
                     this.socket.emit(Events.UpdateVehicles, data);
                     break;
                 case 'T':
-                    console.log(routeObj);
+                    const trainData = await this.get_trains(routeObj.route, routeObj.color);
+
+                    this.routes.train[routeObj.route] = routeObj;
+
+                    if (this.timer === null) {
+                        this.start_timer();
+                    }
+
+                    this.socket.emit(Events.UpdateVehicles, trainData);
                     break;
                 default:
                     throw Error(`Invalid type - ${routeObj.type}`);
             }
         } catch (err) {
+            console.log(err);
             this.socket.emit(Events.Error, err);
             log(Events.ServerError, JSON.stringify(err));
         }
@@ -135,6 +154,36 @@ class SocketConnection {
         }));
 
         return data;
+    }
+
+    async get_trains(routes, color) {
+        const data = await getTrains(routes);
+        const trains = [];
+
+        data.forEach((item) => {
+            item.train.forEach((train) => {
+                const newTrain = {
+                    id: train.rn,
+                    position: {
+                        lat: parseFloat(train.lat),
+                        lng: parseFloat(train.lon),
+                        latitude: parseFloat(train.lat),
+                        longitude: parseFloat(train.lon),
+                    },
+                    destination: train.destNm,
+                    nextStop: train.nextStaNm,
+                    nextStopId: train.nextStaId,
+                    delayed: train.isDly === '0' ? false : true,
+                    heading: parseInt(train.heading, 10),
+                    color: color || this.routes.train[item['@name']].color,
+                    route: item['@name'],
+                };
+
+                trains.push(newTrain);
+            });
+        });
+
+        return trains;
     }
 }
 

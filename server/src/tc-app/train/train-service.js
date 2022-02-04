@@ -6,6 +6,7 @@ const Trip = require('../../utils/db/schemas/trips-schema');
 const Stop = require('../../utils/db/schemas/stops-schema');
 
 const { cache, cacheKeys } = require('../../utils/cache');
+const { TrainHttp: Http } = require('../../utils/http');
 
 const getRoutes = async () => {
     const key = cacheKeys.trainRoutes;
@@ -121,7 +122,7 @@ const getStops = async (route) => {
 };
 
 const getTrains = async (routes) => {
-    const { data, error } = await Http.get('/getvehicles', {
+    const { data, error } = await Http.get('/ttpositions.aspx', {
         params: { rt: routes },
     });
 
@@ -129,11 +130,12 @@ const getTrains = async (routes) => {
         throw error;
     }
 
-    return data['vehicle'];
+    return data['route'];
 };
 
 module.exports = {
     getRoutes,
     getPatterns,
     getStops,
+    getTrains,
 };

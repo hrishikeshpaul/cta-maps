@@ -319,6 +319,7 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
                 } else {
                     const response = await getTrainPatterns(route.route, route.color);
 
+                    onRouteSelect(route.route, route.color, route.type as RouteType);
                     systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
                     dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
                 }
