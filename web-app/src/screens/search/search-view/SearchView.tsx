@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Flex, IconButton, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Container, Flex, IconButton, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -153,7 +153,7 @@ export const SearchView: FunctionComponent = () => {
                     </TabList>
                 </Tabs>
 
-                <Box pt="64px">
+                <Box py="64px">
                     <Flex justifyContent="space-between" px="4" pb="2">
                         <Text fontSize="sm" fontWeight="600" opacity="0.7">
                             {t('ALL_ROUTES')}
@@ -167,6 +167,20 @@ export const SearchView: FunctionComponent = () => {
                         expandedPanelIdx={panelIndex}
                     />
                 </Box>
+                <Container maxW="container.lg.sm" textAlign="center">
+                    <Box
+                        p="4"
+                        bg={bg}
+                        transform="translate(-50%)"
+                        left="50%"
+                        position="fixed"
+                        w="100%"
+                        bottom="0"
+                        zIndex={100}
+                    >
+                        <RouteDeselect />
+                    </Box>
+                </Container>
             </Screen>
         </Box>
     );
