@@ -8,6 +8,7 @@ const cacheKeys = {
     pattern: (route) => `pattern-${route}-cache`,
     direction: (route) => `dir-${route}-cache`,
     stops: (route, dir) => `stops-${route}-${dir}-cache`,
+    trainStops: (route) => `train-stops-${route}-cache`,
     trainRoutes: 'train-routes-cache',
 };
 

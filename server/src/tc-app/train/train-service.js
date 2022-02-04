@@ -3,6 +3,8 @@
 const fs = require('fs');
 
 const Trip = require('../../utils/db/schemas/trips-schema');
+const Stop = require('../../utils/db/schemas/stops-schema');
+
 const { cache, cacheKeys } = require('../../utils/cache');
 
 const getRoutes = async () => {
@@ -59,15 +61,58 @@ const getPatterns = async (route) => {
             },
         },
     ]);
-    // .exec((err, res) => {
-    //     if (err) {
-    //         console.log(err);
-    //         throw err;
-    //     } else {
 
-    //         return res;
-    //     }
-    // });
+    cache.log_miss(key);
+    cache.set(key, response);
+
+    return response;
+};
+
+const getStops = async (route) => {
+    const key = cacheKeys.trainStops(route);
+    const pattern = cache.get(key);
+
+    if (pattern) {
+        cache.log_hit(key);
+        return pattern;
+    }
+
+    const response = await Stop.aggregate([
+        {
+            $match: { red: true, type: 'T' },
+        },
+        {
+            $set: {
+                lat: {
+                    $arrayElemAt: ['$location.coordinates', 0],
+                },
+                lng: {
+                    $arrayElemAt: ['$location.coordinates', 1],
+                },
+                latitude: {
+                    $arrayElemAt: ['$location.coordinates', 0],
+                },
+                longitude: {
+                    $arrayElemAt: ['$location.coordinates', 1],
+                },
+                route: route,
+            },
+        },
+        {
+            $project: {
+                lat: 1,
+                lng: 1,
+                name: 1,
+                description: 1,
+                id: 1,
+                wheelchairBoarding: 1,
+                latitude: 1,
+                longitude: 1,
+                route: 1,
+                _id: 0,
+            },
+        },
+    ]);
 
     cache.log_miss(key);
     cache.set(key, response);
@@ -78,4 +123,5 @@ const getPatterns = async (route) => {
 module.exports = {
     getRoutes,
     getPatterns,
+    getStops,
 };

@@ -1,15 +1,25 @@
 'use strict';
 
 const express = require('express');
-const Fuse = require('fuse.js');
-const { getRoutes, getPatterns } = require('./train-service');
+const { getRoutes, getPatterns, getStops } = require('./train-service');
 
 const router = express.Router();
 
 router.get('/routes', async (req, res) => {
     try {
+        const { filter } = req.query;
+
         let data = await getRoutes();
         data = data.map((item) => ({ ...item, type: 'T' }));
+
+        if (filter) {
+            const filterRoutes = filter.split(',');
+
+            filterRoutes.forEach((route) => {
+                data = data.filter((d) => d.route !== route);
+            });
+        }
+
         res.send(data);
     } catch (err) {
         res.send(err).status(400);
@@ -20,7 +30,9 @@ router.get('/patterns', async (req, res) => {
     const { route, color } = req.query;
 
     try {
-        let data = await getPatterns(route);
+        const data = await getPatterns(route);
+        const stops = await getStops(route);
+
         const patterns = [];
 
         data.forEach((item) => {
@@ -29,17 +41,34 @@ router.get('/patterns', async (req, res) => {
                 strokeColor: color,
                 id: item.id,
                 route,
-                paths: []
+                paths: [],
+                stops: [],
             };
 
             item.shape.forEach((s) => {
-                pattern.paths = s.paths.map(p => ({...p, latitude: p.lat, longitude: p.lng}))
-            }); 
+                pattern.paths = s.paths.map((p) => ({ ...p, latitude: p.lat, longitude: p.lng }));
+            });
 
             patterns.push(pattern);
         });
 
+        if (patterns.length) {
+            patterns[0].stops = stops;
+        }
+
         res.send(patterns);
+    } catch (err) {
+        res.send(err).status(400);
+    }
+});
+
+router.get('/stops', async (req, res) => {
+    const { route } = req.query;
+
+    try {
+        const data = await getStops(route);
+
+        res.send(data);
     } catch (err) {
         res.send(err).status(400);
     }

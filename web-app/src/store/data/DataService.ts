@@ -50,8 +50,8 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     return data;
 };
 
-export const getTrainRoutes = async (): Promise<Route[]> => {
-    const { data } = await Http.get<Route[]>('/train/routes');
+export const getTrainRoutes = async (filter?: string): Promise<Route[]> => {
+    const { data } = await Http.get<Route[]>('/train/routes', { params: { filter } });
 
     return data;
 };

@@ -58,7 +58,8 @@ export const SearchView: FunctionComponent = () => {
     };
 
     const computeTrainRoutes = async () => {
-        const response = await getTrainRoutes();
+        const filter = getFilter();
+        const response = await getTrainRoutes(filter);
         const selectedRoutes: RouteExtended[] = Object.values(currentRoutes).map((route) => ({
             ...route,
             selected: true,

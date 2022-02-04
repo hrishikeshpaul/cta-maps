@@ -226,7 +226,7 @@ const useDataStoreDispatch = (): Dispatch<DataStoreAction> => {
 
 interface DataStoreActionApis {
     getRoutes: (search?: string, filter?: string, limit?: number, index?: number) => Promise<Route[] | null>;
-    getTrainRoutes: () => Promise<Route[] | null>;
+    getTrainRoutes: (filter?: string) => Promise<Route[] | null>;
     setRoute: (route: Route) => void;
     removeRoute: (id: string, type: RouteType) => void;
     removeAllRoutes: () => void;
@@ -269,10 +269,10 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
                 return null;
             }
         },
-        getTrainRoutes: async () => {
+        getTrainRoutes: async (filter?: string) => {
             try {
                 systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: true } });
-                const response = await getTrainRoutes();
+                const response = await getTrainRoutes(filter);
 
                 systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
 
