@@ -45,16 +45,19 @@ class SocketConnection {
             try {
                 const trainRouteStr = keys(that.routes.train).join(',');
                 const busRouteStr = keys(that.routes.bus).join(',');
+                let vehicles = [];
 
                 if (busRouteStr) {
                     const busData = await that.get_vehicles(busRouteStr, null);
-                    that.socket.emit(Events.UpdateVehicles, busData);
+                    vehicles = [...vehicles, ...busData];
                 }
 
                 if (trainRouteStr) {
                     const trainData = await that.get_trains(trainRouteStr, null);
-                    that.socket.emit(Events.UpdateVehicles, trainData);
+                    vehicles = [...vehicles, ...trainData];
                 }
+
+                that.socket.emit(Events.UpdateVehicles, vehicles);
             } catch (err) {
                 console.log(err);
                 that.socket.emit(Events.ServerError);
@@ -70,9 +73,10 @@ class SocketConnection {
 
     async add(routeObj) {
         try {
+            let vehicles = [];
             switch (routeObj.type) {
                 case 'B':
-                    const data = await this.get_vehicles(routeObj.route, routeObj.color);
+                    const busData = await this.get_vehicles(routeObj.route, routeObj.color);
 
                     this.routes.bus[routeObj.route] = routeObj;
 
@@ -80,7 +84,8 @@ class SocketConnection {
                         this.start_timer();
                     }
 
-                    this.socket.emit(Events.UpdateVehicles, data);
+                    vehicles = [...vehicles, ...busData];
+
                     break;
                 case 'T':
                     const trainData = await this.get_trains(routeObj.route, routeObj.color);
@@ -91,11 +96,14 @@ class SocketConnection {
                         this.start_timer();
                     }
 
-                    this.socket.emit(Events.UpdateVehicles, trainData);
+                    vehicles = [...vehicles, ...trainData];
+
                     break;
                 default:
                     throw Error(`Invalid type - ${routeObj.type}`);
             }
+
+            this.socket.emit(Events.UpdateVehicles, vehicles);
         } catch (err) {
             console.log(err);
             this.socket.emit(Events.Error, err);
