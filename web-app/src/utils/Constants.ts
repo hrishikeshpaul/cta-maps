@@ -10,3 +10,4 @@ export const TRAIN_NAME_MAP: Record<string, string> = {
     g: 'G',
     y: 'Y',
 };
+export const searchPathName = '/search/query';

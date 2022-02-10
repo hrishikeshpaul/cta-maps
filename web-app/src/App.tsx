@@ -17,7 +17,7 @@ import { MapLoader } from 'shared/map/Map';
 import { Search } from 'screens/search/Search';
 import { Settings } from 'screens/settings/Settings';
 import { SocketModule } from 'utils/SocketModule';
-import { SCROLL_THRESHOLD } from 'utils/Constants';
+import { SCROLL_THRESHOLD, searchPathName } from 'utils/Constants';
 
 // const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
 const IDLE_TIME = 5000;
@@ -40,6 +40,8 @@ export const App = () => {
         },
         debounce: DEBOUNCE_TIME,
     });
+
+    console.log(window.location.pathname);
 
     return (
         <>
@@ -64,7 +66,7 @@ export const App = () => {
                 >
                     <MapLoader>
                         <BrowserRouter>
-                            <Nav />
+                            {window.location.pathname !== searchPathName && <Nav />}
                             <Stop />
                             <SocketModule />
                             <VehicleDrawer />
