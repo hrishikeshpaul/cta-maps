@@ -135,7 +135,7 @@ export const SearchView: FunctionComponent = () => {
                 >
                     <TabList
                         position="fixed"
-                        top={!scrolledFromTop ? '156px' : '110px'}
+                        top={!scrolledFromTop ? '102px' : '56px'}
                         w="100%"
                         zIndex={1}
                         backgroundColor={bg}
@@ -153,7 +153,7 @@ export const SearchView: FunctionComponent = () => {
                     </TabList>
                 </Tabs>
 
-                <Box py="64px">
+                <Box py="48px">
                     <Flex justifyContent="space-between" px="4" pb="2">
                         <Text fontSize="sm" fontWeight="600" opacity="0.7">
                             {t('ALL_ROUTES')}

@@ -22,10 +22,18 @@ const Events = {
     Error: 'error',
 };
 
+const Types = {
+    All: 'A',
+    Bus: 'B',
+    Train: 'T',
+};
+
 const TypeMapper = {
     B: 'bus',
     T: 'train',
 };
+
+const connectedSockets = {};
 
 class SocketConnection {
     constructor(socket) {
@@ -48,7 +56,7 @@ class SocketConnection {
                 let vehicles = [];
 
                 if (busRouteStr) {
-                    const busData = await that.get_vehicles(busRouteStr, null);
+                    const busData = await that.get_busses(busRouteStr, null);
                     vehicles = [...vehicles, ...busData];
                 }
 
@@ -74,9 +82,10 @@ class SocketConnection {
     async add(routeObj) {
         try {
             let vehicles = [];
+
             switch (routeObj.type) {
-                case 'B':
-                    const busData = await this.get_vehicles(routeObj.route, routeObj.color);
+                case Types.Bus:
+                    const busData = await this.get_busses(routeObj.route, routeObj.color);
 
                     this.routes.bus[routeObj.route] = routeObj;
 
@@ -85,9 +94,9 @@ class SocketConnection {
                     }
 
                     vehicles = [...vehicles, ...busData];
-
                     break;
-                case 'T':
+
+                case Types.Train:
                     const trainData = await this.get_trains(routeObj.route, routeObj.color);
 
                     this.routes.train[routeObj.route] = routeObj;
@@ -97,8 +106,8 @@ class SocketConnection {
                     }
 
                     vehicles = [...vehicles, ...trainData];
-
                     break;
+
                 default:
                     throw Error(`Invalid type - ${routeObj.type}`);
             }
@@ -123,16 +132,16 @@ class SocketConnection {
 
     remove_all({ type }) {
         switch (type) {
-            case 'A':
+            case Types.All:
                 this.routes = {
                     bus: {},
                     train: {},
                 };
                 break;
-            case 'B':
+            case Types.Bus:
                 this.routes = { ...this.routes, bus: {} };
                 break;
-            case 'T':
+            case Types.Train:
                 this.routes = { ...this.routes, train: {} };
         }
 
@@ -141,7 +150,7 @@ class SocketConnection {
         }
     }
 
-    async get_vehicles(routes, color) {
+    async get_busses(routes, color) {
         let data = await getVehicles(routes);
 
         data = data.map((item) => ({
@@ -185,6 +194,7 @@ class SocketConnection {
                     heading: parseInt(train.heading, 10),
                     color: color || this.routes.train[item['@name']].color,
                     route: item['@name'],
+                    type: 'T',
                 };
 
                 trains.push(newTrain);
@@ -194,8 +204,6 @@ class SocketConnection {
         return trains;
     }
 }
-
-const connectedSockets = {};
 
 const onRouteSelect = async (socket, route) => {
     log(Events.RouteAdd, JSON.stringify(route));

@@ -35,10 +35,10 @@ export const Screen: FunctionComponent<Props> = ({
     ] = useSystemStore();
 
     return (
-        <Container maxW="container.sm" p="0" pt={NAVBAR_HEIGHT} position="relative">
+        <Container maxW="container.sm" p="0" pt="4" position="relative">
             <Flex
                 className="nav-bar"
-                top={NAVBAR_HEIGHT}
+                top="0"
                 maxW="inherit"
                 w="100%"
                 justifyContent="space-between"

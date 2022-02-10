@@ -5,7 +5,7 @@
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
-        ":all": "./start.sh && npm start",
+        "start:all": "./start.sh && npm start",
         "start:stops": "./start.sh && npm start -- stops",
         "start:trips": "./start.sh && npm start -- trips",
         "start:shapes": "./start.sh && npm start -- shapes",

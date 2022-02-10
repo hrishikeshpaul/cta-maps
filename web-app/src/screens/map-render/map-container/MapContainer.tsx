@@ -7,9 +7,10 @@ import tinycolor from 'tinycolor2';
 
 import { Map } from 'shared/map/Map';
 import { useDataStore } from 'store/data/DataStore';
-import { Point, Stop } from 'store/data/DataStore.Types';
+import { Point, RouteType, Stop } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
-import { BusIconType, ColorMode } from 'store/system/SystemStore.Types';
+import { ColorMode } from 'store/system/SystemStore.Types';
+import { TRAIN_NAME_MAP } from 'utils/Constants';
 
 import './MapContainer.scss';
 
@@ -45,25 +46,17 @@ export const MapContainer: FunctionComponent = () => {
     const [showStops, setShowStops] = useState<boolean>(false);
     const [paths, setPaths] = useState<Point[]>([]);
 
-    const busIcon = useMemo(
+    const vehicleIcon = useMemo<Record<any, any>>(
         () => ({
-            [BusIconType.Circle]: {
-                path: google.maps.SymbolPath.CIRCLE,
+            [RouteType.Bus]: {
                 scale: 12,
                 labelOrigin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(0, 0),
             },
-            [BusIconType.Arrow]: {
-                path: 'M3,11.262a3,3,0,0,1-3-3V5.442a3,3,0,0,1,2.982-3l1-2.2a.49.49,0,0,1,.851,0l.916,2.2h.068a3,3,0,0,1,3,3v2.82a3,3,0,0,1-3,3Z',
-                scale: 3,
-                labelOrigin: new google.maps.Point(4.2, 7),
-                anchor: new google.maps.Point(4.2, 7),
-            },
-            [BusIconType.Teardrop]: {
-                path: 'M1.935-4.926S3.871-3.5,3.871-2.43A1.935,1.935,0,0,1,1.935-.494,1.935,1.935,0,0,1,0-2.43C0-3.5,1.935-4.926,1.935-4.926Z',
-                scale: 6,
-                labelOrigin: new google.maps.Point(2, -2.5),
-                anchor: new google.maps.Point(2, -2.5),
+            [RouteType.Train]: {
+                scale: 12,
+                labelOrigin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(0, 0),
             },
         }),
         [],
@@ -180,30 +173,32 @@ export const MapContainer: FunctionComponent = () => {
                 {vehicles && (
                     <>
                         {vehicles.map((vehicle) => {
-                            console.log(vehicle);
                             return (
                                 <Marker
                                     onClick={() => openVehicle(vehicle)}
                                     label={{
-                                        text: vehicle.route,
+                                        text:
+                                            vehicle.type === RouteType.Train
+                                                ? TRAIN_NAME_MAP[vehicle.route]
+                                                : vehicle.route,
                                         fontWeight: 'bold',
                                         fontSize: getMarkerLabelSize(vehicle.route),
                                         fontFamily: 'Inter',
                                         color: 'white',
                                     }}
                                     icon={{
-                                        path: busIcon[settings.busIcon].path,
+                                        path: google.maps.SymbolPath.CIRCLE,
                                         strokeColor:
                                             settings.colorMode === ColorMode.Light
                                                 ? tinycolor(vehicle.color).darken(20).toString()
                                                 : tinycolor(vehicle.color).lighten(26).toString(),
                                         strokeWeight: 2,
-                                        fillColor: vehicle.color,
                                         fillOpacity: 1,
-                                        scale: busIcon[settings.busIcon].scale,
+                                        fillColor: vehicle.color,
                                         rotation: vehicle.heading,
-                                        anchor: busIcon[settings.busIcon].anchor,
-                                        labelOrigin: busIcon[settings.busIcon].labelOrigin,
+                                        scale: vehicleIcon[vehicle.type].scale,
+                                        anchor: vehicleIcon[vehicle.type].anchor,
+                                        labelOrigin: vehicleIcon[vehicle.type].labelOrigin,
                                     }}
                                     position={vehicle.position}
                                     key={vehicle.id}
