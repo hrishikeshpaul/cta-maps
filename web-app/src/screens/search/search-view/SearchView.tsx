@@ -112,7 +112,7 @@ export const SearchView: FunctionComponent = () => {
     }, [currentRoutes]);
 
     return (
-        <Box>
+        <Box pb="54px">
             <Screen
                 pb={!scrolledFromTop ? '6' : '2'}
                 title="SEARCH"
@@ -175,7 +175,7 @@ export const SearchView: FunctionComponent = () => {
                         left="50%"
                         position="fixed"
                         w="100%"
-                        bottom="0"
+                        bottom="54px"
                         zIndex={100}
                     >
                         <RouteDeselect />

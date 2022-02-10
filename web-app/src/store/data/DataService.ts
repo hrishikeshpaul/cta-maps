@@ -23,7 +23,7 @@ export const getRouteColor = async (ids: string): Promise<RouteColor> => {
     return data;
 };
 
-export const getPattern = async (route: string, color: string): Promise<Pattern[]> => {
+export const getBusPattern = async (route: string, color: string): Promise<Pattern[]> => {
     const { data } = await Http.get<Pattern[]>('/patterns', {
         params: {
             route,
@@ -56,7 +56,7 @@ export const getTrainRoutes = async (filter?: string): Promise<Route[]> => {
     return data;
 };
 
-export const getTrainPatterns = async (route: string, color: string): Promise<Pattern[]> => {
+export const getTrainPattern = async (route: string, color: string): Promise<Pattern[]> => {
     const { data } = await Http.get<Pattern[]>('/train/patterns', {
         params: {
             route,
