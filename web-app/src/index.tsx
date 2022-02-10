@@ -20,6 +20,20 @@ const theme = extendTheme({
         ...ChakraTheme.shadows,
         outline: 'none',
     },
+    components: {
+        Alert: {
+            variants: {
+                toast: (P: any) => {
+                    return {
+                        container: {
+                            ...P.theme.components.Alert.variants.solid(P).container,
+                            bottom: '64px',
+                        },
+                    };
+                },
+            },
+        },
+    },
 });
 
 ReactDOM.render(

@@ -41,8 +41,6 @@ export const App = () => {
         debounce: DEBOUNCE_TIME,
     });
 
-    console.log(window.location.pathname);
-
     return (
         <>
             {systemLoading ? (
