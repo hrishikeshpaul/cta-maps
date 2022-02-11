@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Container, Flex, IconButton, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import { Badge, Box, Container, Flex, IconButton, Tab, TabList, Tabs, Tag, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -148,7 +148,10 @@ export const SearchView: FunctionComponent = () => {
                             {t('BUS')}
                         </Tab>
                         <Tab fontSize="sm" fontWeight="600">
-                            {t('TRAIN')}
+                            {t('TRAIN')}{' '}
+                            <Badge size="sm" ml="2" colorScheme="blue">
+                                BETA
+                            </Badge>
                         </Tab>
                     </TabList>
                 </Tabs>
