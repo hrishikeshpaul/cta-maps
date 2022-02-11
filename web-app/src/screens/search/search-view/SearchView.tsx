@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Badge, Box, Container, Flex, IconButton, Tab, TabList, Tabs, Tag, Text, useColorModeValue } from '@chakra-ui/react';
+import { Badge, Box, Container, Flex, IconButton, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
