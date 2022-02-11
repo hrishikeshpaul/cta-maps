@@ -94,7 +94,7 @@ export const MapContainer: FunctionComponent = () => {
 
     useEffect(() => {
         if (settings.allowLocation && !Object.keys(currentRoutes).length) {
-            onGetCurrentLocation();
+            // onGetCurrentLocation();
         }
 
         return () => {

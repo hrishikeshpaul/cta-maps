@@ -18,8 +18,8 @@ import { useTranslation } from 'react-i18next';
 import { BottomSheet } from 'shared/bottom-sheet/BottomSheet';
 import { SaveStopIcon } from 'shared/save-icon/save-stop-icon/SaveStopIcon';
 import { useDataStore } from 'store/data/DataStore';
-import { getPredictions, getRouteColor } from 'store/data/DataService';
-import { Juncture, Prediction, RouteColor } from 'store/data/DataStore.Types';
+import { getPredictions, getRouteColor, getTrainPrediction, getTrainRouteColor } from 'store/data/DataService';
+import { Juncture, Prediction, RouteColor, RouteType } from 'store/data/DataStore.Types';
 import { DownIcon, LocationArrowIcon } from 'utils/Icons';
 
 import 'shared/stop/Stop.scss';
@@ -43,14 +43,25 @@ export const Stop: FunctionComponent = () => {
             (async () => {
                 try {
                     setLoading(true);
-                    const response = await getPredictions(stop.id);
-                    const responseRoutes: Set<string> = new Set();
+                    let response: Prediction[] = [];
+                    let responseRoutes: Set<string> = new Set();
+                    let routeColors: RouteColor;
 
-                    response.forEach((res) => {
-                        responseRoutes.add(res.route);
-                    });
-
-                    const routeColors = await getRouteColor(Array.from(responseRoutes).join(','));
+                    switch (stop.type) {
+                        case RouteType.Bus:
+                            response = await getPredictions(stop.id);
+                            response.forEach((res) => {
+                                responseRoutes.add(res.route);
+                            });
+                            routeColors = await getRouteColor(Array.from(responseRoutes).join(','));
+                            break;
+                        case RouteType.Train:
+                            response = await getTrainPrediction('', stop.id);
+                            response.forEach((res) => {
+                                responseRoutes.add(res.route);
+                            });
+                            routeColors = await getTrainRouteColor(Array.from(responseRoutes).join(','));
+                    }
 
                     setTimeout(() => {
                         setColors(routeColors);
@@ -173,7 +184,7 @@ export const Stop: FunctionComponent = () => {
                         <Button
                             mr="4"
                             mb="2"
-                            key={route}
+                            key={`filter-btn-${route}`}
                             onClick={() => onFilterChange(route)}
                             colorScheme={filter[route] ? 'blue' : 'gray'}
                         >
@@ -193,7 +204,7 @@ export const Stop: FunctionComponent = () => {
                             {predictions.length ? (
                                 <>
                                     {predictions.map((prediction) => (
-                                        <RenderPred {...prediction} key={prediction.id} />
+                                        <RenderPred {...prediction} key={`pred-${prediction.id}`} />
                                     ))}
                                 </>
                             ) : (

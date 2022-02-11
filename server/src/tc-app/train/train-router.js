@@ -31,6 +31,27 @@ router.get('/routes', async (req, res) => {
     }
 });
 
+router.get('/route-color', async (req, res) => {
+    try {
+        const { ids } = req.query;
+        const data = await getRoutes();
+        const routeToColors = {};
+
+        ids.split(',').forEach((id) => {
+            const foundRoute = data.find((r) => r.route === id.toLowerCase());
+
+            if (foundRoute) {
+                routeToColors[id] = foundRoute.color;
+            }
+        });
+
+        res.send(routeToColors);
+    } catch (err) {
+        console.log(err);
+        res.send(err).status(400);
+    }
+});
+
 router.get('/patterns', async (req, res) => {
     const { route, color } = req.query;
 
@@ -96,7 +117,6 @@ router.get('/predictions', async (req, res) => {
         data = data.map((item) => {
             const predTime = convertTimestamp(item.arrT);
             const reqTime = convertTimestamp(item.prdt);
-            console.log(predTime, reqTime);
             const diff = Math.round((new Date(predTime) - new Date(reqTime)) / 60000);
 
             return {
@@ -104,7 +124,7 @@ router.get('/predictions', async (req, res) => {
                 description: item.stpDe,
                 name: item.stpNm,
                 stopId: item.staId,
-                id: item.staId,
+                id: item.rn,
                 route: item.rt,
                 direction: item.trDr,
                 vehicleId: item.rn,

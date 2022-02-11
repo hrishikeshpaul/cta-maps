@@ -50,6 +50,14 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     return data;
 };
 
+export const getTrainRouteColor = async (ids: string): Promise<RouteColor> => {
+    const { data } = await Http.get<RouteColor>('/train/route-color', {
+        params: { ids },
+    });
+
+    return data;
+};
+
 export const getTrainRoutes = async (filter?: string): Promise<Route[]> => {
     const { data } = await Http.get<Route[]>('/train/routes', { params: { filter } });
 
@@ -61,6 +69,17 @@ export const getTrainPattern = async (route: string, color: string): Promise<Pat
         params: {
             route,
             color,
+        },
+    });
+
+    return data;
+};
+
+export const getTrainPrediction = async (route: string, stop: string): Promise<Prediction[]> => {
+    const { data } = await Http.get<Prediction[]>('/train/predictions', {
+        params: {
+            route,
+            stop,
         },
     });
 
