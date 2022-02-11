@@ -103,6 +103,7 @@ router.get('/patterns', async (req, res) => {
                         longitude: p.lon,
                         name: p.stpnm,
                         id: p.stpid,
+                        type: 'B',
                         route,
                     });
                 }
@@ -165,7 +166,8 @@ router.get('/stops', async (req, res) => {
     try {
         const directions = await getRouteDirections(route);
         const stopPromises = directions.map((dir) => getStops(route, dir));
-        const stops = await Promise.all(stopPromises);
+        let stops = await Promise.all(stopPromises);
+        stops = stops.map((stop) => ({ ...stop, type: 'B' }));
 
         res.send(stops);
     } catch (err) {

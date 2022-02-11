@@ -8,6 +8,17 @@ const Stop = require('../../utils/db/schemas/stops-schema');
 const { cache, cacheKeys } = require('../../utils/cache');
 const { TrainHttp: Http } = require('../../utils/http');
 
+const RouteToTrainMap = {
+    red: 'red',
+    blue: 'blue',
+    brn: 'brown',
+    p: 'purple',
+    y: 'yellow',
+    org: 'orange',
+    pi: 'pink',
+    g: 'green',
+};
+
 const getRoutes = async () => {
     const key = cacheKeys.trainRoutes;
     const routes = cache.get(key);
@@ -80,7 +91,7 @@ const getStops = async (route) => {
 
     const response = await Stop.aggregate([
         {
-            $match: { red: true, type: 'T' },
+            $match: { [RouteToTrainMap[route]]: true, type: 'T' },
         },
         {
             $set: {
@@ -97,6 +108,7 @@ const getStops = async (route) => {
                     $arrayElemAt: ['$location.coordinates', 1],
                 },
                 route: route,
+                type: 'T',
             },
         },
         {
@@ -111,6 +123,7 @@ const getStops = async (route) => {
                 longitude: 1,
                 route: 1,
                 _id: 0,
+                type: 1,
             },
         },
     ]);

@@ -46,6 +46,7 @@ export interface Stop extends Point {
     name: string;
     id: string;
     route: string;
+    type: RouteType;
 }
 
 export interface Pattern {

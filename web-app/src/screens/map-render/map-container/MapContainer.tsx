@@ -215,6 +215,13 @@ export const MapContainer: FunctionComponent = () => {
                         {showStops &&
                             line.stops.map((stop) => (
                                 <Marker
+                                    label={{
+                                        text: stop.type === RouteType.Bus ? 'B' : 'T',
+                                        fontWeight: 'bold',
+                                        fontSize: '8pt',
+                                        fontFamily: 'Inter',
+                                        color: 'white',
+                                    }}
                                     icon={{
                                         path: google.maps.SymbolPath.CIRCLE,
                                         strokeColor: 'gray',
