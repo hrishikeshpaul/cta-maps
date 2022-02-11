@@ -21,11 +21,19 @@ import { CheckIcon, RightIcon } from 'utils/Icons';
 import { SaveRouteIcon } from 'shared/save-icon/save-route-icon/SaveRouteIcon';
 import { Route, RouteType } from 'store/data/DataStore.Types';
 import { Screen } from 'shared/screen/Screen';
+import { useSystemStore } from 'store/system/SystemStore';
 
 export const Saved: FunctionComponent = () => {
     const { t } = useTranslation();
     const [{ savedStops, savedRoutes, routes }, { openStop, setRoute, removeRoute }] = useDataStore();
+    const [
+        {
+            ui: { scrolledFromTop },
+        },
+    ] = useSystemStore();
     const bg = useColorModeValue('#ececec', '#4A5568');
+    const TabBg = useColorModeValue('white', 'gray.800');
+
 
     const onToggleRoute = (route: Route) => {
         if (routes[route.route]) {
@@ -38,7 +46,17 @@ export const Saved: FunctionComponent = () => {
     return (
         <Screen title="SAVED" pb="2">
             <Tabs isFitted my="4">
-                <TabList mx="4">
+                <TabList
+                    position="fixed"
+                    top={!scrolledFromTop ? '102px' : '56px'}
+                    w="100%"
+                    zIndex={1}
+                    backgroundColor={TabBg}
+                    transition="top 0.2s ease-in-out"
+                    left="50%"
+                    transform="translate(-50%)"
+                    maxW="container.sm"
+                >
                     <Tab fontWeight="600">{t('STOPS')}</Tab>
                     <Tab fontWeight="600">{t('ROUTES')}</Tab>
                 </TabList>
