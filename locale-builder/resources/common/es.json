@@ -61,7 +61,13 @@
   "ARROW": " FLECHA",
   "MAP": "Mapa",
   "SEARCH": "Búsqueda",
+  "SAVE": "Ahorrar",
   "SAVED": "Salvado",
   "GENERAL": "General",
-  "PREVIOUS_SEARCHES": "Búsquedas anteriores"
+  "HISTORY": "HISTORIA",
+  "BUS": "Autobús",
+  "TRAIN": "Tren",
+  "DELETE_ALL": "Eliminar todos",
+  "DESELECT_BUSSES": "Deseleccionar autobuses",
+  "DESELECT_TRAINS": "Deseleccionar trenes"
 }

@@ -61,7 +61,13 @@
   "ARROW": " 箭",
   "MAP": "地图",
   "SEARCH": "搜索",
+  "SAVE": "保存",
   "SAVED": "已保存",
   "GENERAL": "一般的",
-  "PREVIOUS_SEARCHES": "以前的搜索"
+  "HISTORY": "历史",
+  "BUS": "公共汽车",
+  "TRAIN": "火车",
+  "DELETE_ALL": "删除所有",
+  "DESELECT_BUSSES": "取消选择总线",
+  "DESELECT_TRAINS": "取消选择火车"
 }
