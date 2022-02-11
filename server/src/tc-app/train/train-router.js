@@ -1,9 +1,14 @@
 'use strict';
 
 const express = require('express');
-const { getRoutes, getPatterns, getStops, getTrains } = require('./train-service');
+const { getRoutes, getPatterns, getStops, getTrains, getArrivals } = require('./train-service');
 
 const router = express.Router();
+
+const convertTimestamp = (timestamp) => {
+    const [date, time] = timestamp.split('T');
+    return `${date} ${time}`;
+};
 
 router.get('/routes', async (req, res) => {
     try {
@@ -80,6 +85,45 @@ router.get('/trains', async (req, res) => {
     const data = await getTrains(route);
 
     res.send(data);
+});
+
+router.get('/predictions', async (req, res) => {
+    const { route, stop } = req.query;
+
+    try {
+        let data = await getArrivals(stop, route);
+
+        data = data.map((item) => {
+            const predTime = convertTimestamp(item.arrT);
+            const reqTime = convertTimestamp(item.prdt);
+            console.log(predTime, reqTime);
+            const diff = Math.round((new Date(predTime) - new Date(reqTime)) / 60000);
+
+            return {
+                type: 'A',
+                description: item.stpDe,
+                name: item.stpNm,
+                stopId: item.staId,
+                id: item.staId,
+                route: item.rt,
+                direction: item.trDr,
+                vehicleId: item.rn,
+                destination: item.destNm,
+                time: diff,
+                timestamp: new Date(predTime).toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                }),
+                delayed: item.isDly === 1 ? true : false,
+                stopType: 'T',
+            };
+        });
+
+        res.send(data);
+    } catch (err) {
+        res.send(err).status(400);
+    }
 });
 
 module.exports = router;

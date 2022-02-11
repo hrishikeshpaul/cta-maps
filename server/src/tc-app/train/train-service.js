@@ -146,9 +146,22 @@ const getTrains = async (routes) => {
     return data['route'];
 };
 
+const getArrivals = async (id, routes) => {
+    const { data, error } = await Http.get('/ttarrivals.aspx', {
+        params: { rt: routes, mapid:  id},
+    });
+
+    if (error) {
+        throw error;
+    }
+
+    return data['eta'];
+};
+
 module.exports = {
     getRoutes,
     getPatterns,
     getStops,
     getTrains,
+    getArrivals,
 };
