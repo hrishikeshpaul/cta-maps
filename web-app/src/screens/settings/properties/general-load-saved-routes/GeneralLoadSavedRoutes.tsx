@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Box, Flex, Switch, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useSystemStore } from 'store/system/SystemStore';
-import { BasePage } from 'utils/BasePage';
+import { Screen } from 'shared/screen/Screen';
 import { SettingsHeader } from 'screens/settings/settings-header/SettingsHeader';
 
 export const GeneralLoadSavedRoutes: FC = () => {
@@ -19,7 +19,7 @@ export const GeneralLoadSavedRoutes: FC = () => {
     };
 
     return (
-        <BasePage header={<SettingsHeader title="ROUTES" />} constantPadding>
+        <Screen header={<SettingsHeader title="ROUTES" />} constantPadding>
             <Box px="4">
                 <Text fontSize="sm" opacity="0.6" mt="-4">
                     {t('ACTIVE_ROUTE_INFO')}
@@ -32,6 +32,6 @@ export const GeneralLoadSavedRoutes: FC = () => {
                     <Switch size="lg" isChecked={settings.showActiveRoutes} onChange={onShowActiveRoutesChange} />
                 </Flex>
             </Box>
-        </BasePage>
+        </Screen>
     );
 };

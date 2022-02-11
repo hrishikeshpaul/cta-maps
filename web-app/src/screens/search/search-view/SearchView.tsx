@@ -1,24 +1,45 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, IconButton } from '@chakra-ui/react';
+import { Badge, Box, Container, Flex, IconButton, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { RouteSelect } from 'screens/search/route-select/RouteSelect';
+import { Screen } from 'shared/screen/Screen';
 import { useDataStore } from 'store/data/DataStore';
-import useDebounce from 'utils/Hook';
+import { useSystemStore } from 'store/system/SystemStore';
 import { SearchIcon } from 'utils/Icons';
-import { BasePage } from 'utils/BasePage';
+import { RouteType } from 'store/data/DataStore.Types';
+import { RouteDeselect } from '../route-deselect/RouteDeselect';
 
 const LIMIT = 16;
 
+enum TabIndex {
+    Bus,
+    Train,
+}
+
+const indexToRouteTypeMap: Record<TabIndex, RouteType> = {
+    [TabIndex.Bus]: RouteType.Bus,
+    [TabIndex.Train]: RouteType.Train,
+};
+
 export const SearchView: FunctionComponent = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
-    const [{ routes: currentRoutes }, { getRoutes }] = useDataStore();
+    const [{ routes: currentRoutes }, { getRoutes, getTrainRoutes }] = useDataStore();
+    const [
+        {
+            ui: { scrolledFromTop },
+        },
+    ] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const [query, setQuery] = useState<string>('');
-    const [index, setIndex] = useState<number>(1);
-    const debouncedQuery = useDebounce(query);
+    const [index, setIndex] = useState<number>(0);
+    const [panelIndex, setPanelIndex] = useState<number[]>([]);
+    const [routeType, setRouteType] = useState<RouteType>(RouteType.Bus);
+    const bg = useColorModeValue('white', 'gray.800');
 
     const getFilter = () => {
         return Object.keys(currentRoutes)
@@ -26,9 +47,25 @@ export const SearchView: FunctionComponent = () => {
             .join(',');
     };
 
-    const onOpen = async () => {
+    const getBusRoutes = async () => {
         const filter = getFilter();
-        const response = await getRoutes(query, filter, LIMIT, index);
+        const response = await getRoutes(query, filter, LIMIT, 1);
+        const selectedRoutes: RouteExtended[] = Object.values(currentRoutes).map((route) => ({
+            ...route,
+            selected: true,
+        }));
+        let unselectedRoutes: RouteExtended[] = [];
+
+        if (response) {
+            unselectedRoutes = response.map((route) => ({ ...route, selected: false }));
+        }
+
+        setRoutes([...selectedRoutes, ...unselectedRoutes]);
+    };
+
+    const computeTrainRoutes = async () => {
+        const filter = getFilter();
+        const response = await getTrainRoutes(filter);
         const selectedRoutes: RouteExtended[] = Object.values(currentRoutes).map((route) => ({
             ...route,
             selected: true,
@@ -44,14 +81,21 @@ export const SearchView: FunctionComponent = () => {
 
     useEffect(() => {
         (async () => {
-            await onOpen();
+            setRoutes([]);
+
+            if (index === TabIndex.Bus) {
+                setRouteType(RouteType.Bus);
+                await getBusRoutes();
+            } else {
+                setRouteType(RouteType.Train);
+                await computeTrainRoutes();
+            }
         })();
 
         return () => {
             setQuery('');
-            setIndex(1);
         };
-    }, []); // eslint-disable-line
+    }, [index]); // eslint-disable-line
 
     useEffect(() => {
         if (Object.keys(currentRoutes).length === 0) {
@@ -67,22 +111,10 @@ export const SearchView: FunctionComponent = () => {
         }
     }, [currentRoutes]);
 
-    useEffect(() => {
-        (async () => {
-            if (debouncedQuery) {
-                const filter = getFilter();
-                const response = await getRoutes(debouncedQuery, filter, LIMIT, 1);
-
-                if (response) {
-                    setRoutes(response.map((route) => ({ ...route, selected: false })));
-                }
-            }
-        })();
-    }, [debouncedQuery]); // eslint-disable-line
-
     return (
-        <Box>
-            <BasePage
+        <Box pb="54px">
+            <Screen
+                pb={!scrolledFromTop ? '6' : '2'}
                 title="SEARCH"
                 headerIcon={
                     <IconButton
@@ -94,8 +126,65 @@ export const SearchView: FunctionComponent = () => {
                     />
                 }
             >
-                <RouteSelect routes={routes} query="" getData={getRoutes} />
-            </BasePage>
+                <Tabs
+                    isFitted
+                    onChange={(idx) => {
+                        setIndex(idx);
+                        setPanelIndex([]);
+                    }}
+                >
+                    <TabList
+                        position="fixed"
+                        top={!scrolledFromTop ? '102px' : '56px'}
+                        w="100%"
+                        zIndex={1}
+                        backgroundColor={bg}
+                        transition="top 0.2s ease-in-out"
+                        left="50%"
+                        transform="translate(-50%)"
+                        maxW="container.sm"
+                    >
+                        <Tab fontSize="sm" fontWeight="600">
+                            {t('BUS')}
+                        </Tab>
+                        <Tab fontSize="sm" fontWeight="600">
+                            {t('TRAIN')}{' '}
+                            <Badge size="sm" ml="2" colorScheme="blue">
+                                BETA
+                            </Badge>
+                        </Tab>
+                    </TabList>
+                </Tabs>
+
+                <Box py="48px">
+                    <Flex justifyContent="space-between" px="4" pb="2">
+                        <Text fontSize="sm" fontWeight="600" opacity="0.7">
+                            {t('ALL_ROUTES')}
+                        </Text>
+                        <RouteDeselect type={indexToRouteTypeMap[index as TabIndex]} />
+                    </Flex>
+                    <RouteSelect
+                        type={routeType}
+                        routes={routes}
+                        onChange={setPanelIndex}
+                        expandedPanelIdx={panelIndex}
+                    />
+                </Box>
+                <Container maxW="container.lg.sm" textAlign="center">
+                    <Box
+                        p="4"
+                        bg={bg}
+                        transform="translate(-50%)"
+                        left="50%"
+                        position="fixed"
+                        w="100%"
+                        bottom="54px"
+                        zIndex={100}
+                    >
+                        <RouteDeselect />
+                    </Box>
+                </Container>
+            </Screen>
         </Box>
     );
 };

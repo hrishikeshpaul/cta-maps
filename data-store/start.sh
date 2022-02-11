@@ -9,8 +9,10 @@ get_data () {
     curl -o data.zip https://www.transitchicago.com/downloads/sch_data/google_transit.zip
     unzip data.zip -d data
     cd data
-    find . \! -name 'stops.txt' -delete
+    # find . \! -name 'stops.txt' -delete
     mv stops.txt stops.csv
+    mv shapes.txt shapes.csv
+    mv trips.txt trips.csv
     cd ..
     rm -rf data.zip
     

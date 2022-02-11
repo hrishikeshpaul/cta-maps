@@ -82,7 +82,7 @@ export const Nav: FunctionComponent = () => {
             bg={bg}
             position="fixed"
             w="100%"
-            top="0"
+            bottom="0"
             boxShadow="sm"
             opacity={dragging ? '0.4' : 1}
             transition="opacity 0.25s ease-in-out"

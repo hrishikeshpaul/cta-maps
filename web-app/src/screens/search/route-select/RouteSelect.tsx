@@ -1,56 +1,23 @@
-import { FunctionComponent, useEffect, useState, UIEvent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Box, Button, Flex, Spinner, Center, Text, useColorModeValue } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Box, Spinner, Center, Accordion } from '@chakra-ui/react';
 
-import { Inspector } from 'shared/inspector/Inspector';
 import { RouteOption, RouteExtended } from 'screens/search/route-select/RouteOption';
 import { useDataStore } from 'store/data/DataStore';
-import { Route } from 'store/data/DataStore.Types';
 import { useSystemStore } from 'store/system/SystemStore';
+import { RouteType } from 'store/data/DataStore.Types';
 
 interface Props {
     routes: RouteExtended[];
-    query: string;
-    getData: (search?: string, filter?: string, limit?: number, index?: number) => void;
+    onChange?: (idx: number[]) => void;
+    expandedPanelIdx?: number[];
+    type?: RouteType;
 }
 
-const LIMIT = 16;
-
-export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, query }) => {
-    const { t } = useTranslation();
-    const [{ routes: currentRoutes }, { getRoutes, removeAllRoutes }] = useDataStore();
+export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, onChange, expandedPanelIdx, type }) => {
+    const [{ routes: currentRoutes }] = useDataStore();
     const [{ routesLoading }] = useSystemStore();
     const [routes, setRoutes] = useState<RouteExtended[]>(routesAsProps);
-    const [index, setIndex] = useState<number>(1);
-    const [inspectorData, setInspectorData] = useState<Route>({ name: '', route: '', color: '' });
-    const deselectFontColor = useColorModeValue('blue.500', 'blue.200');
-
-    const getFilter = () => {
-        return Object.keys(currentRoutes)
-            .map((route) => route)
-            .join(',');
-    };
-
-    const handleScroll = async (e: UIEvent<HTMLDivElement>) => {
-        const bottom =
-            e.currentTarget.scrollHeight - Math.ceil(e.currentTarget.scrollTop) <= e.currentTarget.clientHeight;
-        const filter = getFilter();
-
-        if (bottom) {
-            setIndex(index + 1);
-            const response = await getRoutes(query, filter, LIMIT, index + 1);
-
-            if (response)
-                setRoutes((prevRoutes) => [...prevRoutes, ...response.map((r) => ({ ...r, selected: false }))]);
-        }
-    };
-
-    useEffect(() => {
-        return () => {
-            setIndex(1);
-        };
-    }, []); // eslint-disable-line
 
     useEffect(() => {
         setRoutes(routesAsProps);
@@ -61,7 +28,7 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
             setRoutes((prevRoutes) => {
                 const updatedRoutes: RouteExtended[] = [...prevRoutes];
 
-                prevRoutes.forEach((route, i) => {
+                prevRoutes.forEach((route) => {
                     route.selected = false;
                 });
 
@@ -72,28 +39,20 @@ export const RouteSelect: FunctionComponent<Props> = ({ routes: routesAsProps, q
 
     return (
         <>
-            <Inspector data={inspectorData} />
-            <Box overflow="auto" onScroll={handleScroll} pb="4">
-                <Flex justifyContent="space-between" px="4" pb="2">
-                    <Text fontSize="sm" fontWeight="600" opacity="0.7">
-                        {t('ALL_ROUTES')}
-                    </Text>
-                    {Object.keys(currentRoutes).length > 0 && (
-                        <Button variant="link" size="sm" color={deselectFontColor} onClick={removeAllRoutes}>
-                            {t('DESELECT_ALL')} ({Object.keys(currentRoutes).length})
-                        </Button>
-                    )}
-                </Flex>
-
-                {routes.map((route) => (
-                    <RouteOption
-                        onChange={setRoutes}
-                        setInspectorData={setInspectorData}
-                        routes={routes}
-                        currentRoute={route}
-                        key={route.route}
-                    />
-                ))}
+            <Box pb="4">
+                <Accordion index={expandedPanelIdx} allowMultiple w="100%" onChange={onChange}>
+                    {routes.map((route) => (
+                        <Box key={route.route}>
+                            {type ? (
+                                type === route.type && (
+                                    <RouteOption onChange={setRoutes} routes={routes} currentRoute={route} />
+                                )
+                            ) : (
+                                <RouteOption onChange={setRoutes} routes={routes} currentRoute={route} />
+                            )}
+                        </Box>
+                    ))}
+                </Accordion>
 
                 {routesLoading ? (
                     <Center>

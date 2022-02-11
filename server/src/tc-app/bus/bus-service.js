@@ -3,12 +3,10 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
 
-const { cache, cacheKeys } = require('../utils/cache');
-const { Http: HttpConnection } = require('../utils/http');
+const { cache, cacheKeys } = require('../../utils/cache');
+const { BusHttp: Http } = require('../../utils/http');
 
 dotenv.config();
-
-const Http = new HttpConnection(process.env.CTA_BASE_URL, process.env.CTA_KEY).get_bus_http();
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 

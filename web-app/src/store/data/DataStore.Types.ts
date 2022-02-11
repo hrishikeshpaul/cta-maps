@@ -19,10 +19,18 @@ export enum Juncture {
     D = 'D', // departure
 }
 
+export enum RouteType {
+    Bus = 'B',
+    Train = 'T',
+    All = 'A',
+}
+
 export interface Route {
     route: string;
     name: string;
     color: string;
+    type: string;
+    routes?: Array<{ direction: string; destination: string }>;
 }
 
 export interface RouteColor {
@@ -38,6 +46,7 @@ export interface Stop extends Point {
     name: string;
     id: string;
     route: string;
+    type: RouteType;
 }
 
 export interface Pattern {
@@ -47,6 +56,7 @@ export interface Pattern {
     route: string;
     paths: Point[];
     stops: Stop[];
+    type: RouteType;
 }
 
 export interface Vehicle {
@@ -58,6 +68,7 @@ export interface Vehicle {
     delayed: boolean;
     color: string;
     heading: number;
+    type: RouteType;
 }
 
 export interface Prediction {
@@ -82,7 +93,7 @@ export interface DataStoreState {
     vehicle: Vehicle | null;
     error?: any;
     vehicles: Vehicle[];
-    favoriteStops: Record<string, Stop>;
-    favoriteRoutes: Record<string, Route>;
+    savedStops: Record<string, Stop>;
+    savedRoutes: Record<string, Route>;
     searchHistory: Array<string>;
 }

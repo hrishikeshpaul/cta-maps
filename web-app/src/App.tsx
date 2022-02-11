@@ -1,3 +1,4 @@
+import { UIEvent } from 'react';
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useIdleTimer } from 'react-idle-timer';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
@@ -16,14 +17,16 @@ import { MapLoader } from 'shared/map/Map';
 import { Search } from 'screens/search/Search';
 import { Settings } from 'screens/settings/Settings';
 import { SocketModule } from 'utils/SocketModule';
+import { SCROLL_THRESHOLD, searchPathName } from 'utils/Constants';
 
-const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
+// const IDLE_TIME = 1000 * 60 * 3; // 3 minutes
+const IDLE_TIME = 5000;
 const DEBOUNCE_TIME = 500; // ms
 
 export const App = () => {
     const [, { onIdle, onActive }] = useDataStore();
-    const [{ systemLoading }] = useSystemStore();
-    const color = useColorModeValue('gray.700', 'gray.200');
+    const [{ systemLoading, ui }, { setUIScrolledFromTop }] = useSystemStore();
+    const color = useColorModeValue('gray.700', 'gray.50');
     const { reset } = useIdleTimer({
         timeout: IDLE_TIME,
         onIdle: () => {
@@ -43,14 +46,28 @@ export const App = () => {
             {systemLoading ? (
                 <Landing />
             ) : (
-                <Box color={color} h="100%" w="100%" id="main">
+                <Box
+                    color={color}
+                    h="100%"
+                    w="100%"
+                    id="main"
+                    overflow="auto"
+                    onScroll={(e: UIEvent<HTMLElement>) => {
+                        const scroll = e.currentTarget.scrollTop;
+
+                        if (scroll >= SCROLL_THRESHOLD && !ui.scrolledFromTop) {
+                            setUIScrolledFromTop(true);
+                        } else if (scroll <= SCROLL_THRESHOLD && ui.scrolledFromTop) {
+                            setUIScrolledFromTop(false);
+                        }
+                    }}
+                >
                     <MapLoader>
                         <BrowserRouter>
-                            <Nav />
+                            {window.location.pathname !== searchPathName && <Nav />}
                             <Stop />
                             <SocketModule />
                             <VehicleDrawer />
-
                             <Routes>
                                 <Route path="/" element={<MapRender />} />
                                 <Route path="/search/*" element={<Search />} />

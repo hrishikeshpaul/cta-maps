@@ -3,9 +3,11 @@
 const _ = require('lodash');
 const { socketLogger: log } = require('../utils/logger');
 
-const { getVehicles } = require('../tc-app/bus-service');
+const { getVehicles } = require('../tc-app/bus/bus-service');
+const { getTrains } = require('../tc-app/train/train-service');
 
 const TIMER = 3000; //ms
+const keys = Object.keys;
 
 const Events = {
     Connection: 'connection',
@@ -20,9 +22,25 @@ const Events = {
     Error: 'error',
 };
 
+const Types = {
+    All: 'A',
+    Bus: 'B',
+    Train: 'T',
+};
+
+const TypeMapper = {
+    B: 'bus',
+    T: 'train',
+};
+
+const connectedSockets = {};
+
 class SocketConnection {
     constructor(socket) {
-        this.routes = {};
+        this.routes = {
+            bus: {},
+            train: {},
+        };
         this.timer = null;
         this.socket = socket;
         this.idleTimer = null;
@@ -33,10 +51,21 @@ class SocketConnection {
 
         this.timer = setInterval(async () => {
             try {
-                const routeStr = Object.keys(that.routes).join(',');
-                const data = await that.get_vehicles(routeStr, null);
+                const trainRouteStr = keys(that.routes.train).join(',');
+                const busRouteStr = keys(that.routes.bus).join(',');
+                let vehicles = [];
 
-                that.socket.emit(Events.UpdateVehicles, data);
+                if (busRouteStr) {
+                    const busData = await that.get_busses(busRouteStr, null);
+                    vehicles = [...vehicles, ...busData];
+                }
+
+                if (trainRouteStr) {
+                    const trainData = await that.get_trains(trainRouteStr, null);
+                    vehicles = [...vehicles, ...trainData];
+                }
+
+                that.socket.emit(Events.UpdateVehicles, vehicles);
             } catch (err) {
                 console.log(err);
                 that.socket.emit(Events.ServerError);
@@ -52,52 +81,129 @@ class SocketConnection {
 
     async add(routeObj) {
         try {
-            const data = await this.get_vehicles(routeObj.route, routeObj.color);
-            this.routes[routeObj.route] = routeObj;
+            let vehicles = [];
 
-            if (this.timer === null) {
-                this.start_timer();
+            switch (routeObj.type) {
+                case Types.Bus:
+                    const busData = await this.get_busses(routeObj.route, routeObj.color);
+
+                    this.routes.bus[routeObj.route] = routeObj;
+
+                    if (this.timer === null) {
+                        this.start_timer();
+                    }
+
+                    vehicles = [...vehicles, ...busData];
+                    break;
+
+                case Types.Train:
+                    const trainData = await this.get_trains(routeObj.route, routeObj.color);
+
+                    this.routes.train[routeObj.route] = routeObj;
+
+                    if (this.timer === null) {
+                        this.start_timer();
+                    }
+
+                    vehicles = [...vehicles, ...trainData];
+                    break;
+
+                default:
+                    throw Error(`Invalid type - ${routeObj.type}`);
             }
 
-            this.socket.emit(Events.UpdateVehicles, data);
+            this.socket.emit(Events.UpdateVehicles, vehicles);
         } catch (err) {
+            console.log(err);
             this.socket.emit(Events.Error, err);
             log(Events.ServerError, JSON.stringify(err));
         }
     }
 
-    remove(route) {
-        delete this.routes[route];
+    remove(route, type) {
+        if (this.routes[TypeMapper[type]][route]) {
+            delete this.routes[TypeMapper[type]][route];
+        }
 
-        if (Object.keys(this.routes).length === 0) {
+        if (keys(this.routes.bus).length === 0 && keys(this.routes.train).length === 0) {
             this.stop_timer();
         }
     }
 
-    remove_all() {
-        this.stop_timer();
-        this.routes = {};
+    remove_all({ type }) {
+        switch (type) {
+            case Types.All:
+                this.routes = {
+                    bus: {},
+                    train: {},
+                };
+                break;
+            case Types.Bus:
+                this.routes = { ...this.routes, bus: {} };
+                break;
+            case Types.Train:
+                this.routes = { ...this.routes, train: {} };
+        }
+
+        if (keys(this.routes.bus).length === 0 && keys(this.routes.train).length === 0) {
+            this.stop_timer();
+        }
     }
 
-    async get_vehicles(routes, color) {
+    async get_busses(routes, color) {
         let data = await getVehicles(routes);
 
         data = data.map((item) => ({
             id: item.vid,
             timestamp: item.tmstmp,
-            position: { lat: parseFloat(item.lat), lng: parseFloat(item.lon), latitude: parseFloat(item.lat), longitude: parseFloat(item.lon) },
+            position: {
+                lat: parseFloat(item.lat),
+                lng: parseFloat(item.lon),
+                latitude: parseFloat(item.lat),
+                longitude: parseFloat(item.lon),
+            },
             route: item.rt,
             destination: item.des,
             delayed: item.dly,
             heading: parseInt(item.hdg, 10),
-            color: color || this.routes[item.rt].color,
+            color: color || this.routes.bus[item.rt].color,
+            type: 'B',
         }));
 
         return data;
     }
-}
 
-const connectedSockets = {};
+    async get_trains(routes, color) {
+        const data = await getTrains(routes);
+        const trains = [];
+
+        data.forEach((item) => {
+            item.train.forEach((train) => {
+                const newTrain = {
+                    id: train.rn,
+                    position: {
+                        lat: parseFloat(train.lat),
+                        lng: parseFloat(train.lon),
+                        latitude: parseFloat(train.lat),
+                        longitude: parseFloat(train.lon),
+                    },
+                    destination: train.destNm,
+                    nextStop: train.nextStaNm,
+                    nextStopId: train.nextStaId,
+                    delayed: train.isDly === '0' ? false : true,
+                    heading: parseInt(train.heading, 10),
+                    color: color || this.routes.train[item['@name']].color,
+                    route: item['@name'],
+                    type: 'T',
+                };
+
+                trains.push(newTrain);
+            });
+        });
+
+        return trains;
+    }
+}
 
 const onRouteSelect = async (socket, route) => {
     log(Events.RouteAdd, JSON.stringify(route));
@@ -106,9 +212,9 @@ const onRouteSelect = async (socket, route) => {
 };
 
 const onRouteDeselect = (socket, route) => {
-    log(Events.RouteRemove, route);
+    log(Events.RouteRemove, route.route);
 
-    connectedSockets[socket.id].remove(route);
+    connectedSockets[socket.id].remove(route.route, route.type);
 };
 
 const onDisconnect = (socket) => {
@@ -118,10 +224,10 @@ const onDisconnect = (socket) => {
     delete connectedSockets[socket.id];
 };
 
-const onRemoveAll = (socket) => {
-    log(Events.RouteRemoveAll, socket.id);
+const onRemoveAll = (socket, type) => {
+    log(Events.RouteRemoveAll, `${type.type} - ${socket.id}`);
 
-    connectedSockets[socket.id].remove_all();
+    connectedSockets[socket.id].remove_all(type);
 };
 
 const onIdle = (socket) => {
@@ -135,7 +241,7 @@ const onActive = (socket) => {
 
     const connection = connectedSockets[socket.id];
 
-    if (connection && Object.keys(connection.routes).length) {
+    if (connection && (keys(connection.routes.bus).length || keys(connection.routes.train).length)) {
         connectedSockets[socket.id].start_timer();
     }
 };

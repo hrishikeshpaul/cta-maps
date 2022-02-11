@@ -8,15 +8,32 @@ const { mapStatusToColor } = require('./logger');
 
 dotenv.config();
 
+const Transit = {
+    Bus: 0,
+    Train: 1,
+};
+const busResponseKey = 'bustime-response';
+const trainResponseKey = 'ctatt';
+const TransitHttpProps = {
+    [Transit.Bus]: {
+        baseURL: process.env.CTA_BASE_URL,
+        params: {
+            key: process.env.CTA_KEY,
+            format: 'json',
+        },
+    },
+    [Transit.Train]: {
+        baseURL: process.env.CTA_TRAIN_BASE_URL,
+        params: {
+            key: process.env.CTA_TRAIN_KEY,
+            outputType: 'json',
+        },
+    },
+};
+
 class Http {
-    constructor(baseURL, key) {
-        this.http = axios.create({
-            baseURL,
-            params: {
-                key,
-                format: 'json',
-            },
-        });
+    constructor(transit) {
+        this.http = axios.create(TransitHttpProps[transit]);
 
         this.http.interceptors.request.use((config) => {
             config.metadata = { startTime: new Date().getTime() };
@@ -25,7 +42,7 @@ class Http {
         });
     }
 
-    get_bus_http() {
+    assign_response_interceptor(key) {
         this.http.interceptors.response.use((response) => {
             const {
                 status,
@@ -39,8 +56,8 @@ class Http {
             } = response;
             const responseTime = new Date().getTime() - startTime;
             const formattedDateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
-            const busResponse = data['bustime-response'];
-            const error = busResponse['error'];
+            const ctaResponse = data[key];
+            const error = ctaResponse['error'];
 
             if (error) {
                 console.log(chalk.red(error[0].msg));
@@ -54,13 +71,25 @@ class Http {
                 )}`,
             );
 
-            return { data: busResponse };
+            return { data: ctaResponse };
         });
+    }
 
+    get_bus_http() {
+        this.assign_response_interceptor(busResponseKey);
+        return this.http;
+    }
+
+    get_train_http() {
+        this.assign_response_interceptor(trainResponseKey);
         return this.http;
     }
 }
 
+const BusHttp = new Http(Transit.Bus).get_bus_http();
+const TrainHttp = new Http(Transit.Train).get_train_http();
+
 module.exports = {
-    Http,
+    BusHttp,
+    TrainHttp,
 };

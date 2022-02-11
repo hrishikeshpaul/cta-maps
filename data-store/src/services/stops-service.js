@@ -1,35 +1,25 @@
 'use strict';
 
-const mongoose = require('mongoose');
+const Stop = require('../models/stops');
+const Db = require('../utils/db');
+const Logger = require('../utils/logger');
 
-const Stop = require('./schema');
-
-const initializeDatabase = async () => {
-    try {
-        const conn = await mongoose.connect(process.env.DATABASE_URL);
-
-        console.log('MongoAtlas connected...');
-
-        const collections = await conn.connection.db.listCollections().toArray();
-
-        if (collections.length) {
-            collections.forEach((collection) => {
-                conn.connection.dropCollection(collection.name, (err) => {
-                    if (err) console.log(err);
-                    else console.log(`Collection "${collection.name}" dropped...`);
-                });
-            });
-        }
-    } catch (err) {
-        throw err;
-    }
-};
-
-const insertStops = async (allStops, trainStops) => {
+/**
+ *
+ * @param {Array} allStops
+ * @param {Array} trainStops
+ * @param {Db} db
+ */
+const insertStops = async (allStops, trainStops, db) => {
+    const logger = new Logger('insertStops');
     const busStops = [];
     const dbTrainStops = [];
 
+    logger.begin();
+
     try {
+        await db.dropCollection('stops');
+
         allStops.forEach((stop) => {
             const baseStop = {
                 id: stop.stop_id,
@@ -75,11 +65,16 @@ const insertStops = async (allStops, trainStops) => {
             }
         });
 
-        await Stop.collection.insertMany([...busStops, ...dbTrainStops]);
-        console.log('Bus stops inserted...');
+        const stopsPayload = [...busStops, ...dbTrainStops];
+        
+        db.watchCollection('stops', stopsPayload.length);
+        await Stop.collection.insertMany(stopsPayload);
+
+        logger.success();
     } catch (err) {
+        logger.fail();
         throw err;
     }
 };
 
-module.exports = { initializeDatabase, insertStops };
+module.exports = { insertStops };

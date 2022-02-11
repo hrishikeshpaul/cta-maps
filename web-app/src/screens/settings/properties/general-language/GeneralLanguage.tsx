@@ -4,7 +4,7 @@ import { Flex, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { SettingsHeader } from 'screens/settings/settings-header/SettingsHeader';
-import { BasePage } from 'utils/BasePage';
+import { Screen } from 'shared/screen/Screen';
 import { useSystemStore } from 'store/system/SystemStore';
 import { Locale, LocaleLabels } from 'i18n/LocaleProvider';
 
@@ -18,7 +18,7 @@ export const GeneralLanguage: FC = () => {
     };
 
     return (
-        <BasePage constantPadding header={<SettingsHeader title="LANGUAGE" />} px="4">
+        <Screen constantPadding header={<SettingsHeader title="LANGUAGE" />} px="4">
             <Flex justifyContent="space-between" alignItems="center" mt="2">
                 <RadioGroup onChange={onLocaleChange} value={settings.locale}>
                     <Stack>
@@ -30,6 +30,6 @@ export const GeneralLanguage: FC = () => {
                     </Stack>
                 </RadioGroup>
             </Flex>
-        </BasePage>
+        </Screen>
     );
 };

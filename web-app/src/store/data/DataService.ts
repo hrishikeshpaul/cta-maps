@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Pattern, Prediction, Route, RouteColor } from 'store/data/DataStore.Types';
+import { Pattern, Prediction, Route, RouteColor, RouteType } from 'store/data/DataStore.Types';
 import { Http } from 'utils/Http';
 import { socket } from 'utils/Socket';
 
@@ -23,7 +23,7 @@ export const getRouteColor = async (ids: string): Promise<RouteColor> => {
     return data;
 };
 
-export const getPattern = async (route: string, color: string): Promise<Pattern[]> => {
+export const getBusPattern = async (route: string, color: string): Promise<Pattern[]> => {
     const { data } = await Http.get<Pattern[]>('/patterns', {
         params: {
             route,
@@ -50,16 +50,64 @@ export const getPredictions = async (stop: string): Promise<Prediction[]> => {
     return data;
 };
 
-export const onRouteSelect = (route: string, color: string): void => {
-    socket.emit('route-add', { route, color });
+export const getTrainRouteColor = async (ids: string): Promise<RouteColor> => {
+    const { data } = await Http.get<RouteColor>('/train/route-color', {
+        params: { ids },
+    });
+
+    return data;
 };
 
-export const onRouteDeselect = (route: string): void => {
-    socket.emit('route-remove', route);
+export const getTrainRoutes = async (filter?: string): Promise<Route[]> => {
+    const { data } = await Http.get<Route[]>('/train/routes', { params: { filter } });
+
+    return data;
 };
 
-export const onRouteRemoveAll = (): void => {
-    socket.emit('route-remove-all');
+export const getTrainPattern = async (route: string, color: string): Promise<Pattern[]> => {
+    const { data } = await Http.get<Pattern[]>('/train/patterns', {
+        params: {
+            route,
+            color,
+        },
+    });
+
+    return data;
+};
+
+export const getTrainPrediction = async (route: string, stop: string): Promise<Prediction[]> => {
+    const { data } = await Http.get<Prediction[]>('/train/predictions', {
+        params: {
+            route,
+            stop,
+        },
+    });
+
+    return data;
+};
+
+export const onRouteSelect = (route: string, color: string, type: RouteType): void => {
+    /**
+     * For devices that have saved busses before
+     */
+    let savedType = type;
+    if (!type) {
+        savedType = RouteType.Bus;
+    }
+
+    socket.emit('route-add', { route, color, type: savedType });
+};
+
+export const onRouteDeselect = (route: string, type: RouteType): void => {
+    let savedType = type;
+    if (!type) {
+        savedType = RouteType.Bus;
+    }
+    socket.emit('route-remove', { route, type: savedType });
+};
+
+export const onRouteRemoveAll = (type?: RouteType): void => {
+    socket.emit('route-remove-all', { type });
 };
 
 export const onIdle = (): void => {

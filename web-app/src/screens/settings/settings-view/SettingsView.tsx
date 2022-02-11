@@ -8,7 +8,7 @@ import { Info } from 'screens/settings/info/Info';
 import { SettingsListItem } from 'screens/settings/settings-list-item/SettingsListItem';
 import { useSystemStore } from 'store/system/SystemStore';
 import { SettingsMode } from 'store/system/SystemStore.Types';
-import { BasePage } from 'utils/BasePage';
+import { Screen } from 'shared/screen/Screen';
 
 export const SettingsView: FunctionComponent = () => {
     const { t } = useTranslation();
@@ -70,7 +70,7 @@ export const SettingsView: FunctionComponent = () => {
     );
 
     return (
-        <BasePage title="SETTINGS" headerIcon={<Info />}>
+        <Screen title="SETTINGS" headerIcon={<Info />}>
             <Stack spacing={8}>
                 {settingItems.map((sItem) => (
                     <Box key={sItem.header}>
@@ -87,6 +87,6 @@ export const SettingsView: FunctionComponent = () => {
                     </Box>
                 ))}
             </Stack>
-        </BasePage>
+        </Screen>
     );
 };

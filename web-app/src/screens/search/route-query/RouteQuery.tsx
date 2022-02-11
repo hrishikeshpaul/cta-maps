@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { RouteExtended } from 'screens/search/route-select/RouteOption';
 import { RouteSelect } from 'screens/search/route-select/RouteSelect';
 import { useDataStore } from 'store/data/DataStore';
-import { BasePage } from 'utils/BasePage';
-import useDebounce from 'utils/Hook';
+import { Screen } from 'shared/screen/Screen';
+import { useDebounce } from 'utils/Hook';
 import { CloseIcon } from 'utils/Icons';
 import { BackButton } from 'shared/back-button/BackButton';
 
@@ -22,7 +22,7 @@ export const RouteQuery: FunctionComponent = () => {
     const [query, setQuery] = useState<string>('');
     const [routes, setRoutes] = useState<RouteExtended[]>([]);
     const debouncedQuery = useDebounce(query.trim());
-    const inputBg = useColorModeValue('gray.100', 'gray.700');
+    const inputBg = useColorModeValue('gray.50', 'gray.700');
     const inputPlaceholderColor = useColorModeValue('gray.400', 'gray.500');
     const bg = useColorModeValue('gray.100', 'gray.600');
 
@@ -55,7 +55,7 @@ export const RouteQuery: FunctionComponent = () => {
     }, [debouncedQuery]); // eslint-disable-line
 
     return (
-        <BasePage
+        <Screen
             constantPadding
             header={
                 <InputGroup mt="2">
@@ -90,12 +90,12 @@ export const RouteQuery: FunctionComponent = () => {
             }
         >
             {query ? (
-                <RouteSelect routes={routes} query={query} getData={getRoutes} />
+                <RouteSelect routes={routes} />
             ) : (
-                <Box>
+                <Box id="search-history-box">
                     {searchHistory.length > 0 && (
                         <Text fontSize="sm" fontWeight="600" opacity="0.6" px="4">
-                            {t('PREVIOUS_SEARCHES')}
+                            {t('HISTORY')}
                         </Text>
                     )}
                     {searchHistory.map((history) => (
@@ -116,6 +116,6 @@ export const RouteQuery: FunctionComponent = () => {
                     ))}
                 </Box>
             )}
-        </BasePage>
+        </Screen>
     );
 };

@@ -4,8 +4,10 @@ import { useToast } from '@chakra-ui/react';
 
 import {
     cancelGetPattern,
-    getPattern,
+    getBusPattern,
     getRoutes,
+    getTrainPattern,
+    getTrainRoutes,
     onActive,
     onIdle,
     onRouteDeselect,
@@ -22,6 +24,7 @@ import {
     FavoriteStopsKey,
     FavoriteRoutesKey,
     SearchHistoryKey,
+    RouteType,
 } from 'store/data/DataStore.Types';
 import { SystemStoreActionType, useSystemStoreDispatch } from 'store/system/SystemStore';
 
@@ -48,11 +51,11 @@ interface PayloadSetVehicle {
 }
 
 interface PayloadSetFavoriteRoutes {
-    favoriteRoutes: Record<string, Route>;
+    savedRoutes: Record<string, Route>;
 }
 
 interface PayloadSetFavoriteStops {
-    favoriteStops: Record<string, Stop>;
+    savedStops: Record<string, Stop>;
 }
 
 interface PayloadSetRoute {
@@ -61,6 +64,10 @@ interface PayloadSetRoute {
 
 interface PayloadRemoveRoute {
     id: string;
+}
+
+interface PayloadRemoveAllRoutes {
+    type?: RouteType;
 }
 
 interface PayloadSetPattern {
@@ -84,6 +91,7 @@ interface DataStoreAction {
     payload?:
         | PayloadSetRoute
         | PayloadRemoveRoute
+        | PayloadRemoveAllRoutes
         | PayloadSetPattern
         | PayloadSetStop
         | PayloadSetCurrentLocation
@@ -106,8 +114,8 @@ export const initialStoreState: DataStoreState = {
     error: undefined,
     currentLocation: { lat: 41.88, lng: -87.65 },
     vehicles: [],
-    favoriteStops: JSON.parse(localStorage.getItem(FavoriteStopsKey) || '{}'),
-    favoriteRoutes: JSON.parse(localStorage.getItem(FavoriteRoutesKey) || '{}'),
+    savedStops: JSON.parse(localStorage.getItem(FavoriteStopsKey) || '{}'),
+    savedRoutes: JSON.parse(localStorage.getItem(FavoriteRoutesKey) || '{}'),
     searchHistory: [],
 };
 
@@ -133,7 +141,23 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
                 vehicles: [...updatedVehicles],
             };
         case DataStoreActionType.RemoveAllRoutes:
-            return { ...state, routes: {}, patterns: [], vehicles: [] };
+            const { type } = action.payload as PayloadRemoveAllRoutes;
+            if (type === RouteType.All) {
+                return { ...state, routes: {}, patterns: [], vehicles: [] };
+            } else {
+                const currentRoutes = { ...state.routes };
+                const updatedPatterns = state.patterns.filter((pattern) => pattern.type !== type);
+                const updatedVehicles = state.vehicles.filter((vehicle) => vehicle.type !== type);
+                const updatedRoutes = Object.values(currentRoutes).reduce((acc: Record<string, Route>, route) => {
+                    if (!acc[route.route] && route.type !== type) {
+                        acc[route.route] = route;
+                    }
+
+                    return acc;
+                }, {});
+
+                return { ...state, routes: updatedRoutes, patterns: updatedPatterns, vehicles: updatedVehicles };
+            }
         case DataStoreActionType.SetPattern:
             return {
                 ...state,
@@ -158,22 +182,22 @@ const storeReducer = (state: DataStoreState, action: DataStoreAction): DataStore
         case DataStoreActionType.SetFavoriteStops:
             localStorage.setItem(
                 FavoriteStopsKey,
-                JSON.stringify((action.payload as PayloadSetFavoriteStops).favoriteStops),
+                JSON.stringify((action.payload as PayloadSetFavoriteStops).savedStops),
             );
 
             return {
                 ...state,
-                favoriteStops: (action.payload as PayloadSetFavoriteStops).favoriteStops,
+                savedStops: (action.payload as PayloadSetFavoriteStops).savedStops,
             };
         case DataStoreActionType.SetFavoriteRoutes:
             localStorage.setItem(
                 FavoriteRoutesKey,
-                JSON.stringify((action.payload as PayloadSetFavoriteRoutes).favoriteRoutes),
+                JSON.stringify((action.payload as PayloadSetFavoriteRoutes).savedRoutes),
             );
 
             return {
                 ...state,
-                favoriteRoutes: (action.payload as PayloadSetFavoriteRoutes).favoriteRoutes,
+                savedRoutes: (action.payload as PayloadSetFavoriteRoutes).savedRoutes,
             };
         case DataStoreActionType.SetVehicle:
             return {
@@ -223,9 +247,10 @@ const useDataStoreDispatch = (): Dispatch<DataStoreAction> => {
 
 interface DataStoreActionApis {
     getRoutes: (search?: string, filter?: string, limit?: number, index?: number) => Promise<Route[] | null>;
+    getTrainRoutes: (filter?: string) => Promise<Route[] | null>;
     setRoute: (route: Route) => void;
-    removeRoute: (id: string) => void;
-    removeAllRoutes: () => void;
+    removeRoute: (id: string, type: RouteType) => void;
+    removeAllRoutes: (type?: RouteType) => void;
     openStop: (stop: Stop) => void;
     closeStop: () => void;
     setCurrentLocation: (location: Point) => void;
@@ -265,14 +290,40 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
                 return null;
             }
         },
+        getTrainRoutes: async (filter?: string) => {
+            try {
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: true } });
+                const response = await getTrainRoutes(filter);
+
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
+
+                return response;
+            } catch (err: any) {
+                systemDispatch({ type: SystemStoreActionType.SetRoutesLoading, payload: { loading: false } });
+                toast({ description: err.response.data, status: 'error' });
+
+                return null;
+            }
+        },
         setRoute: async (route: Route) => {
             dispatch({ type: DataStoreActionType.SetRoute, payload: { route } });
             systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: true } });
 
-            try {
-                const response = await getPattern(route.route, route.color);
+            let response: Pattern[] = [];
 
-                onRouteSelect(route.route, route.color);
+            try {
+                switch (route.type) {
+                    case RouteType.Bus:
+                        response = await getBusPattern(route.route, route.color);
+                        break;
+                    case RouteType.Train:
+                        response = await getTrainPattern(route.route, route.color);
+                        break;
+                    default:
+                        throw Error(`Invalid type -- ${route.type}`);
+                }
+
+                onRouteSelect(route.route, route.color, route.type as RouteType);
                 systemDispatch({ type: SystemStoreActionType.SetPatternLoading, payload: { loading: false } });
                 dispatch({ type: DataStoreActionType.SetPattern, payload: { pattern: response } });
             } catch (err: any) {
@@ -282,14 +333,14 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
                 }
             }
         },
-        removeRoute: (id: string) => {
+        removeRoute: (id: string, type: RouteType) => {
             cancelGetPattern();
-            onRouteDeselect(id);
+            onRouteDeselect(id, type);
             dispatch({ type: DataStoreActionType.RemoveRoute, payload: { id } });
         },
-        removeAllRoutes: () => {
-            onRouteRemoveAll();
-            dispatch({ type: DataStoreActionType.RemoveAllRoutes });
+        removeAllRoutes: (type?: RouteType) => {
+            onRouteRemoveAll(type);
+            dispatch({ type: DataStoreActionType.RemoveAllRoutes, payload: { type } });
         },
         openStop: (stop: Stop) => {
             dispatch({ type: DataStoreActionType.SetStop, payload: { stop } });
@@ -310,28 +361,28 @@ export const useDataStore = (): [DataStoreState, DataStoreActionApis] => {
             onActive();
         },
         saveStop: (stop: Stop) => {
-            const favoriteStops = { ...state.favoriteStops };
+            const savedStops = { ...state.savedStops };
 
-            favoriteStops[stop.id] = stop;
-            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { favoriteStops } });
+            savedStops[stop.id] = stop;
+            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { savedStops } });
         },
         unSaveStop: (id: string) => {
-            const favoriteStops = { ...state.favoriteStops };
-            delete favoriteStops[id];
+            const savedStops = { ...state.savedStops };
+            delete savedStops[id];
 
-            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { favoriteStops } });
+            dispatch({ type: DataStoreActionType.SetFavoriteStops, payload: { savedStops } });
         },
         saveRoute: (route: Route) => {
-            const favoriteRoutes = { ...state.favoriteRoutes };
+            const savedRoutes = { ...state.savedRoutes };
 
-            favoriteRoutes[route.route] = route;
-            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { favoriteRoutes } });
+            savedRoutes[route.route] = route;
+            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { savedRoutes } });
         },
         unSaveRoute: (id: string) => {
-            const favoriteRoutes = { ...state.favoriteRoutes };
-            delete favoriteRoutes[id];
+            const savedRoutes = { ...state.savedRoutes };
+            delete savedRoutes[id];
 
-            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { favoriteRoutes } });
+            dispatch({ type: DataStoreActionType.SetFavoriteRoutes, payload: { savedRoutes } });
         },
         openVehicle: (vehicle: Vehicle) => {
             dispatch({ type: DataStoreActionType.SetVehicle, payload: { vehicle } });

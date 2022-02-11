@@ -61,7 +61,13 @@
     "ARROW": " ARROW",
     "MAP": "Map",
     "SEARCH": "Search",
+    "SAVE": "Save",
     "SAVED": "Saved",
     "GENERAL": "General",
-    "PREVIOUS_SEARCHES": "Previous Searches"
+    "HISTORY": "HISTORY",
+    "BUS": "Bus",
+    "TRAIN": "Train",
+    "DELETE_ALL": "Delete All",
+    "DESELECT_BUSSES": "Deselect Busses",
+    "DESELECT_TRAINS": "Deselect Trains"
 }

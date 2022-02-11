@@ -5,10 +5,14 @@ import { useTranslation } from 'react-i18next';
 
 import { useDataStore } from 'store/data/DataStore';
 import { socket } from 'utils/Socket';
+import { onRouteSelect } from 'store/data/DataService';
+import { RouteType } from 'store/data/DataStore.Types';
+
+const values = Object.values;
 
 export const SocketModule: FunctionComponent = () => {
     const { t } = useTranslation();
-    const [, { setVehicles, removeAllRoutes }] = useDataStore();
+    const [{ routes }, { setVehicles }] = useDataStore();
     const toast = useToast();
 
     useEffect(() => {
@@ -27,12 +31,16 @@ export const SocketModule: FunctionComponent = () => {
                     description: t('SERVER_DISCONNECT'),
                     status: 'warning',
                     duration: null,
-                    
                 });
-                removeAllRoutes();
             });
 
             socket.on('connect', () => {
+                if (values(routes).length) {
+                    values(routes).forEach(({ color, route, type }) => {
+                        onRouteSelect(route, color, type as RouteType);
+                    });
+                }
+
                 toast.closeAll();
                 toast({
                     description: t('SERVER_CONNECT'),
@@ -48,10 +56,9 @@ export const SocketModule: FunctionComponent = () => {
                     description: t('SERVER_ERROR'),
                     status: 'error',
                 });
-                removeAllRoutes();
             });
         }
-    }, [socket]); // eslint-disable-line
+    }, [socket, routes]); // eslint-disable-line
 
     return <></>;
 };

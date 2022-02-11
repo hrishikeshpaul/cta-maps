@@ -34,6 +34,7 @@ router.get('/routes', async (req, res) => {
             route: item.rt,
             name: item.rtnm,
             color: item.rtclr,
+            type: 'B',
         }));
 
         if (filter) {
@@ -102,6 +103,7 @@ router.get('/patterns', async (req, res) => {
                         longitude: p.lon,
                         name: p.stpnm,
                         id: p.stpid,
+                        type: 'B',
                         route,
                     });
                 }
@@ -112,6 +114,7 @@ router.get('/patterns', async (req, res) => {
                 strokeColor: color,
                 dir: item.dir,
                 id: item.pid,
+                type: 'B',
                 route,
                 paths,
                 stops,
@@ -163,7 +166,8 @@ router.get('/stops', async (req, res) => {
     try {
         const directions = await getRouteDirections(route);
         const stopPromises = directions.map((dir) => getStops(route, dir));
-        const stops = await Promise.all(stopPromises);
+        let stops = await Promise.all(stopPromises);
+        stops = stops.map((stop) => ({ ...stop, type: 'B' }));
 
         res.send(stops);
     } catch (err) {
