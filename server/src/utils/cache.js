@@ -12,7 +12,7 @@ const cacheKeys = {
     trainRoutes: 'train-routes-cache',
 };
 
-const ttl = 60 * 60 * 24; // one day
+const ttl = 60 * 60 * 24;
 
 class Cache {
     constructor() {
